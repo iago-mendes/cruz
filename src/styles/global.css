@@ -1,0 +1,32 @@
+:root
+{
+    --primary: #84130B;
+    --primary-dark: #260503;
+    --primary-light: #ED271D;
+    --secondary: #CC9749;
+    --secondary-strong: #E2AD25;
+    --background: #E2DADB;
+
+    font-size: 10px;
+}
+
+*
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+body
+{
+    background-color: var(--background);
+}
+
+#__next
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}

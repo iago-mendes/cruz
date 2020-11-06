@@ -1,6 +1,6 @@
 module.exports = {
     presets: ["next/babel"],
-    plugins: [
-      "inline-react-svg"
-    ]
+    // plugins: [
+    //   "inline-react-svg"
+    // ]
 }
