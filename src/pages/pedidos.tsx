@@ -4,9 +4,9 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Cruz Representações</title>
+        <title>Pedidos | Cruz Representações</title>
       </Head>
-      <h1>Indicadores</h1>
+      <h1>Pedidos</h1>
     </div>
   )
 }
