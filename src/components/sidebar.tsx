@@ -70,7 +70,7 @@ export default function Sidebar()
                         icon={<BiUserCircle size={25} color={location.pathname === '/usuario' ? "#CC9749" : "#E2DADB"}/>}
                         className={styles.item}
                     >
-                        <Link href="/usuario">Informações</Link>
+                        <Link href="/usuario">Usuário</Link>
                     </MenuItem>
                     <MenuItem
                         icon={<FiLogOut size={25} color="#E2DADB"/>}
