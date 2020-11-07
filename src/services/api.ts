@@ -4,7 +4,7 @@ const user = JSON.parse(localStorage.getItem('@cruz-representacoes/user'))
 
 const api = axios.create(
 {
-    baseURL: 'http://localhost:1973',
+    baseURL: 'http://206.189.193.235:7373',
     headers:
     {
         'token': user.token,
