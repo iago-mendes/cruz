@@ -1,10 +1,9 @@
-import {getCookies} from 'cookies-next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import {FiEdit3} from 'react-icons/fi'
+import {BiBuildings, BiPlus, BiSearch} from 'react-icons/bi'
 
 import api from '../../services/api'
-import styles from '../../styles/pages/empresas/index.module.css'
 
 interface Company
 {
@@ -23,15 +22,31 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="container">
+    <div id="companies" className="container">
       <Head>
         <title>Empresas | Cruz Representações</title>
       </Head>
-      <main className={styles.companies}>
+      <header>
+        <div className="group">
+          <BiBuildings size={30} />
+          <h1>Empresas</h1>
+        </div>
+        <div className="group">
+          <button>
+            <BiPlus size={30} />
+            <span>Adicionar</span>
+          </button>
+          <div className="inputField">
+            <BiSearch size={25} color='rgb(138, 138, 138)' />
+            <input type="text" name="search"/>
+          </div>
+        </div>
+      </header>
+      <main>
         {companies.map(company => (
-          <div key={company.id} className={styles.company}>
+          <div key={company.id} className="company">
             <img src={company.imagem} alt={company.nome_fantasia}/>
-            <div className={styles.companyText}>
+            <div className="companyText">
               <h1>{company.nome_fantasia}</h1>
               <h2>{company.descricao_curta}</h2>
             </div>

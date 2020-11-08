@@ -3,6 +3,7 @@ import Sidebar from '../components/sidebar'
 
 import '../styles/global.css'
 import '../styles/pages/login.css'
+import '../styles/pages/empresas/index.css'
 
 function MyApp({ Component, pageProps }) {
   return (
