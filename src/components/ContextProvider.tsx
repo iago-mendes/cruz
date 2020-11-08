@@ -4,6 +4,7 @@ import Router from "next/router"
 import jwt from 'jsonwebtoken'
 
 import User, {UserInterface, defaultUser} from '../utils/userContext'
+import Login from '../pages/login'
 
 const ContextProvider: React.FC = ({children}) =>
 {
@@ -33,11 +34,7 @@ const ContextProvider: React.FC = ({children}) =>
     }, [])
 
     if (isLoading) return <h1>Carregando...</h1>
-    if(!user.token)
-    {
-        Router.push('/login')
-        return null
-    }
+    if(!user.token) return <Login/>
 
     let userContext = defaultUser
     userContext.setUser(user)

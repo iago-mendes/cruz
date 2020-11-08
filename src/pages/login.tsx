@@ -1,7 +1,6 @@
 import {setCookies} from 'cookies-next'
 import Head from 'next/head'
 import { ChangeEvent, FormEvent, useContext, useState } from 'react'
-import bcrypt from 'bcryptjs'
 import Router from 'next/router'
 import jwt from 'jsonwebtoken'
 
@@ -46,7 +45,7 @@ export default function Home() {
 
           user.setUser({token, id, role})
           alert('Você está logado!')
-          Router.push('/')
+          Router.reload()
         }
         else
         {
@@ -97,11 +96,4 @@ export default function Home() {
       </form>
     </div>
   )
-}
-
-export async function getStaticProps(ctx)
-{
-  return {
-    props: {role: 'client'}
-  }
 }
