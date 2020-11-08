@@ -15,7 +15,7 @@ export default function Sidebar()
     const [isCollapsed, setIsCollapsed] = useState(true)
 
     const location = useRouter()
-    // if (location.pathname === '/login') return null
+    if (location.pathname === '/login') return null
 
     // function handleLogout()
     // {

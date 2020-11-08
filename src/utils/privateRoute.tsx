@@ -1,32 +1,23 @@
-import {useContext} from 'react'
 import bcrypt from 'bcryptjs'
-import {useRouter} from 'next/router'
 
-import {User, defaultUser} from './userContext'
-
-// interface PrivateRouteParams
-// {
-//     (component: React.ReactElement, role: string): React.FC | Promise<boolean>
-// }
-
-export default function privateRoute(Component: React.FC, role: string)
+export interface User
 {
-    const userContext = useContext(User)
-    const router = useRouter()
+    token: string
+    id: string
+    role: string
+}
 
-    if (bcrypt.compareSync('admin', userContext.role)) role = 'admin'
-    if (bcrypt.compareSync('seller', userContext.role) && role !== 'admin') role = 'seller'
+export default function privateRoute(user: User, role: string)
+{
+    if (bcrypt.compareSync('admin', user.role)) role = 'admin'
+    if (bcrypt.compareSync('seller', user.role) && role !== 'admin') role = 'seller'
 
-    const isRole = bcrypt.compareSync(role, userContext.role)
+    const isRole = bcrypt.compareSync(role, user.role)
 
-    if (isRole) return <Component />
-    else if (userContext === defaultUser)
-    {
-        return router.push('/login')
-    }
+    if (isRole) return true
     else
     {
-        alert('Você não tem permissão para acessar essa rota.')
-        return router.push('/')
+        alert('Você não tem permissão para acessar esta rota.')
+        return false
     }
 }
