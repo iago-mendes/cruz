@@ -30,4 +30,4 @@ class defaultUserClass
 
 export const defaultUser: UserInterface & {setUser: Function} = new defaultUserClass()
 
-export const User = createContext(defaultUser)
+export default createContext(defaultUser)

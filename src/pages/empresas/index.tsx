@@ -1,3 +1,4 @@
+import {getCookies} from 'cookies-next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import {FiEdit3} from 'react-icons/fi'
@@ -40,4 +41,19 @@ export default function Home() {
       </main>
     </div>
   )
+}
+
+export async function getStaticProps(ctx)
+{
+  let user = {token: '', id: '', role: ''}
+
+  const token = getCookies(ctx, 'token')
+  const id = getCookies(ctx, 'id')
+  const role = getCookies(ctx, 'role')
+  
+  if (token && id && role) user = {token, id, role}
+
+  return {
+    props: {user}
+  }
 }
