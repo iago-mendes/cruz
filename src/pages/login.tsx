@@ -1,13 +1,16 @@
-import {getCookies, setCookies} from 'cookies-next'
+import {setCookies} from 'cookies-next'
 import Head from 'next/head'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import bcrypt from 'bcryptjs'
 import Router from 'next/router'
 
 import logo from '../assets/logo.svg'
 import api from '../services/api'
+import User from '../utils/userContext'
 
 export default function Home() {
+  const user = useContext(User)
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -28,11 +31,12 @@ export default function Home() {
     {
         if (res.data.token)
         {
-            const {token, id, role} = res.data
-            setCookies(null, 'token', token)
-            setCookies(null, 'id', id)
-            setCookies(null, 'role', bcrypt.hashSync(role, 16))
-            alert('Você está logado!')
+          const {token, id, role} = res.data
+          setCookies(null, 'token', token)
+          setCookies(null, 'id', id)
+          setCookies(null, 'role', bcrypt.hashSync(role, 16))
+          user.setUser({token, id, role})
+          alert('Você está logado!')
           Router.push('/')
         }
         alert('Algo errado aconteceu!')
@@ -85,15 +89,7 @@ export default function Home() {
 
 export async function getStaticProps(ctx)
 {
-  let user = {token: '', id: '', role: ''}
-  
-  const token = getCookies(ctx, 'token')
-  const id = getCookies(ctx, 'id')
-  const role = getCookies(ctx, 'role')
-  
-  if (token && id && role) user = {token, id, role}
-
   return {
-    props: {user}
+    props: {role: 'client'}
   }
 }

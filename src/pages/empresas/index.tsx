@@ -45,15 +45,7 @@ export default function Home() {
 
 export async function getStaticProps(ctx)
 {
-  let user = {token: '', id: '', role: ''}
-
-  const token = getCookies(ctx, 'token')
-  const id = getCookies(ctx, 'id')
-  const role = getCookies(ctx, 'role')
-  
-  if (token && id && role) user = {token, id, role}
-
   return {
-    props: {user}
+    props: {role: 'seller'}
   }
 }
