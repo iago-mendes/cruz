@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useContext, useEffect, useState } from 'react'
 import {FiEdit3} from 'react-icons/fi'
 import {BiBuildings, BiPlus, BiSearch} from 'react-icons/bi'
+import Router from 'next/router'
 
 import api from '../../services/api'
 import User from '../../utils/userContext'
@@ -14,7 +15,7 @@ interface Company
   descricao_curta: string
 }
 
-export default function Home() {
+export default function Companies() {
   const user = useContext(User)
 
   const [companies, setCompanies] = useState<Company[]>([])
@@ -54,10 +55,16 @@ export default function Home() {
           <div key={company.id} className="company">
             <img src={company.imagem} alt={company.nome_fantasia}/>
             <div className="companyText">
-              <h1>{company.nome_fantasia}</h1>
+              <h1 onClick={() => Router.push(`/empresas/${company.id}`)}>
+                {company.nome_fantasia}
+              </h1>
               <h2>{company.descricao_curta}</h2>
             </div>
-            <button title="Editar"><FiEdit3 size={25} /></button>
+            {
+              user.role === 'admin' ?
+              <button title="Editar"><FiEdit3 size={25} /></button>
+              : <div />
+            }
           </div>
         ))}
       </main>
