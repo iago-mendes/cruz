@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import {FiEdit3} from 'react-icons/fi'
 import {BiBuildings, BiPlus, BiSearch} from 'react-icons/bi'
 
 import api from '../../services/api'
+import User from '../../utils/userContext'
 
 interface Company
 {
@@ -14,6 +15,8 @@ interface Company
 }
 
 export default function Home() {
+  const user = useContext(User)
+
   const [companies, setCompanies] = useState<Company[]>([])
 
   useEffect(() =>
@@ -32,10 +35,14 @@ export default function Home() {
           <h1>Empresas</h1>
         </div>
         <div className="group">
-          <button>
-            <BiPlus size={30} />
-            <span>Adicionar</span>
-          </button>
+          {
+            user.role === 'admin' ?
+            <button>
+              <BiPlus size={30} />
+              <span>Adicionar</span>
+            </button>
+            : <div/>
+          }
           <div className="inputField">
             <BiSearch size={25} color='rgb(138, 138, 138)' />
             <input type="text" name="search"/>

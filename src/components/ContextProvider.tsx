@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react"
 import {getCookies} from 'cookies-next'
 import Router from "next/router"
+import jwt from 'jsonwebtoken'
 
 import User, {UserInterface, defaultUser} from '../utils/userContext'
 
@@ -12,8 +13,15 @@ const ContextProvider: React.FC = ({children}) =>
     useEffect(() =>
     {
         const token: string = getCookies(null, 'token')
-        const id: string = getCookies(null, 'id')
-        const role: string = getCookies(null, 'role')
+
+        let id = ''
+        let role = ''
+        const payload = jwt.decode(token)
+        if (typeof payload !== 'string')
+        {
+            id = payload.id
+            role = payload.role
+        }
 
         setUser({token, id, role})
         setIsLoading(false)

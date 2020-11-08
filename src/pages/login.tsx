@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { ChangeEvent, FormEvent, useContext, useState } from 'react'
 import bcrypt from 'bcryptjs'
 import Router from 'next/router'
+import jwt from 'jsonwebtoken'
 
 import logo from '../assets/logo.svg'
 import api from '../services/api'
@@ -31,16 +32,27 @@ export default function Home() {
     {
         if (res.data.token)
         {
-          const {token, id, role} = res.data
+          const {token} = res.data
           setCookies(null, 'token', token)
-          setCookies(null, 'id', id)
-          setCookies(null, 'role', bcrypt.hashSync(role, 16))
+
+          let id = ''
+          let role = ''
+          const payload = jwt.decode(token)
+          if (typeof payload !== 'string')
+          {
+            id = payload.id
+            role = payload.role
+          }
+
           user.setUser({token, id, role})
           alert('Você está logado!')
           Router.push('/')
         }
-        alert('Algo errado aconteceu!')
-        console.log(res)
+        else
+        {
+          alert('Algo errado aconteceu!')
+          console.log(res)
+        }
     })
     .catch(error =>
     {
