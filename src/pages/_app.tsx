@@ -6,7 +6,7 @@ import '../styles/pages/login.css'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ContextProvider role={pageProps.role}>
+    <ContextProvider>
       <Sidebar/>
       <Component {...pageProps} />
     </ContextProvider>

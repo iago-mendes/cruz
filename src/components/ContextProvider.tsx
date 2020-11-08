@@ -2,15 +2,9 @@ import {useEffect, useState} from "react"
 import {getCookies} from 'cookies-next'
 import Router from "next/router"
 
-import privateRoute from "../utils/privateRoute"
 import User, {UserInterface, defaultUser} from '../utils/userContext'
 
-interface ContextProviderProps
-{
-    role: string
-}
-
-const ContextProvider: React.FC<ContextProviderProps> = ({role, children}) =>
+const ContextProvider: React.FC = ({children}) =>
 {
     const [isLoading, setIsLoading] = useState(true)
     const [user, setUser] = useState<UserInterface>()
@@ -29,11 +23,6 @@ const ContextProvider: React.FC<ContextProviderProps> = ({role, children}) =>
     if(!user.token)
     {
         Router.push('/login')
-        return null
-    }
-    if(!privateRoute(user, role))
-    {
-        Router.push('/')
         return null
     }
 
