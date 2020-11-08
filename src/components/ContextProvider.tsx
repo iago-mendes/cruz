@@ -12,18 +12,23 @@ const ContextProvider: React.FC = ({children}) =>
 
     useEffect(() =>
     {
-        const token: string = getCookies(null, 'token')
+        const token = getCookies(null, 'token')
 
-        let id = ''
-        let role = ''
-        const payload = jwt.decode(token)
-        if (typeof payload !== 'string')
+        if(token)
         {
-            id = payload.id
-            role = payload.role
-        }
+            let id = ''
+            let role = ''
+            const payload = jwt.decode(token)
+            if (typeof payload !== 'string')
+            {
+                id = payload.id
+                role = payload.role
+            }
 
-        setUser({token, id, role})
+            setUser({token, id, role})
+        }
+        else setUser({token: undefined, id: undefined, role: undefined})
+        
         setIsLoading(false)
     }, [])
 
