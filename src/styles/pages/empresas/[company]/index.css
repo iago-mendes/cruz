@@ -106,11 +106,13 @@
     background: #fff;
     border-radius: 2rem;
     padding: 1rem;
+
+    position: relative;
 }
 
 #company main .line img
 {
-    width: 10rem;
+    width: 20rem;
 }
 
 #company main .line .lineText
@@ -147,6 +149,9 @@
 
 #company main .line button
 {
+    position: absolute;
+    right: 1rem;
+
     width: 50px;
     height: 50px;
     border-radius: 100px;
