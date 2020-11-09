@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+import Router from 'next/router'
 import {ProSidebar, SidebarHeader, SidebarContent, SidebarFooter, Menu, MenuItem} from 'react-pro-sidebar'
 import 'react-pro-sidebar/dist/css/styles.css'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
@@ -14,8 +14,15 @@ export default function Sidebar()
 {
     const [isCollapsed, setIsCollapsed] = useState(true)
 
-    const location = useRouter()
-    if (location.pathname === '/login') return null
+    if (Router.pathname === '/login') return null
+
+    function checkRoute(route: string)
+    {
+        const current = Router.pathname.split('/')
+        console.log('[current]', `/${current[1]}`)
+        if (`/${current[1]}` === route) return "#CC9749"
+        else return "#E2DADB"
+    }
 
     // function handleLogout()
     // {
@@ -33,31 +40,31 @@ export default function Sidebar()
             <SidebarContent className={styles.content}>
                 <Menu>
                     <MenuItem
-                        icon={<BiLineChart size={25} color={location.pathname === '/' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<BiLineChart size={25} color={checkRoute('/')}/>}
                         className={styles.item}
                     >
                         <Link href="/">Indicadores</Link>
                     </MenuItem>
                     <MenuItem
-                        icon={<BiSpreadsheet size={25} color={location.pathname === '/pedidos' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<BiSpreadsheet size={25} color={checkRoute('/pedidos')}/>}
                         className={styles.item}
                     >
                         <Link href="/pedidos">Pedidos</Link>
                     </MenuItem>
                     <MenuItem
-                        icon={<FaStore size={25} color={location.pathname === '/clientes' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<FaStore size={25} color={checkRoute('/clientes')}/>}
                         className={styles.item}
                     >
                         <Link href="/clientes">Clientes</Link>
                     </MenuItem>
                     <MenuItem
-                        icon={<BiBuildings size={25} color={location.pathname === '/empresas' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<BiBuildings size={25} color={checkRoute('/empresas')}/>}
                         className={styles.item}
                     >
                         <Link href="/empresas">Empresas</Link>
                     </MenuItem>
                     <MenuItem
-                        icon={<FiUsers size={25} color={location.pathname === '/vendedores' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<FiUsers size={25} color={checkRoute('/vendedores')}/>}
                         className={styles.item}
                     >
                         <Link href="/vendedores">Vendedores</Link>
@@ -67,7 +74,7 @@ export default function Sidebar()
             <SidebarFooter className={styles.footer}>
                 <Menu>
                     <MenuItem
-                        icon={<BiUserCircle size={25} color={location.pathname === '/usuario' ? "#CC9749" : "#E2DADB"}/>}
+                        icon={<BiUserCircle size={25} color={checkRoute('/usuario')}/>}
                         className={styles.item}
                     >
                         <Link href="/usuario">Usuário</Link>
