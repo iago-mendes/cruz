@@ -19,7 +19,6 @@ export default function Sidebar()
     function checkRoute(route: string)
     {
         const current = Router.pathname.split('/')
-        console.log('[current]', `/${current[1]}`)
         if (`/${current[1]}` === route) return "#CC9749"
         else return "#E2DADB"
     }
