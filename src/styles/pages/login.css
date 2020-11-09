@@ -81,8 +81,8 @@
 
 #login form .fieldInput input:hover, #login form .fieldInput input:focus
 {
-    transform: scale(1.05);
     box-shadow: 5px 5px 5px black;
+    border-radius: 0;
 }
 
 #login form button
