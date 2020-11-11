@@ -1,5 +1,5 @@
 import Router from 'next/router'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Head from 'next/head'
 import {BiBuildings} from 'react-icons/bi'
 
@@ -141,6 +141,40 @@ export default function EditCompany()
         }
     }
 
+    function handleAddNumber()
+    {
+        setTelefones([...telefones, 0])
+        setShownNumbers([...shownNumbers, ''])
+    }
+
+    function handleRemoveNumber(index: number)
+    {
+        let numbers = [...telefones]
+        numbers.splice(index, 1)
+        setTelefones(numbers)
+
+        let shown = [...shownNumbers]
+        shown.splice(index, 1)
+        setShownNumbers(shown)
+    }
+    
+    function handleAddComissaoObs()
+    {
+        setComissao({porcentagem: comissao.porcentagem, obs: [...comissao.obs, '']})
+    }
+
+    function handleRemoveComissaoObs(index: number)
+    {
+        let obs = [...comissao.obs]
+        obs.splice(index, 1)
+        setComissao({porcentagem: comissao.porcentagem, obs})
+    }
+
+    function handleSubmit(e: FormEvent)
+    {
+        e.preventDefault()
+    }
+
     return (
         <div className="container" id="editCompany">
             <Head>
@@ -150,7 +184,7 @@ export default function EditCompany()
                 <BiBuildings size={30} />
                 <h1>{nomeFantasia}</h1>
             </header>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="imagem">Imagem</label>
                     <input type="file" name="imagem" id="imagem"/>
@@ -188,18 +222,21 @@ export default function EditCompany()
                 </div>
                 <div>
                     <label htmlFor="telefone">Telefones</label>
-                    {shownNumbers.map((number, index) => (
-                        <li key={index} className="phone">
-                            <input
-                                type="text"
-                                name="telefone"
-                                id="telefone"
-                                value={number}
-                                onChange={(e) => handleNumberChange(e, index)}
-                            />
-                            <button>-</button>
-                        </li>
-                    ))}
+                    <ul>
+                        {shownNumbers.map((number, index) => (
+                            <li key={index} className="phone">
+                                <input
+                                    type="text"
+                                    name="telefone"
+                                    id="telefone"
+                                    value={number}
+                                    onChange={(e) => handleNumberChange(e, index)}
+                                />
+                                <button onClick={() => handleRemoveNumber(index)}>-</button>
+                            </li>
+                        ))}
+                        <button onClick={handleAddNumber}>+</button>
+                    </ul>
                 </div>
                 <div>
                     <label htmlFor="email">E-mail</label>
@@ -212,8 +249,7 @@ export default function EditCompany()
                     />
                 </div>
                 <div>
-                    <h2>Comissão</h2>
-                    <label htmlFor="comissao_porcentagem">Porcentagem</label>
+                    <label htmlFor="comissao_porcentagem">Comissão - Porcentagem</label>
                     <input
                         type="number"
                         name="comissao_porcentagem"
@@ -221,19 +257,22 @@ export default function EditCompany()
                         value={comissao.porcentagem}
                         onChange={(e) => handleComissaoChange(e)}
                     />
-                    <label htmlFor="comissao_obs">Observações</label>
-                    {comissao.obs.map((obs, index) => (
-                        <li key={index} className="obs">
-                            <input
-                                type="text"
-                                name="comissao_obs"
-                                id="comissao_obs"
-                                value={obs}
-                                onChange={(e) => handleComissaoChange(e, index)}
-                            />
-                            <button>-</button>
-                        </li>
-                    ))}
+                    <label htmlFor="comissao_obs">Comissão - Observações</label>
+                    <ul>
+                        {comissao.obs.map((obs, index) => (
+                            <li key={index} className="obs">
+                                <input
+                                    type="text"
+                                    name="comissao_obs"
+                                    id="comissao_obs"
+                                    value={obs}
+                                    onChange={(e) => handleComissaoChange(e, index)}
+                                />
+                                <button onClick={() => handleRemoveComissaoObs(index)} >-</button>
+                            </li>
+                        ))}
+                        <button onClick={handleAddComissaoObs}>+</button>
+                    </ul>
                 </div>
                 <div>
                     <label htmlFor="descricao_curta">Descrição curta</label>
