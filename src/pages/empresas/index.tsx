@@ -62,7 +62,9 @@ export default function Companies() {
             </div>
             {
               user.role === 'admin' ?
-              <button title="Editar"><FiEdit3 size={25} /></button>
+              <button title="Editar" onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
+                <FiEdit3 size={25} />
+              </button>
               : <div />
             }
           </div>

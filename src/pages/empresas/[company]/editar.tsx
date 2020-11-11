@@ -35,11 +35,12 @@ export default function EditCompany()
     if (!id) return <h1>Carregando...</h1>
 
     const [shownNumbers, setShownNumbers] = useState<string[]>([])
+    const [shownCnpj, setShownCnpj] = useState('')
 
     const [imagem, setImagem] = useState<File>()
     const [razaoSocial, setRazaoSocial] = useState('')
     const [nomeFantasia, setNomeFantasia] = useState('')
-    const [cnpj, setCnpj] = useState('')
+    const [cnpj, setCnpj] = useState(0)
     const [telefones, setTelefones] = useState<number[]>([0])
     const [email, setEmail] = useState('')
     const [comissao, setComissao] = useState<Comissao>(defaultComissao)
@@ -55,27 +56,52 @@ export default function EditCompany()
 
             setRazaoSocial(company.razao_social)
             setNomeFantasia(company.nome_fantasia)
-            setCnpj(company.cnpj)
             setTelefones(company.telefones)
-            setShownNumbers(company.telefones.map(tel => String(tel)))
             setEmail(company.email)
             setComissao(company.comissao)
             setDescricao(company.descricao_curta)
             setDescricao(company.descricao)
             setSite(company.site)
-                
+            
+            setTelefones(company.telefones)
+            setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
+
+            setCnpj(Number(company.cnpj))
+            setShownCnpj(formatCnpj(company.cnpj))
         }).catch(error => console.log('[error when getting info]', error))
     }, [])
+
+    function formatNumber(number: number | string)
+    {
+        const n = String(number)
+        if (n.length === 10)
+            return `(${n.substr(0, 2)}) ${n.substr(2, 4)}-${n.substr(6, 4)}`
+        else
+            return `(${n.substr(0, 2)}) ${n.substr(2, 5)}-${n.substr(7, 4)}`
+    }
+
+    function formatCnpj(number: number | string)
+    {
+        const n = String(number).replace(/\D/g,'')
+        if (n.length === 14)
+            return `${n.substr(0,2)}.${n.substr(2,3)}.${n.substr(5,3)}/${n.substr(8,4)}-${n.substr(12,2)}`
+        else return n
+    }
 
     function handleInputChange(e: ChangeEvent<HTMLInputElement>)
     {
         if (e.target.name === 'imagem') setImagem(e.target.files[0])
         if (e.target.name === 'razao_social') setRazaoSocial(e.target.value)
         if (e.target.name === 'nome_fantasia') setNomeFantasia(e.target.value)
-        if (e.target.name === 'cnpj') setCnpj(e.target.value)
         if (e.target.name === 'email') setEmail(e.target.value)
         if (e.target.name === 'descricao_curta') setDescricaoCurta(e.target.value)
         if (e.target.name === 'site') setSite(e.target.value)
+
+        if (e.target.name === 'cnpj')
+        {
+            setCnpj(Number(e.target.value))
+            setShownCnpj(formatCnpj(e.target.value))
+        }
     }
 
     function handleTextareaChange(e: ChangeEvent<HTMLTextAreaElement>)
@@ -85,8 +111,31 @@ export default function EditCompany()
 
     function handleNumberChange(e: ChangeEvent<HTMLInputElement>, index: number)
     {
+        let numbers = [...telefones]
+        let formatedNumbers = [...shownNumbers]
+
         const number = e.target.value.replace(/\D/g,'')
-        console.log('[number]', number)
+        numbers[index] = Number(number)
+        setTelefones(numbers)
+
+        const formatedNumber = formatNumber(number)
+        formatedNumbers[index] = formatedNumber
+        setShownNumbers(formatedNumbers)
+    }
+
+    function handleComissaoChange(e: ChangeEvent<HTMLInputElement>, index = 0)
+    {
+        if (e.target.name === 'comissao_porcentagem')
+        {
+            const porcentagem = Number(e.target.value)
+            setComissao({porcentagem, obs: [...comissao.obs]})
+        }
+        else if (e.target.name === 'comissao_obs')
+        {
+            let obs = [...comissao.obs]
+            obs[index] = e.target.value
+            setComissao({porcentagem: comissao.porcentagem, obs})
+        }
     }
 
     return (
@@ -123,8 +172,9 @@ export default function EditCompany()
                         type="text"
                         name="cnpj"
                         id="cnpj"
-                        value={cnpj}
+                        value={shownCnpj}
                         onChange={handleInputChange}
+                        maxLength={18}
                     />
                 </div>
                 <div>
@@ -145,7 +195,7 @@ export default function EditCompany()
                 <div>
                     <label htmlFor="email">E-mail</label>
                     <input
-                        type="text"
+                        type="email"
                         name="email"
                         id="email"
                         value={email}
@@ -155,7 +205,13 @@ export default function EditCompany()
                 <div>
                     <h2>Comissão</h2>
                     <label htmlFor="comissao_porcentagem">Porcentagem</label>
-                    <input type="text" name="comissao_porcentagem" id="comissao_porcentagem"/>
+                    <input
+                        type="number"
+                        name="comissao_porcentagem"
+                        id="comissao_porcentagem"
+                        value={comissao.porcentagem}
+                        onChange={(e) => handleComissaoChange(e)}
+                    />
                     <label htmlFor="comissao_obs">Observações</label>
                     {comissao.obs.map((obs, index) => (
                         <li key={index} className="obs">
@@ -164,7 +220,7 @@ export default function EditCompany()
                                 name="comissao_obs"
                                 id="comissao_obs"
                                 value={obs}
-                                onChange={handleInputChange}
+                                onChange={(e) => handleComissaoChange(e, index)}
                             />
                             <button>-</button>
                         </li>
@@ -194,7 +250,7 @@ export default function EditCompany()
                 <div>
                     <label htmlFor="site">Site</label>
                     <input
-                        type="text"
+                        type="link"
                         name="site"
                         id="site"
                         value={site}
