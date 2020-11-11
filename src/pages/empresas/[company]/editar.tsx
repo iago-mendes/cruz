@@ -62,7 +62,7 @@ export default function EditCompany()
             setTelefones(company.telefones)
             setEmail(company.email)
             setComissao(company.comissao)
-            setDescricao(company.descricao_curta)
+            setDescricaoCurta(company.descricao_curta)
             setDescricao(company.descricao)
             setSite(company.site)
             
@@ -170,9 +170,26 @@ export default function EditCompany()
         setComissao({porcentagem: comissao.porcentagem, obs})
     }
 
-    function handleSubmit(e: FormEvent)
+    async function handleSubmit(e: FormEvent)
     {
         e.preventDefault()
+
+        const data = new FormData()
+
+        if (imagem) data.append('imagem', imagem)
+        data.append('razao_social', razaoSocial)
+        data.append('nome_fantasia', nomeFantasia)
+        data.append('cnpj', JSON.stringify(cnpj))
+        data.append('telefones', JSON.stringify(telefones))
+        data.append('email', email)
+        data.append('comissao', JSON.stringify(comissao))
+        data.append('descricao_curta', descricaoCurta)
+        data.append('descricao', descricao)
+        data.append('site', site)
+
+        await api.put(`companies/${id}`, data)
+        alert('Empresa atualizada com sucesso!')
+        Router.back()
     }
 
     return (
@@ -187,7 +204,7 @@ export default function EditCompany()
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="imagem">Imagem</label>
-                    <input type="file" name="imagem" id="imagem"/>
+                    <input type="file" name="imagem" id="imagem" onChange={handleInputChange}/>
                 </div>
                 <div>
                     <label htmlFor="razao_social">Razão social</label>
@@ -232,10 +249,10 @@ export default function EditCompany()
                                     value={number}
                                     onChange={(e) => handleNumberChange(e, index)}
                                 />
-                                <button onClick={() => handleRemoveNumber(index)}>-</button>
+                                <button type="button" onClick={() => handleRemoveNumber(index)}>-</button>
                             </li>
                         ))}
-                        <button onClick={handleAddNumber}>+</button>
+                        <button type="button" onClick={handleAddNumber}>+</button>
                     </ul>
                 </div>
                 <div>
@@ -268,10 +285,10 @@ export default function EditCompany()
                                     value={obs}
                                     onChange={(e) => handleComissaoChange(e, index)}
                                 />
-                                <button onClick={() => handleRemoveComissaoObs(index)} >-</button>
+                                <button type="button" onClick={() => handleRemoveComissaoObs(index)} >-</button>
                             </li>
                         ))}
-                        <button onClick={handleAddComissaoObs}>+</button>
+                        <button type="button" onClick={handleAddComissaoObs}>+</button>
                     </ul>
                 </div>
                 <div>
@@ -306,8 +323,8 @@ export default function EditCompany()
                     />
                 </div>
                 <div className="buttons">
-                    <button className="cancel">Cancelar</button>
-                    <button type="submit" className="submit">Confirmar</button>
+                    <button type="button" onClick={Router.back}>Cancelar</button>
+                    <button type="submit">Confirmar</button>
                 </div>
             </form>
         </div>

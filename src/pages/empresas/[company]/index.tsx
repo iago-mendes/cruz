@@ -19,11 +19,14 @@ export default function Lines()
     const user = useContext(User)
 
     const {company} = Router.query
-    const [lines, setLines] = useState<Line[]>()
+    if (!company) return <h1>Carregando...</h1>
+
+    const [lines, setLines] = useState<Line[]>([])
     const [companyName, setCompanyName] = useState('')
 
     useEffect(() =>
     {
+        console.log('[company]', company)
         api.get(`companies/${company}/products`).then(res => setLines(res.data))
         api.get(`companies/${company}`).then(res => setCompanyName(res.data.nome_fantasia))
     }, [])
