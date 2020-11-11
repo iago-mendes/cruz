@@ -1,5 +1,8 @@
 import Router from 'next/router'
 import { ChangeEvent, useEffect, useState } from 'react'
+import Head from 'next/head'
+import {BiBuildings} from 'react-icons/bi'
+
 import api from '../../../services/api'
 
 interface Comissao
@@ -140,7 +143,13 @@ export default function EditCompany()
 
     return (
         <div className="container" id="editCompany">
-            <header></header>
+            <Head>
+                <title>{nomeFantasia} | Cruz Representações</title>
+            </Head>
+            <header>
+                <BiBuildings size={30} />
+                <h1>{nomeFantasia}</h1>
+            </header>
             <form>
                 <div>
                     <label htmlFor="imagem">Imagem</label>
@@ -180,7 +189,7 @@ export default function EditCompany()
                 <div>
                     <label htmlFor="telefone">Telefones</label>
                     {shownNumbers.map((number, index) => (
-                        <div key={index} className="phone">
+                        <li key={index} className="phone">
                             <input
                                 type="text"
                                 name="telefone"
@@ -189,7 +198,7 @@ export default function EditCompany()
                                 onChange={(e) => handleNumberChange(e, index)}
                             />
                             <button>-</button>
-                        </div>
+                        </li>
                     ))}
                 </div>
                 <div>

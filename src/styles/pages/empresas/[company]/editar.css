@@ -1,0 +1,142 @@
+#editCompany
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+}
+
+#editCompany header
+{
+    background-color: #fff;
+    width: 100%;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+#editCompany header h1
+{
+    font-family: Ubuntu;
+}
+
+#editCompany form
+{
+    background-color: #fff;
+    width: 90%;
+    max-width: 1100px;
+    border-radius: 2rem;
+    padding: 2rem;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#editCompany form div
+{
+    width: 100%;
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#editCompany form div label
+{
+    font-family: Roboto;
+    font-size: 1.5rem;
+
+    margin-bottom: 0.5rem;
+}
+
+#editCompany form div input, #editCompany form div textarea
+{
+    width: 100%;
+
+    border: rgb(134, 134, 134) solid 1px;
+    border-radius: 1rem;
+    padding: 0.5rem;
+}
+
+#editCompany form div input[type=file]
+{
+    border: none;
+    border-radius:0;
+    padding: 0;
+}
+
+#editCompany form div li
+{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    margin-left: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+#editCompany form div li input
+{
+    width: 60%;
+}
+
+#editCompany form div li button
+{
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+
+    border: none;
+    background-color: var(--background);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#editCompany form div li button:hover
+{
+    background-color: rgb(201, 64, 64);
+}
+
+#editCompany form .buttons
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#editCompany form .buttons button
+{
+    width: 10rem;
+    height: 3rem;
+
+    font-family: Ubuntu;
+    background-color: var(--background);
+
+    border: none;
+    border-radius: 2rem;
+
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+#editCompany form .buttons button:hover
+{
+    background-color: rgb(89, 211, 89);
+}
+
+#editCompany form .buttons button:first-of-type:hover
+{
+    background-color:  rgb(201, 64, 64);
+}
