@@ -34,9 +34,7 @@ interface Company
 
 export default function EditCompany()
 {
-    const {company: id} = Router.query
-    if (!id) return <h1>Carregando...</h1>
-
+    
     const [shownNumbers, setShownNumbers] = useState<string[]>([])
     const [shownCnpj, setShownCnpj] = useState('')
 
@@ -50,7 +48,7 @@ export default function EditCompany()
     const [descricaoCurta, setDescricaoCurta] = useState('')
     const [descricao, setDescricao] = useState('')
     const [site, setSite] = useState('')
-
+    
     useEffect(() =>
     {
         api.get(`companies-all/${id}`).then(res =>
@@ -73,6 +71,9 @@ export default function EditCompany()
             setShownCnpj(formatCnpj(company.cnpj))
         }).catch(error => console.log('[error when getting info]', error))
     }, [])
+
+    const {company: id} = Router.query
+    if (!id) return <h1>Carregando...</h1>
 
     function formatNumber(number: number | string)
     {
