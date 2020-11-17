@@ -1,4 +1,4 @@
-import Router from 'next/router'
+import {useRouter} from 'next/router'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Head from 'next/head'
 import {BiBuildings} from 'react-icons/bi'
@@ -34,6 +34,7 @@ interface Company
 
 export default function EditCompany()
 {
+	const Router = useRouter()
     
     const [shownNumbers, setShownNumbers] = useState<string[]>([])
     const [shownCnpj, setShownCnpj] = useState('')

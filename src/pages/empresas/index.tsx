@@ -1,29 +1,40 @@
 import Head from 'next/head'
-import { useContext, useEffect, useState } from 'react'
 import {FiEdit3} from 'react-icons/fi'
 import {BiBuildings, BiPlus, BiSearch} from 'react-icons/bi'
 import Router from 'next/router'
 
 import api from '../../services/api'
-import User from '../../utils/userContext'
+import { getSession, useSession } from 'next-auth/client'
+import Loading from '../../components/Loading'
+import { GetServerSideProps } from 'next'
+import NotLogged from '../../components/NotLogged'
 
-interface Company
+interface User
 {
-  id: string
-  imagem: string
-  nome_fantasia: string
-  descricao_curta: string
+	token: string
+	role: string
 }
 
-export default function Companies() {
-  const user = useContext(User)
+interface CompaniesProps
+{
+	companies: Array<
+	{
+		id: string
+		imagem: string
+		nome_fantasia: string
+		descricao_curta: string
+	}>
+}
 
-  const [companies, setCompanies] = useState<Company[]>([])
+const Companies: React.FC<CompaniesProps> = ({companies}) =>
+{
+	const [session, loading] = useSession()
 
-  useEffect(() =>
-  {
-    api.get('companies').then(res => setCompanies(res.data))
-  }, [])
+	if (loading) return <Loading />
+	else if (!session) return <NotLogged />
+
+	const {user: tmpUser}:{user: any} = session
+	const user: User = tmpUser
 
   return (
     <div id="companies" className="container">
@@ -74,9 +85,18 @@ export default function Companies() {
   )
 }
 
-export async function getStaticProps(ctx)
+export const getServerSideProps: GetServerSideProps = async ctx =>
 {
-  return {
-    props: {role: 'seller'}
-  }
+	const {user}:{user: any} = await getSession(ctx)
+
+	let companies = []
+	await api.get('companies', {headers: {'token': user.token}})
+		.then(res => companies = res.data)
+		.catch(err => console.error(err.message))
+
+	return {
+		props: {companies}
+	}
 }
+
+export default Companies

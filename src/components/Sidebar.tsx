@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import Link from 'next/link'
-import Router from 'next/router'
+import {useRouter} from 'next/router'
 import {ProSidebar, SidebarHeader, SidebarContent, SidebarFooter, Menu, MenuItem} from 'react-pro-sidebar'
 import 'react-pro-sidebar/dist/css/styles.css'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
 import {FiUsers, FiLogOut} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
+import {signOut} from 'next-auth/client'
 
 import styles from '../styles/components/sidebar.module.css'
 import Logo from '../assets/logo.svg'
 
 export default function Sidebar()
 {
+	const Router = useRouter()
     const [isCollapsed, setIsCollapsed] = useState(true)
 
     if (Router.pathname === '/login') return null
@@ -23,10 +25,10 @@ export default function Sidebar()
         else return "#E2DADB"
     }
 
-    // function handleLogout()
-    // {
-    //     localStorage.removeItem('@cruz-representacoes/user')
-    // }
+    function handleLogout()
+    {
+        localStorage.removeItem('@cruz-representacoes/user')
+    }
 
     return (
         <ProSidebar collapsed={isCollapsed} className={styles.sidebarContainer}>
@@ -80,9 +82,11 @@ export default function Sidebar()
                     </MenuItem>
                     <MenuItem
                         icon={<FiLogOut size={25} color="#E2DADB"/>}
-                        className={styles.item}
+												className={styles.item}
                     >
-                        <Link href="/login">Sair</Link>
+                        {/* <Link href="/login">Sair</Link> */}
+                        <a onClick={() => signOut({callbackUrl: '/login'})}>Sair</a>
+												{/* <button onClick={() => signOut()} title='Sair' >Sair</button> */}
                     </MenuItem>
                 </Menu>
             </SidebarFooter>
