@@ -11,7 +11,7 @@ import NotLogged from '../../components/NotLogged'
 
 interface User
 {
-	token: string
+	id: string
 	role: string
 }
 
@@ -87,10 +87,8 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 
 export const getServerSideProps: GetServerSideProps = async ctx =>
 {
-	const {user}:{user: any} = await getSession(ctx)
-
 	let companies = []
-	await api.get('companies', {headers: {'token': user.token}})
+	await api.get('companies')
 		.then(res => companies = res.data)
 		.catch(err => console.error(err.message))
 

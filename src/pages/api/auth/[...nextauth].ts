@@ -26,9 +26,9 @@ const config =
 
 				const res = await api.post('login/seller', data)
 
-				const {token, role} = res.data
+				const {user} = res.data
 
-				if (token) return Promise.resolve({token, role})
+				if (user) return Promise.resolve(user)
 				else return Promise.resolve(null)
 			}
 		})
@@ -45,6 +45,10 @@ const config =
 			session.user = user.user
 			return Promise.resolve(session)
 		}
+	},
+	jwt:
+	{
+		secret: process.env.AUTH_SECRET
 	}
 }
 

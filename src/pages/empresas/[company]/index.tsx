@@ -74,16 +74,15 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 
 export const getServerSideProps: GetServerSideProps = async ctx =>
 {
-	const {user}:{user: any} = await getSession(ctx)
 	const {company} = ctx.params
 
 	let lines = []
-	await api.get(`companies/${company}/products`, {headers: {'token': user.token}})
+	await api.get(`companies/${company}/products`)
 		.then(res => lines = res.data)
 		.catch(err => console.error(err.message))
 
 	let companyName = ''
-	await api.get(`companies/${company}`, {headers: {'token': user.token}})
+	await api.get(`companies/${company}`)
 		.then(res => companyName = res.data.nome_fantasia)
 		.catch(err => console.error(err.message))
 
