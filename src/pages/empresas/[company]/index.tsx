@@ -2,7 +2,7 @@ import Head from 'next/head'
 import {FiEdit3} from 'react-icons/fi'
 import {BiBuildings, BiSearch} from 'react-icons/bi'
 import {getSession, useSession} from 'next-auth/client'
-import {GetServerSideProps} from 'next'
+import {GetServerSideProps, GetStaticPaths, GetStaticProps} from 'next'
 
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
@@ -72,7 +72,20 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 	)
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx =>
+export const getStaticPaths: GetStaticPaths = async ctx =>
+{
+	const companies = await api.get('companies').then(res => res.data.map(company => (
+	{
+		params: {company: company.id}
+	})))
+
+	return {
+		paths: companies,
+		fallback: true
+	}
+}
+
+export const getStaticProps: GetStaticProps = async ctx =>
 {
 	const {company} = ctx.params
 
@@ -87,7 +100,8 @@ export const getServerSideProps: GetServerSideProps = async ctx =>
 		.catch(err => console.error(err.message))
 
 	return {
-		props: {lines, companyName}
+		props: {lines, companyName},
+		revalidate: 1
 	}
 }
 

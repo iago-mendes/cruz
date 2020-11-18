@@ -6,7 +6,7 @@ import Router from 'next/router'
 import api from '../../services/api'
 import { getSession, useSession } from 'next-auth/client'
 import Loading from '../../components/Loading'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import NotLogged from '../../components/NotLogged'
 
 interface User
@@ -85,7 +85,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx =>
+export const getStaticProps: GetStaticProps = async ctx =>
 {
 	let companies = []
 	await api.get('companies')
@@ -93,7 +93,8 @@ export const getServerSideProps: GetServerSideProps = async ctx =>
 		.catch(err => console.error(err.message))
 
 	return {
-		props: {companies}
+		props: {companies},
+		revalidate: 1
 	}
 }
 
