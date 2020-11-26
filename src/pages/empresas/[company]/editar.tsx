@@ -4,6 +4,7 @@ import Head from 'next/head'
 import {BiBuildings} from 'react-icons/bi'
 
 import api from '../../../services/api'
+import { GetServerSideProps } from 'next'
 
 interface Comissao
 {
@@ -32,7 +33,12 @@ interface Company
     comissao: Comissao
 }
 
-export default function EditCompany()
+interface EditCompanyProps
+{
+	company: Company
+}
+
+const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
 {
 	const Router = useRouter()
     
@@ -48,30 +54,28 @@ export default function EditCompany()
     const [comissao, setComissao] = useState<Comissao>(defaultComissao)
     const [descricaoCurta, setDescricaoCurta] = useState('')
     const [descricao, setDescricao] = useState('')
-    const [site, setSite] = useState('')
-    
-    useEffect(() =>
-    {
-        api.get(`companies-all/${id}`).then(res =>
-        {
-            const company: Company = res.data
+		const [site, setSite] = useState('')
+		
+		useEffect(() =>
+		{
+			if (company)
+			{
+				setRazaoSocial(company.razao_social)
+				setNomeFantasia(company.nome_fantasia)
+				setTelefones(company.telefones)
+				setEmail(company.email)
+				setComissao(company.comissao)
+				setDescricaoCurta(company.descricao_curta)
+				setDescricao(company.descricao)
+				setSite(company.site)
+				
+				setTelefones(company.telefones)
+				setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
 
-            setRazaoSocial(company.razao_social)
-            setNomeFantasia(company.nome_fantasia)
-            setTelefones(company.telefones)
-            setEmail(company.email)
-            setComissao(company.comissao)
-            setDescricaoCurta(company.descricao_curta)
-            setDescricao(company.descricao)
-            setSite(company.site)
-            
-            setTelefones(company.telefones)
-            setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
-
-            setCnpj(Number(company.cnpj))
-            setShownCnpj(formatCnpj(company.cnpj))
-        }).catch(error => console.log('[error when getting info]', error))
-    }, [])
+				setCnpj(Number(company.cnpj))
+				setShownCnpj(formatCnpj(company.cnpj))
+			}
+		}, [company])
 
     const {company: id} = Router.query
     if (!id) return <h1>Carregando...</h1>
@@ -332,3 +336,16 @@ export default function EditCompany()
         </div>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = async ctx =>
+{
+	const {company: id} = ctx.params
+
+	const {data: company} = await api.get(`companies-all/${id}`)
+
+	return {
+		props: {company}
+	}
+}
+
+export default EditCompany
