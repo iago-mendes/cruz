@@ -7,6 +7,7 @@ import {useSession} from 'next-auth/client'
 import api from '../../services/api'
 import Loading from '../../components/Loading'
 import Header from '../../components/CompanyHeader'
+import Container from '../../styles/pages/empresas/index'
 
 interface User
 {
@@ -36,7 +37,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 	const user: User = tmpUser
 
 	return (
-		<div id="companies" className="container">
+		<Container className="container">
 			<Head>
 				<title>Empresas | Cruz Representações</title>
 			</Head>
@@ -63,7 +64,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 					</div>
 				))}
 			</main>
-		</div>
+		</Container>
 	)
 }
 
