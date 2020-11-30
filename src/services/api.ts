@@ -1,11 +1,14 @@
 import axios from 'axios'
+import getConfig from 'next/config'
+
+const {publicRuntimeConfig: env} = getConfig()
 
 const api = axios.create(
 {
-	baseURL: process.env.API_URL,
+	baseURL: env.apiUrl,
 	headers:
 	{
-		key: process.env.API_KEY
+		key: env.apiKey
 	}
 })
 
