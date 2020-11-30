@@ -4,10 +4,9 @@ import {BiBuildings, BiPlus, BiSearch} from 'react-icons/bi'
 import Router from 'next/router'
 
 import api from '../../services/api'
-import { getSession, useSession } from 'next-auth/client'
+import {useSession} from 'next-auth/client'
 import Loading from '../../components/Loading'
-import { GetServerSideProps, GetStaticProps } from 'next'
-import NotLogged from '../../components/NotLogged'
+import {GetStaticProps } from 'next'
 
 interface User
 {
@@ -31,7 +30,6 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 	const [session, loading] = useSession()
 
 	if (loading) return <Loading />
-	else if (!session) return <NotLogged />
 
 	const {user: tmpUser}:{user: any} = session
 	const user: User = tmpUser

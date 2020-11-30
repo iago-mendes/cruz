@@ -6,7 +6,7 @@ import {GetServerSideProps, GetStaticPaths, GetStaticProps} from 'next'
 
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
-import NotLogged from '../../../components/NotLogged'
+import NotLogged from '../../../components/LoginHandler'
 
 interface User
 {
