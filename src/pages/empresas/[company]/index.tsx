@@ -90,7 +90,7 @@ export const getStaticProps: GetStaticProps = async ctx =>
 	const {company} = ctx.params
 
 	let lines = []
-	await api.get(`companies/${company}/products`)
+	await api.get(`companies/${company}/lines`)
 		.then(res => lines = res.data)
 		.catch(err => console.error(err.message))
 
