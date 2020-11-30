@@ -2,9 +2,10 @@ import {useRouter} from 'next/router'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import Head from 'next/head'
 import {BiBuildings} from 'react-icons/bi'
+import {GetServerSideProps} from 'next'
 
 import api from '../../../services/api'
-import { GetServerSideProps } from 'next'
+import Header from '../../../components/CompanyHeader'
 
 interface Comissao
 {
@@ -203,10 +204,9 @@ const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
             <Head>
                 <title>{nomeFantasia} | Cruz Representações</title>
             </Head>
-            <header>
-                <BiBuildings size={30} />
-                <h1>{nomeFantasia}</h1>
-            </header>
+
+						<Header display={nomeFantasia} />
+
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="imagem">Imagem</label>

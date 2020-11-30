@@ -5,6 +5,7 @@ import {BiBuildings} from 'react-icons/bi'
 
 import Container from '../../styles/pages/empresas/adicionar'
 import api from '../../services/api'
+import Header from '../../components/CompanyHeader'
 
 const AddCompany: React.FC = () =>
 {
@@ -147,10 +148,9 @@ const AddCompany: React.FC = () =>
 			<Head>
 				<title>{nomeFantasia} | Cruz Representações</title>
 			</Head>
-			<header>
-				<BiBuildings size={30} />
-				<h1>{nomeFantasia}</h1>
-			</header>
+
+			<Header display={nomeFantasia} />
+
 			<form onSubmit={handleSubmit}>
 				<div>
 					<label htmlFor="imagem">Imagem</label>
