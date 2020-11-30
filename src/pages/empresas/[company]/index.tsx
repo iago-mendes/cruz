@@ -6,6 +6,7 @@ import {GetStaticPaths, GetStaticProps} from 'next'
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
 import Header from '../../../components/CompanyHeader'
+import Container from '../../../styles/pages/empresas/[company]/index'
 
 interface User
 {
@@ -26,7 +27,6 @@ interface LinesProps
 
 const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 {
-	
 	const [session, loading] = useSession()
 	
 	if (loading) return <Loading />
@@ -35,7 +35,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 	const user: User = tmpUser
 	
 	return (
-		<div className="container" id="company">
+		<Container className="container">
 			<Head>
 				<title>{companyName} | Cruz Representações</title>
 			</Head>
@@ -55,7 +55,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 					</div>
 				))}
 			</main>
-		</div>
+		</Container>
 	)
 }
 

@@ -7,7 +7,6 @@ import LoginHandler from '../components/LoginHandler'
 
 import '../styles/global.css'
 import '../styles/pages/login.css'
-import '../styles/pages/empresas/[company]/index.css'
 import '../styles/pages/empresas/[company]/editar.css'
 
 function MyApp({ Component, pageProps }) {
