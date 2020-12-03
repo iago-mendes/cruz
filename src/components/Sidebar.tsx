@@ -14,82 +14,78 @@ import Logo from '../assets/logo.svg'
 export default function Sidebar()
 {
 	const Router = useRouter()
-    const [isCollapsed, setIsCollapsed] = useState(true)
+		const [isCollapsed, setIsCollapsed] = useState(true)
 
-    if (Router.pathname === '/login') return null
+		if (Router.pathname === '/login') return null
 
-    function checkRoute(route: string)
-    {
-        const current = Router.pathname.split('/')
-        if (`/${current[1]}` === route) return "#CC9749"
-        else return "#E2DADB"
-    }
+		function checkRoute(route: string)
+		{
+			const current = Router.pathname.split('/')
+			if (`/${current[1]}` === route) return "#CC9749"
+			else return "#E2DADB"
+		}
 
-    function handleLogout()
-    {
-        localStorage.removeItem('@cruz-representacoes/user')
-    }
-
-    return (
-        <ProSidebar collapsed={isCollapsed} className={styles.sidebarContainer}>
-            <SidebarHeader className={styles.header}>
-                {/* <div onClick={() => setIsCollapsed(!isCollapsed)}> */}
-                    {/* <Logo /> */}
-                    <img src={Logo} alt="Cruz Representações" onClick={() => setIsCollapsed(!isCollapsed)}/>
-                {/* </div> */}
-            </SidebarHeader>
-            <SidebarContent className={styles.content}>
-                <Menu>
-                    <MenuItem
-                        icon={<BiLineChart size={25} color={checkRoute('/')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/">Indicadores</Link>
-                    </MenuItem>
-                    <MenuItem
-                        icon={<BiSpreadsheet size={25} color={checkRoute('/pedidos')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/pedidos">Pedidos</Link>
-                    </MenuItem>
-                    <MenuItem
-                        icon={<FaStore size={25} color={checkRoute('/clientes')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/clientes">Clientes</Link>
-                    </MenuItem>
-                    <MenuItem
-                        icon={<BiBuildings size={25} color={checkRoute('/empresas')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/empresas">Empresas</Link>
-                    </MenuItem>
-                    <MenuItem
-                        icon={<FiUsers size={25} color={checkRoute('/vendedores')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/vendedores">Vendedores</Link>
-                    </MenuItem>
-                </Menu>
-            </SidebarContent>
-            <SidebarFooter className={styles.footer}>
-                <Menu>
-                    <MenuItem
-                        icon={<BiUserCircle size={25} color={checkRoute('/usuario')}/>}
-                        className={styles.item}
-                    >
-                        <Link href="/usuario">Usuário</Link>
-                    </MenuItem>
-                    <MenuItem
-                        icon={<FiLogOut size={25} color="#E2DADB"/>}
+		return (
+			<div
+				className="sidebar"
+				onMouseEnter={() => setIsCollapsed(false)}
+				onMouseLeave={() => setIsCollapsed(true)}
+			>
+				<ProSidebar collapsed={isCollapsed} className={styles.sidebarContainer} >
+						<SidebarHeader className={styles.header}>
+							<img src={Logo} alt="Cruz Representações" />
+						</SidebarHeader>
+						<SidebarContent className={styles.content}>
+								<Menu>
+										<MenuItem
+												icon={<BiLineChart size={25} color={checkRoute('/')}/>}
 												className={styles.item}
-                    >
-                        {/* <Link href="/login">Sair</Link> */}
-                        <a onClick={() => signOut({callbackUrl: '/login'})}>Sair</a>
-												{/* <button onClick={() => signOut()} title='Sair' >Sair</button> */}
-                    </MenuItem>
-                </Menu>
-            </SidebarFooter>
-        </ProSidebar>
-    )
+										>
+												<Link href="/">Indicadores</Link>
+										</MenuItem>
+										<MenuItem
+												icon={<BiSpreadsheet size={25} color={checkRoute('/pedidos')}/>}
+												className={styles.item}
+										>
+												<Link href="/pedidos">Pedidos</Link>
+										</MenuItem>
+										<MenuItem
+												icon={<FaStore size={25} color={checkRoute('/clientes')}/>}
+												className={styles.item}
+										>
+												<Link href="/clientes">Clientes</Link>
+										</MenuItem>
+										<MenuItem
+												icon={<BiBuildings size={25} color={checkRoute('/empresas')}/>}
+												className={styles.item}
+										>
+												<Link href="/empresas">Empresas</Link>
+										</MenuItem>
+										<MenuItem
+												icon={<FiUsers size={25} color={checkRoute('/vendedores')}/>}
+												className={styles.item}
+										>
+												<Link href="/vendedores">Vendedores</Link>
+										</MenuItem>
+								</Menu>
+						</SidebarContent>
+						<SidebarFooter className={styles.footer}>
+								<Menu>
+										<MenuItem
+												icon={<BiUserCircle size={25} color={checkRoute('/usuario')}/>}
+												className={styles.item}
+										>
+												<Link href="/usuario">Usuário</Link>
+										</MenuItem>
+										<MenuItem
+												icon={<FiLogOut size={25} color="#E2DADB"/>}
+												className={styles.item}
+										>
+												<a onClick={() => signOut({callbackUrl: '/login'})}>Sair</a>
+										</MenuItem>
+								</Menu>
+						</SidebarFooter>
+				</ProSidebar>
+			</div>
+		)
 }
