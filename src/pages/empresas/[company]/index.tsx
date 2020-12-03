@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {FiEdit3} from 'react-icons/fi'
+import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useSession} from 'next-auth/client'
 import {GetStaticPaths, GetStaticProps} from 'next'
 
@@ -42,19 +42,32 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 
 			<Header display={`${companyName} > Linhas`} showSecondGroup />
 
-			<main>
-				{lines && lines.map(line => (
-					<div key={line.id} className="line">
-					<img src={line.imagem} alt={line.nome} />
-					<h1>{line.nome}</h1>
-					{
-						user.role === 'admin' ?
-						<button title="Editar"><FiEdit3 size={15} /></button>
-						: <div />
-					}
-					</div>
-				))}
-			</main>
+			<div className="scroll">
+				<main>
+					{lines && lines.map(line => (
+						<div key={line.id} className="line">
+							<div className="buttons">
+							{
+								user.role === 'admin' && (
+									<>
+										<button title="Editar" onClick={() => {}} >
+											<FiEdit3 size={15} />
+										</button>
+										<button title='Deletar' onClick={() => {}} >
+											<FiTrash size={15} />
+										</button>
+									</>
+								)
+							}
+							</div>
+							<div className="img">
+								<img src={line.imagem} alt={line.nome} />
+							</div>
+							<h1>{line.nome}</h1>
+						</div>
+					))}
+				</main>
+			</div>
 		</Container>
 	)
 }

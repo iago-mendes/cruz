@@ -98,7 +98,6 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 											<FiEdit3 size={25} />
 										</button>
 										<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
-										{/* <button title='Deletar' onClick={revalidate} > */}
 											<FiTrash size={25} />
 										</button>
 								</>
