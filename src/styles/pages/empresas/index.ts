@@ -76,7 +76,12 @@ const Container = styled.div`
 			
 			:hover
 			{
-				background-color: var(--background);
+				background-color: rgb(201, 64, 64);
+			}
+
+			:first-of-type:hover
+			{
+				background-color: ${p => p.theme.colors.background};
 			}
 		}
 	}
