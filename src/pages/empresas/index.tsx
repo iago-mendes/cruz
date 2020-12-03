@@ -80,32 +80,34 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 
 			<Header display='Empresas' addRoute='/empresas/adicionar' showSecondGroup />
 
-			<main>
-				{shownCompanies.map(company => (
-					<div key={company.id} className="company">
-						<img src={company.imagem} alt={company.nome_fantasia}/>
-						<div className="companyText">
-							<h1 onClick={() => Router.push(`/empresas/${company.id}`)}>
-								{company.nome_fantasia}
-							</h1>
-							<h2>{company.descricao_curta}</h2>
+			<div className="scroll">
+				<main>
+					{shownCompanies.map(company => (
+						<div key={company.id} className="company">
+							<img src={company.imagem} alt={company.nome_fantasia}/>
+							<div className="companyText">
+								<h1 onClick={() => Router.push(`/empresas/${company.id}`)}>
+									{company.nome_fantasia}
+								</h1>
+								<h2>{company.descricao_curta}</h2>
+							</div>
+							{
+								user.role === 'admin' ?
+								<>
+										<button title="Editar" onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
+											<FiEdit3 size={25} />
+										</button>
+										<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
+										{/* <button title='Deletar' onClick={revalidate} > */}
+											<FiTrash size={25} />
+										</button>
+								</>
+								: <div />
+							}
 						</div>
-						{
-							user.role === 'admin' ?
-							<>
-									<button title="Editar" onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
-										<FiEdit3 size={25} />
-									</button>
-									<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
-									{/* <button title='Deletar' onClick={revalidate} > */}
-										<FiTrash size={25} />
-									</button>
-							</>
-							: <div />
-						}
-					</div>
-				))}
-			</main>
+					))}
+				</main>
+			</div>
 		</Container>
 	)
 }

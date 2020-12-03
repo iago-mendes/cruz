@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 const Container = styled.header`
 	width: 100%;
+	height: 20vh;
 	background: #fff;
 
 	padding: 2rem;
-	margin-bottom: 2rem;
 
  .group
 	{
