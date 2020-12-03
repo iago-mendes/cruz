@@ -2,6 +2,7 @@ import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useSession} from 'next-auth/client'
 import {GetStaticPaths, GetStaticProps} from 'next'
+import {useRouter} from 'next/router'
 
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
@@ -22,6 +23,9 @@ interface LinesProps
 
 const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 {
+	const Router = useRouter()
+	const {company} = Router.query
+
 	const [session, loading] = useSession()
 	
 	if (loading) return <Loading />
@@ -35,7 +39,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 				<title>{companyName} | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > Linhas`} showSecondGroup />
+			<Header display={`${companyName} > Linhas`} showSecondGroup addRoute={`/empresas/${company}/adicionar`} />
 
 			<div className="scroll">
 				<main>

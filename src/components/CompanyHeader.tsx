@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({display, addRoute = '/', showSecondGroup
 	const user: User = tmpUser
 
   return (
-		<Container>
+		<Container showSecondGroup={showSecondGroup} >
 			<div className="group">
 				<BiBuildings size={30} />
 				<h1>{display}</h1>

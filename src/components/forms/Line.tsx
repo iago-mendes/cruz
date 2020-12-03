@@ -14,6 +14,7 @@ export interface Line
 interface LineFormProps
 {
 	method: string
+	company: string;
 	
 	nome: string
 	setNome: Function
@@ -22,7 +23,7 @@ interface LineFormProps
 	line?: Line
 }
 
-const LineForm: React.FC<LineFormProps> = ({method, nome, setNome, id, line}) =>
+const LineForm: React.FC<LineFormProps> = ({method, company, nome, setNome, id, line}) =>
 {
 	const Router = useRouter()
 
@@ -47,10 +48,10 @@ const LineForm: React.FC<LineFormProps> = ({method, nome, setNome, id, line}) =>
 
 		if (method === 'post')
 		{
-			await api.post('companies', data)
+			await api.post(`companies/${company}/lines`, data)
 			.then(() =>
 			{
-				alert('Empresa criada com sucesso!')
+				alert('Linha criada com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
@@ -61,10 +62,10 @@ const LineForm: React.FC<LineFormProps> = ({method, nome, setNome, id, line}) =>
 		}
 		else if (method === 'put')
 		{
-			await api.put(`companies/${id}`, data)
+			await api.put(`companies/${company}/lines/${id}`, data)
 			.then(() =>
 			{
-				alert('Empresa atualizada com sucesso!')
+				alert('Linha atualizada com sucesso!')
 				Router.back()
 			})
 			.catch(err =>

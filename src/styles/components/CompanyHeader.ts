@@ -1,8 +1,13 @@
 import styled from 'styled-components'
 
-const Container = styled.header`
+interface ContainerProps
+{
+	showSecondGroup: boolean
+}
+
+const Container = styled.header<ContainerProps>`
 	width: 100%;
-	height: 20vh;
+	height: ${p => p.showSecondGroup ? '20vh' : '10vh'};
 	background: #fff;
 
 	padding: 2rem;
