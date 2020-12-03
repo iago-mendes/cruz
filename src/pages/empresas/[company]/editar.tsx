@@ -2,10 +2,14 @@ import {useRouter} from 'next/router'
 import {useState} from 'react'
 import Head from 'next/head'
 import {GetServerSideProps} from 'next'
+import {useSession} from 'next-auth/client'
 
 import api from '../../../services/api'
 import Header from '../../../components/CompanyHeader'
 import CompanyForm, {Company} from '../../../components/forms/Company'
+import Loading from '../../../components/Loading'
+import {User} from '../index'
+import NotAllowed from '../../../components/NotAllowed'
 
 interface EditCompanyProps
 {
@@ -16,9 +20,18 @@ const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
 {
 	const Router = useRouter()
 	const [nomeFantasia, setNomeFantasia] = useState('')
+	const [session, loading] = useSession()
 
 	const {company: id} = Router.query
-	if (!id) return <h1>Carregando...</h1>
+	if (!id) return <Loading />
+
+	if (loading) return <Loading />
+	
+	const {user: tmpUser}:{user: any} = session
+	const user: User = tmpUser
+
+	if (user.role !== 'admin')
+		return <NotAllowed />
 
 	return (
 		<div className="container" id="editCompany">

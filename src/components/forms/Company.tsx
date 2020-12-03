@@ -68,8 +68,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		}
 	}, [company])
 
-	useEffect(() => console.log('[id]', id), [])
-
 	function formatNumber(number: number | string)
 	{
 		const n = String(number)

@@ -11,7 +11,7 @@ import Header from '../../components/CompanyHeader'
 import Container from '../../styles/pages/empresas/index'
 import { useEffect, useState } from 'react'
 
-interface User
+export interface User
 {
 	id: string
 	role: string

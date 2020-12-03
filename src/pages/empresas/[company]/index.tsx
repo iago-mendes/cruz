@@ -7,12 +7,7 @@ import api from '../../../services/api'
 import Loading from '../../../components/Loading'
 import Header from '../../../components/CompanyHeader'
 import Container from '../../../styles/pages/empresas/[company]/index'
-
-interface User
-{
-	token: string
-	role: string
-}
+import {User} from '../index'
 
 interface LinesProps
 {
