@@ -88,7 +88,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 							<div className="img">
 								<img src={line.imagem} alt={line.nome} />
 							</div>
-							<h1>{line.nome}</h1>
+							<h1 onClick={() => Router.push(`/empresas/${companyId}/${line.id}`)} >{line.nome}</h1>
 						</div>
 					))}
 				</main>
