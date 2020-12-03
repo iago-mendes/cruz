@@ -39,20 +39,16 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 
 	useEffect(() =>
 	{
-		if (companies)
-			setShownCompanies(companies)
-	}, [companies])
-
-	useEffect(() =>
-	{
-		if (error)
-		{
-			console.error(error)
-			setShownCompanies(companies)
-		}
-		else if (data)
+		if (data)
 			setShownCompanies(data)
-	}, [data, error])
+		else if (companies)
+		{
+			setShownCompanies(companies)
+
+			if (error)
+				console.error(error)
+		}
+	}, [data, error, companies])
 
 	if (loading) return <Loading />
 

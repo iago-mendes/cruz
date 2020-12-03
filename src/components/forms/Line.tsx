@@ -7,7 +7,7 @@ import api from '../../services/api'
 export interface Line
 {
 	id: string
-	imagem: string
+	imagem?: string
 	nome: string
 }
 
