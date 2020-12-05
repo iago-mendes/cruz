@@ -17,11 +17,11 @@ interface Product
 {
 	_id: string
 	imagem: string
-	codigo: number
 	nome: string
-	ipi: number
-	st: number
 	unidade: string
+	codigo: number
+	st: number
+	ipi: number
 	comissao: number
 	tabelas: Array<{nome: string, preco: number}>
 }
@@ -33,32 +33,46 @@ interface ProductsProps
 	lineName: string
 }
 
-const Products: React.FC<ProductsProps> = ({products, companyName, lineName}) =>
+const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, lineName}) =>
 {
 	const Router = useRouter()
 	const {company: companyId, line: lineId} = Router.query
 	
 	const [session, loading] = useSession()
 	const {data, error, revalidate} = useSWR(`/api/listProducts?company=${companyId}&line=${lineId}`)
-	const [shownProducts, setShownProducts] = useState<Product[]>([])
+	const [products, setProducts] = useState<Product[]>([])
+	const [tables, setTables] = useState<string[]>(['Padrão'])
 	
 	useEffect(() =>
 	{
 		if (data)
-			setShownProducts(data)
-		else if (products)
 		{
-			setShownProducts(products)
+			setProducts(data)
+
+			const tmpTables = data[0].tabelas.map(table => table.nome)
+			setTables(tmpTables)
+		}
+		else if (staticProducts)
+		{
+			setProducts(staticProducts)
+
+			const tmpTables = staticProducts[0].tabelas.map(table => table.nome)
+			setTables(tmpTables)
 
 			if (error)
 				console.error(error)
 		}
-	}, [data, error, products])
+	}, [data, error, staticProducts])
 
 	if (loading) return <Loading />
 	
 	const {user: tmpUser}:{user: any} = session
 	const user: User = tmpUser
+
+	function formatNumber(n: number)
+	{
+		return n.toFixed(2).replace('.', ',')
+	}
 	
 	return (
 		<Container className="container">
@@ -72,9 +86,52 @@ const Products: React.FC<ProductsProps> = ({products, companyName, lineName}) =>
 				addRoute={`/empresas/${companyId}/${lineId}/adicionar`}
 			/>
 
-			<div className="scroll">
-				
-			</div>
+			<main>
+				<table>
+					<thead>
+						<tr>
+							{user.role === 'admin' && <th>Ações</th>}
+							<th>Imagem</th>
+							<th>Nome</th>
+							<th>Unidade</th>
+							<th>Código</th>
+							<th>St</th>
+							<th>Ipi</th>
+							<th>Comissão</th>
+							{tables.map(table => (
+								<th key={table} >Tabela {table}</th>
+							))}
+						</tr>
+					</thead>
+
+					<tbody>
+						{products.map(product => (
+							<tr key={product._id} >
+								{user.role === 'admin' && (
+									<td>
+										<FiEdit3 size={15} />
+										<FiTrash size={15} />
+									</td>
+								)}
+								<td>
+									<img src={product.imagem} alt={product.nome} />
+								</td>
+								<td>{product.nome}</td>
+								<td>{product.unidade}</td>
+								<td>{product.codigo}</td>
+								<td>{formatNumber(product.st)}</td>
+								<td>{formatNumber(product.ipi)}</td>
+								<td>{formatNumber(product.comissao)}</td>
+								{product.tabelas.map(({nome, preco}) => (
+									<td key={nome}>
+										R$ {formatNumber(preco)}
+									</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</main>
 		</Container>
 	)
 }
