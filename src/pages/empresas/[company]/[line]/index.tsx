@@ -12,19 +12,7 @@ import Header from '../../../../components/CompanyHeader'
 import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
 import {User} from '../../index'
 import {Line} from '../../../../components/forms/Line'
-
-interface Product
-{
-	_id: string
-	imagem: string
-	nome: string
-	unidade: string
-	codigo: number
-	st: number
-	ipi: number
-	comissao: number
-	tabelas: Array<{nome: string, preco: number}>
-}
+import {Product} from '../../../../components/forms/Product'
 
 interface ProductsProps
 {
@@ -73,6 +61,17 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	{
 		return n.toFixed(2).replace('.', ',')
 	}
+
+	async function handleDeleteProduct(product: Product)
+	{
+		const yes = confirm(`Deseja deletar o produto ${product.nome}?`)
+		if (yes)
+			await api.delete(`companies/${companyId}/lines/${lineId}/products/${product._id}`).then(() =>
+			{
+				revalidate()
+				alert(`Produto ${product.nome} deletado com sucesso!`)
+			})
+	}
 	
 	return (
 		<Container className="container">
@@ -110,10 +109,12 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 								{user.role === 'admin' && (
 									<td>
 										<div className='actions'>
-											<button title='Editar' >
+											<button
+												title='Editar'
+												onClick={() => Router.push(`/empresas/${companyId}/${lineId}/${product._id}/editar`)}>
 												<FiEdit3 size={15} />
 											</button>
-											<button title='Deletar' >
+											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
 												<FiTrash size={15} />
 											</button>
 										</div>

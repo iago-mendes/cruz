@@ -12,17 +12,18 @@ interface Table
 
 export interface Product
 {
-	id: string
+	_id: string
 	imagem: string
 	nome: string
 	codigo: number
 	unidade: string
 	ipi: number
 	st: number
+	comissao: number
 	tabelas: Table[]
 }
 
-interface CompanyFormProps
+interface ProductFormProps
 {
 	method: string
 	companyId: string
@@ -35,7 +36,7 @@ interface CompanyFormProps
 	product?: Product
 }
 
-const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nome, setNome, id, product}) =>
+const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nome, setNome, id, product}) =>
 {
 	const Router = useRouter()
     
@@ -44,6 +45,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nom
 	const [unidade, setUnidade] = useState('')
 	const [ipi, setIpi] = useState(0)
 	const [st, setSt] = useState(0)
+	const [comissao, setComissao] = useState(0)
 	const [tabelas, setTabelas] = useState<Table[]>([])
 
 	useEffect(() =>
@@ -64,6 +66,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nom
 			setUnidade(product.unidade)
 			setIpi(product.ipi)
 			setSt(product.st)
+			setComissao(product.comissao)
 			setTabelas(product.tabelas)
 		}
 	}, [product])
@@ -107,36 +110,37 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nom
 		data.append('unidade', unidade)
 		data.append('ipi', String(ipi))
 		data.append('st', String(st))
+		data.append('comissao', String(comissao))
 		data.append('tabelas', JSON.stringify(tabelas))
 
-		// if (method === 'post')
-		// {
-		// 	await api.post('companies', data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Empresa criada com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
-		// else if (method === 'put')
-		// {
-		// 	await api.put(`companies/${id}`, data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Empresa atualizada com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
+		if (method === 'post')
+		{
+			await api.post(`companies/${companyId}/lines/${lineId}/products`, data)
+			.then(() =>
+			{
+				alert('Produto criado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
+		else if (method === 'put')
+		{
+			await api.put(`companies/${companyId}/lines/${lineId}/products/${id}`, data)
+			.then(() =>
+			{
+				alert('Produto atualizado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
 	}
 
 	return (
@@ -196,6 +200,16 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nom
 				/>
 			</div>
 			<div>
+				<label htmlFor="comissao">Comissão</label>
+				<input
+					type="number"
+					name="comissao"
+					id="comissao"
+					value={comissao}
+					onChange={e => setComissao(Number(e.target.value))}
+				/>
+			</div>
+			<div>
 				<label htmlFor="tabela">Tabelas</label>
 				<ul>
 					{tabelas.map(({nome, preco}, index) => (
@@ -234,4 +248,4 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, companyId, lineId, nom
 	)
 }
 
-export default CompanyForm
+export default ProductForm
