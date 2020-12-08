@@ -109,19 +109,25 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 							<tr key={product._id} >
 								{user.role === 'admin' && (
 									<td>
-										<FiEdit3 size={15} />
-										<FiTrash size={15} />
+										<div className='actions'>
+											<button title='Editar' >
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Deletar' >
+												<FiTrash size={15} />
+											</button>
+										</div>
 									</td>
 								)}
-								<td>
+								<td className='img' >
 									<img src={product.imagem} alt={product.nome} />
 								</td>
 								<td>{product.nome}</td>
 								<td>{product.unidade}</td>
 								<td>{product.codigo}</td>
-								<td>{formatNumber(product.st)}</td>
-								<td>{formatNumber(product.ipi)}</td>
-								<td>{formatNumber(product.comissao)}</td>
+								<td>{formatNumber(product.st)} %</td>
+								<td>{formatNumber(product.ipi)} %</td>
+								<td>{formatNumber(product.comissao)} %</td>
 								{product.tabelas.map(({nome, preco}) => (
 									<td key={nome}>
 										R$ {formatNumber(preco)}
