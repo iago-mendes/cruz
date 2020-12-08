@@ -20,7 +20,7 @@ const AddCompany: React.FC = () =>
 	const [nome, setNome] = useState('')
 	const [product, setProduct] = useState<Product>(
 	{
-		id: '',
+		_id: '',
 		imagem: '',
 		nome: '',
 		codigo: 0,
