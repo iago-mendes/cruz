@@ -4,18 +4,13 @@ import {useRouter} from 'next/router'
 import {GetStaticProps } from 'next'
 import {useSession} from 'next-auth/client'
 import useSWR from 'swr'
+import {useEffect, useState} from 'react'
 
 import api from '../../services/api'
 import Loading from '../../components/Loading'
 import Header from '../../components/CompanyHeader'
 import Container from '../../styles/pages/empresas/index'
-import { useEffect, useState } from 'react'
-
-export interface User
-{
-	id: string
-	role: string
-}
+import User from '../../utils/userType'
 
 interface Company
 {

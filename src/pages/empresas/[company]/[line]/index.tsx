@@ -10,7 +10,7 @@ import api from '../../../../services/api'
 import Loading from '../../../../components/Loading'
 import Header from '../../../../components/CompanyHeader'
 import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
-import {User} from '../../index'
+import User from '../../../../utils/userType'
 import {Line} from '../../../../components/forms/Line'
 import {Product} from '../../../../components/forms/Product'
 

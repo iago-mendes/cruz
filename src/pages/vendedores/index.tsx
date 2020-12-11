@@ -3,13 +3,13 @@ import Head from 'next/head'
 import {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
+import {useRouter} from 'next/router'
+import {useSession} from 'next-auth/client'
 
 import Container from '../../styles/pages/vendedores/index'
 import api from '../../services/api'
 import User from '../../utils/userType'
-import { useSession } from 'next-auth/client'
 import Loading from '../../components/Loading'
-import { useRouter } from 'next/router'
 
 interface Seller
 {

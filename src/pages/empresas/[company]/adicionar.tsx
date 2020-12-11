@@ -7,7 +7,7 @@ import Container from '../../../styles/pages/empresas/[company]/adicionar'
 import Header from '../../../components/CompanyHeader'
 import LineForm from '../../../components/forms/Line'
 import Loading from '../../../components/Loading'
-import {User} from '../index'
+import User from '../../../utils/userType'
 import NotAllowed from '../../../components/NotAllowed'
 
 const AddCompany: React.FC = () =>

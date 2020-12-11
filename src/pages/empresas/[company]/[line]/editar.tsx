@@ -1,7 +1,6 @@
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import Head from 'next/head'
-import {GetServerSideProps} from 'next'
 import {useSession} from 'next-auth/client'
 
 import Container from '../../../../styles/pages/empresas/[company]/[line]/editar'
@@ -9,7 +8,7 @@ import api from '../../../../services/api'
 import Header from '../../../../components/CompanyHeader'
 import LineForm, {Line} from '../../../../components/forms/Line'
 import Loading from '../../../../components/Loading'
-import {User} from '../../index'
+import User from '../../../../utils/userType'
 import NotAllowed from '../../../../components/NotAllowed'
 
 const EditLine: React.FC = () =>

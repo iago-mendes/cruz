@@ -8,7 +8,7 @@ import api from '../../../services/api'
 import Header from '../../../components/CompanyHeader'
 import CompanyForm, {Company} from '../../../components/forms/Company'
 import Loading from '../../../components/Loading'
-import {User} from '../index'
+import User from '../../../utils/userType'
 import NotAllowed from '../../../components/NotAllowed'
 
 interface EditCompanyProps
