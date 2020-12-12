@@ -10,6 +10,7 @@ import Container from '../../styles/pages/vendedores/index'
 import api from '../../services/api'
 import User from '../../utils/userType'
 import Loading from '../../components/Loading'
+import SellerModal from '../../components/SellerModal'
 
 interface Seller
 {
@@ -37,6 +38,9 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	const [sellers, setSellers] = useState<Seller[]>([])
 	const {data, error, revalidate} = useSWR('/api/getSellers')
 
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [selected, setSelected] = useState<Seller>(sellers[0])
+
 	useEffect(() =>
 	{
 		if (data)
@@ -55,14 +59,23 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	const {user: tmpUser}:{user: any} = session
 	const user: User = tmpUser
 
+	function handleOpenModal(seller: Seller)
+	{
+		setSelected(seller)
+		setIsModalOpen(true)
+	}
+
   return (
     <Container className='container'>
       <Head>
         <title>Vendedores | Cruz Representações</title>
       </Head>
+
+			<SellerModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} seller={selected} />
+
       <main>
 				{sellers.map(seller => (
-					<div className={`seller ${seller.admin && 'admin'}`}>
+					<div key={seller._id} className={`seller ${seller.admin && 'admin'}`}>
 						{
 							user.role === 'admin' && (
 								<div className="buttons">
@@ -77,7 +90,9 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 						}
 						<img src={seller.imagem} alt={seller.nome} />
 						<div className="texts">
-							<h1>{seller.nome}</h1>
+							<h1 onClick={() => handleOpenModal(seller)}>
+								{seller.nome}
+							</h1>
 							<h2>{seller.funcao}</h2>
 							<h3>{seller.email}</h3>
 						</div>
