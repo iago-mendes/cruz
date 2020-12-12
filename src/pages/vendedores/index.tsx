@@ -12,19 +12,7 @@ import User from '../../utils/userType'
 import Loading from '../../components/Loading'
 import SellerModal from '../../components/SellerModal'
 import AddButton from '../../components/AddButton'
-
-interface Seller
-{
-	_id: string
-	nome: string
-	imagem: string
-	telefones: Array<{numero: number, whatsapp: boolean}>
-	email: string
-	senha: string
-	funcao: string
-	admin: boolean
-	representadas: Array<{id: string, comissao: number}>
-}
+import {Seller} from '../../components/forms/Seller'
 
 interface SellersProps
 {
