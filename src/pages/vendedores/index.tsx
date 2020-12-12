@@ -11,6 +11,7 @@ import api from '../../services/api'
 import User from '../../utils/userType'
 import Loading from '../../components/Loading'
 import SellerModal from '../../components/SellerModal'
+import AddButton from '../../components/AddButton'
 
 interface Seller
 {
@@ -72,6 +73,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
       </Head>
 
 			<SellerModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} seller={selected} />
+			<AddButton route='/vendedores/adicionar' />
 
       <main>
 				{sellers.map(seller => (
