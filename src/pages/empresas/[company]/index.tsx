@@ -8,7 +8,7 @@ import {useState, useEffect} from 'react'
 
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
-import Header from '../../../components/CompanyHeader'
+import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/index'
 import User from '../../../utils/userType'
 import {Line} from '../../../components/forms/Line'
@@ -65,7 +65,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 				<title>{companyName} | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > Linhas`} showSecondGroup addRoute={`/empresas/${companyId}/adicionar`} />
+			<Header display={`${companyName} > Linhas`} showSearch />
 
 			<div className="scroll">
 				<main>

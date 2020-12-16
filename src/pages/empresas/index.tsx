@@ -8,7 +8,7 @@ import {useEffect, useState} from 'react'
 
 import api from '../../services/api'
 import Loading from '../../components/Loading'
-import Header from '../../components/CompanyHeader'
+import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
 import User from '../../utils/userType'
 
@@ -69,7 +69,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 				<title>Empresas | Cruz Representações</title>
 			</Head>
 
-			<Header display='Empresas' addRoute='/empresas/adicionar' showSecondGroup />
+			<Header display='Empresas' showSearch />
 
 			<div className="scroll">
 				<main>

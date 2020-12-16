@@ -8,7 +8,7 @@ import {useState, useEffect} from 'react'
 
 import api from '../../../../services/api'
 import Loading from '../../../../components/Loading'
-import Header from '../../../../components/CompanyHeader'
+import Header from '../../../../components/Header'
 import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
 import User from '../../../../utils/userType'
 import {Line} from '../../../../components/forms/Line'
@@ -81,8 +81,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 
 			<Header
 				display={`${companyName} > ${lineName} > Produtos`}
-				showSecondGroup
-				addRoute={`/empresas/${companyId}/${lineId}/adicionar`}
+				showSearch
 			/>
 
 			<main>

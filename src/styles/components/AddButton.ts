@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Container = styled.button`
-	position: absolute;
+	position: fixed;
 	bottom: 2rem;
 	right: 2rem;
 	

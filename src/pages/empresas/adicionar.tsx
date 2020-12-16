@@ -3,7 +3,7 @@ import Head from 'next/head'
 import {useSession} from 'next-auth/client'
 
 import Container from '../../styles/pages/empresas/adicionar'
-import Header from '../../components/CompanyHeader'
+import Header from '../../components/Header'
 import CompanyForm from '../../components/forms/Company'
 import Loading from '../../components/Loading'
 import User from '../../utils/userType'

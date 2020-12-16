@@ -5,7 +5,7 @@ import {useSession} from 'next-auth/client'
 
 import Container from '../../../../styles/pages/empresas/[company]/[line]/editar'
 import api from '../../../../services/api'
-import Header from '../../../../components/CompanyHeader'
+import Header from '../../../../components/Header'
 import LineForm, {Line} from '../../../../components/forms/Line'
 import Loading from '../../../../components/Loading'
 import User from '../../../../utils/userType'

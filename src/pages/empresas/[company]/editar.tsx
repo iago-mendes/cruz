@@ -5,7 +5,7 @@ import {GetServerSideProps} from 'next'
 import {useSession} from 'next-auth/client'
 
 import api from '../../../services/api'
-import Header from '../../../components/CompanyHeader'
+import Header from '../../../components/Header'
 import CompanyForm, {Company} from '../../../components/forms/Company'
 import Loading from '../../../components/Loading'
 import User from '../../../utils/userType'
