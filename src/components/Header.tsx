@@ -6,12 +6,6 @@ import {useEffect, useState} from 'react'
 
 import Container from '../styles/components/Header'
 
-interface User
-{
-	id: string
-	role: string
-}
-
 interface HeaderProps
 {
 	display: string
