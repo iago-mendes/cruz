@@ -13,6 +13,7 @@ import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
 import User from '../../../../utils/userType'
 import {Line} from '../../../../components/forms/Line'
 import {Product} from '../../../../components/forms/Product'
+import Add from '../../../../components/Add'
 
 interface ProductsProps
 {
@@ -79,10 +80,8 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 				<title>{lineName} | Cruz Representações</title>
 			</Head>
 
-			<Header
-				display={`${companyName} > ${lineName} > Produtos`}
-				showSearch
-			/>
+			<Header display={`${companyName} > ${lineName} > Produtos`} showSearch />
+			<Add route={`/empresas/${companyId}/${lineId}/adicionar`} />
 
 			<main>
 				<table>

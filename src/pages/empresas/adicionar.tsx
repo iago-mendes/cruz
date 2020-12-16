@@ -30,11 +30,13 @@ const AddCompany: React.FC = () =>
 
 			<Header display={nomeFantasia} />
 
-			<CompanyForm
-				method='post'
-				nomeFantasia={nomeFantasia}
-				setNomeFantasia={setNomeFantasia}
-			/>
+			<main>
+				<CompanyForm
+					method='post'
+					nomeFantasia={nomeFantasia}
+					setNomeFantasia={setNomeFantasia}
+				/>
+			</main>
 		</Container>
 	)
 }

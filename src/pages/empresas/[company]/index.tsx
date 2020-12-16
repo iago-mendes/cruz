@@ -12,6 +12,7 @@ import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/index'
 import User from '../../../utils/userType'
 import {Line} from '../../../components/forms/Line'
+import Add from '../../../components/Add'
 
 interface LinesProps
 {
@@ -66,6 +67,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 			</Head>
 
 			<Header display={`${companyName} > Linhas`} showSearch />
+			<Add route={`/empresas/${companyId}/adicionar`} />
 
 			<div className="scroll">
 				<main>

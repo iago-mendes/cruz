@@ -34,14 +34,14 @@ const AddCompany: React.FC = () =>
 
 			<Header display={nome} />
 
-			<div className="center">
+			<main>
 				<LineForm
 					method='post'
 					company={String(company)}
 					nome={nome}
 					setNome={setNome}
 				/>
-			</div>
+			</main>
 		</Container>
 	)
 }

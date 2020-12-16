@@ -34,13 +34,15 @@ const AddCompany: React.FC = () =>
 
 			<Header display={nome} />
 
-			<ProductForm
-				method='post'
-				companyId={String(company)}
-				lineId={String(line)}
-				nome={nome}
-				setNome={setNome}
-			/>
+			<main>
+				<ProductForm
+					method='post'
+					companyId={String(company)}
+					lineId={String(line)}
+					nome={nome}
+					setNome={setNome}
+				/>
+			</main>
 		</Container>
 	)
 }

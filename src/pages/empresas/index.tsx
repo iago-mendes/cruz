@@ -11,6 +11,7 @@ import Loading from '../../components/Loading'
 import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
 import User from '../../utils/userType'
+import Add from '../../components/Add'
 
 interface Company
 {
@@ -70,6 +71,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 			</Head>
 
 			<Header display='Empresas' showSearch />
+			<Add route='/empresas/adicionar' />
 
 			<div className="scroll">
 				<main>
