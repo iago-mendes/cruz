@@ -14,7 +14,7 @@ const Container = styled.div`
 
 		width: 100%;
 		height: fit-content;
-		min-height: 100%;
+		min-height: 90vh;
 		padding: 5rem;
 
 		.seller
