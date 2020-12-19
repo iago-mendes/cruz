@@ -6,8 +6,8 @@ import Login from '../pages/login'
 const LoginHandler: React.FC = ({children}) =>
 {
 	const [session, loading] = useSession()
-
-	if (loading) return <Loading />
+	
+	if (loading) return <Loading style={{height: '100vh'}} />
 
 	if (!session && !loading) return <Login />
 
