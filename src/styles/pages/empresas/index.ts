@@ -62,7 +62,7 @@ const Container = styled.div`
 		
 						:hover
 						{
-							color: ${p => p.theme.colors.primary};
+							color: ${p => p.theme.colors.primaryLight};
 						}
 					}
 		
