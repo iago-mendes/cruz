@@ -3,6 +3,7 @@ import {ChangeEvent, FormEvent, useState} from 'react'
 import {signIn} from 'next-auth/client'
 
 import logo from '../assets/logo.svg'
+import Container from '../styles/pages/login'
 
 export default function Home() {
 	const [email, setEmail] = useState('')
@@ -21,7 +22,7 @@ export default function Home() {
 	}
 	
 	return (
-		<div id="login">
+		<Container>
 			<Head>
 				<title>Entrar | Cruz Representações</title>
 			</Head>
@@ -56,6 +57,6 @@ export default function Home() {
 				</div>
 				<button type="submit">Entrar</button>
 			</form>
-		</div>
+		</Container>
 		)
 	}

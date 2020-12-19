@@ -6,8 +6,6 @@ import theme from '../styles/theme'
 import LoginHandler from '../components/LoginHandler'
 import GlobalStyle from '../styles/global'
 
-import '../styles/pages/login.css'
-
 function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
@@ -15,8 +13,8 @@ function MyApp({ Component, pageProps }) {
 				<LoginHandler>
 					<Sidebar/>
 					<Component {...pageProps} />
-					<GlobalStyle />
 				</LoginHandler>
+				<GlobalStyle />
 			</ThemeProvider>
     </Provider>
   )
