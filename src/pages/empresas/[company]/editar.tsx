@@ -34,20 +34,22 @@ const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
 		return <NotAllowed />
 
 	return (
-		<div className="container" id="editCompany">
+		<div className='container'>
 			<Head>
 					<title>{nomeFantasia} | Cruz Representações</title>
 			</Head>
 
 			<Header display={nomeFantasia} />
 
-			<CompanyForm
-				method='put'
-				nomeFantasia={nomeFantasia}
-				setNomeFantasia={setNomeFantasia}
-				id={id as string}
-				company={company}
-			/>
+			<main className='main'>
+				<CompanyForm
+					method='put'
+					nomeFantasia={nomeFantasia}
+					setNomeFantasia={setNomeFantasia}
+					id={id as string}
+					company={company}
+				/>
+			</main>
 		</div>
 	)
 }

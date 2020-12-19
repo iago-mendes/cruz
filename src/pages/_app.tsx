@@ -4,10 +4,9 @@ import {ThemeProvider} from 'styled-components'
 
 import theme from '../styles/theme'
 import LoginHandler from '../components/LoginHandler'
+import GlobalStyle from '../styles/global'
 
-import '../styles/global.css'
 import '../styles/pages/login.css'
-import '../styles/pages/empresas/[company]/editar.css'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -16,6 +15,7 @@ function MyApp({ Component, pageProps }) {
 				<LoginHandler>
 					<Sidebar/>
 					<Component {...pageProps} />
+					<GlobalStyle />
 				</LoginHandler>
 			</ThemeProvider>
     </Provider>
