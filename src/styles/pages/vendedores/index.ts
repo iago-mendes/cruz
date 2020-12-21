@@ -49,14 +49,6 @@ const Container = styled.div`
 					font-family: Ubuntu;
 					font-size: 2.25rem;
 					color: ${p => p.theme.colors.primaryDark};
-
-					cursor: pointer;
-					transition: 0.25s;
-
-					:hover
-					{
-						color: ${p => p.theme.colors.primaryLight}
-					}
 				}
 
 				h2

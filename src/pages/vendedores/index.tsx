@@ -10,7 +10,6 @@ import Container from '../../styles/pages/vendedores/index'
 import api from '../../services/api'
 import User from '../../utils/userType'
 import Loading from '../../components/Loading'
-import SellerModal from '../../components/SellerModal'
 import Add from '../../components/Add'
 import {Seller} from '../../components/forms/Seller'
 import NotAllowed from '../../components/NotAllowed'
@@ -65,7 +64,6 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
         <title>Vendedores | Cruz Representações</title>
       </Head>
 
-			<SellerModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} seller={selected} />
 			<Add route='/vendedores/adicionar' />
 
 			<Header display='Vendedores' showSearch />
