@@ -8,6 +8,7 @@ import Container from '../../styles/components/forms/Seller'
 import api from '../../services/api'
 import {Company} from './Company'
 import {selectStyles} from '../../styles/global'
+import Dropzone from '../Dropzone'
 
 interface SellerNumber
 {
@@ -222,11 +223,11 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		<Container onSubmit={handleSubmit} >
 			<div className='field'>
 				<label htmlFor="imagem">Imagem</label>
-				<input
-					type="file"
-					name="imagem"
-					id="imagem"
-					onChange={e => setImagem(e.target.files[0])}
+				<Dropzone
+					name='imageFile'
+					id='imageFile'
+					onFileUploaded={setImagem}
+					shownFileUrl={seller && seller.imagem}
 				/>
 			</div>
 			<div className='field'>
