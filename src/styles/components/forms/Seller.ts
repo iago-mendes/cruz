@@ -120,6 +120,7 @@ const Container = styled.form`
 					label
 					{
 						margin: 0;
+						font-size: 1.25rem;
 					}
 
 					input

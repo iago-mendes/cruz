@@ -1,4 +1,5 @@
 import {createGlobalStyle} from 'styled-components'
+import {Styles} from 'react-select'
 
 export default createGlobalStyle`
 	:root
@@ -43,3 +44,41 @@ export default createGlobalStyle`
 		padding: 2rem;
 	}
 `
+
+export const selectStyles: Styles =
+{
+	option: (provided, state) => (
+	{
+		...provided,
+		cursor: 'pointer',
+
+		fontFamily: 'Roboto',
+		fontSize: '1.5rem',
+
+		transition: '0.1s',
+		color: state.isSelected ? '#E2DADB' : state.isFocused ? '#313131' : '#7B7B7B',
+		backgroundColor: state.isSelected ? '#84130B' : '#E2DADB'
+	}),
+
+	menu: (provided, state) => (
+	{
+		...provided,
+		fontFamily: 'Roboto',
+		backgroundColor: '#E2DADB'
+	}),
+
+	control: (provided, state) => (
+	{
+		...provided,
+
+		cursor: 'pointer',
+		borderWidth: '2px',
+		borderColor: state.isFocused ? '#84130B' : '#31313140',
+		transition: '0.25s',
+
+		fontFamily: 'Roboto',
+		fontSize: '1.5rem',
+
+		width: '25rem'
+	})
+}

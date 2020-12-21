@@ -7,6 +7,7 @@ import Switch from 'react-switch'
 import Container from '../../styles/components/forms/Seller'
 import api from '../../services/api'
 import {Company} from './Company'
+import {selectStyles} from '../../styles/global'
 
 interface SellerNumber
 {
@@ -323,6 +324,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 								value={companyOptions.find(cmpn => cmpn.value === company.id)}
 								onChange={e => handleCompanyChange(e, index)}
 								options={companyOptions}
+								styles={selectStyles}
 							/>
 							<div className="comissao">
 								<label>Comissão: R$</label>
