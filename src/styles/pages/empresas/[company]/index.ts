@@ -103,14 +103,14 @@ const Container = styled.div`
 					font-family: Ubuntu;
 					font-size: 2rem;
 			
-					color: var(--primary-dark);
+					color: ${p => p.theme.colors.primaryDark};
 			
 					cursor: pointer;
 					transition: 0.25s;
 					
 					:hover
 					{
-						color: var(--primary-light)
+						color: ${p => p.theme.colors.primaryLight};
 					}
 				}
 			}

@@ -48,7 +48,7 @@ const Container = styled.div`
 					display: flex;
 					flex-direction: column;
 					align-items: flex-start;
-					justify-content: flex-start;
+					justify-content: center;
 		
 					h1
 					{
