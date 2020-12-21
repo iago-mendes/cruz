@@ -28,9 +28,6 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	const [sellers, setSellers] = useState<Seller[]>([])
 	const {data, error, revalidate} = useSWR('/api/getSellers')
 
-	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [selected, setSelected] = useState<Seller>(sellers[0])
-
 	useEffect(() =>
 	{
 		if (data)
@@ -52,10 +49,17 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	if (user.role !== 'admin')
 		return <NotAllowed />
 
-	function handleOpenModal(seller: Seller)
+	async function handleDeleteSeller(seller: Seller)
 	{
-		setSelected(seller)
-		setIsModalOpen(true)
+		const yes = confirm(`Deseja deletar o vendedor ${seller.nome}?`)
+		if (yes)
+		{
+			await api.delete(`sellers/${seller._id}`).then(() =>
+			{
+				revalidate()
+				alert(`Vendedor ${seller.nome} deletado com sucesso!`)
+			})
+		}
 	}
 
   return (
@@ -77,7 +81,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 									<button title="Editar" onClick={() => Router.push(`/vendedores/${seller._id}`)} >
 										<FiEdit3 size={15} />
 									</button>
-									<button title='Deletar' onClick={() => {}} >
+									<button title='Deletar' onClick={() => handleDeleteSeller(seller)} >
 										<FiTrash size={15} />
 									</button>
 								</div>
@@ -85,7 +89,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 						}
 						<img src={seller.imagem} alt={seller.nome} />
 						<div className="texts">
-							<h1 onClick={() => handleOpenModal(seller)}>
+							<h1>
 								{seller.nome}
 							</h1>
 							<h2>{seller.funcao}</h2>

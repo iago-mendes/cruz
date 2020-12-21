@@ -177,47 +177,45 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	{
 		e.preventDefault()
 
-		// const data = new FormData()
+		const data = new FormData()
 
-		// if (imagem) data.append('imagem', imagem)
-		// data.append('razao_social', razaoSocial)
-		// data.append('nome_fantasia', nomeFantasia)
-		// data.append('cnpj', JSON.stringify(cnpj))
-		// data.append('telefones', JSON.stringify(telefones))
-		// data.append('email', email)
-		// data.append('comissao', JSON.stringify(comissao))
-		// data.append('descricao_curta', descricaoCurta)
-		// data.append('descricao', descricao)
-		// data.append('site', site)
+		if (imagem) data.append('imagem', imagem)
+		data.append('nome', nome)
+		data.append('telefones', JSON.stringify(telefones))
+		data.append('email', email)
+		data.append('senha', senha)
+		data.append('funcao', funcao)
+		data.append('admin', String(admin))
+		data.append('representadas', JSON.stringify(representadas))
 
-		// if (method === 'post')
-		// {
-		// 	await api.post('companies', data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Empresa criada com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
-		// else if (method === 'put')
-		// {
-		// 	await api.put(`companies/${id}`, data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Empresa atualizada com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
+		if (method === 'post')
+		{
+			await api.post('sellers', data)
+			.then(() =>
+			{
+				alert('Vendedor criado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
+		else if (method === 'put')
+		{
+			await api.put(`sellers/${id}`, data)
+			.then(() =>
+			{
+				alert('Vendedor atualizado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
 	}
 
 	return (
