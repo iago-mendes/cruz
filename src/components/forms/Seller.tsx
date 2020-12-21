@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import {FaWhatsapp} from 'react-icons/fa'
 import Select from 'react-select'
+import Switch from 'react-switch'
 
 import Container from '../../styles/components/forms/Seller'
 import api from '../../services/api'
@@ -94,6 +95,8 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		})
 	}, [])
 
+	useEffect(() => console.log('[representadas]', representadas), [representadas])
+
 	function formatNumber(number: number | string)
 	{
 		const n = String(number)
@@ -105,16 +108,24 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 
 	function handleNumberChange(e: ChangeEvent<HTMLInputElement>, index: number)
 	{
-		// let numbers = [...telefones]
-		// let formatedNumbers = [...shownNumbers]
+		let numbers = [...telefones]
+		let formatedNumbers = [...shownNumbers]
 
-		// const number = e.target.value.replace(/\D/g,'')
-		// numbers[index] = Number(number)
-		// setTelefones(numbers)
+		const number = e.target.value.replace(/\D/g,'')
+		numbers[index] = {numero: Number(number), whatsapp: telefones[index].whatsapp}
+		setTelefones(numbers)
 
-		// const formatedNumber = formatNumber(number)
-		// formatedNumbers[index] = formatedNumber
-		// setShownNumbers(formatedNumbers)
+		const formatedNumber = formatNumber(number)
+		formatedNumbers[index] = formatedNumber
+		setShownNumbers(formatedNumbers)
+	}
+
+	function handleWhatsappChange(isChecked: boolean, index: number)
+	{
+		let numbers = [...telefones]
+		numbers[index].whatsapp = isChecked
+
+		setTelefones(numbers)
 	}
 
 	function handleAddNumber()
@@ -132,6 +143,34 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		let shown = [...shownNumbers]
 		shown.splice(index, 1)
 		setShownNumbers(shown)
+	}
+
+	function handleCompanyChange(e: CompanyOption, index: number)
+	{
+		let companies = [...representadas]
+		companies[index].id = e.value
+
+		setRepresentadas(companies)
+	}
+
+	function handleComissaoChange(e: ChangeEvent<HTMLInputElement>, index: number)
+	{
+		let companies = [...representadas]
+		companies[index].comissao = Number(e.target.value)
+
+		setRepresentadas(companies)
+	}
+
+	function handleAddCompany()
+	{
+		setRepresentadas([...representadas, {id: '', comissao: 0}])
+	}
+
+	function handleRemoveCompany(index: number)
+	{
+		let companies = [...representadas]
+		companies.splice(index, 1)
+		setRepresentadas(companies)
 	}
 
 	async function handleSubmit(e: FormEvent)
@@ -183,7 +222,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 
 	return (
 		<Container onSubmit={handleSubmit} >
-			<div>
+			<div className='field'>
 				<label htmlFor="imagem">Imagem</label>
 				<input
 					type="file"
@@ -192,7 +231,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setImagem(e.target.files[0])}
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="nome">Nome</label>
 				<input
 					type="text"
@@ -202,7 +241,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setNome(e.target.value)}
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="telefone">Telefones</label>
 				<ul>
 					{shownNumbers.map((number, index) => (
@@ -217,7 +256,14 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 								/>
 								<div className='whatsapp'>
 									<FaWhatsapp size={25} />
-									<input type='check'/>
+									<Switch
+										checked={telefones[index].whatsapp}
+										onChange={e => handleWhatsappChange(e, index)}
+										height={25}
+										width={50}
+										onHandleColor='#d8d8d8'
+										offHandleColor='#d8d8d8'
+									/>
 								</div>
 							</div>
 							<button type="button" onClick={() => handleRemoveNumber(index)}>-</button>
@@ -226,7 +272,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					<button type="button" onClick={handleAddNumber}>+</button>
 				</ul>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="email">E-mail</label>
 				<input
 					type="email"
@@ -236,7 +282,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setEmail(e.target.value)}
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="senha">Senha</label>
 				<input
 					type="senha"
@@ -246,7 +292,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setSenha(e.target.value)}
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="funcao">Função</label>
 				<input
 					type="text"
@@ -256,25 +302,41 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setFuncao(e.target.value)}
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="admin">Administrador</label>
-				<input
-					type="check"
+				<Switch
 					name="admin"
 					id="admin"
-					// value={admin}
-					// onChange={e => setAdmin(e.target.value)}
+					checked={admin}
+					onChange={setAdmin}
+					onHandleColor='#d8d8d8'
+					offHandleColor='#d8d8d8'
 				/>
 			</div>
-			<div>
+			<div className='field'>
 				<label htmlFor="representadas">Representadas</label>
-				<Select
-					name="representadas"
-					id="representadas"
-					// value={companyOptions.filter(company => representadas.)}
-					// onChange={() => {}}
-					options={companyOptions}
-				/>
+				<ul>
+					{representadas.map((company, index) => (
+						<li className="company" key={index}>
+							<Select
+								name="representadas"
+								value={companyOptions.find(cmpn => cmpn.value === company.id)}
+								onChange={e => handleCompanyChange(e, index)}
+								options={companyOptions}
+							/>
+							<div className="comissao">
+								<label>Comissão: R$</label>
+								<input
+									type="number"
+									value={company.comissao}
+									onChange={e => handleComissaoChange(e, index)}
+								/>
+							</div>
+							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
+						</li>
+					))}
+					<button type="button" onClick={handleAddCompany}>+</button>
+				</ul>
 			</div>
 			<div className="buttons">
 				<button type="button" onClick={Router.back}>Cancelar</button>

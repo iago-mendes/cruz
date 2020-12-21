@@ -12,7 +12,7 @@ const Container = styled.form`
 	justify-content: center;
 	flex-direction: column;
 
-	div
+	.field
 	{
 		width: 100%;
 		padding: 1rem;
@@ -69,37 +69,92 @@ const Container = styled.form`
 				
 				width: 100%;
 
+				button
+				{
+					background-color: ${p => p.theme.colors.background};
+
+					:hover
+					{
+						background-color: rgb(201, 64, 64);
+					}
+				}
+			}
+
+			.phone
+			{
 				input
 				{
 					width: 100%;
 				}
 
-				button:hover
+				.group
 				{
-					background-color: rgb(201, 64, 64);
+					display: flex;
+					align-items: center;
+					gap: 2rem;
+
+					margin-right: 2rem;
+					width: 75%;
+
+					.whatsapp
+					{
+						display: flex;
+						align-items: center;
+						gap: 0.5rem;
+
+						svg
+						{
+							color: green;
+						}
+					}
 				}
 			}
-		}
 
-		button
-		{
-			width: 2.5rem;
-			height: 2.5rem;
-			border-radius: 100%;
-			
-			border: none;
-			background-color: var(--background);
-			
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			
-			cursor: pointer;
-			transition: 0.5s;
-			
-			:hover
+			.company
 			{
-				background-color: rgb(89, 211, 89);
+				.comissao
+				{
+					display: flex;
+					align-items: center;
+
+					label
+					{
+						margin: 0;
+					}
+
+					input
+					{
+						border: none;
+						border-bottom: rgb(134, 134, 134) solid 1px;
+						border-radius:  0;
+
+						width: 7.5rem;
+						padding: 0;
+						padding-left: 0.5rem;
+					}
+				}
+			}
+
+			button
+			{
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: 100%;
+				
+				border: none;
+				background-color: ${p => p.theme.colors.background};
+				
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				
+				cursor: pointer;
+				transition: 0.5s;
+				
+				:hover
+				{
+					background-color: rgb(89, 211, 89);
+				}
 			}
 		}
 	}
@@ -110,6 +165,9 @@ const Container = styled.form`
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-around;
+
+		margin-top: 5rem;
+		width: 100%;
 
 		button
 		{
