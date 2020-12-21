@@ -177,7 +177,7 @@ const Container = styled.form`
 			
 			font-family: Ubuntu;
 			font-size: 1.75rem;
-			background-color: var(--background);
+			background-color: ${p => p.theme.colors.background};
 			
 			border: none;
 			border-radius: 2rem;

@@ -97,8 +97,6 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		})
 	}, [])
 
-	useEffect(() => console.log('[representadas]', representadas), [representadas])
-
 	function formatNumber(number: number | string)
 	{
 		const n = String(number)
