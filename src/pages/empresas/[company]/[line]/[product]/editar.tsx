@@ -3,7 +3,6 @@ import Head from 'next/head'
 import {useSession} from 'next-auth/client'
 import {useRouter} from 'next/router'
 
-import Container from '../../../../../styles/pages/empresas/[company]/[line]/adicionar'
 import Header from '../../../../../components/Header'
 import ProductForm, {Product} from '../../../../../components/forms/Product'
 import Loading from '../../../../../components/Loading'
@@ -46,23 +45,25 @@ const AddCompany: React.FC = () =>
 		return <NotAllowed />
 
 	return (
-		<Container className="container">
+		<div className='container'>
 			<Head>
 				<title>{nome} | Cruz Representações</title>
 			</Head>
 
 			<Header display={nome} />
 
-			<ProductForm
-				method='put'
-				companyId={String(company)}
-				lineId={String(line)}
-				nome={nome}
-				setNome={setNome}
-				id={String(id)}
-				product={product}
-			/>
-		</Container>
+			<main className='main'>
+				<ProductForm
+					method='put'
+					companyId={String(company)}
+					lineId={String(line)}
+					nome={nome}
+					setNome={setNome}
+					id={String(id)}
+					product={product}
+				/>
+			</main>
+		</div>
 	)
 }
 
