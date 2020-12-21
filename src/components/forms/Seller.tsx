@@ -70,6 +70,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	{
 		if (seller)
 		{
+			setNome(seller.nome)
 			setTelefones(seller.telefones)
 			setEmail(seller.email)
 			setSenha(seller.senha)

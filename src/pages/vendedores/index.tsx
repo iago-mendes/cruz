@@ -76,7 +76,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 						{
 							user.role === 'admin' && (
 								<div className="buttons">
-									<button title="Editar" onClick={() => Router.push(`/vendedores/${seller._id}/editar`)} >
+									<button title="Editar" onClick={() => Router.push(`/vendedores/${seller._id}`)} >
 										<FiEdit3 size={15} />
 									</button>
 									<button title='Deletar' onClick={() => {}} >
