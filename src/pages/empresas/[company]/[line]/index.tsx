@@ -13,6 +13,7 @@ import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
 import User from '../../../../utils/userType'
 import {Line} from '../../../../components/forms/Line'
 import {Product} from '../../../../components/forms/Product'
+import {Company, Table} from '../../../../components/forms/Company'
 import Add from '../../../../components/Add'
 
 interface ProductsProps
@@ -20,9 +21,10 @@ interface ProductsProps
 	products: Product[]
 	companyName: string
 	lineName: string
+	tables: Table[]
 }
 
-const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, lineName}) =>
+const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, lineName, tables}) =>
 {
 	const Router = useRouter()
 	const {company: companyId, line: lineId} = Router.query
@@ -30,23 +32,16 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	const [session, loading] = useSession()
 	const {data, error, revalidate} = useSWR(`/api/listProducts?company=${companyId}&line=${lineId}`)
 	const [products, setProducts] = useState<Product[]>([])
-	const [tables, setTables] = useState<string[]>(['Padrão'])
-	
+
 	useEffect(() =>
 	{
 		if (data)
 		{
 			setProducts(data)
-
-			const tmpTables = data[0].tabelas.map(table => table.nome)
-			setTables(tmpTables)
 		}
 		else if (staticProducts)
 		{
 			setProducts(staticProducts)
-
-			const tmpTables = staticProducts[0].tabelas.map(table => table.nome)
-			setTables(tmpTables)
 
 			if (error)
 				console.error(error)
@@ -95,8 +90,8 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 							<th>St</th>
 							<th>Ipi</th>
 							<th>Comissão</th>
-							{tables.map(table => (
-								<th key={table} >Tabela {table}</th>
+							{tables.map(({_id, nome}) => (
+								<th key={_id} >Tabela {nome}</th>
 							))}
 						</tr>
 					</thead>
@@ -127,8 +122,8 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 								<td>{formatNumber(product.st)} %</td>
 								<td>{formatNumber(product.ipi)} %</td>
 								<td>{formatNumber(product.comissao)} %</td>
-								{product.tabelas.map(({nome, preco}) => (
-									<td key={nome}>
+								{product.tabelas.map(({id, preco}) => (
+									<td key={id}>
 										R$ {formatNumber(preco)}
 									</td>
 								))}
@@ -177,8 +172,13 @@ export const getStaticProps: GetStaticProps = async ctx =>
 		.catch(err => console.error(err.message))
 
 	let companyName = ''
-	await api.get(`companies/${company}`)
-		.then(({data}) => companyName = data.nome_fantasia)
+	let tables: Table[] = []
+	await api.get(`companies-all/${company}`)
+		.then(({data}:{data: Company}) =>
+		{
+			companyName = data.nome_fantasia
+			tables = data.tabelas
+		})
 		.catch(err => console.error(err.message))
 	
 	let lineName = ''
@@ -187,7 +187,7 @@ export const getStaticProps: GetStaticProps = async ctx =>
 		.catch(err => console.error(err.message))
 
 	return {
-		props: {staticProducts, companyName, lineName},
+		props: {staticProducts, companyName, lineName, tables},
 		revalidate: 1
 	}
 }

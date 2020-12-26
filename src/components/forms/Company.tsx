@@ -4,6 +4,12 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Container from '../../styles/components/forms/Company'
 import api from '../../services/api'
 
+export interface Table
+{
+	_id: string
+	nome: string
+}
+
 export interface Company
 {
 	_id: string
@@ -17,6 +23,7 @@ export interface Company
 	descricao?: string
 	site?: string
 	comissao: {porcentagem: number, obs: Array<string>}
+	tabelas: Table[]
 }
 
 interface CompanyFormProps

@@ -3,10 +3,11 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/Product'
 import api from '../../services/api'
+import {Table} from './Company'
 
-interface Table
+interface ProductTable
 {
-	nome: string
+	id: string
 	preco: number
 }
 
@@ -20,7 +21,7 @@ export interface Product
 	ipi: number
 	st: number
 	comissao: number
-	tabelas: Table[]
+	tabelas: ProductTable[]
 }
 
 interface ProductFormProps
@@ -46,13 +47,17 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 	const [ipi, setIpi] = useState(0)
 	const [st, setSt] = useState(0)
 	const [comissao, setComissao] = useState(0)
-	const [tabelas, setTabelas] = useState<Table[]>([])
+	const [tabelas, setTabelas] = useState<ProductTable[]>([])
+
+	const [tableNames, setTableNames] = useState<Table[]>([])
 
 	useEffect(() =>
 	{
-		api.get(`companies/${companyId}/lines/${lineId}/products-raw`).then(({data}:{data: Product[]}) =>
+		api.get(`companies-all/${companyId}`).then(({data}:{data: {tabelas: Table[]}}) =>
 		{
-			const tmpTables = data[0].tabelas.map(tabela => ({nome: tabela.nome, preco: 0}))
+			setTableNames(data.tabelas)
+
+			const tmpTables = data.tabelas.map(table => ({id: table._id, preco: 0}))
 			setTabelas(tmpTables)
 		})
 	}, [])
@@ -71,30 +76,10 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 		}
 	}, [product])
 
-	function handleTableNameChange(e: ChangeEvent<HTMLInputElement>, index: number)
-	{
-		let tmp = [...tabelas]
-		tmp[index].nome = e.target.value
-		setTabelas(tmp)
-	}
-
 	function handleTablePriceChange(e: ChangeEvent<HTMLInputElement>, index: number)
 	{
 		let tmp = [...tabelas]
 		tmp[index].preco = Number(e.target.value)
-		setTabelas(tmp)
-	}
-
-	function handleAddTable()
-	{
-		const tmp = [...tabelas, {nome: '', preco: 0}]
-		setTabelas(tmp)
-	}
-
-	function handleRemoveTable(index: number)
-	{
-		let tmp = [...tabelas]
-		tmp.splice(index, 1)
 		setTabelas(tmp)
 	}
 
@@ -212,32 +197,18 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 			<div>
 				<label htmlFor="tabela">Tabelas</label>
 				<ul>
-					{tabelas.map(({nome, preco}, index) => (
+					{tableNames.map(({nome}, index) => (
 						<li key={index}>
-							<div className="name">
-								<span>Tabela</span>
-								<input
-									type="text"
-									name="tabela"
-									id="tabela"
-									value={nome}
-									onChange={(e) => handleTableNameChange(e, index)}
-								/>
-							</div>
-							<div className="price">
-								<span>R$</span>
-								<input
-									type="number"
-									name="tabela"
-									id="tabela"
-									value={preco}
-									onChange={(e) => handleTablePriceChange(e, index)}
-								/>
-							</div>
-							<button type="button" onClick={() => handleRemoveTable(index)}>-</button>
+							<span>Tabela {nome}: R$</span>
+							<input
+								type="number"
+								name="tabela"
+								id="tabela"
+								value={tabelas[index] ? tabelas[index].preco : 0}
+								onChange={(e) => handleTablePriceChange(e, index)}
+							/>
 						</li>
 					))}
-					<button type="button" onClick={handleAddTable}>+</button>
 				</ul>
 			</div>
 			<div className="buttons">
