@@ -6,7 +6,7 @@ import api from '../../services/api'
 
 export interface Table
 {
-	_id: string
+	_id?: string
 	nome: string
 }
 
@@ -53,6 +53,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	const [descricaoCurta, setDescricaoCurta] = useState('')
 	const [descricao, setDescricao] = useState('')
 	const [site, setSite] = useState('')
+	const [tabelas, setTabelas] = useState<Table[]>([])
 
 	useEffect(() =>
 	{
@@ -66,6 +67,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			setDescricaoCurta(company.descricao_curta)
 			setDescricao(company.descricao)
 			setSite(company.site)
+			setTabelas(company.tabelas)
 			
 			setTelefones(company.telefones)
 			setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
@@ -171,6 +173,27 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setComissao({porcentagem: comissao.porcentagem, obs})
 	}
 
+	function handleTableChange(e: ChangeEvent<HTMLInputElement>, index: number)
+	{
+		let tables = [...tabelas]
+
+		const name = e.target.value
+		tables[index].nome = name
+		setTabelas(tables)
+	}
+
+	function handleAddTable()
+	{
+		setTabelas([...tabelas, {nome: ''}])
+	}
+
+	function handleRemoveTable(index: number)
+	{
+		let tables = [...tabelas]
+		tables.splice(index, 1)
+		setTabelas(tables)
+	}
+
 	async function handleSubmit(e: FormEvent)
 	{
 		e.preventDefault()
@@ -187,6 +210,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		data.append('descricao_curta', descricaoCurta)
 		data.append('descricao', descricao)
 		data.append('site', site)
+		data.append('tabelas', JSON.stringify(tabelas))
 
 		if (method === 'post')
 		{
@@ -339,6 +363,24 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					value={site}
 					onChange={handleInputChange}
 				/>
+			</div>
+			<div>
+				<label htmlFor="tabela">Tabelas</label>
+				<ul>
+					{tabelas.map((tabela, index) => (
+						<li key={index} className="table">
+							<input
+								type="text"
+								name="tabela"
+								id="tabela"
+								value={tabela.nome}
+								onChange={(e) => handleTableChange(e, index)}
+							/>
+							<button type="button" onClick={() => handleRemoveTable(index)}>-</button>
+						</li>
+					))}
+					<button type="button" onClick={handleAddTable}>+</button>
+				</ul>
 			</div>
 			<div className="buttons">
 				<button type="button" onClick={Router.back}>Cancelar</button>
