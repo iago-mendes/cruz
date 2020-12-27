@@ -33,3 +33,17 @@ export interface Client
 		nome_sujo: boolean
 	}
 }
+
+export interface ListedClient
+{
+	id: string
+	razao_social: string
+	nome_fantasia: string
+	imagem: string
+	status:
+	{
+		ativo: boolean
+		aberto: boolean
+		nome_sujo: boolean
+	}
+}
