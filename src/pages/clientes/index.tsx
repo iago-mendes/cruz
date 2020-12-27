@@ -1,14 +1,19 @@
 import {GetStaticProps} from 'next'
+import { useSession } from 'next-auth/client'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import {useEffect, useState} from 'react'
 import useSWR from 'swr'
-import Add from '../../components/Add'
+import {FiEdit3, FiTrash} from 'react-icons/fi'
+
 
 import {ListedClient as Client} from '../../components/forms/Client'
 import Header from '../../components/Header'
+import Loading from '../../components/Loading'
 import api from '../../services/api'
-
+import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
+import User from '../../utils/userType'
 
 interface ClientsProps
 {
@@ -17,6 +22,9 @@ interface ClientsProps
 
 const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 {
+	const Router = useRouter()
+	const [session, loading] = useSession()
+	
 	const [clients, setClients] = useState<Client[]>([])
 	const {data, error, revalidate} = useSWR('/api/getClients')
 
@@ -32,6 +40,12 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 				console.error(error)
 		}
 	}, [data, error, staticClients])
+
+	if (loading)
+		return <Loading />
+
+	const {user: tmpUser}:{user: any} = session
+	const user: User = tmpUser
 
 	return (
 		<Container className='container'>
@@ -60,6 +74,18 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 							<span style={{backgroundColor: client.status.nome_sujo ? '#881616' : '#16881a'}} >
 								{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
 							</span>
+						</div>
+						<div className="buttons">
+							{user.role === 'admin' && (
+								<>
+										<button title="Editar" onClick={() => Router.push(`/clients/${client.id}`)}>
+											<FiEdit3 size={25} />
+										</button>
+										<button title='Deletar' onClick={() => {}} >
+											<FiTrash size={25} />
+										</button>
+								</>
+							)}
 						</div>
 					</div>
 				))}
