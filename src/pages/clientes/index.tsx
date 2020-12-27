@@ -1,7 +1,7 @@
 import {GetStaticProps} from 'next'
-import { useSession } from 'next-auth/client'
+import {useSession} from 'next-auth/client'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
@@ -56,18 +56,18 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			<Add route='/clientes/adicionar' />
 			<Header display='Clientes' showSearch />
 
-			<main className="main">
+			<main className='main'>
 				{clients.map(client => (
-					<div className="client" key={client.id} >
-						<div className="left">
+					<div className='client' key={client.id} >
+						<div className='left'>
 							<img src={client.imagem} alt={client.nome_fantasia} />
-							<div className="names">
+							<div className='names'>
 								<h1>{client.nome_fantasia}</h1>
 								<h2>{client.razao_social}</h2>
 							</div>
 						</div>
-						<div className="right">
-							<div className="status">
+						<div className='right'>
+							<div className='status'>
 								<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
 									{client.status.ativo ? 'ativo' : 'inativo' }
 								</span>
@@ -78,10 +78,10 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 									{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
 								</span>
 							</div>
-							<div className="buttons">
+							<div className='buttons'>
 								{user.role === 'admin' && (
 									<>
-											<button title="Editar" onClick={() => Router.push(`/clients/${client.id}`)}>
+											<button title='Editar' onClick={() => Router.push(`/clients/${client.id}`)}>
 												<FiEdit3 size={25} />
 											</button>
 											<button title='Deletar' onClick={() => {}} >
