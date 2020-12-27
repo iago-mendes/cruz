@@ -1,6 +1,7 @@
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
+import useSWR from 'swr'
 
 import {Client} from '../../components/forms/Client'
 import api from '../../services/api'
@@ -14,7 +15,21 @@ interface ClientsProps
 
 const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 {
-	useEffect(() => console.log('[staticClients]', staticClients), [staticClients])
+	const [clients, setClients] = useState<Client[]>([])
+	const {data, error, revalidate} = useSWR('/api/getClients')
+
+	useEffect(() =>
+	{
+		if (data)
+			setClients(data)
+		else if (staticClients)
+		{
+			setClients(staticClients)
+
+			if (error)
+				console.error(error)
+		}
+	}, [data, error, staticClients])
 
 	return (
 		<Container>
