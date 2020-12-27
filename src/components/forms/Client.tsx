@@ -1,12 +1,13 @@
 import {useRouter} from "next/router"
 import {FormEvent, useEffect, useState} from "react"
-import Select, { OptionsType } from 'react-select'
+import Select, {OptionsType} from 'react-select'
 import api from "../../services/api"
+import Switch from 'react-switch'
 
 import Container from '../../styles/components/forms/Client'
-import { selectStyles } from "../../styles/global"
+import {selectStyles} from "../../styles/global"
 import Dropzone from "../Dropzone"
-import { ListedSeller } from "./Seller"
+import {ListedSeller} from "./Seller"
 
 interface ClientCompany
 {
@@ -91,8 +92,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [senha, setSenha] = useState('')
 	const [vendedores, setVendedores] = useState<string[]>([])
 	const [representadas, setRepresentadas] = useState<ClientCompany[]>([])
-	const [endereco, setendereco] = useState<Address>({})
-	const [status, setstatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
+	const [endereco, setEndereco] = useState<Address>({})
+	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 
@@ -118,6 +119,20 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			const tmp = e.map(option => option.value)
 			setVendedores(tmp)
 		}
+	}
+
+	function handleStatusChange(e: boolean, field: string)
+	{
+		let tmp = {...status}
+
+		if (field === 'ativo')
+			tmp.ativo = e
+		if (field === 'aberto')
+			tmp.aberto = e
+		if (field === 'nome_sujo')
+			tmp.nome_sujo = e
+
+		setStatus(tmp)
 	}
 
 	async function handleSubmit(e: FormEvent)
@@ -218,6 +233,45 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					isMulti
 					styles={selectStyles}
 				/>
+			</div>
+			{/* status */}
+			<div className="field">
+				<label htmlFor="status">Situação</label>
+				<div className="status">
+					<div className="statusField">
+						<span>ativo</span>
+						<Switch
+							name="ativo"
+							id="ativo"
+							checked={status.ativo}
+							onChange={e => handleStatusChange(e, 'ativo')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+					<div className="statusField">
+						<span>aberto</span>
+						<Switch
+							name="aberto"
+							id="aberto"
+							checked={status.aberto}
+							onChange={e => handleStatusChange(e, 'aberto')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+					<div className="statusField">
+						<span>nome sujo</span>
+						<Switch
+							name="nome_sujo"
+							id="nome_sujo"
+							checked={status.nome_sujo}
+							onChange={e => handleStatusChange(e, 'nome_sujo')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+				</div>
 			</div>
 			<div className="buttons">
 				<button type="button" onClick={Router.back}>Cancelar</button>
