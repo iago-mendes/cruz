@@ -35,6 +35,14 @@ export interface Seller
 	representadas: SellerCompany[]
 }
 
+export interface ListedSeller
+{
+	id: string
+	imagem: string
+	nome: string
+	funcao: string
+}
+
 interface CompanyOption
 {
 	value: string

@@ -1,8 +1,12 @@
 import {useRouter} from "next/router"
-import {FormEvent, useState} from "react"
+import {FormEvent, useEffect, useState} from "react"
+import Select, { OptionsType } from 'react-select'
+import api from "../../services/api"
 
 import Container from '../../styles/components/forms/Client'
+import { selectStyles } from "../../styles/global"
 import Dropzone from "../Dropzone"
+import { ListedSeller } from "./Seller"
 
 interface ClientCompany
 {
@@ -58,6 +62,12 @@ export interface ListedClient
 	}
 }
 
+interface SelectOption
+{
+	value: string
+	label: string
+}
+
 interface ClientFormProps
 {
 	method: string
@@ -83,6 +93,32 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [representadas, setRepresentadas] = useState<ClientCompany[]>([])
 	const [endereco, setendereco] = useState<Address>({})
 	const [status, setstatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
+
+	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
+
+	useEffect(() =>
+	{
+		api.get('sellers').then(({data}:{data: ListedSeller[]}) =>
+		{
+			const tmp = data.map(seller => (
+			{
+				value: seller.id,
+				label: seller.nome
+			}))
+			setSellerOptions(tmp)
+		})
+	}, [])
+
+	function handleSellersChange(e: OptionsType<SelectOption>)
+	{
+		if (!e)
+			setVendedores([])
+		else
+		{
+			const tmp = e.map(option => option.value)
+			setVendedores(tmp)
+		}
+	}
 
 	async function handleSubmit(e: FormEvent)
 	{
@@ -169,10 +205,24 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					onChange={e => setSenha(e.target.value)}
 				/>
 			</div>
+			{/* vendedores */}
+			<div className='field'>
+				<label htmlFor='vendedores'>Vendedores</label>
+				<Select
+					name='vendedores'
+					id='vendedores'
+					value={sellerOptions.filter(seller => vendedores.includes(seller.value))}
+					onChange={handleSellersChange}
+					options={sellerOptions}
+					hideSelectedOptions
+					isMulti
+					styles={selectStyles}
+				/>
+			</div>
 			<div className="buttons">
 				<button type="button" onClick={Router.back}>Cancelar</button>
 				<button type="submit">Confirmar</button>
-			</div>
+			</div>	
 		</Container>
 	)
 }
