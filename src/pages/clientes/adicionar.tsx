@@ -32,7 +32,7 @@ const AddClient: React.FC = () =>
 			<main className='main'>
 				<Client
 					method='post'
-					nomeFantasia={nomeFantasia}
+					nome_fantasia={nomeFantasia}
 					setNomeFantasia={setNomeFantasia}
 				/>
 			</main>
