@@ -59,33 +59,37 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			<main className="main">
 				{clients.map(client => (
 					<div className="client" key={client.id} >
-						<img src={client.imagem} alt={client.nome_fantasia} />
-						<div className="names">
-							<h1>{client.nome_fantasia}</h1>
-							<h2>{client.razao_social}</h2>
+						<div className="left">
+							<img src={client.imagem} alt={client.nome_fantasia} />
+							<div className="names">
+								<h1>{client.nome_fantasia}</h1>
+								<h2>{client.razao_social}</h2>
+							</div>
 						</div>
-						<div className="status">
-							<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
-								{client.status.ativo ? 'ativo' : 'inativo' }
-							</span>
-							<span style={{backgroundColor: client.status.aberto ? '#16881a' : '#881616'}} >
-								{client.status.aberto ? 'aberto' : 'fechado' }
-							</span>
-							<span style={{backgroundColor: client.status.nome_sujo ? '#881616' : '#16881a'}} >
-								{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
-							</span>
-						</div>
-						<div className="buttons">
-							{user.role === 'admin' && (
-								<>
-										<button title="Editar" onClick={() => Router.push(`/clients/${client.id}`)}>
-											<FiEdit3 size={25} />
-										</button>
-										<button title='Deletar' onClick={() => {}} >
-											<FiTrash size={25} />
-										</button>
-								</>
-							)}
+						<div className="right">
+							<div className="status">
+								<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
+									{client.status.ativo ? 'ativo' : 'inativo' }
+								</span>
+								<span style={{backgroundColor: client.status.aberto ? '#16881a' : '#881616'}} >
+									{client.status.aberto ? 'aberto' : 'fechado' }
+								</span>
+								<span style={{backgroundColor: client.status.nome_sujo ? '#881616' : '#16881a'}} >
+									{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
+								</span>
+							</div>
+							<div className="buttons">
+								{user.role === 'admin' && (
+									<>
+											<button title="Editar" onClick={() => Router.push(`/clients/${client.id}`)}>
+												<FiEdit3 size={25} />
+											</button>
+											<button title='Deletar' onClick={() => {}} >
+												<FiTrash size={25} />
+											</button>
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 				))}
