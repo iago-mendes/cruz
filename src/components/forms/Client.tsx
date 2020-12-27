@@ -1,3 +1,7 @@
+import {FormEvent} from "react"
+
+import Container from '../../styles/components/forms/Client'
+
 interface ClientCompany
 {
 	_id: string
@@ -47,3 +51,33 @@ export interface ListedClient
 		nome_sujo: boolean
 	}
 }
+
+interface ClientFormProps
+{
+	method: string
+	
+	nomeFantasia: string
+	setNomeFantasia: Function
+	
+	id?: string
+	client?: Client
+}
+
+const ClientForm: React.FC<ClientFormProps> = ({method, nomeFantasia, setNomeFantasia, id, client}) =>
+{
+
+	async function handleSubmit(e: FormEvent)
+	{
+		e.preventDefault()
+
+		const data = new FormData()
+	}
+
+	return (
+		<Container onSubmit={handleSubmit} >
+			form			
+		</Container>
+	)
+}
+
+export default ClientForm
