@@ -1,5 +1,5 @@
 import {useRouter} from "next/router"
-import {FormEvent, useEffect, useState} from "react"
+import {ChangeEvent, FormEvent, useEffect, useState} from "react"
 import Select, {OptionsType} from 'react-select'
 import api from "../../services/api"
 import Switch from 'react-switch'
@@ -20,6 +20,7 @@ interface Address
 {
 	rua?: string
 	numero?: number
+	complemento?: string
 	bairro?: string
 	cep?: number
 	cidade?: string
@@ -121,6 +122,28 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		}
 	}
 
+	function handleAddressChange(e: ChangeEvent<HTMLInputElement>, field: string)
+	{
+		let tmp = {...endereco}
+
+		if (field === 'rua')
+			tmp.rua = e.target.value
+		if (field === 'numero')
+			tmp.numero = Number(e.target.value)
+		if (field === 'complemento')
+			tmp.complemento = e.target.value
+		if (field === 'bairro')
+			tmp.bairro = e.target.value
+		if (field === 'cep')
+			tmp.cep = Number(e.target.value)
+		if (field === 'cidade')
+			tmp.cidade = e.target.value
+		if (field === 'uf')
+			tmp.uf = e.target.value
+
+		setEndereco(tmp)
+	}
+
 	function handleStatusChange(e: boolean, field: string)
 	{
 		let tmp = {...status}
@@ -178,7 +201,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			</div>
 			{/* cnpj */}
 			<div className='field'>
-				<label htmlFor="cnpj">Cnpj</label>
+				<label htmlFor="cnpj">CNPJ</label>
 				<input
 					type="text"
 					name="cnpj"
@@ -233,6 +256,80 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					isMulti
 					styles={selectStyles}
 				/>
+			</div>
+			{/* endereco */}
+			<div className="field">
+				<label>Endereço</label>
+				<div className="addressField">
+					<label htmlFor="rua">Rua</label>
+					<input
+						type="text"
+						name="rua"
+						id="rua"
+						value={endereco.rua}
+						onChange={e => handleAddressChange(e, 'rua')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="numero">Número</label>
+					<input
+						type="number"
+						name="numero"
+						id="numero"
+						value={endereco.numero}
+						onChange={e => handleAddressChange(e, 'numero')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="complemento">Complemento</label>
+					<input
+						type="text"
+						name="complemento"
+						id="complemento"
+						value={endereco.complemento}
+						onChange={e => handleAddressChange(e, 'complemento')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="bairro">Bairro</label>
+					<input
+						type="text"
+						name="bairro"
+						id="bairro"
+						value={endereco.bairro}
+						onChange={e => handleAddressChange(e, 'bairro')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="cep">CEP</label>
+					<input
+						type="number"
+						name="cep"
+						id="cep"
+						value={endereco.cep}
+						onChange={e => handleAddressChange(e, 'cep')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="cidade">Cidade</label>
+					<input
+						type="text"
+						name="cidade"
+						id="cidade"
+						value={endereco.cidade}
+						onChange={e => handleAddressChange(e, 'cidade')}
+					/>
+				</div>
+				<div className="addressField">
+					<label htmlFor="uf">UF</label>
+					<input
+						type="text"
+						name="uf"
+						id="uf"
+						value={endereco.uf}
+						onChange={e => handleAddressChange(e, 'uf')}
+					/>
+				</div>
 			</div>
 			{/* status */}
 			<div className="field">
