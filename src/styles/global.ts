@@ -73,12 +73,12 @@ export const selectStyles: Styles =
 
 		cursor: 'pointer',
 		borderWidth: '2px',
-		borderColor: state.isFocused ? '#84130B' : '#31313140',
+		
 		transition: '0.25s',
 
 		fontFamily: 'Roboto',
 		fontSize: '1.5rem',
 
-		width: '25rem'
+		width: '100%'
 	})
 }

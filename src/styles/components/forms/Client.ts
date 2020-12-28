@@ -59,15 +59,20 @@ const Container = styled.form`
 			padding-left: 2rem;
 			gap: 0.5rem;
 			
-			width: 60%;
+			width: 75%;
 
 			li
 			{
 				display: flex;
 				align-items: center;
-				gap: 1rem;
+				justify-content: space-between;
 				
 				width: 100%;
+
+				.select
+				{
+					width: 40%;
+				}
 
 				button
 				{

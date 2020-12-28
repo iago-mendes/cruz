@@ -311,6 +311,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					hideSelectedOptions
 					isMulti
 					styles={selectStyles}
+					placeholder='Selecione os vendedores'
 				/>
 			</div>
 			{/* representadas */}
@@ -318,26 +319,28 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				<label htmlFor="representada">Representadas</label>
 				<ul>
 					{representadas.map((representada, index) => (
-						<li className="company" key={index}>
-							<Select
-								name='representada'
-								id='representada'
-								value={companyOptions.find(option => option.value === representada.id)}
-								onChange={e => handleCompanyChange(e, index, 'id')}
-								options={companyOptions}
-								styles={selectStyles}
-								placeholder='Selecione a representada'
-							/>
-							<Select
-								name='representada'
-								id='representada'
-								value={representada.id !== '' && tableOptions[representada.id].find(option => option.value === representada.tabela)}
-								onChange={e => handleCompanyChange(e, index, 'tabela')}
-								options={representada.id !== '' ? tableOptions[representada.id] : []}
-								isDisabled={representada.id === ''}
-								styles={selectStyles}
-								placeholder='Selecione a tabela'
-							/>
+						<li key={index}>
+							<div className="select">
+								<Select
+									name='representada'
+									value={companyOptions.find(option => option.value === representada.id)}
+									onChange={e => handleCompanyChange(e, index, 'id')}
+									options={companyOptions}
+									styles={selectStyles}
+									placeholder='Selecione a representada'
+								/>
+							</div>
+							<div className="select">
+								<Select
+									name='tabela'
+									value={representada.id !== '' && tableOptions[representada.id].find(option => option.value === representada.tabela)}
+									onChange={e => handleCompanyChange(e, index, 'tabela')}
+									options={representada.id !== '' ? tableOptions[representada.id] : []}
+									isDisabled={representada.id === ''}
+									styles={selectStyles}
+									placeholder='Selecione a tabela'
+								/>
+							</div>
 							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
 						</li>
 					))}
