@@ -8,6 +8,7 @@ import Container from '../../styles/components/forms/Client'
 import {selectStyles} from "../../styles/global"
 import Dropzone from "../Dropzone"
 import {ListedSeller} from "./Seller"
+import {Company} from "./Company"
 
 interface ClientCompany
 {
@@ -70,6 +71,11 @@ interface SelectOption
 	label: string
 }
 
+interface TableSelectOptions
+{
+	[key: string]: SelectOption[]
+}
+
 interface ClientFormProps
 {
 	method: string
@@ -97,6 +103,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
+	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
+	const [tableOptions, setTableOptions] = useState<TableSelectOptions>({})
 
 	useEffect(() =>
 	{
@@ -109,6 +117,30 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			}))
 			setSellerOptions(tmp)
 		})
+
+		api.get('companies-all').then(({data}:{data: Company[]}) =>
+		{
+			let tmpCompanies: SelectOption[] = []
+			let tmpTables: TableSelectOptions = {}
+
+			data.map(company =>
+			{
+				tmpCompanies.push(
+				{
+					label: company.nome_fantasia,
+					value: company._id
+				})
+
+				tmpTables[company._id] = company.tabelas.map(tabela => (
+				{
+					label: tabela.nome,
+					value: tabela._id
+				}))
+			})
+
+			setCompanyOptions(tmpCompanies)
+			setTableOptions(tmpTables)
+		})
 	}, [])
 
 	function handleSellersChange(e: OptionsType<SelectOption>)
@@ -120,6 +152,30 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			const tmp = e.map(option => option.value)
 			setVendedores(tmp)
 		}
+	}
+
+	function handleAddCompany()
+	{
+		setRepresentadas([...representadas, {id: '', tabela: ''}])
+	}
+
+	function handleRemoveCompany(index: number)
+	{
+		let companies = [...representadas]
+		companies.splice(index, 1)
+		setRepresentadas(companies)
+	}
+
+	function handleCompanyChange(e: SelectOption, index: number, field: string)
+	{
+		let companies = [...representadas]
+
+		if (field === 'id')
+			companies[index].id = e.value
+		else if (field === 'tabela')
+			companies[index].tabela = e.value
+
+		setRepresentadas(companies)
 	}
 
 	function handleAddressChange(e: ChangeEvent<HTMLInputElement>, field: string)
@@ -256,6 +312,37 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					isMulti
 					styles={selectStyles}
 				/>
+			</div>
+			{/* representadas */}
+			<div className="field">
+				<label htmlFor="representada">Representadas</label>
+				<ul>
+					{representadas.map((representada, index) => (
+						<li className="company" key={index}>
+							<Select
+								name='representada'
+								id='representada'
+								value={companyOptions.find(option => option.value === representada.id)}
+								onChange={e => handleCompanyChange(e, index, 'id')}
+								options={companyOptions}
+								styles={selectStyles}
+								placeholder='Selecione a representada'
+							/>
+							<Select
+								name='representada'
+								id='representada'
+								value={representada.id !== '' && tableOptions[representada.id].find(option => option.value === representada.tabela)}
+								onChange={e => handleCompanyChange(e, index, 'tabela')}
+								options={representada.id !== '' ? tableOptions[representada.id] : []}
+								isDisabled={representada.id === ''}
+								styles={selectStyles}
+								placeholder='Selecione a tabela'
+							/>
+							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
+						</li>
+					))}
+					<button type="button" onClick={handleAddCompany}>+</button>
+				</ul>
 			</div>
 			{/* endereco */}
 			<div className="field">
