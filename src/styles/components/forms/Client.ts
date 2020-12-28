@@ -14,39 +14,36 @@ const Container = styled.form`
 
 	.field
 	{
-		width: 100%;
+		width: 80%;
 		padding: 1rem;
 		
 		display: flex;
 		flex-direction: column;
+		gap: 0.5rem;
 
 		label
 		{
-			font-family: Roboto;
+			font-family: Ubuntu;
 			font-size: 1.5rem;
-			
-			margin-bottom: 0.5rem;
 		}
 
 		input
 		{
-			width: 100%;
-			
-			border: rgb(134, 134, 134) solid 1px;
-			border-radius: 1rem;
-			padding: 0.5rem;
-			
-			font-family: Roboto;
-		}
-
-		input[type=file]
-		{
 			border: none;
-			border-radius:0;
-			padding: 0;
-			
-			width: fit-content;
-			cursor: pointer;
+			border-bottom: ${p => `${p.theme.colors.text}40`} 2px solid;
+			height: 2.5rem;
+
+			font-family: Roboto;
+			font-size: 1.5rem;
+			color: ${p => p.theme.colors.text};
+
+			padding: 1rem;
+			transition: 0.25s;
+
+			:focus
+			{
+				border-bottom-color: ${p => p.theme.colors.primary};
+			}
 		}
 
 		ul
@@ -59,7 +56,7 @@ const Container = styled.form`
 			padding-left: 2rem;
 			gap: 0.5rem;
 			
-			width: 75%;
+			width: 100%;
 
 			li
 			{
@@ -74,70 +71,9 @@ const Container = styled.form`
 					width: 40%;
 				}
 
-				button
+				button:hover
 				{
-					background-color: ${p => p.theme.colors.background};
-
-					:hover
-					{
-						background-color: rgb(201, 64, 64);
-					}
-				}
-			}
-
-			.phone
-			{
-				input
-				{
-					width: 100%;
-				}
-
-				.group
-				{
-					display: flex;
-					align-items: center;
-					gap: 2rem;
-
-					margin-right: 2rem;
-					width: 75%;
-
-					.whatsapp
-					{
-						display: flex;
-						align-items: center;
-						gap: 0.5rem;
-
-						svg
-						{
-							color: green;
-						}
-					}
-				}
-			}
-
-			.company
-			{
-				.comissao
-				{
-					display: flex;
-					align-items: center;
-
-					label
-					{
-						margin: 0;
-						font-size: 1.25rem;
-					}
-
-					input
-					{
-						border: none;
-						border-bottom: rgb(134, 134, 134) solid 1px;
-						border-radius:  0;
-
-						width: 7.5rem;
-						padding: 0;
-						padding-left: 0.5rem;
-					}
+					background-color: rgb(201, 64, 64);
 				}
 			}
 
@@ -155,11 +91,40 @@ const Container = styled.form`
 				justify-content: center;
 				
 				cursor: pointer;
-				transition: 0.5s;
+				transition: 0.25s;
 				
 				:hover
 				{
 					background-color: rgb(89, 211, 89);
+				}
+			}
+		}
+
+		.addressField
+		{
+			padding-left: 2rem;
+
+			display: flex;
+			flex-direction: column;	
+		}
+
+		.status
+		{
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+
+			.statusField
+			{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.5rem;
+
+				span
+				{
+					font-family: Ubuntu;
+					font-size: 1.5rem;
 				}
 			}
 		}
@@ -182,6 +147,7 @@ const Container = styled.form`
 			
 			font-family: Ubuntu;
 			font-size: 1.75rem;
+			font-weight: 700;
 			background-color: ${p => p.theme.colors.background};
 			
 			border: none;
