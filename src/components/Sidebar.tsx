@@ -53,16 +53,16 @@ export default function Sidebar()
 							<span>Empresas</span>
 						</a>
 					</Link>
-					<Link href='/indicadores' >
-						<a>
-							<BiLineChart size={25} color={checkRoute('/indicadores')}/>
-							<span>Indicadores</span>
-						</a>
-					</Link>
 					<Link href='/vendedores' >
 						<a>
 							<FiUsers size={25} color={checkRoute('/vendedores')}/>
 							<span>Vendedores</span>
+						</a>
+					</Link>
+					<Link href='/indicadores' >
+						<a>
+							<BiLineChart size={25} color={checkRoute('/indicadores')}/>
+							<span>Indicadores</span>
 						</a>
 					</Link>
 				</ul>
