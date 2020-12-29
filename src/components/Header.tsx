@@ -28,9 +28,7 @@ const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = ''
 
 	function getIcon()
 	{
-		if (page === '')
-			return <BiLineChart size={30} />
-		if (page === 'pedidos')
+		if (page === '') //pedidos
 			return <BiSpreadsheet size={30} />
 		if (page === 'clientes')
 			return <FaStore size={30} />
@@ -38,6 +36,8 @@ const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = ''
 			return <BiBuildings size={30} />
 		if (page === 'vendedores')
 			return <FiUsers size={30} />
+		if (page === 'indicadores')
+			return <BiLineChart size={30} />
 	}
 
   return (
