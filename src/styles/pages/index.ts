@@ -95,8 +95,6 @@ const Container = styled.div<ContainerProps>`
 			
 						border: none;
 						background: none;
-						/* background-color: ${p => p.theme.colors.background}; */
-						/* background-color: ${p => `${p.theme.colors.background}80`}; */
 
 						display: flex;
 						align-items: center;
@@ -104,17 +102,10 @@ const Container = styled.div<ContainerProps>`
 			
 						cursor: pointer;
 						transition: 0.25s;
-						
-						/* :hover
-						{
-							background-color: rgb(201, 64, 64);
-						} */
 			
 						:hover
 						{
 							background-color: ${p => p.theme.colors.background};
-							/* background-color: ${p => `${p.theme.colors.background}80`}; */
-							/* background-color: #fff; */
 						}
 
 						:last-of-type:hover
