@@ -81,7 +81,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 							<div className='buttons'>
 								{user.role === 'admin' && (
 									<>
-											<button title='Editar' onClick={() => Router.push(`/clients/${client.id}`)}>
+											<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
 												<FiEdit3 size={25} />
 											</button>
 											<button title='Deletar' onClick={() => {}} >

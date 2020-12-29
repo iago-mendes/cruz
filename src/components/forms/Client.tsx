@@ -99,7 +99,16 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [senha, setSenha] = useState('')
 	const [vendedores, setVendedores] = useState<string[]>([])
 	const [representadas, setRepresentadas] = useState<ClientCompany[]>([])
-	const [endereco, setEndereco] = useState<Address>({})
+	const [endereco, setEndereco] = useState<Address>(
+	{
+		rua: '',
+		numero: 0,
+		complemento: '',
+		bairro: '',
+		cep: 0,
+		cidade: '',
+		uf: ''
+	})
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
@@ -142,6 +151,23 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			setTableOptions(tmpTables)
 		})
 	}, [])
+
+	useEffect(() =>
+	{
+		if (client)
+		{
+			setRazaoSocial(client.razao_social)
+			setNomeFantasia(client.nome_fantasia)
+			setCnpj(client.cnpj)
+			setInscEstadual(client.insc_estadual)
+			setEmail(client.email)
+			setSenha(client.senha)
+			setVendedores(client.vendedores)
+			setRepresentadas(client.representadas)
+			setEndereco(client.endereco)
+			setStatus(client.status)
+		}
+	}, [client])
 
 	function handleSellersChange(e: OptionsType<SelectOption>)
 	{
@@ -305,7 +331,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				<Select
 					name='vendedores'
 					id='vendedores'
-					value={sellerOptions.filter(seller => vendedores.includes(seller.value))}
+					value={sellerOptions.filter(option => vendedores.includes(option.value))}
 					onChange={handleSellersChange}
 					options={sellerOptions}
 					hideSelectedOptions
@@ -333,7 +359,11 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 							<div className="select">
 								<Select
 									name='tabela'
-									value={representada.id !== '' && tableOptions[representada.id].find(option => option.value === representada.tabela)}
+									value=
+									{
+										(representada.id !== '' && tableOptions[representada.id]) &&
+											tableOptions[representada.id].find(option => option.value === representada.tabela)
+									}
 									onChange={e => handleCompanyChange(e, index, 'tabela')}
 									options={representada.id !== '' ? tableOptions[representada.id] : []}
 									isDisabled={representada.id === ''}
