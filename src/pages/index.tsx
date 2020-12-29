@@ -91,16 +91,28 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 						</div>
 						<ul>
 							<li>
-								<FaStore size={20} />
-								{request.cliente}
+								<div className="imgName">
+									<img src={request.cliente.imagem} alt={request.cliente.nome_fantasia}/>
+									<h1>{request.cliente.nome_fantasia}</h1>
+								</div>
+								<div className="description">
+									<h2>{request.cliente.razao_social}</h2>
+								</div>
 							</li>
 							<li>
-								<BiBuildings size={20} />
-								{request.representada}
+								<div className="imgName">
+									<img src={request.representada.imagem} alt={request.representada.nome_fantasia}/>
+									<h1>{request.representada.nome_fantasia}</h1>
+								</div>
+								<div className="description">
+									<h2>{request.representada.razao_social}</h2>
+								</div>
 							</li>
 							<li>
-								<FiUsers size={20} />
-								{request.vendedor}
+								<div className="imgName">
+									<img src={request.vendedor.imagem} alt={request.vendedor.nome}/>
+									<h1>{request.vendedor.nome}</h1>
+								</div>
 							</li>
 						</ul>
 					</div>

@@ -38,9 +38,24 @@ export interface ListedRequest
 {
 	id: string
 	data: string
-	cliente: string
-	vendedor: string
-	representada: string
+	cliente:
+	{
+		imagem: string
+		nome_fantasia: string
+		razao_social: string
+	}
+	vendedor:
+	{
+		imagem: string
+		nome: string
+	}
+	representada:
+	{
+		imagem: string
+		nome_fantasia: string
+		razao_social: string
+	}
 	tipo: Type
 	status: Status
+	valorTotal: number
 }
