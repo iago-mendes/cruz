@@ -3,6 +3,9 @@ import styled from 'styled-components'
 const Container = styled.div`
 	main
 	{
+		flex-direction: column;
+		gap: 1rem;
+
 		.client
 		{
 			background-color: #fff;

@@ -47,6 +47,19 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 	const {user: tmpUser}:{user: any} = session
 	const user: User = tmpUser
 
+	async function handleDeleteClient(client: Client)
+	{
+		const yes = confirm(`Deseja deletar o cliente ${client.nome_fantasia}?`)
+		if (yes)
+		{
+			await api.delete(`clients/${client.id}`).then(() =>
+			{
+				revalidate()
+				alert(`Cliente ${client.nome_fantasia} deletado com sucesso!`)
+			})
+		}
+	}
+
 	return (
 		<Container className='container'>
 			<Head>
@@ -84,7 +97,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 											<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
 												<FiEdit3 size={25} />
 											</button>
-											<button title='Deletar' onClick={() => {}} >
+											<button title='Deletar' onClick={() => handleDeleteClient(client)} >
 												<FiTrash size={25} />
 											</button>
 									</>

@@ -245,6 +245,47 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		e.preventDefault()
 
 		const data = new FormData()
+
+		if (imagem)	data.append('imagem', imagem)
+		data.append('razao_social', razao_social)
+		data.append('nome_fantasia', nome_fantasia)
+		data.append('cnpj', cnpj)
+		data.append('insc_estadual', insc_estadual)
+		data.append('email', email)
+		data.append('senha', senha)
+		data.append('vendedores', JSON.stringify(vendedores))
+		data.append('representadas', JSON.stringify(representadas))
+		data.append('endereco', JSON.stringify(endereco))
+		data.append('status', JSON.stringify(status))
+
+		if (method === 'post')
+		{
+			await api.post('clients', data)
+			.then(() =>
+			{
+				alert('Cliente criado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
+		else if (method === 'put')
+		{
+			await api.put(`clients/${id}`, data)
+			.then(() =>
+			{
+				alert('Cliente atualizado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
 	}
 
 	return (
