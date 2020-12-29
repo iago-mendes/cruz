@@ -14,6 +14,7 @@ import Loading from '../components/Loading'
 import api from '../services/api'
 import Add from '../components/Add'
 import User from '../utils/userType'
+import formatDate from '../utils/formatDate'
 
 interface RequestsProps
 {
@@ -73,7 +74,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 										troca
 									</span>
 								)}
-								<h2>{request.data}</h2>
+								<h2>{formatDate(request.data)}</h2>
 							</div>
 							<div className="status">
 								<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
