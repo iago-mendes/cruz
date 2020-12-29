@@ -5,7 +5,9 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
-
+import {BiBuildings} from 'react-icons/bi'
+import {FiUsers} from 'react-icons/fi'
+import {FaStore} from 'react-icons/fa'
 
 import Container from '../styles/pages/index'
 import {ListedRequest as Request} from '../components/forms/Request'
@@ -56,10 +58,53 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 			</Head>
 
 			<Add route='/novo-pedido' />
-			<Header display='Pedidos' showSearch />
+			<Header display='Pedidos' />
 
 			<main className='main'>
-				
+				{requests.map(request => (
+					<div className='request' key={request.id}>
+						<div className="header">
+							<div className="typeDate">
+								{request.tipo.venda && (
+									<span style={{backgroundColor: '#357435'}}>
+										venda
+									</span>
+								)}
+								{request.tipo.troca && (
+									<span style={{backgroundColor: '#2b2b68'}}>
+										troca
+									</span>
+								)}
+								{request.data}
+							</div>
+							<div className="status">
+								<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
+									{request.status.concluido ? 'concluído' : 'pendente' }
+								</span>
+								<span style={{backgroundColor: request.status.enviado ? '#16881a' : '#881616'}} >
+									{request.status.enviado ? 'enviado' : 'não enviado' }
+								</span>
+								<span style={{backgroundColor: request.status.faturado ? '#16881a' : '#881616'}} >
+									{request.status.faturado ? 'faturado' : 'não faturado' }
+								</span>
+							</div>
+						</div>
+						<ul>
+							<li>
+								<FaStore size={20} />
+								{request.cliente}
+							</li>
+							<li>
+								<BiBuildings size={20} />
+								{request.representada}
+							</li>
+							<li>
+								<FiUsers size={20} />
+								{request.vendedor}
+							</li>
+						</ul>
+					</div>
+				))}
 			</main>
 
 		</Container>
