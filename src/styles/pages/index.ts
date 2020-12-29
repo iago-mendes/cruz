@@ -1,6 +1,11 @@
 import styled from 'styled-components'
 
-const Container = styled.div`
+interface ContainerProps
+{
+	isAdmin: boolean
+}
+
+const Container = styled.div<ContainerProps>`
 	main
 	{
 		flex-direction: column;
@@ -74,6 +79,48 @@ const Container = styled.div`
 						font-family: Ubuntu;
 						color: #fff;
 						font-size: 1.25rem;
+					}
+				}
+
+				.buttons
+				{
+					display: flex;
+					gap: 1rem;
+
+					button
+					{
+						width: 4rem;
+						height: 4rem;
+						border-radius: 10rem;
+			
+						border: none;
+						background: none;
+						/* background-color: ${p => p.theme.colors.background}; */
+						/* background-color: ${p => `${p.theme.colors.background}80`}; */
+
+						display: flex;
+						align-items: center;
+						justify-content: center;
+			
+						cursor: pointer;
+						transition: 0.25s;
+						
+						/* :hover
+						{
+							background-color: rgb(201, 64, 64);
+						} */
+			
+						:hover
+						{
+							background-color: ${p => p.theme.colors.background};
+							/* background-color: ${p => `${p.theme.colors.background}80`}; */
+							/* background-color: #fff; */
+						}
+
+						:last-of-type:hover
+						{
+							${p => p.isAdmin && 'background-color: rgb(201, 64, 64);'}
+						}
 					}
 				}
 			}

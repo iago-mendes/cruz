@@ -5,9 +5,7 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
-import {BiBuildings} from 'react-icons/bi'
-import {FiUsers} from 'react-icons/fi'
-import {FaStore} from 'react-icons/fa'
+import {FaRegEye} from 'react-icons/fa'
 
 import Container from '../styles/pages/index'
 import {ListedRequest as Request} from '../components/forms/Request'
@@ -52,7 +50,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 	const user: User = tmpUser
 
 	return (
-		<Container className='container'>
+		<Container className='container' isAdmin={user.role === 'admin'} >
 			<Head>
 				<title>Pedidos | Cruz Representações</title>
 			</Head>
@@ -87,6 +85,21 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 								<span style={{backgroundColor: request.status.faturado ? '#16881a' : '#881616'}} >
 									{request.status.faturado ? 'faturado' : 'não faturado' }
 								</span>
+							</div>
+							<div className='buttons'>
+								<button title='Ver' onClick={() => {}}>
+									<FaRegEye size={20} />
+								</button>
+								{user.role === 'admin' && (
+									<>
+										<button title='Editar' onClick={() => {}}>
+											<FiEdit3 size={20} />
+										</button>
+										<button title='Deletar' onClick={() => {}} >
+											<FiTrash size={20} />
+										</button>
+									</>
+								)}
 							</div>
 						</div>
 						<ul>
