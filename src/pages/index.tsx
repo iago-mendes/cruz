@@ -75,7 +75,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 										troca
 									</span>
 								)}
-								{request.data}
+								<h2>{request.data}</h2>
 							</div>
 							<div className="status">
 								<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
