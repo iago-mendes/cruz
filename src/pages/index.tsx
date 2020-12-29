@@ -26,11 +26,20 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 	const [session, loading] = useSession()
 	
 	const [requests, setRequests] = useState<Request[]>([])
+	const {data, error, revalidate} = useSWR('/api/getRequests')
 
 	useEffect(() =>
 	{
-		setRequests(staticRequests)
-	}, [staticRequests])
+		if (data)
+			setRequests(data)
+		else
+		{
+			setRequests(staticRequests)
+
+			if (error)
+				console.error(error)
+		}
+	}, [data, error, staticRequests])
 
 	useEffect(() => console.log('[requests]', requests), [requests])
 
