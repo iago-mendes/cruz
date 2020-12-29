@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
@@ -37,13 +37,7 @@ export default function Sidebar()
 				<ul>
 					<Link href='/' >
 						<a>
-							<BiLineChart size={25} color={checkRoute('/')}/>
-							<span>Indicadores</span>
-						</a>
-					</Link>
-					<Link href='/pedidos' >
-						<a>
-							<BiSpreadsheet size={25} color={checkRoute('/pedidos')}/>
+							<BiSpreadsheet size={25} color={checkRoute('/')}/>
 							<span>Pedidos</span>
 						</a>
 					</Link>
@@ -57,6 +51,12 @@ export default function Sidebar()
 						<a>
 							<BiBuildings size={25} color={checkRoute('/empresas')}/>
 							<span>Empresas</span>
+						</a>
+					</Link>
+					<Link href='/indicadores' >
+						<a>
+							<BiLineChart size={25} color={checkRoute('/indicadores')}/>
+							<span>Indicadores</span>
 						</a>
 					</Link>
 					<Link href='/vendedores' >
