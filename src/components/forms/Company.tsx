@@ -26,6 +26,14 @@ export interface Company
 	tabelas: Table[]
 }
 
+export interface ListedCompany
+{
+	id: string
+	imagem: string
+	nome_fantasia: string
+	descricao_curta: string
+}
+
 interface CompanyFormProps
 {
 	method: string
