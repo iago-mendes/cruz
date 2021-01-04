@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
-import {useSession} from 'next-auth/client'
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {useRouter} from 'next/router'
 import useSWR from 'swr'
@@ -10,11 +9,11 @@ import api from '../../../../services/api'
 import Loading from '../../../../components/Loading'
 import Header from '../../../../components/Header'
 import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
-import User from '../../../../utils/userType'
 import {Line} from '../../../../components/forms/Line'
 import {Product} from '../../../../components/forms/Product'
 import {Company, Table} from '../../../../components/forms/Company'
 import Add from '../../../../components/Add'
+import useUser from '../../../../hooks/useUser'
 
 interface ProductsProps
 {
@@ -29,7 +28,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	const Router = useRouter()
 	const {company: companyId, line: lineId} = Router.query
 	
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const {data, error, revalidate} = useSWR(`/api/listProducts?company=${companyId}&line=${lineId}`)
 	const [products, setProducts] = useState<Product[]>([])
 
@@ -48,10 +47,8 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 		}
 	}, [data, error, staticProducts])
 
-	if (loading) return <Loading />
-	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
+	if (loading)
+		return <Loading />
 
 	function formatNumber(n: number)
 	{

@@ -13,8 +13,8 @@ import Header from '../components/Header'
 import Loading from '../components/Loading'
 import api from '../services/api'
 import Add from '../components/Add'
-import User from '../utils/userType'
 import formatDate from '../utils/formatDate'
+import useUser from '../hooks/useUser'
 
 interface RequestsProps
 {
@@ -24,7 +24,7 @@ interface RequestsProps
 const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 {
 	const Router = useRouter()
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	
 	const [requests, setRequests] = useState<Request[]>([])
 	const {data, error, revalidate} = useSWR('/api/getRequests')
@@ -46,9 +46,6 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 
 	if (loading)
 		return <Loading />
-
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
 
 	return (
 		<Container className='container' isAdmin={user.role === 'admin'} >

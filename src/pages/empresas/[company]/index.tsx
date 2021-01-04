@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
-import {useSession} from 'next-auth/client'
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {useRouter} from 'next/router'
 import useSWR from 'swr'
@@ -10,9 +9,9 @@ import api from '../../../services/api'
 import Loading from '../../../components/Loading'
 import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/index'
-import User from '../../../utils/userType'
 import {Line} from '../../../components/forms/Line'
 import Add from '../../../components/Add'
+import useUser from '../../../hooks/useUser'
 
 interface LinesProps
 {
@@ -25,7 +24,7 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 	const Router = useRouter()
 	const {company: companyId} = Router.query
 	
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const {data, error, revalidate} = useSWR(`/api/listLines?company=${companyId}`)
 	const [shownLines, setShownLines] = useState<Line[]>([])
 	
@@ -42,11 +41,9 @@ const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
 		}
 	}, [data, error, lines])
 
-	if (loading) return <Loading />
+	if (loading)
+		return <Loading />
 	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
-
 	async function handleDeleteLine(line: Line)
 	{
 		const yes = confirm(`Deseja deletar a empresa ${line.nome}?`)

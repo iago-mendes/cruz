@@ -1,23 +1,19 @@
 import {useState} from 'react'
 import Head from 'next/head'
-import {useSession} from 'next-auth/client'
 
 import Client from '../../components/forms/Client'
 import Loading from '../../components/Loading'
-import User from '../../utils/userType'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
+import useUser from '../../hooks/useUser'
 
 const AddClient: React.FC = () =>
 {
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const [nomeFantasia, setNomeFantasia] = useState('')
 	
-	if (loading) return <Loading />
-	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
-
+	if (loading)
+		return <Loading />
 	if (user.role !== 'admin')
 		return <NotAllowed />
 

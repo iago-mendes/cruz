@@ -1,21 +1,20 @@
 import {useEffect, useState} from 'react'
 import Head from 'next/head'
-import {useSession} from 'next-auth/client'
 import {useRouter} from 'next/router'
 
 import Header from '../../components/Header'
 import ClientForm, {Client} from '../../components/forms/Client'
 import Loading from '../../components/Loading'
-import User from '../../utils/userType'
 import NotAllowed from '../../components/NotAllowed'
 import api from '../../services/api'
+import useUser from '../../hooks/useUser'
 
 const EditClient: React.FC = () =>
 {
 	const Router = useRouter()
 	const {client: id} = Router.query
 
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const [nome_fantasia, setNomeFantasia] = useState('')
 	const [client, setClient] = useState<Client>(
 	{
@@ -41,10 +40,6 @@ const EditClient: React.FC = () =>
 
 	if (loading)
 		return <Loading />
-	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
-
 	if (user.role !== 'admin')
 		return <NotAllowed />
 

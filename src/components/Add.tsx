@@ -1,9 +1,8 @@
-import {useSession} from 'next-auth/client'
 import {useRouter} from 'next/router'
 import {FiPlus} from 'react-icons/fi'
 
+import useUser from '../hooks/useUser'
 import Container from '../styles/components/Add'
-import User from '../utils/userType'
 
 interface AddProps
 {
@@ -12,15 +11,11 @@ interface AddProps
 
 const Add: React.FC<AddProps> = ({route}) =>
 {
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const Router = useRouter()
 
 	if (loading)
 		return null
-	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
-
 	if (user.role !== 'admin')
 		return null
 

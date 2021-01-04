@@ -4,16 +4,15 @@ import {useEffect, useState} from 'react'
 import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
-import {useSession} from 'next-auth/client'
 
 import Container from '../../styles/pages/vendedores/index'
 import api from '../../services/api'
-import User from '../../utils/userType'
 import Loading from '../../components/Loading'
 import Add from '../../components/Add'
 import {Seller} from '../../components/forms/Seller'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
+import useUser from '../../hooks/useUser'
 
 interface SellersProps
 {
@@ -22,7 +21,7 @@ interface SellersProps
 
 const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 {
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const Router = useRouter()
 
 	const [sellers, setSellers] = useState<Seller[]>([])
@@ -41,11 +40,8 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 		}
 	}, [data, error, staticSellers])
 
-	if (loading) return <Loading />
-	
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
-
+	if (loading)
+		return <Loading />
 	if (user.role !== 'admin')
 		return <NotAllowed />
 

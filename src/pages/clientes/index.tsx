@@ -1,5 +1,4 @@
 import {GetStaticProps} from 'next'
-import {useSession} from 'next-auth/client'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
@@ -13,7 +12,7 @@ import Loading from '../../components/Loading'
 import api from '../../services/api'
 import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
-import User from '../../utils/userType'
+import useUser from '../../hooks/useUser'
 
 interface ClientsProps
 {
@@ -23,7 +22,7 @@ interface ClientsProps
 const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 {
 	const Router = useRouter()
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	
 	const [clients, setClients] = useState<Client[]>([])
 	const {data, error, revalidate} = useSWR('/api/getClients')
@@ -43,9 +42,6 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 
 	if (loading)
 		return <Loading />
-
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
 
 	async function handleDeleteClient(client: Client)
 	{

@@ -2,7 +2,6 @@ import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {GetStaticProps } from 'next'
-import {useSession} from 'next-auth/client'
 import useSWR from 'swr'
 import {useEffect, useState} from 'react'
 
@@ -10,8 +9,8 @@ import api from '../../services/api'
 import Loading from '../../components/Loading'
 import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
-import User from '../../utils/userType'
 import Add from '../../components/Add'
+import useUser from '../../hooks/useUser'
 
 interface Company
 {
@@ -29,7 +28,7 @@ interface CompaniesProps
 const Companies: React.FC<CompaniesProps> = ({companies}) =>
 {
 	const Router = useRouter()
-	const [session, loading] = useSession()
+	const {user, loading} = useUser()
 	const [shownCompanies, setShownCompanies] = useState<Company[]>([])
 	const {data, error, revalidate} = useSWR('/api/listCompanies')
 
@@ -46,10 +45,8 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 		}
 	}, [data, error, companies])
 
-	if (loading) return <Loading />
-
-	const {user: tmpUser}:{user: any} = session
-	const user: User = tmpUser
+	if (loading)
+		return <Loading />
 
 	async function handleDeleteCompany(company: Company)
 	{
