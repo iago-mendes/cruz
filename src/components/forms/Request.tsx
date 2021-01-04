@@ -229,7 +229,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					onChange={e => setRepresentada(e.value)}
 					options={companyOptions}
 					styles={selectStyles}
-					placeholder='Selecione o representada'
+					placeholder='Selecione a representada'
 				/>
 			</div>
 			<div className="buttons">
