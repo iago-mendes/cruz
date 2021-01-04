@@ -409,7 +409,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 									options={representada.id !== '' ? tableOptions[representada.id] : []}
 									isDisabled={representada.id === ''}
 									styles={selectStyles}
-									placeholder='Selecione a tabela'
+									placeholder={representada.id !== '' ? 'Selecione a tabela' : 'Selecione a representada'}
 								/>
 							</div>
 							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
