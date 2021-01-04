@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = ''
 
 	function getIcon()
 	{
-		if (page === '') //pedidos
+		if (page === '' || page === 'pedido')
 			return <BiSpreadsheet size={30} />
 		if (page === 'clientes')
 			return <FaStore size={30} />

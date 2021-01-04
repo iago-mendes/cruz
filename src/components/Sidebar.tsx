@@ -16,11 +16,13 @@ export default function Sidebar()
 
 	if (Router.pathname === '/login') return null
 
-	function checkRoute(route: string)
+	function checkRoute(routes: string[])
 	{
 		const current = Router.pathname.split('/')
-		if (`/${current[1]}` === route) return "#CC9749"
-		else return "#E2DADB"
+		if (routes.includes(`/${current[1]}`))
+			return "#CC9749"
+		else
+			return "#E2DADB"
 	}
 
 	return (
@@ -37,31 +39,31 @@ export default function Sidebar()
 				<ul>
 					<Link href='/' >
 						<a>
-							<BiSpreadsheet size={25} color={checkRoute('/')}/>
+							<BiSpreadsheet size={25} color={checkRoute(['/', '/pedido'])}/>
 							<span>Pedidos</span>
 						</a>
 					</Link>
 					<Link href='/clientes' >
 						<a>
-							<FaStore size={25} color={checkRoute('/clientes')}/>
+							<FaStore size={25} color={checkRoute(['/clientes'])}/>
 							<span>Clientes</span>
 						</a>
 					</Link>
 					<Link href='/empresas' >
 						<a>
-							<BiBuildings size={25} color={checkRoute('/empresas')}/>
+							<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
 							<span>Empresas</span>
 						</a>
 					</Link>
 					<Link href='/vendedores' >
 						<a>
-							<FiUsers size={25} color={checkRoute('/vendedores')}/>
+							<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
 							<span>Vendedores</span>
 						</a>
 					</Link>
 					<Link href='/indicadores' >
 						<a>
-							<BiLineChart size={25} color={checkRoute('/indicadores')}/>
+							<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
 							<span>Indicadores</span>
 						</a>
 					</Link>
@@ -72,7 +74,7 @@ export default function Sidebar()
 				<ul>
 					<Link href='/usuario' >
 						<a>
-							<BiUserCircle size={25} color={checkRoute('/usuario')}/>
+							<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
 							<span>Usuário</span>
 						</a>
 					</Link>
