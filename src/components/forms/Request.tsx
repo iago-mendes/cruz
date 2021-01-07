@@ -1,13 +1,15 @@
 import {useRouter} from 'next/router'
 import Select from 'react-select'
 import {FormEvent, useEffect, useState} from 'react'
+import Switch from 'react-switch'
 
 import Container from '../../styles/components/forms/Request'
-import {selectStyles} from "../../styles/global"
+import {selectStyles} from '../../styles/global'
 import api from '../../services/api'
 import {ListedClient} from './Client'
-import {ListedSeller} from './Seller'
-import { ListedCompany } from './Company'
+import {ListedSeller, Seller} from './Seller'
+import {RawCompany } from './Company'
+import useUser from '../../hooks/useUser'
 
 interface Type
 {
@@ -77,6 +79,11 @@ interface SelectOption
 	label: string
 }
 
+interface LineSelectOptions
+{
+	[key: string]: SelectOption[]
+}
+
 interface RequestFormProps
 {
 	method: string
@@ -88,25 +95,34 @@ interface RequestFormProps
 const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => 
 {
 	const Router = useRouter()
+	const {user, loading} = useUser()
 
 	const [cliente, setCliente] = useState('')
 	const [vendedor, setVendedor] = useState('')
 	const [representada, setRepresentada] = useState('')
-	const [data, setData] = useState<Date>(null)
 	const [linha, setLinha] = useState('')
+	const [produtos, setProdutos] = useState<Product[]>([])
+	const [data, setData] = useState('')
 	const [condicao, setCondicao] = useState('')
 	const [digitado_por, setDigitadoPor] = useState('')
-	const [tipo, setTipo] = useState<Type>(null)
-	const [status, setStatus] = useState<Status>(null)
-	const [produtos, setProdutos] = useState<Product[]>([])
+	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
+	const [status, setStatus] = useState<Status>({concluido: false,	enviado: false,	faturado: false})
 
 	const [clientOptions, setClientOptions] = useState<SelectOption[]>([])
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
+	const [lineOptions, setLineOptions] = useState<LineSelectOptions>({})
 
 	useEffect(() =>
 	{
-		api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
+		getOptions()
+		if (!loading)
+			setVendedor(user.id)
+	}, [loading, user])
+
+	async function getOptions()
+	{
+		await api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
 		{
 			let tmpOptions: SelectOption[] = []
 
@@ -119,7 +135,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setClientOptions(tmpOptions)
 		})
 
-		api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
+		await api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
 		{
 			let tmpOptions: SelectOption[] = []
 
@@ -132,19 +148,81 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setSellerOptions(tmpOptions)
 		})
 
-		api.get('companies').then(({data: companies}:{data: ListedCompany[]}) =>
+		if (!loading && user.id !== 'not-logged')
 		{
-			let tmpOptions: SelectOption[] = []
+			let sellerCompanies: string[] = []
 
-			companies.map(company => tmpOptions.push(
+			await api.get(`sellers-raw/${user.id}`).then(({data: seller}:{data: Seller}) =>
 			{
-				label: company.nome_fantasia,
-				value: company.id
-			}))
-			
-			setCompanyOptions(tmpOptions)
-		})
-	}, [])
+				sellerCompanies = seller.representadas.map(company => company.id)
+			})
+
+			await api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
+			{
+				let tmpCompanies: SelectOption[] = []
+				let tmpLines: LineSelectOptions = {}
+
+				companies.map(company =>
+				{
+					if (sellerCompanies.includes(company._id))
+					{
+						tmpCompanies.push(
+						{
+							label: company.nome_fantasia,
+							value: company._id
+						})
+
+						tmpLines[company._id] = company.linhas.map(line => (
+						{
+							label: line.nome,
+							value: line._id
+						}))
+					}
+				})
+				
+				setCompanyOptions(tmpCompanies)
+				setLineOptions(tmpLines)
+			})
+		}
+	}
+
+	function handleCompanyChange(e: SelectOption)
+	{
+		setRepresentada(e.value)
+		setLinha('')
+	}
+
+	function handleTypeChange(e: boolean, field: string)
+	{
+		let tmp = {...tipo}
+
+		if (field === 'venda')
+		{
+			tmp.venda = e
+			tmp.troca = !e
+		}
+		else if (field === 'troca')
+		{
+			tmp.troca = e
+			tmp.venda = !e
+		}
+
+		setTipo(tmp)
+	}
+
+	function handleStatusChange(e: boolean, field: string)
+	{
+		let tmp = {...status}
+
+		if (field === 'concluido')
+			tmp.concluido = e
+		if (field === 'enviado')
+			tmp.enviado = e
+		if (field === 'faturado')
+			tmp.faturado = e
+
+		setStatus(tmp)
+	}
 
 	async function handleSubmit(e: FormEvent)
 	{
@@ -226,15 +304,132 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					name='representada'
 					id='representada'
 					value={companyOptions.find(option => option.value === representada)}
-					onChange={e => setRepresentada(e.value)}
+					onChange={handleCompanyChange}
 					options={companyOptions}
 					styles={selectStyles}
 					placeholder='Selecione a representada'
 				/>
 			</div>
-			<div className="buttons">
-				<button type="button" onClick={Router.back}>Cancelar</button>
-				<button type="submit">Confirmar</button>
+			{/* linha */}
+			<div className='field'>
+				<label htmlFor='linha'>Linha</label>
+				<Select
+					name='linha'
+					value=
+					{
+						(representada !== '' && lineOptions[representada]) &&
+							lineOptions[representada].find(option => option.value === linha)
+					}
+					onChange={e => setLinha(e.value)}
+					options={(representada !== '' && lineOptions[representada]) ? lineOptions[representada] : []}
+					isDisabled={representada === ''}
+					styles={selectStyles}
+					placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
+				/>
+			</div>
+			{/* data */}
+			<div className='field'>
+				<label htmlFor='data'>Data</label>
+				<input
+					type='date'
+					name='data'
+					id='data'
+					value={data}
+					onChange={e => setData(e.target.value)}
+				/>
+			</div>
+			{/* condicao */}
+			<div className='field'>
+				<label htmlFor='condicao'>Condição</label>
+				<input
+					type='text'
+					name='condicao'
+					id='condicao'
+					value={condicao}
+					onChange={e => setCondicao(e.target.value)}
+				/>
+			</div>
+			{/* digitado_por */}
+			<div className='field'>
+				<label htmlFor='digitado_por'>Digitado por</label>
+				<input
+					type='text'
+					name='digitado_por'
+					id='digitado_por'
+					value={digitado_por}
+					onChange={e => setDigitadoPor(e.target.value)}
+				/>
+			</div>
+			{/* tipo */}
+			<div className='field'>
+				<label htmlFor='tipo'>Tipo</label>
+				<div className='toggle'>
+					<div className='toggleField'>
+						<span>venda</span>
+						<Switch
+							name='venda'
+							id='venda'
+							checked={tipo.venda}
+							onChange={e => handleTypeChange(e, 'venda')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+					<div className='toggleField'>
+						<span>troca</span>
+						<Switch
+							name='troca'
+							id='troca'
+							checked={tipo.troca}
+							onChange={e => handleTypeChange(e, 'troca')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+				</div>
+			</div>
+			{/* status */}
+			<div className='field'>
+				<label htmlFor='status'>status</label>
+				<div className='toggle'>
+					<div className='toggleField'>
+						<span>concluído</span>
+						<Switch
+							name='concluido'
+							id='concluido'
+							checked={status.concluido}
+							onChange={e => handleStatusChange(e, 'concluido')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+					<div className='toggleField'>
+						<span>enviado</span>
+						<Switch
+							name='enviado'
+							id='enviado'
+							checked={status.enviado}
+							onChange={e => handleStatusChange(e, 'enviado')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+					<div className='toggleField'>
+						<span>faturado</span>
+						<Switch
+							name='faturado'
+							id='faturado'
+							checked={status.faturado}
+							onChange={e => handleStatusChange(e, 'faturado')}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
+						/>
+					</div>
+				</div>
+			</div>
+			<div className='buttons'>
+				<button type='button' onClick={Router.back}>Cancelar</button>
+				<button type='submit'>Confirmar</button>
 			</div>
 		</Container>
 	)

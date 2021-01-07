@@ -37,13 +37,19 @@ const Container = styled.form`
 			font-size: 1.5rem;
 			color: ${p => p.theme.colors.text};
 
-			padding: 1rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
 			transition: 0.25s;
 
 			:focus
 			{
 				border-bottom-color: ${p => p.theme.colors.primary};
 			}
+		}
+
+		input[type=date]
+		{
+			cursor: pointer;
 		}
 
 		ul
@@ -96,6 +102,27 @@ const Container = styled.form`
 				:hover
 				{
 					background-color: rgb(89, 211, 89);
+				}
+			}
+		}
+
+		.toggle
+		{
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+
+			.toggleField
+			{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.5rem;
+
+				span
+				{
+					font-family: Ubuntu;
+					font-size: 1.5rem;
 				}
 			}
 		}

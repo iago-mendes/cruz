@@ -26,6 +26,51 @@ export interface Company
 	tabelas: Table[]
 }
 
+export interface RawCompany
+{
+	comissao:
+	{
+		obs: string[]
+		porcentagem: number
+	}
+	telefones: number[]
+	_id: string
+	imagem: string
+	razao_social: string
+	nome_fantasia: string
+	cnpj: string
+	email: string
+	linhas: Array<
+	{
+		produtos: Array<
+		{
+			tabelas: Array<
+			{
+				_id: string
+				preco: number
+			}>
+			_id: string
+			imagem: string
+			codigo: number
+			nome: string
+			ipi: number
+			st: number
+			unidade: string
+			comissao: number
+		}>
+		_id: string
+		nome: string
+	}>
+	descricao_curta: string
+	descricao: string
+	site: string
+	tabelas: Array<
+	{
+		_id: string
+		nome: string
+	}>
+}
+
 export interface ListedCompany
 {
 	id: string
