@@ -130,11 +130,12 @@ const Container = styled.div<ContainerProps>`
 					border-top: ${p => `${p.theme.colors.text}40`} 1px solid;
 
 					display: flex;
-					flex-direction: column;
-					align-items: flex-start;
+					align-items: center;
+					justify-content: space-between;
 					gap: 1rem;
 
 					padding: 0.5rem;
+					height: 6rem;
 
 					:first-of-type
 					{
@@ -165,8 +166,6 @@ const Container = styled.div<ContainerProps>`
 
 					.description
 					{
-						padding-left: 6rem;
-
 						h2
 						{
 							font-family: Roboto;
