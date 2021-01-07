@@ -42,8 +42,6 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 		}
 	}, [data, error, staticRequests])
 
-	useEffect(() => console.log('[requests]', requests), [requests])
-
 	if (loading)
 		return <Loading />
 
