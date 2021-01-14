@@ -73,7 +73,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 							</div>
 							<div className="status">
 								<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
-									{request.status.concluido ? 'concluído' : 'pendente' }
+									{request.status.concluido ? 'concluído' : 'em orçamento' }
 								</span>
 								<span style={{backgroundColor: request.status.enviado ? '#16881a' : '#881616'}} >
 									{request.status.enviado ? 'enviado' : 'não enviado' }

@@ -47,6 +47,7 @@ export interface RawCompany
 			tabelas: Array<
 			{
 				_id: string
+				id: string
 				preco: number
 			}>
 			_id: string

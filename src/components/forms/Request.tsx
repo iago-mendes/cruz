@@ -8,8 +8,10 @@ import {selectStyles} from '../../styles/global'
 import api from '../../services/api'
 import {ListedClient} from './Client'
 import {ListedSeller, Seller} from './Seller'
-import {RawCompany } from './Company'
+import {RawCompany} from './Company'
 import useUser from '../../hooks/useUser'
+import {Product as RawProduct} from './Product'
+import {Client as RawClient} from './Client'
 
 interface Type
 {
@@ -84,6 +86,11 @@ interface LineSelectOptions
 	[key: string]: SelectOption[]
 }
 
+interface RawCompaniesList
+{
+	[companyId: string]: RawCompany
+}
+
 interface RequestFormProps
 {
 	method: string
@@ -113,12 +120,30 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 	const [lineOptions, setLineOptions] = useState<LineSelectOptions>({})
 
+	const [rawProducts, setRawProducts] = useState<RawProduct[]>([])
+	const [rawCompaniesList, setRawCompaniesList] = useState<RawCompaniesList>({})
+	const[clientCompanyTableId, setClientCompanyTableId] = useState('')
+
 	useEffect(() =>
 	{
 		getOptions()
 		if (!loading)
 			setVendedor(user.id)
 	}, [loading, user])
+
+	useEffect(() =>
+	{
+		if (cliente !== '' && representada !== '')
+			api.get(`/clients-raw/${cliente}`).then(({data: client}:{data: RawClient}) =>
+			{
+				const clientCompany = client.representadas.find(({id}) => id === representada)
+				if (clientCompany)
+					setClientCompanyTableId(clientCompany.tabela)
+			})
+	}, [cliente, representada])
+
+	useEffect(() => console.log('[clientCompanyTableId]', clientCompanyTableId), [clientCompanyTableId])
+	useEffect(() => console.log('[produtos]', produtos), [produtos])
 
 	async function getOptions()
 	{
@@ -161,6 +186,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{
 				let tmpCompanies: SelectOption[] = []
 				let tmpLines: LineSelectOptions = {}
+				let tmpRawCompaniesList: RawCompaniesList = {}
 
 				companies.map(company =>
 				{
@@ -177,11 +203,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							label: line.nome,
 							value: line._id
 						}))
+
+						tmpRawCompaniesList[company._id] = company
 					}
 				})
 				
 				setCompanyOptions(tmpCompanies)
 				setLineOptions(tmpLines)
+				setRawCompaniesList(tmpRawCompaniesList)
 			})
 		}
 	}
@@ -222,6 +251,29 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			tmp.faturado = e
 
 		setStatus(tmp)
+	}
+
+	function formatNumber(n: number)
+	{
+		return n.toFixed(2).replace('.', ',')
+	}
+
+	function handleAddProduct()
+	{
+		const tmpProducts: Product[] = [...produtos, {id: '', quantidade: 0, preco: 0}]
+		setProdutos(tmpProducts)
+	}
+
+	function handleRemoveProduct()
+	{}
+
+	function handleSelectProduct(e: SelectOption, index: number)
+	{
+		let products = [...produtos]
+
+		products[index].id = e.value
+
+		setProdutos(products)
 	}
 
 	async function handleSubmit(e: FormEvent)
@@ -326,6 +378,89 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					styles={selectStyles}
 					placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
 				/>
+			</div>
+			<div className="products">
+				<table>
+					<thead>
+						<tr>
+							<th>Imagem</th>
+							<th>Nome</th>
+							<th>Unidade</th>
+							<th>Código</th>
+							<th>St</th>
+							<th>Ipi</th>
+							<th>Quantidade</th>
+							<th>Preço de tabela</th>
+							<th>Preço líquido</th>
+							<th>Subtotal</th>
+						</tr>
+					</thead>
+
+					{(representada !== '' && linha !== '') && (
+					<tbody>
+						{produtos.map((produto, index) =>
+							{
+								const rawLine = rawCompaniesList[representada]
+									.linhas.find(({_id}) => _id == linha)
+
+								const productSelectOptions = rawLine.produtos.map(product => (
+								{
+									label: product.nome,
+									value: product._id
+								}))
+
+								const rawProduct: RawProduct = produto.id !== ''
+									? rawLine
+										.produtos.find(({_id}) => _id == produto.id)
+									: {
+										_id: '',
+										imagem: '',
+										nome: '',
+										codigo: 0,
+										unidade: '',
+										ipi: 0,
+										st: 0,
+										comissao: 0,
+										tabelas: []
+									}
+
+								const tablePrice = produto.id !== ''
+									? rawProduct.tabelas.find(({id}) => id === clientCompanyTableId).preco
+									: 0
+
+								return (
+								<tr key={index} >
+									<td className='img' >
+										<img src={rawProduct.imagem} alt={rawProduct.nome} />
+									</td>
+									<td>
+									<Select
+										options={productSelectOptions}
+										value=
+										{
+											produto.id !== '' &&
+												productSelectOptions.find(({value}) => value === produto.id)
+										}
+										onChange={e => handleSelectProduct(e, index)}
+										isDisabled={representada === ''}
+										styles={selectStyles}
+										placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
+									/>
+									</td>
+									<td>{rawProduct.unidade}</td>
+									<td>{rawProduct.codigo}</td>
+									<td>{formatNumber(rawProduct.st)} %</td>
+									<td>{formatNumber(rawProduct.ipi)} %</td>
+									<td>{produto.quantidade}</td>
+									<td>R$ {formatNumber(tablePrice)}</td>
+									<td>R$ {formatNumber(produto.preco)}</td>
+									<td>subtotal</td>
+								</tr>
+							)})}
+					</tbody>
+					)}
+				</table>
+				<button type="button" onClick={handleAddProduct}>+</button>
 			</div>
 			{/* data */}
 			<div className='field'>
