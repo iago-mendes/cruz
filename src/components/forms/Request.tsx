@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import Select from 'react-select'
 import {FormEvent, useEffect, useState} from 'react'
 import Switch from 'react-switch'
+import {FiMinus, FiPlus} from 'react-icons/fi'
 
 import Container from '../../styles/components/forms/Request'
 import {selectStyles} from '../../styles/global'
@@ -261,6 +262,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function handleAddProduct()
 	{
+		if (linha === '')
+			return alert('Selecione a linha')
+
 		const tmpProducts: Product[] = [...produtos, {id: '', quantidade: 0, preco: 0}]
 		setProdutos(tmpProducts)
 	}
@@ -386,7 +390,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
 				/>
 			</div>
-			<div className="products">
+			<div className='products'>
 				<table>
 					<thead>
 						<tr>
@@ -440,7 +444,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td className='img' >
 										<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
 									</td>
-									<td>
+									<td className='select' >
 										<Select
 											options={productSelectOptions}
 											value=
@@ -449,9 +453,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 													productSelectOptions.find(({value}) => value === produto.id)
 											}
 											onChange={e => handleSelectProduct(e, index)}
-											isDisabled={representada === ''}
+											isDisabled={linha === ''}
 											styles={selectStyles}
-											placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
+											placeholder='Selecione o produto'
 										/>
 									</td>
 									<td>{rawProduct.unidade}</td>
@@ -462,15 +466,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td>R$ {formatNumber(tablePrice)}</td>
 									<td>R$ {formatNumber(produto.preco)}</td>
 									<td>subtotal</td>
-									<td>
-										<button onClick={() => handleRemoveProduct(index)}>-</button>
+									<td className='remove' >
+										<button onClick={() => handleRemoveProduct(index)}>
+											<FiMinus size={20} />
+										</button>
 									</td>
 								</tr>
 							)})}
 					</tbody>
 					)}
 				</table>
-				<button type="button" onClick={handleAddProduct}>+</button>
+				<button type='button' onClick={handleAddProduct} className='add' >
+					<FiPlus size={20} />
+				</button>
 			</div>
 			{/* data */}
 			<div className='field'>

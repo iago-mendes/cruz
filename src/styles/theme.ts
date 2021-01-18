@@ -8,7 +8,10 @@ const theme =
     secondary: '#CC9749',
     secondaryStrong: '#E2AD25',
 		background: '#E2DADB',
-		text: '#313131'
+		text: '#313131',
+
+		delete: '#c94040',
+		confirm: '#59d359'
 	}
 }
 

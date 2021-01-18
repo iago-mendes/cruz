@@ -130,29 +130,145 @@ const Container = styled.form`
 
 	.products
 	{
+		width: 100%;
+
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+
 		table
 		{
+			margin: 1rem;
+			width: calc(100% - 2rem);
+			height: fit-content;
+
+			border-collapse: collapse;
+
+			thead
+			{
+				background-color: ${p => p.theme.colors.primary};
+				color: ${p => p.theme.colors.secondary};
+
+				tr
+				{
+					height: 5rem;
+
+					th
+					{
+						font-family: Ubuntu;
+						font-size: 1.25rem;
+
+						padding-left: 0.5rem;
+						padding-right: 0.5rem;
+					}
+				}
+			}
+
 			tbody
 			{
 				tr
 				{
+					height: 5rem;
+
+					:nth-child(odd)
+					{
+						background-color: #ccc;
+					}
+
+					:nth-child(even)
+					{
+						background-color: #fff;
+					}
+
 					td
 					{
+						font-family: Roboto;
+						padding-left: 0.5rem;
+						padding-right: 0.5rem;
 					}
 
 					.img
 					{
 						text-align: center;
 						width: 5rem;
-						padding: 0;
+						height: 5rem;
+						padding: 0.5rem;
 
 						img
 						{
-							max-width: 90%;
-							max-height: 90%;
+							max-width: 100%;
+							max-height: 100%;
+						}
+					}
+
+					.select
+					{
+						width: 22.5rem;
+					}
+
+					.remove
+					{
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						height: 5rem;
+						border: none;
+
+						button
+						{				
+							width: 2.5rem;
+							height: 2.5rem;
+							border-radius: 100rem;
+
+							display: flex;
+							align-items: center;
+							justify-content: center;
+					
+							border: none;
+							background: none;
+							color: ${p => p.theme.colors.primary};
+					
+							cursor: pointer;
+							transition: 0.25s;
+							
+							:hover
+							{
+								color: #fff;
+								background-color: ${p => p.theme.colors.delete};
+							}
 						}
 					}
 				}
+			}
+
+			th, td
+			{
+				border: 1px solid rgba(0,0,0,0.25);
+			}
+		}
+
+		.add
+		{
+			width: 2.5rem;
+			height: 2.5rem;
+			border-radius: 100rem;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+	
+			border: none;
+			background: none;
+			color: ${p => p.theme.colors.text};
+	
+			cursor: pointer;
+			transition: 0.25s;
+			
+			:hover
+			{
+				background-color: ${p => p.theme.colors.confirm};
 			}
 		}
 	}
