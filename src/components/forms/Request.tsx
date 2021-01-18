@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 import Select from 'react-select'
-import {FormEvent, useEffect, useState} from 'react'
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiMinus, FiPlus} from 'react-icons/fi'
 
@@ -144,8 +144,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			})
 	}, [cliente, representada])
 
-	useEffect(() => console.log('[clientCompanyTableId]', clientCompanyTableId), [clientCompanyTableId])
-	useEffect(() => console.log('[produtos]', produtos), [produtos])
+	useEffect(() =>
+	{
+		setProdutos([])
+	}, [cliente, vendedor, representada, linha])
 
 	async function getOptions()
 	{
@@ -281,8 +283,27 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	function handleSelectProduct(e: SelectOption, index: number)
 	{
 		let products = [...produtos]
+		
+		const productId = e.value
+		products[index].id = productId
 
-		products[index].id = e.value
+		const tablePrice =  rawCompaniesList[representada]
+			.linhas.find(({_id}) => _id == linha)
+			.produtos.find(({_id}) => _id == productId)
+			.tabelas.find(({id}) => id === clientCompanyTableId).preco		
+		products[index].preco = tablePrice
+
+		setProdutos(products)
+	}
+
+	function handleChangeProduct(e: ChangeEvent<HTMLInputElement>, index: number, field: string)
+	{
+		let products = [...produtos]
+
+		if (field === 'quantidade')
+			products[index].quantidade = Number(e.target.value)
+		if (field === 'preco')
+			products[index].preco = Number(e.target.value.replace(',', '.'))
 
 		setProdutos(products)
 	}
@@ -462,9 +483,22 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td>{rawProduct.codigo}</td>
 									<td>{formatNumber(rawProduct.st)} %</td>
 									<td>{formatNumber(rawProduct.ipi)} %</td>
-									<td>{produto.quantidade}</td>
+									<td>
+										<input
+											type="number"
+											value={produto.quantidade}
+											onChange={e => handleChangeProduct(e, index, 'quantidade')}
+										/>
+									</td>
 									<td>R$ {formatNumber(tablePrice)}</td>
-									<td>R$ {formatNumber(produto.preco)}</td>
+									<td>
+										<span>R$ </span>
+										<input
+											type="string"
+											value={formatNumber(produto.preco)}
+											onChange={e => handleChangeProduct(e, index, 'preco')}
+										/>
+									</td>
 									<td>subtotal</td>
 									<td className='remove' >
 										<button onClick={() => handleRemoveProduct(index)}>
