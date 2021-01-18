@@ -12,6 +12,7 @@ import {RawCompany} from './Company'
 import useUser from '../../hooks/useUser'
 import {Product as RawProduct} from './Product'
 import {Client as RawClient} from './Client'
+import formatImage from '../../utils/formatImage'
 
 interface Type
 {
@@ -264,8 +265,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setProdutos(tmpProducts)
 	}
 
-	function handleRemoveProduct()
-	{}
+	function handleRemoveProduct(index: number)
+	{
+		let tmpProdutos = [...produtos]
+
+		tmpProdutos.splice(index, 1)
+
+		setProdutos(tmpProdutos)
+	}
 
 	function handleSelectProduct(e: SelectOption, index: number)
 	{
@@ -414,7 +421,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 										.produtos.find(({_id}) => _id == produto.id)
 									: {
 										_id: '',
-										imagem: '',
+										imagem: undefined,
 										nome: '',
 										codigo: 0,
 										unidade: '',
@@ -431,21 +438,21 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 								return (
 								<tr key={index} >
 									<td className='img' >
-										<img src={rawProduct.imagem} alt={rawProduct.nome} />
+										<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
 									</td>
 									<td>
-									<Select
-										options={productSelectOptions}
-										value=
-										{
-											produto.id !== '' &&
-												productSelectOptions.find(({value}) => value === produto.id)
-										}
-										onChange={e => handleSelectProduct(e, index)}
-										isDisabled={representada === ''}
-										styles={selectStyles}
-										placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
-									/>
+										<Select
+											options={productSelectOptions}
+											value=
+											{
+												produto.id !== '' &&
+													productSelectOptions.find(({value}) => value === produto.id)
+											}
+											onChange={e => handleSelectProduct(e, index)}
+											isDisabled={representada === ''}
+											styles={selectStyles}
+											placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
+										/>
 									</td>
 									<td>{rawProduct.unidade}</td>
 									<td>{rawProduct.codigo}</td>
@@ -455,6 +462,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td>R$ {formatNumber(tablePrice)}</td>
 									<td>R$ {formatNumber(produto.preco)}</td>
 									<td>subtotal</td>
+									<td>
+										<button onClick={() => handleRemoveProduct(index)}>-</button>
+									</td>
 								</tr>
 							)})}
 					</tbody>

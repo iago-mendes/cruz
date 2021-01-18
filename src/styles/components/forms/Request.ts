@@ -128,6 +128,35 @@ const Container = styled.form`
 		}
 	}
 
+	.products
+	{
+		table
+		{
+			tbody
+			{
+				tr
+				{
+					td
+					{
+					}
+
+					.img
+					{
+						text-align: center;
+						width: 5rem;
+						padding: 0;
+
+						img
+						{
+							max-width: 90%;
+							max-height: 90%;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	.buttons
 	{
 		display: flex;
