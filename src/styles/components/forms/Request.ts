@@ -207,6 +207,14 @@ const Container = styled.form`
 						width: 22.5rem;
 					}
 
+					.quantity input, .price input
+					{
+						border: none;
+						padding: 0.5rem;
+
+						width: 7.5rem;
+					}
+
 					.remove
 					{
 						display: flex;

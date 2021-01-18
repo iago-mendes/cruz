@@ -483,18 +483,18 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td>{rawProduct.codigo}</td>
 									<td>{formatNumber(rawProduct.st)} %</td>
 									<td>{formatNumber(rawProduct.ipi)} %</td>
-									<td>
+									<td className='quantity' >
 										<input
-											type="number"
+											type='number'
 											value={produto.quantidade}
 											onChange={e => handleChangeProduct(e, index, 'quantidade')}
 										/>
 									</td>
 									<td>R$ {formatNumber(tablePrice)}</td>
-									<td>
+									<td className='price' >
 										<span>R$ </span>
 										<input
-											type="string"
+											type='string'
 											value={formatNumber(produto.preco)}
 											onChange={e => handleChangeProduct(e, index, 'preco')}
 										/>
