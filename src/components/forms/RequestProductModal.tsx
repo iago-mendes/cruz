@@ -111,17 +111,18 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	useEffect(() =>
 	{
 		let tmpSelected = {...selected}
-		let tmpProducts = [...products]
-
-		const index = selected.product.id !== ''
-			? products.findIndex(({id}) => id === selected.product.id)
-			: -1
-
+		
 		tmpSelected.product.preco = pricedProduct.preco
-		tmpProducts[index].preco = pricedProduct.preco
-
 		setSelected(tmpSelected)
-		setProducts(tmpProducts)
+		
+		if (selected.product.id !== '')
+		{
+			let tmpProducts = [...products]
+			const index = products.findIndex(({id}) => id === selected.product.id)
+
+			tmpProducts[index].preco = pricedProduct.preco
+			setProducts(tmpProducts)
+		}
 	}, [pricedProduct])
 
 	function handleSelectProduct(e: SelectOption)
