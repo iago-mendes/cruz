@@ -8,6 +8,7 @@ import {Product as RawProduct} from './Product'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
 import api from '../../services/api'
+import formatImage from '../../utils/formatImage'
 
 Modal.setAppElement('#__next')
 
@@ -52,7 +53,7 @@ interface PricedProduct
 const defaultPricedProduct: PricedProduct =
 {
 	id: '',
-	imagem: '',
+	imagem: formatImage(undefined),
 	nome: '',
 	unidade: '',
 	preco: 0
@@ -111,7 +112,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	useEffect(() =>
 	{
 		let tmpSelected = {...selected}
-		
+
 		tmpSelected.product.preco = pricedProduct.preco
 		setSelected(tmpSelected)
 		
@@ -189,7 +190,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 	function priceToString(p: number)
 	{
-		return p.toFixed(2).replace('.', ',')
+		return 'R$ ' + p.toFixed(2).replace('.', ',')
 	}
 
 	function priceToNumber(p: string)
@@ -210,19 +211,27 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 						<FiX size={25} />
 					</button>
 				</header>
+
 				<form>
-					<Select
-						options={productOptions}
-						value=
-						{
-							selected.product.id !== '' &&
-								productOptions.find(({value}) => value === selected.product.id)
-						}
-						onChange={handleSelectProduct}
-						isDisabled={selected.lineId === ''}
-						styles={selectStyles}
-						placeholder='Selecione o produto'
-					/>
+					<div className='group'>
+						<div className='img'>
+							<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
+						</div>
+						<div className='select'>
+							<Select
+								options={productOptions}
+								value=
+								{
+									selected.product.id !== '' &&
+										productOptions.find(({value}) => value === selected.product.id)
+								}
+								onChange={handleSelectProduct}
+								isDisabled={selected.lineId === ''}
+								styles={selectStyles}
+								placeholder='Selecione o produto'
+							/>
+						</div>
+					</div>
 					<div className='group'>
 						<div className='subGroup'>
 							<label>Unidade</label>
@@ -241,7 +250,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 					<div className='group'>
 						<div className='subGroup'>
 							<label>Preço de tabela</label>
-							<span>{pricedProduct.preco}</span>
+							<span>{priceToString(pricedProduct.preco)}</span>
 						</div>
 						<div className='subGroup'>
 							<label>Preço líquido</label>
