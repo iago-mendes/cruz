@@ -2,7 +2,7 @@ import {useRouter} from 'next/router'
 import Select from 'react-select'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Switch from 'react-switch'
-import {FiMinus, FiPlus} from 'react-icons/fi'
+import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
 import Container from '../../styles/components/forms/Request'
 import {selectStyles} from '../../styles/global'
@@ -14,6 +14,7 @@ import useUser from '../../hooks/useUser'
 import {Product as RawProduct} from './Product'
 import {Client as RawClient} from './Client'
 import formatImage from '../../utils/formatImage'
+import RequestProductModal, {Product} from './RequestProductModal'
 
 interface Type
 {
@@ -26,14 +27,6 @@ interface Status
 	concluido: boolean
 	enviado: boolean
 	faturado: boolean
-}
-
-interface Product
-{
-	_id?: string
-	id: string
-	quantidade: number
-	preco: number
 }
 
 export interface Request
@@ -122,9 +115,31 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 	const [lineOptions, setLineOptions] = useState<LineSelectOptions>({})
 
-	const [rawProducts, setRawProducts] = useState<RawProduct[]>([])
 	const [rawCompaniesList, setRawCompaniesList] = useState<RawCompaniesList>({})
-	const[clientCompanyTableId, setClientCompanyTableId] = useState('')
+	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
+
+	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [selectedProduct, setSelectedProduct] = useState<{request: Product, raw: RawProduct}>(
+	{
+		request:
+		{
+			id: '',
+			quantidade: 0,
+			preco: 0
+		},
+		raw:
+		{
+			_id: '',
+			imagem: undefined,
+			nome: '',
+			codigo: 0,
+			unidade: '',
+			ipi: 0,
+			st: 0,
+			comissao: 0,
+			tabelas: []
+		}
+	})
 
 	useEffect(() =>
 	{
@@ -355,6 +370,12 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	return (
 		<Container onSubmit={handleSubmit}>
+			<RequestProductModal
+				isOpen={isModalOpen}
+				setIsOpen={setIsModalOpen}
+				product={selectedProduct}
+			/>
+
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
@@ -415,6 +436,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<table>
 					<thead>
 						<tr>
+							<th>Ações</th>
 							<th>Imagem</th>
 							<th>Nome</th>
 							<th>Unidade</th>
@@ -462,6 +484,18 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 								return (
 								<tr key={index} >
+									<td>
+										<div className='actions'>
+											<button
+												title='Editar'
+												onClick={() => setIsModalOpen(true)}>
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Remover' onClick={() => handleRemoveProduct(index)}>
+												<FiTrash size={15} />
+											</button>
+										</div>
+									</td>
 									<td className='img' >
 										<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
 									</td>
@@ -500,11 +534,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 										/>
 									</td>
 									<td>subtotal</td>
-									<td className='remove' >
-										<button onClick={() => handleRemoveProduct(index)}>
-											<FiMinus size={20} />
-										</button>
-									</td>
 								</tr>
 							)})}
 					</tbody>
