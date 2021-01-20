@@ -14,7 +14,8 @@ import useUser from '../../hooks/useUser'
 import {Product as RawProduct} from './Product'
 import {Client as RawClient} from './Client'
 import formatImage from '../../utils/formatImage'
-import RequestProductModal, {Product} from './RequestProductModal'
+import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
+import {SelectOption} from '../../utils/types'
 
 interface Type
 {
@@ -70,12 +71,6 @@ export interface ListedRequest
 	valorTotal: number
 }
 
-interface SelectOption
-{
-	value: string
-	label: string
-}
-
 interface LineSelectOptions
 {
 	[key: string]: SelectOption[]
@@ -119,27 +114,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [selectedProduct, setSelectedProduct] = useState<{request: Product, raw: RawProduct}>(
-	{
-		request:
-		{
-			id: '',
-			quantidade: 0,
-			preco: 0
-		},
-		raw:
-		{
-			_id: '',
-			imagem: undefined,
-			nome: '',
-			codigo: 0,
-			unidade: '',
-			ipi: 0,
-			st: 0,
-			comissao: 0,
-			tabelas: []
-		}
-	})
+	const [selected, setSelected] = useState<Selected>(defaultSelected)
 
 	useEffect(() =>
 	{
@@ -234,10 +209,32 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 	}
 
-	function handleCompanyChange(e: SelectOption)
+	function handleSelectClient(e: SelectOption)
+	{
+		setCliente(e.value)
+
+		let tmpSelected = {...selected}
+		tmpSelected.clientId = e.value
+		setSelected(tmpSelected)
+	}
+
+	function handleSelectCompany(e: SelectOption)
 	{
 		setRepresentada(e.value)
 		setLinha('')
+
+		let tmpSelected = {...selected}
+		tmpSelected.companyId = e.value
+		setSelected(tmpSelected)
+	}
+
+	function handleSelectLine(e: SelectOption)
+	{
+		setLinha(e.value)
+
+		let tmpSelected = {...selected}
+		tmpSelected.lineId = e.value
+		setSelected(tmpSelected)
 	}
 
 	function handleTypeChange(e: boolean, field: string)
@@ -282,8 +279,20 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		if (linha === '')
 			return alert('Selecione a linha')
 
-		const tmpProducts: Product[] = [...produtos, {id: '', quantidade: 0, preco: 0}]
-		setProdutos(tmpProducts)
+		let tmpSelected = {...selected}
+		tmpSelected.product = defaultSelected.product
+		setSelected(tmpSelected)
+
+		setIsModalOpen(true)
+	}
+
+	function handleEditProduct(product: Product)
+	{
+		let tmpSelected = {...selected}
+		tmpSelected.product = product
+		setSelected(tmpSelected)
+
+		setIsModalOpen(true)
 	}
 
 	function handleRemoveProduct(index: number)
@@ -373,7 +382,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			<RequestProductModal
 				isOpen={isModalOpen}
 				setIsOpen={setIsModalOpen}
-				product={selectedProduct}
+				selected={selected}
+				setSelected={setSelected}
+				products={produtos}
+				setProducts={setProdutos}
 			/>
 
 			{/* cliente */}
@@ -383,7 +395,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					name='cliente'
 					id='cliente'
 					value={clientOptions.find(option => option.value === cliente)}
-					onChange={e => setCliente(e.value)}
+					onChange={handleSelectClient}
 					options={clientOptions}
 					styles={selectStyles}
 					placeholder='Selecione o cliente'
@@ -409,7 +421,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					name='representada'
 					id='representada'
 					value={companyOptions.find(option => option.value === representada)}
-					onChange={handleCompanyChange}
+					onChange={handleSelectCompany}
 					options={companyOptions}
 					styles={selectStyles}
 					placeholder='Selecione a representada'
@@ -425,13 +437,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						(representada !== '' && lineOptions[representada]) &&
 							lineOptions[representada].find(option => option.value === linha)
 					}
-					onChange={e => setLinha(e.value)}
+					onChange={handleSelectLine}
 					options={(representada !== '' && lineOptions[representada]) ? lineOptions[representada] : []}
 					isDisabled={representada === ''}
 					styles={selectStyles}
 					placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
 				/>
 			</div>
+			{/* produtos */}
 			<div className='products'>
 				<table>
 					<thead>
@@ -488,7 +501,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 										<div className='actions'>
 											<button
 												title='Editar'
-												onClick={() => setIsModalOpen(true)}>
+												onClick={() => handleEditProduct(produto)}>
 												<FiEdit3 size={15} />
 											</button>
 											<button title='Remover' onClick={() => handleRemoveProduct(index)}>
@@ -643,6 +656,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					</div>
 				</div>
 			</div>
+			
 			<div className='buttons'>
 				<button type='button' onClick={Router.back}>Cancelar</button>
 				<button type='submit'>Confirmar</button>
