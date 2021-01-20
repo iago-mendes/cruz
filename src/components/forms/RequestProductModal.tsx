@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 import {FiX} from 'react-icons/fi'
-import {useEffect, useState} from 'react'
+import {ChangeEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/RequestProductModal'
 import {modalStyle, selectStyles} from '../../styles/global'
@@ -49,6 +49,15 @@ interface PricedProduct
 	preco: number
 }
 
+const defaultPricedProduct: PricedProduct =
+{
+	id: '',
+	imagem: '',
+	nome: '',
+	unidade: '',
+	preco: 0
+}
+
 interface RequestProductModalProps
 {
 	isOpen: boolean
@@ -65,6 +74,8 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 ({isOpen, setIsOpen, selected, setSelected, products, setProducts}) =>
 {
 	const [productOptions, setProductOptions] = useState<SelectOption[]>([])
+	const [pricedProducts, setPricedProducts] = useState<PricedProduct[]>([])
+	const [pricedProduct, setPricedProduct] = useState<PricedProduct>(defaultPricedProduct)
 
 	useEffect(() =>
 	{
@@ -79,9 +90,39 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 						label: product.nome
 					}))
 					setProductOptions(tmpOptions)
+
+					setPricedProducts(data)
 				})
 				.catch(err => console.log('[err]', err))
 	}, [selected])
+
+	useEffect(() =>
+	{
+		if (selected.product.id !== '')
+		{
+			const tmpPricedProduct = pricedProducts.find(({id}) => id === selected.product.id)
+			if (tmpPricedProduct)
+				setPricedProduct(tmpPricedProduct)
+		}
+		else
+			setPricedProduct(defaultPricedProduct)
+	}, [selected.product])
+
+	useEffect(() =>
+	{
+		let tmpSelected = {...selected}
+		let tmpProducts = [...products]
+
+		const index = selected.product.id !== ''
+			? products.findIndex(({id}) => id === selected.product.id)
+			: -1
+
+		tmpSelected.product.preco = pricedProduct.preco
+		tmpProducts[index].preco = pricedProduct.preco
+
+		setSelected(tmpSelected)
+		setProducts(tmpProducts)
+	}, [pricedProduct])
 
 	function handleSelectProduct(e: SelectOption)
 	{
@@ -117,6 +158,46 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		
 	}
 
+	function handleChangeProduct(e: ChangeEvent<HTMLInputElement>, field: string)
+	{
+		let tmpSelected = {...selected}
+		let tmpProducts = [...products]
+
+		const index = selected.product.id !== ''
+			? products.findIndex(({id}) => id === selected.product.id)
+			: -1
+
+		if (field === 'quantidade')
+		{
+			const tmpQuantity = Number(e.target.value)
+
+			tmpSelected.product.quantidade = tmpQuantity
+			tmpProducts[index].quantidade = tmpQuantity
+		}
+		if (field === 'preco')
+		{
+			const tmpPrice = priceToNumber(e.target.value)
+
+			tmpSelected.product.preco = tmpPrice
+			tmpProducts[index].preco = tmpPrice
+		}
+
+		setSelected(tmpSelected)
+		setProducts(tmpProducts)
+	}
+
+	function priceToString(p: number)
+	{
+		return p.toFixed(2).replace('.', ',')
+	}
+
+	function priceToNumber(p: string)
+	{
+		const [integers, decimals] = p.split(',').map(str => Number(str.replace('/\D/g', '')))
+
+		return Number(integers + '.' + decimals)
+	}
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -141,6 +222,36 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 						styles={selectStyles}
 						placeholder='Selecione o produto'
 					/>
+					<div className='group'>
+						<div className='subGroup'>
+							<label>Unidade</label>
+							<span>{pricedProduct.unidade}</span>
+						</div>
+						<div className='subGroup'>
+							<label>Quantidade</label>
+							<input
+								type='number'
+								value={selected.product.quantidade}
+								onChange={e => handleChangeProduct(e, 'quantidade')}
+								disabled={selected.product.id === ''}
+							/>
+						</div>
+					</div>
+					<div className='group'>
+						<div className='subGroup'>
+							<label>Preço de tabela</label>
+							<span>{pricedProduct.preco}</span>
+						</div>
+						<div className='subGroup'>
+							<label>Preço líquido</label>
+							<input
+								type='text'
+								value={priceToString(selected.product.preco)}
+								onChange={e => handleChangeProduct(e, 'preco')}
+								disabled={selected.product.id === ''}
+							/>
+						</div>
+					</div>
 				</form>
 			</Container>
 		</Modal>
