@@ -16,6 +16,7 @@ import {Client as RawClient} from './Client'
 import formatImage from '../../utils/formatImage'
 import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
 import {SelectOption} from '../../utils/types'
+import getDate from '../../utils/getDate'
 
 interface Type
 {
@@ -102,7 +103,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [representada, setRepresentada] = useState('')
 	const [linha, setLinha] = useState('')
 	const [produtos, setProdutos] = useState<Product[]>([])
-	const [data, setData] = useState('')
+	const [data, setData] = useState(getDate())
 	const [condicao, setCondicao] = useState('')
 	const [digitado_por, setDigitadoPor] = useState('')
 	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
