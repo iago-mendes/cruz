@@ -42,6 +42,17 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 		}
 	}, [data, error, staticRequests])
 
+	function handleDeleteRequest(request: Request)
+	{
+		const yes = confirm(`Deseja deletar o pedido feito em ${formatDate(request.data)}?`)
+		if (yes)
+			api.delete(`requests/${request.id}`).then(() =>
+			{
+				revalidate()
+				alert(`Pedido feito em ${formatDate(request.data)} deletado com sucesso!`)
+			})
+	}
+
 	if (loading)
 		return <Loading />
 
@@ -91,7 +102,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 										<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
 											<FiEdit3 size={20} />
 										</button>
-										<button title='Deletar' onClick={() => {}} >
+										<button title='Deletar' onClick={() => handleDeleteRequest(request)} >
 											<FiTrash size={20} />
 										</button>
 									</>
