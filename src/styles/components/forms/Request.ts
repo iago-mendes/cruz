@@ -186,6 +186,44 @@ const Container = styled.form`
 						font-family: Roboto;
 						padding-left: 0.5rem;
 						padding-right: 0.5rem;
+
+						.actions
+						{
+							display: flex;
+							align-items: center;
+							justify-content: space-around;
+
+							height: 100%;
+							gap: 0.5rem;
+
+							button
+							{				
+								width: 2.5rem;
+								height: 2.5rem;
+								padding: 0.25rem;
+								border-radius: 100rem;
+						
+								border: none;
+								background: none;
+
+								display: flex;
+								align-items: center;
+								justify-content: center;
+						
+								cursor: pointer;
+								transition: 0.25s;
+								
+								:hover
+								{
+									background-color: ${p => p.theme.colors.delete};
+								}
+					
+								:first-of-type:hover
+								{
+									background-color: ${p => p.theme.colors.secondary};
+								}
+							}
+						}
 					}
 
 					.img
@@ -199,53 +237,6 @@ const Container = styled.form`
 						{
 							max-width: 100%;
 							max-height: 100%;
-						}
-					}
-
-					.select
-					{
-						width: 22.5rem;
-					}
-
-					.quantity input, .price input
-					{
-						border: none;
-						padding: 0.5rem;
-
-						width: 7.5rem;
-					}
-
-					.remove
-					{
-						display: flex;
-						align-items: center;
-						justify-content: center;
-
-						height: 5rem;
-						border: none;
-
-						button
-						{				
-							width: 2.5rem;
-							height: 2.5rem;
-							border-radius: 100rem;
-
-							display: flex;
-							align-items: center;
-							justify-content: center;
-					
-							border: none;
-							background: none;
-							color: ${p => p.theme.colors.primary};
-					
-							cursor: pointer;
-							transition: 0.25s;
-							
-							:hover
-							{
-								color: #fff;
-								background-color: ${p => p.theme.colors.delete};
-							}
 						}
 					}
 				}

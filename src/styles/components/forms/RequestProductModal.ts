@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Container = styled.div`
 	width: 75vw;
-	height: 75vh;
+	height: 80vh;
 
 	background-color: ${p => p.theme.colors.background};
 	border-radius: 1rem;
@@ -47,7 +47,7 @@ const Container = styled.div`
 	{
 		padding: 1rem;
 		padding-bottom: 5rem;
-		height: calc(75vh - 4rem);
+		height: calc(80vh - 4rem);
 
 		display: flex;
 		flex-direction: column;
