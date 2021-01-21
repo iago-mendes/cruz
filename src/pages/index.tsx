@@ -88,7 +88,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 								</button>
 								{user.role === 'admin' && (
 									<>
-										<button title='Editar' onClick={() => Router.push(`/pedido/${request.id}/editar`)}>
+										<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
 											<FiEdit3 size={20} />
 										</button>
 										<button title='Deletar' onClick={() => {}} >

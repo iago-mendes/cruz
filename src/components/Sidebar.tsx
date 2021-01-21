@@ -39,7 +39,7 @@ export default function Sidebar()
 				<ul>
 					<Link href='/' >
 						<a>
-							<BiSpreadsheet size={25} color={checkRoute(['/', '/pedido'])}/>
+							<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
 							<span>Pedidos</span>
 						</a>
 					</Link>
