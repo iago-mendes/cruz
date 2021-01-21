@@ -34,16 +34,17 @@ interface Status
 export interface Request
 {
 	_id: string
-	data: string
-	condicao: string
-	digitado_por: string
 	cliente: string
 	vendedor: string
 	representada: string
 	linha: string
+	produtos: Product[]
+	data: string
+	condicao: string
+	peso?: number
+	digitado_por: string
 	tipo: Type
 	status: Status
-	produtos: Product[]
 }
 
 export interface ListedRequest
@@ -105,6 +106,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [produtos, setProdutos] = useState<Product[]>([])
 	const [data, setData] = useState(getDate())
 	const [condicao, setCondicao] = useState('')
+	const [peso, setPeso] = useState(0)
 	const [digitado_por, setDigitadoPor] = useState('')
 	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
 	const [status, setStatus] = useState<Status>({concluido: false,	enviado: false,	faturado: false})
@@ -220,6 +222,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	useEffect(() =>
 	{
 		getRawProductsList()
+
 		if (request)
 		{
 			setCliente(request.cliente)
@@ -229,6 +232,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setProdutos(request.produtos)
 			setData(request.data)
 			setCondicao(request.condicao)
+			if (request.peso)
+				setPeso(request.peso)
 			setDigitadoPor(request.digitado_por)
 			setTipo(request.tipo)
 			setStatus(request.status)
@@ -618,6 +623,17 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					id='condicao'
 					value={condicao}
 					onChange={e => setCondicao(e.target.value)}
+				/>
+			</div>
+			{/* peso */}
+			<div className='field'>
+				<label htmlFor='peso'>Peso (kg)</label>
+				<input
+					type='number'
+					name='peso'
+					id='peso'
+					value={peso}
+					onChange={e => setPeso(Number(e.target.value))}
 				/>
 			</div>
 			{/* digitado_por */}
