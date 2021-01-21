@@ -304,34 +304,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setProdutos(tmpProdutos)
 	}
 
-	function handleSelectProduct(e: SelectOption, index: number)
-	{
-		let products = [...produtos]
-		
-		const productId = e.value
-		products[index].id = productId
-
-		const tablePrice =  rawCompaniesList[representada]
-			.linhas.find(({_id}) => _id == linha)
-			.produtos.find(({_id}) => _id == productId)
-			.tabelas.find(({id}) => id === clientCompanyTableId).preco		
-		products[index].preco = tablePrice
-
-		setProdutos(products)
-	}
-
-	function handleChangeProduct(e: ChangeEvent<HTMLInputElement>, index: number, field: string)
-	{
-		let products = [...produtos]
-
-		if (field === 'quantidade')
-			products[index].quantidade = Number(e.target.value)
-		if (field === 'preco')
-			products[index].preco = Number(e.target.value.replace(',', '.'))
-
-		setProdutos(products)
-	}
-
 	function calcSubtotal(quantity: number, price: number, st: number, ipi: number)
 	{
 		let subtotal = quantity * price
@@ -478,70 +450,64 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					</thead>
 
 					{(representada !== '' && linha !== '') && (
-					<tbody>
-						{produtos.map((produto, index) =>
-							{
-								const rawLine = rawCompaniesList[representada]
-									.linhas.find(({_id}) => _id == linha)
-
-								const productSelectOptions = rawLine.produtos.map(product => (
+						<tbody>
+							{produtos.map((produto, index) =>
 								{
-									label: product.nome,
-									value: product._id
-								}))
+									const rawLine = rawCompaniesList[representada]
+										.linhas.find(({_id}) => _id == linha)
 
-								const rawProduct: RawProduct = produto.id !== ''
-									? rawLine
-										.produtos.find(({_id}) => _id == produto.id)
-									: {
-										_id: '',
-										imagem: undefined,
-										nome: '',
-										codigo: 0,
-										unidade: '',
-										ipi: 0,
-										st: 0,
-										comissao: 0,
-										tabelas: []
-									}
+									const rawProduct: RawProduct = produto.id !== ''
+										? rawLine
+											.produtos.find(({_id}) => _id == produto.id)
+										: {
+											_id: '',
+											imagem: undefined,
+											nome: '',
+											codigo: 0,
+											unidade: '',
+											ipi: 0,
+											st: 0,
+											comissao: 0,
+											tabelas: []
+										}
 
-								const tablePrice = produto.id !== ''
-									? rawProduct.tabelas.find(({id}) => id === clientCompanyTableId).preco
-									: 0
+									const tablePrice = produto.id !== ''
+										? rawProduct.tabelas.find(({id}) => id === clientCompanyTableId).preco
+										: 0
 
-								return (
-								<tr key={index} >
-									<td>
-										<div className='actions'>
-											<button
-												title='Editar'
-												onClick={() => handleEditProduct(produto)}>
-												<FiEdit3 size={15} />
-											</button>
-											<button title='Remover' onClick={() => handleRemoveProduct(index)}>
-												<FiTrash size={15} />
-											</button>
-										</div>
-									</td>
-									<td className='img' >
-										<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
-									</td>
-									<td>{rawProduct.nome}</td>
-									<td>{rawProduct.unidade}</td>
-									<td>{rawProduct.codigo}</td>
-									<td>{formatNumber(rawProduct.st)} %</td>
-									<td>{formatNumber(rawProduct.ipi)} %</td>
-									<td>{produto.quantidade}</td>
-									<td>{priceToString(tablePrice)}</td>
-									<td>{priceToString(produto.preco)}</td>
-									<td>
-										{priceToString(
-											calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
-										)}
-									</td>
-								</tr>
-							)})}
-					</tbody>
+									return (
+										<tr key={index} >
+											<td>
+												<div className='actions'>
+													<button
+														title='Editar'
+														onClick={() => handleEditProduct(produto)}>
+														<FiEdit3 size={15} />
+													</button>
+													<button title='Remover' onClick={() => handleRemoveProduct(index)}>
+														<FiTrash size={15} />
+													</button>
+												</div>
+											</td>
+											<td className='img' >
+												<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
+											</td>
+											<td>{rawProduct.nome}</td>
+											<td>{rawProduct.unidade}</td>
+											<td>{rawProduct.codigo}</td>
+											<td>{formatNumber(rawProduct.st)} %</td>
+											<td>{formatNumber(rawProduct.ipi)} %</td>
+											<td>{produto.quantidade}</td>
+											<td>{priceToString(tablePrice)}</td>
+											<td>{priceToString(produto.preco)}</td>
+											<td>
+												{priceToString(
+													calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
+												)}
+											</td>
+										</tr>
+									)})}
+						</tbody>
 					)}
 				</table>
 				<button type='button' onClick={handleAddProduct} className='add' >
