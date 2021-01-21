@@ -2,9 +2,9 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 
-import Header from '../../../components/Header'
-import RequestForm, {Request} from '../../../components/forms/Request'
-import api from '../../../services/api'
+import Header from '../../components/Header'
+import RequestForm, {Request} from '../../components/forms/Request'
+import api from '../../services/api'
 
 const EditRequest: React.FC = () =>
 {
