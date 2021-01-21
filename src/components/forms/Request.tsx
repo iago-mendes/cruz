@@ -526,41 +526,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 									<td className='img' >
 										<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
 									</td>
-									<td className='select' >
-										<Select
-											options={productSelectOptions}
-											value=
-											{
-												produto.id !== '' &&
-													productSelectOptions.find(({value}) => value === produto.id)
-											}
-											onChange={e => handleSelectProduct(e, index)}
-											isDisabled={linha === ''}
-											styles={selectStyles}
-											placeholder='Selecione o produto'
-										/>
-									</td>
+									<td>{rawProduct.nome}</td>
 									<td>{rawProduct.unidade}</td>
 									<td>{rawProduct.codigo}</td>
 									<td>{formatNumber(rawProduct.st)} %</td>
 									<td>{formatNumber(rawProduct.ipi)} %</td>
-									<td className='quantity' >
-										<input
-											type='number'
-											value={produto.quantidade}
-											onChange={e => handleChangeProduct(e, index, 'quantidade')}
-										/>
+									<td>{produto.quantidade}</td>
+									<td>{priceToString(tablePrice)}</td>
+									<td>{priceToString(produto.preco)}</td>
+									<td>
+										{priceToString(
+											calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
+										)}
 									</td>
-									<td>R$ {formatNumber(tablePrice)}</td>
-									<td className='price' >
-										<span>R$ </span>
-										<input
-											type='string'
-											value={formatNumber(produto.preco)}
-											onChange={e => handleChangeProduct(e, index, 'preco')}
-										/>
-									</td>
-									<td>{priceToString(calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi))}</td>
 								</tr>
 							)})}
 					</tbody>
