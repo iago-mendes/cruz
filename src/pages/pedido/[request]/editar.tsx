@@ -1,13 +1,36 @@
 import Head from 'next/head'
+import {useRouter} from 'next/router'
+import {useEffect, useState} from 'react'
 
 import Header from '../../../components/Header'
-import RequestForm from '../../../components/forms/Request'
-import { useRouter } from 'next/router'
+import RequestForm, {Request} from '../../../components/forms/Request'
+import api from '../../../services/api'
 
 const EditRequest: React.FC = () =>
 {
 	const Router = useRouter()
 	const {request: id} = Router.query
+
+	const [request, setRequest] = useState<Request>(
+	{
+		_id: '',
+		data: '',
+		condicao: '',
+		digitado_por: '',
+		cliente: '',
+		vendedor: '',
+		representada: '',
+		linha: '',
+		tipo: {venda: true, troca: false},
+		status: {concluido: false,	enviado: false,	faturado: false},
+		produtos: []
+	})
+
+	useEffect(() =>
+	{
+		api.get(`requests-raw/${id}`)
+			.then(({data}:{data: Request}) => setRequest(data))
+	}, [])
 
 	return (
 		<div className='container'>
@@ -21,7 +44,7 @@ const EditRequest: React.FC = () =>
 				<RequestForm
 					method='put'
 					id={String(id)}
-					// request={}
+					request={request}
 				/>
 			</main>
 		</div>

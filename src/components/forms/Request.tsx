@@ -122,6 +122,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	useEffect(() =>
 	{
+		getRawProductsList()
+	}, [])
+
+	useEffect(() =>
+	{
 		async function getOptions()
 		{
 			await api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
@@ -214,22 +219,62 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	useEffect(() =>
 	{
-		setProdutos([])
-	}, [cliente, vendedor, representada, linha])
+		getRawProductsList()
+		if (request)
+		{
+			setCliente(request.cliente)
+			setVendedor(request.vendedor)
+			setRepresentada(request.representada)
+			setLinha(request.linha)
+			setProdutos(request.produtos)
+			setData(request.data)
+			setCondicao(request.condicao)
+			setDigitadoPor(request.digitado_por)
+			setTipo(request.tipo)
+			setStatus(request.status)
+		}
+	}, [request])
+
+	function getRawProductsList()
+	{
+		api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
+		{
+			let tmpRawProductsList: RawProductsList = {}
+
+			companies.map(company =>
+			{
+				tmpRawProductsList[company._id] = {}
+				company.linhas.map(line =>
+				{
+					tmpRawProductsList[company._id][line._id] = line.produtos
+				})
+			})
+			
+			setRawProductsList(tmpRawProductsList)
+		})
+	}
 
 	function handleSelectClient(e: SelectOption)
 	{
 		setCliente(e.value)
+		setProdutos([])
 
 		let tmpSelected = {...selected}
 		tmpSelected.clientId = e.value
 		setSelected(tmpSelected)
 	}
 
+	function handleSelectSeller(e: SelectOption)
+	{
+		setVendedor(e.value)
+		setProdutos([])
+	}
+
 	function handleSelectCompany(e: SelectOption)
 	{
 		setRepresentada(e.value)
 		setLinha('')
+		setProdutos([])
 
 		let tmpSelected = {...selected}
 		tmpSelected.companyId = e.value
@@ -239,6 +284,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	function handleSelectLine(e: SelectOption)
 	{
 		setLinha(e.value)
+		setProdutos([])
 
 		let tmpSelected = {...selected}
 		tmpSelected.lineId = e.value
@@ -347,6 +393,16 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		return 'R$ ' + p.toFixed(2).replace('.', ',')
 	}
 
+	function getTablePrice(product: RawProduct)
+	{
+		const table =	product.tabelas.find(({id}) => id === clientCompanyTableId)
+
+		if (table)
+			return table.preco
+		else
+			return 0
+	}
+
 	async function handleSubmit(e: FormEvent)
 	{
 		e.preventDefault()
@@ -423,7 +479,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					name='vendedor'
 					id='vendedor'
 					value={sellerOptions.find(option => option.value === vendedor)}
-					onChange={e => setVendedor(e.value)}
+					onChange={handleSelectSeller}
 					options={sellerOptions}
 					styles={selectStyles}
 					placeholder='Selecione o vendedor'
@@ -482,7 +538,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						<tbody>
 							{produtos.map((produto, index) =>
 								{
-									const rawProduct: RawProduct = produto.id !== ''
+									const rawProduct: RawProduct = (produto.id !== '' && representada !== '' && linha !== '')
 										? rawProductsList[representada][linha].find(({_id}) => _id === produto.id)
 										: {
 											_id: '',
@@ -497,7 +553,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 										}
 
 									const tablePrice = produto.id !== ''
-										? rawProduct.tabelas.find(({id}) => id === clientCompanyTableId).preco
+										? getTablePrice(rawProduct)
 										: 0
 
 									return (
