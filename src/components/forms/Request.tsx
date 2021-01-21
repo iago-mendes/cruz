@@ -412,45 +412,49 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		e.preventDefault()
 
-		const data = new FormData()
+		const apiData =
+		{
+			data,
+			condicao,
+			digitado_por,
+			cliente,
+			vendedor,
+			representada,
+			linha,
+			peso,
+			tipo,
+			status,
+			produtos
+		}
 
-		// if (imagem) data.append('imagem', imagem)
-		// data.append('nome', nome)
-		// data.append('telefones', JSON.stringify(telefones))
-		// data.append('email', email)
-		// data.append('senha', senha)
-		// data.append('funcao', funcao)
-		// data.append('admin', String(admin))
-		// data.append('representadas', JSON.stringify(representadas))
-
-		// if (method === 'post')
-		// {
-		// 	await api.post('sellers', data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Vendedor criado com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
-		// else if (method === 'put')
-		// {
-		// 	await api.put(`sellers/${id}`, data)
-		// 	.then(() =>
-		// 	{
-		// 		alert('Vendedor atualizado com sucesso!')
-		// 		Router.back()
-		// 	})
-		// 	.catch(err =>
-		// 	{
-		// 		console.error(err)
-		// 		alert('Algo errado aconteceu!')
-		// 	})
-		// }
+		if (method === 'post')
+		{
+			await api.post('requests', apiData)
+			.then(() =>
+			{
+				alert('Pedido criado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
+		else if (method === 'put')
+		{
+			await api.put(`requests/${id}`, apiData)
+			.then(() =>
+			{
+				alert('Pedido atualizado com sucesso!')
+				Router.back()
+			})
+			.catch(err =>
+			{
+				console.error(err)
+				alert('Algo errado aconteceu!')
+			})
+		}
 	}
 
 	return (
