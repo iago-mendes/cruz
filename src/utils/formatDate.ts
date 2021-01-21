@@ -1,7 +1,12 @@
 export default function formatDate(hash: string)
 {
-	const date = hash.split('T')[0].split('-').map(s => Number(s))
-	const formatedDate = `${date[2]}/${date[1]}/${date[0]}`
+	let [year, month, day] = hash.split('-')
 
+	if (month.length === 1)
+		month = 0 + month
+	if (day.length === 1)
+		day = 0 + day
+
+	const formatedDate = day + '/' + month + '/' + year
 	return formatedDate
 }
