@@ -270,6 +270,25 @@ const Container = styled.form`
 				background-color: ${p => p.theme.colors.confirm};
 			}
 		}
+
+		.total
+		{
+			width: 100%;
+			padding-right: 1rem;
+
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: 1rem;
+
+			span
+			{
+				font-family: Roboto;
+				color: ${p => p.theme.colors.primaryDark};
+				font-weight: 700;
+				font-size: 2rem;
+			}
+		}
 	}
 
 	.buttons

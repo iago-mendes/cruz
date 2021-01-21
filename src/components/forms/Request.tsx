@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 import Select from 'react-select'
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import {FormEvent, useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
@@ -76,9 +76,12 @@ interface LineSelectOptions
 	[key: string]: SelectOption[]
 }
 
-interface RawCompaniesList
+interface RawProductsList
 {
-	[companyId: string]: RawCompany
+	[companyId: string]:
+	{
+		[lineId: string]: RawProduct[]
+	}
 }
 
 interface RequestFormProps
@@ -110,7 +113,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 	const [lineOptions, setLineOptions] = useState<LineSelectOptions>({})
 
-	const [rawCompaniesList, setRawCompaniesList] = useState<RawCompaniesList>({})
+	const [rawProductsList, setRawProductsList] = useState<RawProductsList>({})
 	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -118,6 +121,80 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	useEffect(() =>
 	{
+		async function getOptions()
+		{
+			await api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
+			{
+				let tmpOptions: SelectOption[] = []
+
+				clients.map(client => tmpOptions.push(
+				{
+					label: `${client.nome_fantasia} (${client.razao_social})`,
+					value: client.id
+				}))
+
+				setClientOptions(tmpOptions)
+			})
+
+			await api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
+			{
+				let tmpOptions: SelectOption[] = []
+
+				sellers.map(seller => tmpOptions.push(
+				{
+					label: seller.nome,
+					value: seller.id
+				}))
+
+				setSellerOptions(tmpOptions)
+			})
+
+			if (!loading && user.id !== 'not-logged')
+			{
+				let sellerCompanies: string[] = []
+
+				await api.get(`sellers-raw/${user.id}`).then(({data: seller}:{data: Seller}) =>
+				{
+					sellerCompanies = seller.representadas.map(company => company.id)
+				})
+
+				await api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
+				{
+					let tmpCompanies: SelectOption[] = []
+					let tmpLines: LineSelectOptions = {}
+					let tmpRawProductsList: RawProductsList = {}
+
+					companies.map(company =>
+					{
+						if (sellerCompanies.includes(company._id))
+						{
+							tmpCompanies.push(
+							{
+								label: company.nome_fantasia,
+								value: company._id
+							})
+
+							tmpLines[company._id] = company.linhas.map(line => (
+							{
+								label: line.nome,
+								value: line._id
+							}))
+
+							tmpRawProductsList[company._id] = {}
+							company.linhas.map(line =>
+							{
+								tmpRawProductsList[company._id][line._id] = line.produtos
+							})
+						}
+					})
+					
+					setCompanyOptions(tmpCompanies)
+					setLineOptions(tmpLines)
+					setRawProductsList(tmpRawProductsList)
+				})
+			}
+		}
+
 		getOptions()
 		if (!loading)
 			setVendedor(user.id)
@@ -138,76 +215,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		setProdutos([])
 	}, [cliente, vendedor, representada, linha])
-
-	async function getOptions()
-	{
-		await api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
-		{
-			let tmpOptions: SelectOption[] = []
-
-			clients.map(client => tmpOptions.push(
-			{
-				label: `${client.nome_fantasia} (${client.razao_social})`,
-				value: client.id
-			}))
-
-			setClientOptions(tmpOptions)
-		})
-
-		await api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
-		{
-			let tmpOptions: SelectOption[] = []
-
-			sellers.map(seller => tmpOptions.push(
-			{
-				label: seller.nome,
-				value: seller.id
-			}))
-
-			setSellerOptions(tmpOptions)
-		})
-
-		if (!loading && user.id !== 'not-logged')
-		{
-			let sellerCompanies: string[] = []
-
-			await api.get(`sellers-raw/${user.id}`).then(({data: seller}:{data: Seller}) =>
-			{
-				sellerCompanies = seller.representadas.map(company => company.id)
-			})
-
-			await api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
-			{
-				let tmpCompanies: SelectOption[] = []
-				let tmpLines: LineSelectOptions = {}
-				let tmpRawCompaniesList: RawCompaniesList = {}
-
-				companies.map(company =>
-				{
-					if (sellerCompanies.includes(company._id))
-					{
-						tmpCompanies.push(
-						{
-							label: company.nome_fantasia,
-							value: company._id
-						})
-
-						tmpLines[company._id] = company.linhas.map(line => (
-						{
-							label: line.nome,
-							value: line._id
-						}))
-
-						tmpRawCompaniesList[company._id] = company
-					}
-				})
-				
-				setCompanyOptions(tmpCompanies)
-				setLineOptions(tmpLines)
-				setRawCompaniesList(tmpRawCompaniesList)
-			})
-		}
-	}
 
 	function handleSelectClient(e: SelectOption)
 	{
@@ -311,6 +318,27 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		subtotal += subtotal * ipi / 100
 
 		return subtotal
+	}
+
+	function calcTotal()
+	{
+		let total = 0
+
+		if (representada !== '' && linha !== '')
+		{
+			produtos.map(product =>
+			{
+				const rawProduct = rawProductsList[representada][linha].find(({_id}) => _id === product.id)
+
+				if (rawProduct)
+				{
+					const subtotal = calcSubtotal(product.quantidade, product.preco, rawProduct.st, rawProduct.ipi)
+					total += subtotal
+				}
+			})
+		}
+
+		return total
 	}
 
 	function priceToString(p: number)
@@ -453,12 +481,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						<tbody>
 							{produtos.map((produto, index) =>
 								{
-									const rawLine = rawCompaniesList[representada]
-										.linhas.find(({_id}) => _id == linha)
-
 									const rawProduct: RawProduct = produto.id !== ''
-										? rawLine
-											.produtos.find(({_id}) => _id == produto.id)
+										? rawProductsList[representada][linha].find(({_id}) => _id === produto.id)
 										: {
 											_id: '',
 											imagem: undefined,
@@ -513,6 +537,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<button type='button' onClick={handleAddProduct} className='add' >
 					<FiPlus size={20} />
 				</button>
+				<div className="total">
+					<span>Total = {priceToString(calcTotal())}</span>
+				</div>
 			</div>
 			{/* data */}
 			<div className='field'>
