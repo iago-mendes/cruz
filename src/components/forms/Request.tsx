@@ -332,6 +332,20 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setProdutos(products)
 	}
 
+	function calcSubtotal(quantity: number, price: number, st: number, ipi: number)
+	{
+		let subtotal = quantity * price
+		subtotal += subtotal * st / 100
+		subtotal += subtotal * ipi / 100
+
+		return subtotal
+	}
+
+	function priceToString(p: number)
+	{
+		return 'R$ ' + p.toFixed(2).replace('.', ',')
+	}
+
 	async function handleSubmit(e: FormEvent)
 	{
 		e.preventDefault()
@@ -459,7 +473,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							<th>Quantidade</th>
 							<th>Preço de tabela</th>
 							<th>Preço líquido</th>
-							<th>Subtotal</th>
+							<th>Subtotal (com taxas)</th>
 						</tr>
 					</thead>
 
@@ -546,7 +560,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 											onChange={e => handleChangeProduct(e, index, 'preco')}
 										/>
 									</td>
-									<td>subtotal</td>
+									<td>{priceToString(calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi))}</td>
 								</tr>
 							)})}
 					</tbody>

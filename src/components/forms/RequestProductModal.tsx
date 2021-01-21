@@ -262,6 +262,12 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							/>
 						</div>
 					</div>
+					<div className="group">
+						<div className="subGroup">
+							<label>Subtotal (sem taxas)</label>
+							<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
+						</div>
+					</div>
 				</form>
 			</Container>
 		</Modal>
