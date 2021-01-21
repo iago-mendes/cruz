@@ -51,7 +51,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 				<title>Pedidos | Cruz Representações</title>
 			</Head>
 
-			<Add route='/novo-pedido' />
+			<Add route='/pedidos/novo' />
 			<Header display='Pedidos' />
 
 			<main className='main'>
