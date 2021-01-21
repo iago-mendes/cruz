@@ -9,6 +9,7 @@ const Container = styled.div<ContainerProps>`
 	main
 	{
 		flex-direction: column;
+		gap: 2rem;
 
 		.request
 		{
