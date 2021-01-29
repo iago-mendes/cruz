@@ -40,7 +40,7 @@ const Container = styled.form`
 			padding: 1rem;
 			transition: 0.25s;
 
-			:focus
+			:focus, :hover
 			{
 				border-bottom-color: ${p => p.theme.colors.primary};
 			}
@@ -54,7 +54,7 @@ const Container = styled.form`
 			justify-content: center;
 			
 			padding-left: 2rem;
-			gap: 0.5rem;
+			gap: 1rem;
 			
 			width: 100%;
 
@@ -62,9 +62,14 @@ const Container = styled.form`
 			{
 				display: flex;
 				align-items: center;
-				justify-content: space-between;
+				gap: 1rem;
 				
 				width: 100%;
+
+				input
+				{
+					width: 50%;
+				}
 
 				.select
 				{
@@ -130,6 +135,30 @@ const Container = styled.form`
 		}
 	}
 
+	.textareaField
+	{
+		width: 100%;
+
+		textarea
+		{
+			width: 100%;
+			
+			border: ${p => p.theme.colors.text}40 2px solid;
+			border-radius: 1rem;
+			padding: 0.5rem;
+			
+			font-size: 1.5rem;
+			font-family: Roboto;
+
+			transition: 0.25s;
+
+			:focus, :hover
+			{
+				border-color: ${p => p.theme.colors.primary};
+			}
+		}
+	}
+
 	.buttons
 	{
 		display: flex;
@@ -155,16 +184,21 @@ const Container = styled.form`
 			
 			cursor: pointer;
 			transition: 0.25s;
-			
+
 			:hover
 			{
-				background-color: rgb(89, 211, 89);
-			}
+				transform: scale(1.1);
+			}			
+		}
 
-			:first-of-type:hover
-			{
-				background-color:  rgb(201, 64, 64);
-			}
+		.submit:hover
+		{
+			background-color: rgb(89, 211, 89);
+		}
+
+		.cancel:hover
+		{
+			background-color:  rgb(201, 64, 64);
 		}
 	}
 `

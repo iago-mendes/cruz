@@ -11,7 +11,10 @@ const theme =
 		text: '#313131',
 
 		delete: '#c94040',
-		confirm: '#59d359'
+		confirm: '#59d359',
+
+		buttonRed: '#c94040',
+		buttonGreen: '#59d359'
 	}
 }
 

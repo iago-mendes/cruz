@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
-import Container from '../../styles/components/forms/Company'
+import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
 import Company, {CompanyTable} from '../../models/company'
 
@@ -223,147 +223,159 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 
 	return (
 		<Container onSubmit={handleSubmit} >
-			<div>
-				<label htmlFor="imagem">Imagem</label>
-				<input type="file" name="imagem" id="imagem" onChange={handleInputChange}/>
+			{/* imagem */}
+			<div className='field' >
+				<label htmlFor='imagem'>Imagem</label>
+				<input type='file' name='imagem' id='imagem' onChange={handleInputChange}/>
 			</div>
-			<div>
-				<label htmlFor="razao_social">Razão social</label>
+			{/* razao_social */}
+			<div className='field' >
+				<label htmlFor='razao_social'>Razão social</label>
 				<input
-					type="text"
-					name="razao_social"
-					id="razao_social"
+					type='text'
+					name='razao_social'
+					id='razao_social'
 					value={razaoSocial}
 					onChange={handleInputChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="nome_fantasia">Nome fantasia</label>
+			{/* nome_fantasia */}
+			<div className='field' >
+				<label htmlFor='nome_fantasia'>Nome fantasia</label>
 				<input
-					type="text"
-					name="nome_fantasia"
-					id="nome_fantasia"
+					type='text'
+					name='nome_fantasia'
+					id='nome_fantasia'
 					value={nomeFantasia}
 					onChange={handleInputChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="cnpj">CNPJ</label>
+			{/* cnpj */}
+			<div className='field' >
+				<label htmlFor='cnpj'>CNPJ</label>
 				<input
-					type="text"
-					name="cnpj"
-					id="cnpj"
+					type='text'
+					name='cnpj'
+					id='cnpj'
 					value={shownCnpj}
 					onChange={handleInputChange}
 					maxLength={18}
 				/>
 			</div>
-			<div>
-				<label htmlFor="telefone">Telefones</label>
+			{/* telefones */}
+			<div className='field' >
+				<label htmlFor='telefone'>Telefones</label>
 				<ul>
 					{shownNumbers.map((number, index) => (
-						<li key={index} className="phone">
+						<li key={index} className='phone'>
 							<input
-								type="text"
-								name="telefone"
-								id="telefone"
+								type='text'
+								name='telefone'
+								id='telefone'
 								value={number}
 								onChange={(e) => handleNumberChange(e, index)}
 							/>
-							<button type="button" onClick={() => handleRemoveNumber(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveNumber(index)}>-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddNumber}>+</button>
+					<button type='button' onClick={handleAddNumber}>+</button>
 				</ul>
 			</div>
-			<div>
-				<label htmlFor="email">E-mail</label>
+			{/* email */}
+			<div className='field' >
+				<label htmlFor='email'>E-mail</label>
 				<input
-					type="email"
-					name="email"
-					id="email"
+					type='email'
+					name='email'
+					id='email'
 					value={email}
 					onChange={handleInputChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="comissao_porcentagem">Comissão - Porcentagem</label>
+			{/* comissao */}
+			<div className='field' >
+				<label htmlFor='comissao_porcentagem'>Comissão - Porcentagem</label>
 				<input
-					type="number"
-					name="comissao_porcentagem"
-					id="comissao_porcentagem"
+					type='number'
+					name='comissao_porcentagem'
+					id='comissao_porcentagem'
 					value={comissao.porcentagem}
 					onChange={(e) => handleComissaoChange(e)}
 				/>
-				<label htmlFor="comissao_obs">Comissão - Observações</label>
+				<label htmlFor='comissao_obs'>Comissão - Observações</label>
 				<ul>
 					{comissao.obs.map((obs, index) => (
-						<li key={index} className="obs">
+						<li key={index} className='obs'>
 							<input
-								type="text"
-								name="comissao_obs"
-								id="comissao_obs"
+								type='text'
+								name='comissao_obs'
+								id='comissao_obs'
 								value={obs}
 								onChange={(e) => handleComissaoChange(e, index)}
 							/>
-							<button type="button" onClick={() => handleRemoveComissaoObs(index)} >-</button>
+							<button type='button' onClick={() => handleRemoveComissaoObs(index)} >-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddComissaoObs}>+</button>
+					<button type='button' onClick={handleAddComissaoObs}>+</button>
 				</ul>
 			</div>
-			<div>
-				<label htmlFor="descricao_curta">Descrição curta</label>
+			{/* descricao_curta */}
+			<div className='field' >
+				<label htmlFor='descricao_curta'>Descrição curta</label>
 				<input
-					type="text"
-					name="descricao_curta"
-					id="descricao_curta"
+					type='text'
+					name='descricao_curta'
+					id='descricao_curta'
 					value={descricaoCurta}
 					onChange={handleInputChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="descricao">Descrição</label>
+			{/* descricao */}
+			<div className='field textareaField' >
+				<label htmlFor='descricao'>Descrição</label>
 				<textarea
-					name="descricao"
-					id="descricao"
+					name='descricao'
+					id='descricao'
 					cols={30}
 					rows={10}
 					value={descricao}
 					onChange={handleTextareaChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="site">Site</label>
+			{/* site */}
+			<div className='field' >
+				<label htmlFor='site'>Site</label>
 				<input
-					type="link"
-					name="site"
-					id="site"
+					type='link'
+					name='site'
+					id='site'
 					value={site}
 					onChange={handleInputChange}
 				/>
 			</div>
-			<div>
-				<label htmlFor="tabela">Tabelas</label>
+			{/* tabela */}
+			<div className='field' >
+				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
 					{tabelas.map((tabela, index) => (
-						<li key={index} className="table">
+						<li key={index} className='table'>
 							<input
-								type="text"
-								name="tabela"
-								id="tabela"
+								type='text'
+								name='tabela'
+								id='tabela'
 								value={tabela.nome}
 								onChange={(e) => handleTableChange(e, index)}
 							/>
-							<button type="button" onClick={() => handleRemoveTable(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveTable(index)}>-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddTable}>+</button>
+					<button type='button' onClick={handleAddTable}>+</button>
 				</ul>
 			</div>
-			<div className="buttons">
-				<button type="button" onClick={Router.back}>Cancelar</button>
-				<button type="submit">Confirmar</button>
+			
+			<div className='buttons'>
+				<button type='button' onClick={Router.back} className='cancel' >Cancelar</button>
+				<button type='submit' className='submit' >Confirmar</button>
 			</div>
 		</Container>
 	)

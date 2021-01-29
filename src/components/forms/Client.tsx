@@ -1,14 +1,14 @@
-import {useRouter} from "next/router"
-import {ChangeEvent, FormEvent, useEffect, useState} from "react"
+import {useRouter} from 'next/router'
+import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Select, {OptionsType} from 'react-select'
-import api from "../../services/api"
+import api from '../../services/api'
 import Switch from 'react-switch'
 
-import Container from '../../styles/components/forms/Client'
-import {selectStyles} from "../../styles/global"
-import Dropzone from "../Dropzone"
-import {ListedSeller} from "./Seller"
-import {Company} from "./Company"
+import Container from '../../styles/components/forms/global'
+import {selectStyles} from '../../styles/global'
+import Dropzone from '../Dropzone'
+import {ListedSeller} from './Seller'
+import Company from '../../models/company'
 
 interface ClientCompany
 {
@@ -292,7 +292,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		<Container onSubmit={handleSubmit} >
 			{/* imagem */}
 			<div className='field'>
-				<label htmlFor="imagem">Imagem</label>
+				<label htmlFor='imagem'>Imagem</label>
 				<Dropzone
 					name='imageFile'
 					id='imageFile'
@@ -302,66 +302,66 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			</div>
 			{/* razao_social */}
 			<div className='field'>
-				<label htmlFor="razao_social">Razão social</label>
+				<label htmlFor='razao_social'>Razão social</label>
 				<input
-					type="text"
-					name="razao_social"
-					id="razao_social"
+					type='text'
+					name='razao_social'
+					id='razao_social'
 					value={razao_social}
 					onChange={e => setRazaoSocial(e.target.value)}
 				/>
 			</div>
 			{/* nome_fantasia */}
 			<div className='field'>
-				<label htmlFor="nome_fantasia">Nome fantasia</label>
+				<label htmlFor='nome_fantasia'>Nome fantasia</label>
 				<input
-					type="text"
-					name="nome_fantasia"
-					id="nome_fantasia"
+					type='text'
+					name='nome_fantasia'
+					id='nome_fantasia'
 					value={nome_fantasia}
 					onChange={e => setNomeFantasia(e.target.value)}
 				/>
 			</div>
 			{/* cnpj */}
 			<div className='field'>
-				<label htmlFor="cnpj">CNPJ</label>
+				<label htmlFor='cnpj'>CNPJ</label>
 				<input
-					type="text"
-					name="cnpj"
-					id="cnpj"
+					type='text'
+					name='cnpj'
+					id='cnpj'
 					value={cnpj}
 					onChange={e => setCnpj(e.target.value)}
 				/>
 			</div>
 			{/* insc_estadual */}
 			<div className='field'>
-				<label htmlFor="insc_estadual">Inscrição estadual</label>
+				<label htmlFor='insc_estadual'>Inscrição estadual</label>
 				<input
-					type="text"
-					name="insc_estadual"
-					id="insc_estadual"
+					type='text'
+					name='insc_estadual'
+					id='insc_estadual'
 					value={insc_estadual}
 					onChange={e => setInscEstadual(e.target.value)}
 				/>
 			</div>
 			{/* email */}
 			<div className='field'>
-				<label htmlFor="email">E-mail</label>
+				<label htmlFor='email'>E-mail</label>
 				<input
-					type="text"
-					name="email"
-					id="email"
+					type='text'
+					name='email'
+					id='email'
 					value={email}
 					onChange={e => setEmail(e.target.value)}
 				/>
 			</div>
 			{/* senha */}
 			<div className='field'>
-				<label htmlFor="senha">Senha</label>
+				<label htmlFor='senha'>Senha</label>
 				<input
-					type="text"
-					name="senha"
-					id="senha"
+					type='text'
+					name='senha'
+					id='senha'
 					value={senha}
 					onChange={e => setSenha(e.target.value)}
 				/>
@@ -382,12 +382,12 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* representadas */}
-			<div className="field">
-				<label htmlFor="representada">Representadas</label>
+			<div className='field'>
+				<label htmlFor='representada'>Representadas</label>
 				<ul>
 					{representadas.map((representada, index) => (
 						<li key={index}>
-							<div className="select">
+							<div className='select'>
 								<Select
 									name='representada'
 									value={companyOptions.find(option => option.value === representada.id)}
@@ -397,7 +397,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 									placeholder='Selecione a representada'
 								/>
 							</div>
-							<div className="select">
+							<div className='select'>
 								<Select
 									name='tabela'
 									value=
@@ -412,117 +412,117 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 									placeholder={representada.id !== '' ? 'Selecione a tabela' : 'Selecione a representada'}
 								/>
 							</div>
-							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveCompany(index)}>-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddCompany}>+</button>
+					<button type='button' onClick={handleAddCompany}>+</button>
 				</ul>
 			</div>
 			{/* endereco */}
-			<div className="field">
+			<div className='field'>
 				<label>Endereço</label>
-				<div className="addressField">
-					<label htmlFor="rua">Rua</label>
+				<div className='addressField'>
+					<label htmlFor='rua'>Rua</label>
 					<input
-						type="text"
-						name="rua"
-						id="rua"
+						type='text'
+						name='rua'
+						id='rua'
 						value={endereco.rua}
 						onChange={e => handleAddressChange(e, 'rua')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="numero">Número</label>
+				<div className='addressField'>
+					<label htmlFor='numero'>Número</label>
 					<input
-						type="number"
-						name="numero"
-						id="numero"
+						type='number'
+						name='numero'
+						id='numero'
 						value={endereco.numero}
 						onChange={e => handleAddressChange(e, 'numero')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="complemento">Complemento</label>
+				<div className='addressField'>
+					<label htmlFor='complemento'>Complemento</label>
 					<input
-						type="text"
-						name="complemento"
-						id="complemento"
+						type='text'
+						name='complemento'
+						id='complemento'
 						value={endereco.complemento}
 						onChange={e => handleAddressChange(e, 'complemento')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="bairro">Bairro</label>
+				<div className='addressField'>
+					<label htmlFor='bairro'>Bairro</label>
 					<input
-						type="text"
-						name="bairro"
-						id="bairro"
+						type='text'
+						name='bairro'
+						id='bairro'
 						value={endereco.bairro}
 						onChange={e => handleAddressChange(e, 'bairro')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="cep">CEP</label>
+				<div className='addressField'>
+					<label htmlFor='cep'>CEP</label>
 					<input
-						type="number"
-						name="cep"
-						id="cep"
+						type='number'
+						name='cep'
+						id='cep'
 						value={endereco.cep}
 						onChange={e => handleAddressChange(e, 'cep')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="cidade">Cidade</label>
+				<div className='addressField'>
+					<label htmlFor='cidade'>Cidade</label>
 					<input
-						type="text"
-						name="cidade"
-						id="cidade"
+						type='text'
+						name='cidade'
+						id='cidade'
 						value={endereco.cidade}
 						onChange={e => handleAddressChange(e, 'cidade')}
 					/>
 				</div>
-				<div className="addressField">
-					<label htmlFor="uf">UF</label>
+				<div className='addressField'>
+					<label htmlFor='uf'>UF</label>
 					<input
-						type="text"
-						name="uf"
-						id="uf"
+						type='text'
+						name='uf'
+						id='uf'
 						value={endereco.uf}
 						onChange={e => handleAddressChange(e, 'uf')}
 					/>
 				</div>
 			</div>
 			{/* status */}
-			<div className="field">
-				<label htmlFor="status">Situação</label>
-				<div className="status">
-					<div className="statusField">
+			<div className='field'>
+				<label htmlFor='status'>Situação</label>
+				<div className='status'>
+					<div className='statusField'>
 						<span>ativo</span>
 						<Switch
-							name="ativo"
-							id="ativo"
+							name='ativo'
+							id='ativo'
 							checked={status.ativo}
 							onChange={e => handleStatusChange(e, 'ativo')}
 							onHandleColor='#d8d8d8'
 							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className="statusField">
+					<div className='statusField'>
 						<span>aberto</span>
 						<Switch
-							name="aberto"
-							id="aberto"
+							name='aberto'
+							id='aberto'
 							checked={status.aberto}
 							onChange={e => handleStatusChange(e, 'aberto')}
 							onHandleColor='#d8d8d8'
 							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className="statusField">
+					<div className='statusField'>
 						<span>nome sujo</span>
 						<Switch
-							name="nome_sujo"
-							id="nome_sujo"
+							name='nome_sujo'
+							id='nome_sujo'
 							checked={status.nome_sujo}
 							onChange={e => handleStatusChange(e, 'nome_sujo')}
 							onHandleColor='#d8d8d8'
@@ -531,9 +531,9 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					</div>
 				</div>
 			</div>
-			<div className="buttons">
-				<button type="button" onClick={Router.back}>Cancelar</button>
-				<button type="submit">Confirmar</button>
+			<div className='buttons'>
+				<button type='button' onClick={Router.back}>Cancelar</button>
+				<button type='submit'>Confirmar</button>
 			</div>	
 		</Container>
 	)
