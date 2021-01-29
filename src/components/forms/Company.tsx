@@ -4,6 +4,7 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
 import Company, {CompanyTable} from '../../models/company'
+import Dropzone from '../Dropzone'
 
 interface CompanyFormProps
 {
@@ -26,9 +27,9 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	const [imagem, setImagem] = useState<File>()
 	const [razaoSocial, setRazaoSocial] = useState('')
 	const [cnpj, setCnpj] = useState(0)
-	const [telefones, setTelefones] = useState([0])
+	const [telefones, setTelefones] = useState([])
 	const [email, setEmail] = useState('')
-	const [comissao, setComissao] = useState({porcentagem: 0.00, obs: ['']})
+	const [comissao, setComissao] = useState({porcentagem: 0.00, obs: []})
 	const [descricaoCurta, setDescricaoCurta] = useState('')
 	const [descricao, setDescricao] = useState('')
 	const [site, setSite] = useState('')
@@ -225,8 +226,13 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		<Container onSubmit={handleSubmit} >
 			{/* imagem */}
 			<div className='field' >
-				<label htmlFor='imagem'>Imagem</label>
-				<input type='file' name='imagem' id='imagem' onChange={handleInputChange}/>
+				<label htmlFor='imageFile'>Imagem</label>
+				<Dropzone
+					name='imageFile'
+					id='imageFile'
+					onFileUploaded={setImagem}
+					shownFileUrl={company && company.imagem}
+				/>
 			</div>
 			{/* razao_social */}
 			<div className='field' >
