@@ -6,6 +6,7 @@ import api from '../../services/api'
 import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'
 import { FiMinus, FiPlus } from 'react-icons/fi'
+import formatPrice from '../../utils/formatPrice'
 
 interface CompanyFormProps
 {
@@ -192,12 +193,14 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	{
 		let tmpConditions = [...condicoes]
 
-		switch (field) {
+		switch (field)
+		{
 			case 'name':
 				tmpConditions[index].nome = value
 				break
 			case 'price':
-				tmpConditions[index].precoMin = Number(value)
+				const tmpPrice = Number(formatPrice(value))
+				tmpConditions[index].precoMin = tmpPrice
 				break
 			default:
 				break
@@ -427,7 +430,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 							<input
 								type='text'
 								name='condicao'
-								value={condicao.precoMin}
+								value={formatPrice(condicao.precoMin)}
 								onChange={(e) => handleChangeCondition(e.target.value, index, 'price')}
 								placeholder='Condição'
 							/>
