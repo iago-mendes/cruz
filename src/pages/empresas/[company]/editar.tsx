@@ -1,33 +1,29 @@
 import {useRouter} from 'next/router'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Head from 'next/head'
 import {GetServerSideProps} from 'next'
 
 import api from '../../../services/api'
 import Header from '../../../components/Header'
-import CompanyForm, {Company} from '../../../components/forms/Company'
+import CompanyForm from '../../../components/forms/Company'
 import Loading from '../../../components/Loading'
 import NotAllowed from '../../../components/NotAllowed'
 import useUser from '../../../hooks/useUser'
+import Company, {defaultCompany} from '../../../models/company'
 
-interface EditCompanyProps
+const EditCompany: React.FC = () =>
 {
-	company: Company
-}
+	const {query} = useRouter()
 
-const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
-{
-	const Router = useRouter()
+	const [company, setCompany] = useState<Company>(defaultCompany)
 	const [nomeFantasia, setNomeFantasia] = useState('')
-	const {user, loading} = useUser()
 
-	const {company: id} = Router.query
-	if (!id) return <Loading />
+	const {company: companyId} = query
 
-	if (loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+	useEffect(() =>
+	{
+		api.get(`companies-all/${companyId}`).then(({data}) => setCompany(data))
+	}, [companyId])
 
 	return (
 		<div className='container'>
@@ -42,23 +38,12 @@ const EditCompany: React.FC<EditCompanyProps> = ({company}) =>
 					method='put'
 					nomeFantasia={nomeFantasia}
 					setNomeFantasia={setNomeFantasia}
-					id={id as string}
+					id={String(companyId)}
 					company={company}
 				/>
 			</main>
 		</div>
 	)
-}
-
-export const getServerSideProps: GetServerSideProps = async ctx =>
-{
-	const {company: id} = ctx.params
-
-	const {data: company} = await api.get(`companies-all/${id}`)
-
-	return {
-		props: {company}
-	}
 }
 
 export default EditCompany

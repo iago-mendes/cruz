@@ -3,82 +3,7 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/Company'
 import api from '../../services/api'
-
-export interface Table
-{
-	_id?: string
-	nome: string
-}
-
-export interface Company
-{
-	_id: string
-	imagem?: string
-	razao_social: string
-	nome_fantasia: string
-	cnpj: string
-	telefones: Array<number>
-	email: string
-	descricao_curta?: string
-	descricao?: string
-	site?: string
-	comissao: {porcentagem: number, obs: Array<string>}
-	tabelas: Table[]
-}
-
-export interface RawCompany
-{
-	comissao:
-	{
-		obs: string[]
-		porcentagem: number
-	}
-	telefones: number[]
-	_id: string
-	imagem: string
-	razao_social: string
-	nome_fantasia: string
-	cnpj: string
-	email: string
-	linhas: Array<
-	{
-		produtos: Array<
-		{
-			tabelas: Array<
-			{
-				_id: string
-				id: string
-				preco: number
-			}>
-			_id: string
-			imagem: string
-			codigo: number
-			nome: string
-			ipi: number
-			st: number
-			unidade: string
-			comissao: number
-		}>
-		_id: string
-		nome: string
-	}>
-	descricao_curta: string
-	descricao: string
-	site: string
-	tabelas: Array<
-	{
-		_id: string
-		nome: string
-	}>
-}
-
-export interface ListedCompany
-{
-	id: string
-	imagem: string
-	nome_fantasia: string
-	descricao_curta: string
-}
+import Company, {CompanyTable} from '../../models/company'
 
 interface CompanyFormProps
 {
@@ -107,7 +32,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	const [descricaoCurta, setDescricaoCurta] = useState('')
 	const [descricao, setDescricao] = useState('')
 	const [site, setSite] = useState('')
-	const [tabelas, setTabelas] = useState<Table[]>([])
+	const [tabelas, setTabelas] = useState<CompanyTable[]>([])
 
 	useEffect(() =>
 	{
