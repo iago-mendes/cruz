@@ -3,8 +3,9 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
-import Company, {CompanyTable} from '../../models/company'
+import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'
+import { FiMinus, FiPlus } from 'react-icons/fi'
 
 interface CompanyFormProps
 {
@@ -34,6 +35,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	const [descricao, setDescricao] = useState('')
 	const [site, setSite] = useState('')
 	const [tabelas, setTabelas] = useState<CompanyTable[]>([])
+	const [condicoes, setCondicoes] = useState<CompanyCondition[]>([])
 
 	useEffect(() =>
 	{
@@ -172,6 +174,36 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		let tables = [...tabelas]
 		tables.splice(index, 1)
 		setTabelas(tables)
+	}
+
+	function handleAddCondition()
+	{
+		setCondicoes([...condicoes, {nome: '', precoMin: 0}])
+	}
+
+	function handleRemoveCondition(index: number)
+	{
+		let tmpConditions = [...condicoes]
+		tmpConditions.splice(index, 1)
+		setTabelas(tmpConditions)
+	}
+
+	function handleChangeCondition(value: string, index: number, field: string)
+	{
+		let tmpConditions = [...condicoes]
+
+		switch (field) {
+			case 'name':
+				tmpConditions[index].nome = value
+				break
+			case 'price':
+				tmpConditions[index].precoMin = Number(value)
+				break
+			default:
+				break
+		}
+
+		setCondicoes(tmpConditions)
 	}
 
 	async function handleSubmit(e: FormEvent)
@@ -359,7 +391,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					onChange={handleInputChange}
 				/>
 			</div>
-			{/* tabela */}
+			{/* tabelas */}
 			<div className='field' >
 				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
@@ -378,7 +410,39 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					<button type='button' onClick={handleAddTable}>+</button>
 				</ul>
 			</div>
+			{/* condicoes */}
+			<div className='field' >
+				<label htmlFor='condicao'>Condições de prazo</label>
+				<ul>
+					{condicoes.map((condicao, index) => (
+						<li key={index} >
+							<input
+								type='text'
+								name='condicao'
+								id='condicao'
+								value={condicao.nome}
+								onChange={(e) => handleChangeCondition(e.target.value, index, 'name')}
+								placeholder='Condição'
+							/>
+							<input
+								type='text'
+								name='condicao'
+								value={condicao.precoMin}
+								onChange={(e) => handleChangeCondition(e.target.value, index, 'price')}
+								placeholder='Condição'
+							/>
+							<button type='button' title='Remover' onClick={() => handleRemoveCondition(index)}>
+								<FiMinus size={15} />
+							</button>
+						</li>
+					))}
+					<button type='button' title='Adicionar' onClick={handleAddCondition}>
+						<FiPlus size={15} />
+					</button>
+				</ul>
+			</div>
 			
+
 			<div className='buttons'>
 				<button type='button' onClick={Router.back} className='cancel' >Cancelar</button>
 				<button type='submit' className='submit' >Confirmar</button>

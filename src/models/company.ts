@@ -12,6 +12,7 @@ interface Company
 	site?: string
 	comissao: {porcentagem: number, obs: Array<string>}
 	tabelas: CompanyTable[]
+	condicoes: CompanyCondition[]
 }
 
 export const defaultCompany: Company =
@@ -23,13 +24,21 @@ export const defaultCompany: Company =
 	telefones: [],
 	email: '',
 	comissao: {porcentagem: 0, obs: []},
-	tabelas: []
+	tabelas: [],
+	condicoes: []
 }
 
 export interface CompanyTable
 {
 	_id?: string
 	nome: string
+}
+
+export interface CompanyCondition
+{
+	_id?: string
+	nome: string
+	precoMin: number
 }
 
 export interface CompanyListed

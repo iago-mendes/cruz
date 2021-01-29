@@ -68,7 +68,7 @@ const Container = styled.form`
 
 				input
 				{
-					width: 50%;
+					width: 40%;
 				}
 
 				.select
