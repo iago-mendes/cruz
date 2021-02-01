@@ -51,6 +51,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			setDescricao(company.descricao)
 			setSite(company.site)
 			setTabelas(company.tabelas)
+			setCondicoes(company.condicoes)
 			
 			setTelefones(company.telefones)
 			setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
@@ -215,7 +216,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 
 		const data = new FormData()
 
-		if (imagem) data.append('imagem', imagem)
+		if (imagem)
+			data.append('imagem', imagem)
 		data.append('razao_social', razaoSocial)
 		data.append('nome_fantasia', nomeFantasia)
 		data.append('cnpj', JSON.stringify(cnpj))
@@ -226,6 +228,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		data.append('descricao', descricao)
 		data.append('site', site)
 		data.append('tabelas', JSON.stringify(tabelas))
+		data.append('condicoes', JSON.stringify(condicoes))
 
 		if (method === 'post')
 		{
@@ -430,7 +433,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 							<input
 								type='text'
 								name='condicao'
-								value={formatPrice(condicao.precoMin)}
+								pattern='[-+]?[0-9]*[.,]?[0-9]+'
+								value={formatPrice(condicao.precoMin, false)}
 								onChange={(e) => handleChangeCondition(e.target.value, index, 'price')}
 								placeholder='Condição'
 							/>

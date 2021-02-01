@@ -1,6 +1,6 @@
 function priceToString(p: number)
 {
-	return 'R$ ' + p.toFixed(2).replace('.', ',')
+	return p.toFixed(2).replace('.', ',')
 }
 
 function priceToNumber(p: string)
@@ -13,12 +13,17 @@ function priceToNumber(p: string)
 	return res
 }
 
-function formatPrice(price: number | string)
+function formatPrice(price: number | string, showSymbol: boolean = true)
 {
 	if (typeof price === 'string')
 		return priceToNumber(price)
 	else if (typeof price === 'number')
-		return priceToString(price)
+	{
+		if (showSymbol)
+			return 'R$ ' + priceToString(price)
+		else
+			return priceToString(price)
+	}
 }
 
 export default formatPrice
