@@ -1,14 +1,9 @@
 import styled from "styled-components";
 
-interface ContainerProps
-{
-	isExpanded: boolean
-}
-
-const Container = styled.nav<ContainerProps>`
+const Container = styled.nav`
   background-color: ${props => props.theme.colors.primary};
   height: 100vh;
-  width: ${props => props.isExpanded ? '20rem' : '5rem'};
+  width: 20rem;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -64,9 +59,8 @@ const Container = styled.nav<ContainerProps>`
 
 			span
 			{
-				opacity: ${p => p.isExpanded ? 1 : 0};
-				font-size: ${p => p.isExpanded ? '1.5rem' : 0};
-				margin-left: ${p => p.isExpanded ? '1rem' : 0};
+				font-size: 1.5rem;
+				margin-left: 1rem;
 				transition: 0.25s;
 				font-family: Ubuntu;
 			}

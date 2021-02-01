@@ -1,4 +1,3 @@
-import {useState} from 'react'
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
@@ -11,14 +10,14 @@ import Container from '../styles/components/Sidebar'
 
 export default function Sidebar()
 {
-	const Router = useRouter()
-	const [isExpanded, setIsExpanded] = useState(false)
+	const {pathname} = useRouter()
 
-	if (Router.pathname === '/login') return null
+	if (pathname === '/login')
+		return null
 
 	function checkRoute(routes: string[])
 	{
-		const current = Router.pathname.split('/')
+		const current = pathname.split('/')
 		if (routes.includes(`/${current[1]}`))
 			return "#CC9749"
 		else
@@ -26,11 +25,7 @@ export default function Sidebar()
 	}
 
 	return (
-		<Container
-			isExpanded={isExpanded}
-			onMouseEnter={() => setIsExpanded(true)}
-			onMouseLeave={() => setIsExpanded(false)}
-		>
+		<Container>
 			<header>
 				<img src={Logo} alt="Cruz Representações" />
 			</header>
