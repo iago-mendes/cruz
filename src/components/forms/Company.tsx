@@ -7,6 +7,8 @@ import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import formatPrice from '../../utils/formatPrice'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface CompanyFormProps
 {
@@ -235,13 +237,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			await api.post('companies', data)
 			.then(() =>
 			{
-				alert('Empresa criada com sucesso!')
+				successAlert('Empresa criada com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
-				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert(err.response.message.data)
 			})
 		}
 		else if (method === 'put')
@@ -249,13 +250,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			await api.put(`companies/${id}`, data)
 			.then(() =>
 			{
-				alert('Empresa atualizada com sucesso!')
+				successAlert('Empresa atualizada com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
-				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert(err.response.message.data)
 			})
 		}
 	}

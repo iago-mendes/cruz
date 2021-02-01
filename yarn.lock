@@ -5843,6 +5843,16 @@ svgo@^0.7.2:
     sax "~1.2.1"
     whet.extend "~0.9.9"
 
+sweetalert2-react-content@^3.2.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/sweetalert2-react-content/-/sweetalert2-react-content-3.2.2.tgz#56f6bf39b82e5e523f0adda7854549fc737f2116"
+  integrity sha512-PC1BG86ZrNOwF9chtBKEH3wc3QIbkOcH4sw2Q45yKkvcFvDwF4JyqSx+usSYODS2IAaq7AmNn77eDNrhCT0Vng==
+
+sweetalert2@^10.14.0:
+  version "10.14.0"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-10.14.0.tgz#73a7487b12b56dec4c1e47d7d4926e8fe880e727"
+  integrity sha512-EBUh4k9qyRRsttm9X9j7WUhLExetvTJpcbp1VTMJCpuI2UwHLesXMIw9M+UeuqBywv0UjNMR5PKH7Qnv65m8rw==
+
 swr@^0.3.9:
   version "0.3.9"
   resolved "https://registry.yarnpkg.com/swr/-/swr-0.3.9.tgz#a179a795244c7b68684af6a632f1ad579e6a69e0"
