@@ -12,6 +12,7 @@ interface Client
 	representadas: ClientCompany[]
 	endereco: Address
 	status: Status
+	condicoes: Conditions
 }
 
 export interface ClientCompany
@@ -37,6 +38,13 @@ export interface Status
 	ativo: boolean
 	aberto: boolean
 	nome_sujo: boolean
+}
+
+export interface Conditions
+{
+	prazo: boolean
+	cheque: boolean
+	vista: boolean
 }
 
 export interface ClientListed

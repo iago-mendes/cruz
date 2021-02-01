@@ -9,8 +9,10 @@ import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import {ListedSeller} from './Seller'
 import Company from '../../models/company'
-import Client, {ClientCompany, Address, Status} from '../../models/client'
+import Client, {ClientCompany, Address, Status, Conditions} from '../../models/client'
 import {SelectOption, SelectOptionsList} from '../../models'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface ClientFormProps
 {
@@ -46,6 +48,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		uf: ''
 	})
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
+	const [condicoes, setCondicoes] = useState<Conditions>({prazo: false, vista: false, cheque: false})
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
@@ -92,16 +95,28 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	{
 		if (client)
 		{
-			setRazaoSocial(client.razao_social)
-			setNomeFantasia(client.nome_fantasia)
-			setCnpj(client.cnpj)
-			setInscEstadual(client.insc_estadual)
-			setEmail(client.email)
-			setSenha(client.senha)
-			setVendedores(client.vendedores)
-			setRepresentadas(client.representadas)
-			setEndereco(client.endereco)
-			setStatus(client.status)
+			if (client.razao_social)
+				setRazaoSocial(client.razao_social)
+			if (client.nome_fantasia)
+				setNomeFantasia(client.nome_fantasia)
+			if (client.cnpj)
+				setCnpj(client.cnpj)
+			if (client.insc_estadual)
+				setInscEstadual(client.insc_estadual)
+			if (client.email)
+				setEmail(client.email)
+			if (client.senha)
+				setSenha(client.senha)
+			if (client.vendedores)
+				setVendedores(client.vendedores)
+			if (client.representadas)
+				setRepresentadas(client.representadas)
+			if (client.endereco)
+				setEndereco(client.endereco)
+			if (client.status)
+				setStatus(client.status)
+			if (client.condicoes)
+				setCondicoes(client.condicoes)
 		}
 	}, [client])
 
@@ -176,13 +191,28 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		setStatus(tmp)
 	}
 
+	function handleConditionsChange(e: boolean, field: string)
+	{
+		let tmpConditions = {...condicoes}
+
+		if (field === 'prazo')
+			tmpConditions.prazo = e
+		if (field === 'vista')
+			tmpConditions.vista = e
+		if (field === 'cheque')
+			tmpConditions.cheque = e
+
+		setCondicoes(tmpConditions)
+	}
+
 	async function handleSubmit(e: FormEvent)
 	{
 		e.preventDefault()
 
 		const data = new FormData()
 
-		if (imagem)	data.append('imagem', imagem)
+		if (imagem)
+			data.append('imagem', imagem)
 		data.append('razao_social', razao_social)
 		data.append('nome_fantasia', nome_fantasia)
 		data.append('cnpj', cnpj)
@@ -193,19 +223,19 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		data.append('representadas', JSON.stringify(representadas))
 		data.append('endereco', JSON.stringify(endereco))
 		data.append('status', JSON.stringify(status))
+		data.append('condicoes', JSON.stringify(condicoes))
 
 		if (method === 'post')
 		{
 			await api.post('clients', data)
 			.then(() =>
 			{
-				alert('Cliente criado com sucesso!')
+				successAlert('Cliente criado com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
-				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert(err.response.message.data)
 			})
 		}
 		else if (method === 'put')
@@ -213,13 +243,13 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			await api.put(`clients/${id}`, data)
 			.then(() =>
 			{
-				alert('Cliente atualizado com sucesso!')
+				successAlert('Cliente atualizado com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 	}
@@ -431,45 +461,73 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			{/* status */}
 			<div className='field'>
 				<label htmlFor='status'>Situação</label>
-				<div className='status'>
-					<div className='statusField'>
+				<div className='switchFields'>
+					<div className='switchField'>
 						<span>ativo</span>
 						<Switch
 							name='ativo'
 							id='ativo'
 							checked={status.ativo}
 							onChange={e => handleStatusChange(e, 'ativo')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className='statusField'>
+					<div className='switchField'>
 						<span>aberto</span>
 						<Switch
 							name='aberto'
 							id='aberto'
 							checked={status.aberto}
 							onChange={e => handleStatusChange(e, 'aberto')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className='statusField'>
+					<div className='switchField'>
 						<span>nome sujo</span>
 						<Switch
 							name='nome_sujo'
 							id='nome_sujo'
 							checked={status.nome_sujo}
 							onChange={e => handleStatusChange(e, 'nome_sujo')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
 						/>
 					</div>
 				</div>
 			</div>
+			{/* condicoes */}
+			<div className='field'>
+				<label htmlFor='condicoes'>Condições de compra</label>
+				<div className='switchFields'>
+					<div className='switchField'>
+						<span>prazo</span>
+						<Switch
+							name='prazo'
+							id='prazo'
+							checked={condicoes.prazo}
+							onChange={e => handleConditionsChange(e, 'prazo')}
+						/>
+					</div>
+					<div className='switchField'>
+						<span>à vista</span>
+						<Switch
+							name='vista'
+							id='vista'
+							checked={condicoes.vista}
+							onChange={e => handleConditionsChange(e, 'vista')}
+						/>
+					</div>
+					<div className='switchField'>
+						<span>cheque</span>
+						<Switch
+							name='cheque'
+							id='cheque'
+							checked={condicoes.cheque}
+							onChange={e => handleConditionsChange(e, 'cheque')}
+						/>
+					</div>
+				</div>
+			</div>
+
 			<div className='buttons'>
-				<button type='button' onClick={Router.back}>Cancelar</button>
-				<button type='submit'>Confirmar</button>
+				<button type='button' onClick={Router.back} className='cancel' >Cancelar</button>
+				<button type='submit' className='submit' >Confirmar</button>
 			</div>	
 		</Container>
 	)

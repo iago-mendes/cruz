@@ -113,13 +113,13 @@ const Container = styled.form`
 			flex-direction: column;	
 		}
 
-		.status
+		.switchFields
 		{
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
 
-			.statusField
+			.switchField
 			{
 				display: flex;
 				flex-direction: column;
