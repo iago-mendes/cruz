@@ -9,72 +9,8 @@ import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import {ListedSeller} from './Seller'
 import Company from '../../models/company'
-
-interface ClientCompany
-{
-	_id?: string
-	id: string
-	tabela: string
-}
-
-interface Address
-{
-	rua?: string
-	numero?: number
-	complemento?: string
-	bairro?: string
-	cep?: number
-	cidade?: string
-	uf?: string
-}
-
-interface Status
-{
-	ativo: boolean
-	aberto: boolean
-	nome_sujo: boolean
-}
-
-export interface Client
-{
-	_id: string
-	razao_social: string
-	nome_fantasia: string
-	imagem: string
-	cnpj: string
-	insc_estadual: string
-	email: string
-	senha: string
-	vendedores: string[]
-	representadas: ClientCompany[]
-	endereco: Address
-	status: Status
-}
-
-export interface ListedClient
-{
-	id: string
-	razao_social: string
-	nome_fantasia: string
-	imagem: string
-	status:
-	{
-		ativo: boolean
-		aberto: boolean
-		nome_sujo: boolean
-	}
-}
-
-interface SelectOption
-{
-	value: string
-	label: string
-}
-
-interface TableSelectOptions
-{
-	[key: string]: SelectOption[]
-}
+import Client, {ClientCompany, Address, Status} from '../../models/client'
+import {SelectOption, SelectOptionsList} from '../../models'
 
 interface ClientFormProps
 {
@@ -113,7 +49,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
-	const [tableOptions, setTableOptions] = useState<TableSelectOptions>({})
+	const [tableOptions, setTableOptions] = useState<SelectOptionsList>({})
 
 	useEffect(() =>
 	{
@@ -130,7 +66,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		api.get('companies-all').then(({data}:{data: Company[]}) =>
 		{
 			let tmpCompanies: SelectOption[] = []
-			let tmpTables: TableSelectOptions = {}
+			let tmpTables: SelectOptionsList = {}
 
 			data.map(company =>
 			{

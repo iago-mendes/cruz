@@ -7,16 +7,14 @@ import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 import Container from '../../styles/components/forms/Request'
 import {selectStyles} from '../../styles/global'
 import api from '../../services/api'
-import {ListedClient} from './Client'
 import {ListedSeller, Seller} from './Seller'
-import {RawCompany} from './Company'
 import useUser from '../../hooks/useUser'
 import {Product as RawProduct} from './Product'
-import {Client as RawClient} from './Client'
 import formatImage from '../../utils/formatImage'
 import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
+import RawClient, {ClientListed} from '../../models/client'
 
 interface Type
 {
@@ -131,7 +129,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		async function getOptions()
 		{
-			await api.get('clients').then(({data: clients}:{data: ListedClient[]}) =>
+			await api.get('clients').then(({data: clients}:{data: ClientListed[]}) =>
 			{
 				let tmpOptions: SelectOption[] = []
 
@@ -166,7 +164,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					sellerCompanies = seller.representadas.map(company => company.id)
 				})
 
-				await api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
+				await api.get('companies-all').then(({data: companies}) =>
 				{
 					let tmpCompanies: SelectOption[] = []
 					let tmpLines: LineSelectOptions = {}
@@ -242,7 +240,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function getRawProductsList()
 	{
-		api.get('companies-all').then(({data: companies}:{data: RawCompany[]}) =>
+		api.get('companies-all').then(({data: companies}) =>
 		{
 			let tmpRawProductsList: RawProductsList = {}
 
