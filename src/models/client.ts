@@ -15,6 +15,23 @@ interface Client
 	condicoes: Conditions
 }
 
+export const defaultClient: Client =
+{
+	_id: '',
+	razao_social: '',
+	nome_fantasia: '',
+	imagem: '',
+	cnpj: '',
+	insc_estadual: '',
+	email: '',
+	senha: '',
+	vendedores: [],
+	representadas: [],
+	endereco: {},
+	status: {ativo: true, aberto: true, nome_sujo: false},
+	condicoes: {prazo: true, cheque: true, vista: true}
+}
+
 export interface ClientCompany
 {
 	_id?: string

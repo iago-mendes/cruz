@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 
 
-import {ListedClient as Client} from '../../components/forms/Client'
+import {ClientListed as Client} from '../../models/client'
 import Header from '../../components/Header'
 import Loading from '../../components/Loading'
 import api from '../../services/api'

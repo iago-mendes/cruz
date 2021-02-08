@@ -3,7 +3,7 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/Product'
 import api from '../../services/api'
-import {Table} from './Company'
+import {CompanyTable as Table} from '../../models/company'
 
 interface ProductTable
 {

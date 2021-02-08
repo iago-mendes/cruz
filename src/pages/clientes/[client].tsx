@@ -3,11 +3,12 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 
 import Header from '../../components/Header'
-import ClientForm, {Client} from '../../components/forms/Client'
+import ClientForm from '../../components/forms/Client'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import api from '../../services/api'
 import useUser from '../../hooks/useUser'
+import Client, {defaultClient} from '../../models/client'
 
 const EditClient: React.FC = () =>
 {
@@ -16,21 +17,7 @@ const EditClient: React.FC = () =>
 
 	const {user, loading} = useUser()
 	const [nome_fantasia, setNomeFantasia] = useState('')
-	const [client, setClient] = useState<Client>(
-	{
-		_id: '',
-		razao_social: '',
-		nome_fantasia: '',
-		imagem: '',
-		cnpj: '',
-		insc_estadual: '',
-		email: '',
-		senha: '',
-		vendedores: [],
-		representadas: [],
-		endereco: {},
-		status: {ativo: true, aberto: true, nome_sujo: false}
-	})
+	const [client, setClient] = useState<Client>(defaultClient)
 	
 	useEffect(() =>
 	{

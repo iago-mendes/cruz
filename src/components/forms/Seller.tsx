@@ -6,7 +6,7 @@ import Switch from 'react-switch'
 
 import Container from '../../styles/components/forms/Seller'
 import api from '../../services/api'
-import {Company} from './Company'
+import Company from '../../models/company'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 

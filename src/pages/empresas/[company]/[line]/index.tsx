@@ -10,10 +10,10 @@ import Loading from '../../../../components/Loading'
 import Header from '../../../../components/Header'
 import Container from '../../../../styles/pages/empresas/[company]/[line]/index'
 import {Line} from '../../../../components/forms/Line'
-import {Product} from '../../../../components/forms/Product'
-import {Company, Table} from '../../../../components/forms/Company'
 import Add from '../../../../components/Add'
 import useUser from '../../../../hooks/useUser'
+import {Product} from '../../../../components/forms/Product'
+import Company, {CompanyTable as Table} from '../../../../models/company'
 
 interface ProductsProps
 {
