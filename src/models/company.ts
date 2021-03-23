@@ -1,18 +1,19 @@
-interface Company
+interface Company // raw
 {
 	_id: string
 	imagem?: string
 	razao_social: string
 	nome_fantasia: string
 	cnpj: string
-	telefones: Array<number>
+	telefones: Array<string>
 	email: string
 	descricao_curta?: string
 	descricao?: string
 	site?: string
-	comissao: {porcentagem: number, obs: Array<string>}
+	comissao: {porcentagem: number, obs: string[]}
 	tabelas: CompanyTable[]
 	condicoes: CompanyCondition[]
+	// products
 }
 
 export const defaultCompany: Company =
@@ -47,6 +48,15 @@ export interface CompanyListed
 	imagem: string
 	nome_fantasia: string
 	descricao_curta: string
+}
+
+export interface CompanyShowed
+{
+  id: string
+  imagem: string
+  nome_fantasia: string
+  descricao: string
+  site: string
 }
 
 export default Company
