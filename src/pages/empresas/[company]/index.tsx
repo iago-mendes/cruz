@@ -2,53 +2,39 @@ import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {useRouter} from 'next/router'
-import useSWR from 'swr'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 
 import api from '../../../services/api'
-import Loading from '../../../components/Loading'
 import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/[line]/index'
-import {Line} from '../../../components/forms/Line'
 import Add from '../../../components/Add'
 import useUser from '../../../hooks/useUser'
 import {Product} from '../../../components/forms/Product'
-import Company, {CompanyTable as Table} from '../../../models/company'
+import Company, {CompanyListed, CompanyTable as Table} from '../../../models/company'
 
 interface ProductsProps
 {
 	products: Product[]
 	companyName: string
-	lineName: string
 	tables: Table[]
 }
 
-const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, lineName, tables}) =>
+const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, tables}) =>
 {
-	const Router = useRouter()
-	const {company: companyId, line: lineId} = Router.query
+	const {query, push} = useRouter()
+	const {company: companyId} = query
 	
-	const {user, loading} = useUser()
-	const {data, error, revalidate} = useSWR(`/api/listProducts?company=${companyId}&line=${lineId}`)
-	const [products, setProducts] = useState<Product[]>([])
+	const {user} = useUser()
+	const [products, setProducts] = useState<Product[]>(staticProducts)
 
-	useEffect(() =>
+	function updateProducts()
 	{
-		if (data)
-		{
-			setProducts(data)
-		}
-		else if (staticProducts)
-		{
-			setProducts(staticProducts)
-
-			if (error)
-				console.error(error)
-		}
-	}, [data, error, staticProducts])
-
-	if (loading)
-		return <Loading />
+		api.get(`companies/${companyId}/products/raw`)
+			.then(({data}:{data: Product[]}) =>
+			{
+				setProducts(data)
+			})
+	}
 
 	function formatNumber(n: number)
 	{
@@ -59,21 +45,21 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	{
 		const yes = confirm(`Deseja deletar o produto ${product.nome}?`)
 		if (yes)
-			await api.delete(`companies/${companyId}/lines/${lineId}/products/${product._id}`).then(() =>
+			await api.delete(`companies/${companyId}/products/${product._id}`).then(() =>
 			{
-				revalidate()
+				updateProducts()
 				alert(`Produto ${product.nome} deletado com sucesso!`)
 			})
 	}
 	
 	return (
-		<Container className="container">
+		<Container className='container'>
 			<Head>
-				<title>{lineName} | Cruz Representações</title>
+				<title>{companyName} - Produtos | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > ${lineName} > Produtos`} showSearch />
-			<Add route={`/empresas/${companyId}/${lineId}/adicionar`} />
+			<Header display={`${companyName} > Produtos`} showSearch />
+			<Add route={`/empresas/${companyId}/adicionar`} />
 
 			<main>
 				<table>
@@ -101,7 +87,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 										<div className='actions'>
 											<button
 												title='Editar'
-												onClick={() => Router.push(`/empresas/${companyId}/${lineId}/${product._id}/editar`)}>
+												onClick={() => push(`/empresas/${companyId}/${product._id}/editar`)}>
 												<FiEdit3 size={15} />
 											</button>
 											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
@@ -135,23 +121,14 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 
 export const getStaticPaths: GetStaticPaths = async ctx =>
 {
-	interface Path
-	{
-		params: { company: string, line: string }
-	}
-
-	interface Company
-	{
-		_id: string
-		linhas: Array<{_id: string}>
-	}
-
-	const paths: Path[] = await api.get('companies-all').then(({data}:{data: Company[]}) => data.map(company => (
-		company.linhas.map(line => (
-		{
-			params: {company: company._id, line: line._id}
-		}))
-	)).flat())
+	const paths = await api.get('companies')
+		.then(({data}:{data: CompanyListed[]}) => (
+		
+			data.map(company => (
+			{
+				params: {company: company.id}
+			}))
+		))
 
 	return {
 		paths,
@@ -161,30 +138,20 @@ export const getStaticPaths: GetStaticPaths = async ctx =>
 
 export const getStaticProps: GetStaticProps = async ctx =>
 {
-	const {company, line} = ctx.params
+	const {company: companyId} = ctx.params
 
-	let staticProducts: Product[] = []
-	await api.get(`companies/${company}/lines/${line}/products-raw`)
-		.then(res => staticProducts = res.data)
-		.catch(err => console.error(err.message))
+	const staticProducts = await api.get(`companies/${companyId}/products/raw`)
+		.then(({data}:{data: Product[]}) => data)
 
-	let companyName = ''
-	let tables: Table[] = []
-	await api.get(`companies-all/${company}`)
-		.then(({data}:{data: Company}) =>
+	const {companyName, tables} = await api.get(`companies/${companyId}/raw`)
+		.then(({data}:{data: Company}) => (
 		{
-			companyName = data.nome_fantasia
-			tables = data.tabelas
-		})
-		.catch(err => console.error(err.message))
+			companyName: data.nome_fantasia,
+			tables: data.tabelas
+		}))
 	
-	let lineName = ''
-	await api.get(`companies/${company}/lines`)
-		.then(({data}:{data: Line[]}) => lineName = data.find(ln => ln.id == line).nome)
-		.catch(err => console.error(err.message))
-
 	return {
-		props: {staticProducts, companyName, lineName, tables},
+		props: {staticProducts, companyName, tables},
 		revalidate: 1
 	}
 }
