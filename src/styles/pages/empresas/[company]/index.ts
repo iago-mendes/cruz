@@ -95,17 +95,20 @@ const Container = styled.div`
 						}
 					}
 
-
 					.img
 					{
-						text-align: center;
 						width: 5rem;
-						padding: 0;
+						height: 5rem;
+						padding: 0.25rem;
+
+						display: flex;
+						align-items: center;
+						justify-content: center;
 
 						img
 						{
-							max-width: 90%;
-							max-height: 90%;
+							max-width: 100%;
+							max-height: 100%;
 						}
 					}
 				}
