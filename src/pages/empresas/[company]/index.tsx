@@ -11,6 +11,7 @@ import Add from '../../../components/Add'
 import useUser from '../../../hooks/useUser'
 import Company, {CompanyListed, CompanyTable as Table} from '../../../models/company'
 import Product from '../../../models/product'
+import SheetModal from '../../../components/modals/Sheet'
 
 interface ProductsProps
 {
@@ -60,6 +61,11 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 
 			<Header display={`${companyName} > Produtos`} showSearch />
 			<Add route={`/empresas/${companyId}/adicionar`} />
+
+			<SheetModal
+				headerPath={`companies/${companyId}/products/sheet/header`}
+				uploadPath={`/companies/${companyId}/products/sheet`}
+			/>
 
 			<main>
 				<table>
