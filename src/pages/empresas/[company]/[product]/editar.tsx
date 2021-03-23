@@ -3,42 +3,26 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 
 import Header from '../../../../components/Header'
-import ProductForm, {Product} from '../../../../components/forms/Product'
-import Loading from '../../../../components/Loading'
-import NotAllowed from '../../../../components/NotAllowed'
+import ProductForm from '../../../../components/forms/Product'
 import api from '../../../../services/api'
-import useUser from '../../../../hooks/useUser'
+import Product, {defaultProduct} from '../../../../models/product'
 
-const AddCompany: React.FC = () =>
+const EditProduct: React.FC = () =>
 {
-	const Router = useRouter()
-	const {company, line, product: id} = Router.query
+	const {query} = useRouter()
+	const {company: companyId, product: productId} = query
 
-	const {user, loading} = useUser()
 	const [nome, setNome] = useState('')
-	const [product, setProduct] = useState<Product>(
-	{
-		_id: '',
-		imagem: '',
-		nome: '',
-		codigo: 0,
-		unidade: '',
-		ipi: 0,
-		st: 0,
-		comissao: 0,
-		tabelas: []
-	})
+	const [product, setProduct] = useState<Product>(defaultProduct)
 	
 	useEffect(() =>
 	{
-		api.get(`companies/${company}/lines/${line}/products-raw/${id}`)
-			.then(res => setProduct(res.data))
-	}, [company, line, id])
-
-	if (loading) 
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+		api.get(`companies/${companyId}/products/${productId}/raw`)
+			.then(({data}:{data: Product}) =>
+			{
+				setProduct(data)
+			})
+	}, [companyId, productId])
 
 	return (
 		<div className='container'>
@@ -51,11 +35,10 @@ const AddCompany: React.FC = () =>
 			<main className='main'>
 				<ProductForm
 					method='put'
-					companyId={String(company)}
-					lineId={String(line)}
+					companyId={String(companyId)}
 					nome={nome}
 					setNome={setNome}
-					id={String(id)}
+					id={String(productId)}
 					product={product}
 				/>
 			</main>
@@ -63,4 +46,4 @@ const AddCompany: React.FC = () =>
 	)
 }
 
-export default AddCompany
+export default EditProduct

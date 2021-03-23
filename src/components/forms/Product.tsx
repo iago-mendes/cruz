@@ -4,31 +4,12 @@ import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import Container from '../../styles/components/forms/Product'
 import api from '../../services/api'
 import {CompanyTable as Table} from '../../models/company'
-
-interface ProductTable
-{
-	id: string
-	preco: number
-}
-
-export interface Product
-{
-	_id: string
-	imagem: string
-	nome: string
-	codigo: number
-	unidade: string
-	ipi: number
-	st: number
-	comissao: number
-	tabelas: ProductTable[]
-}
+import Product, {ProductTable} from '../../models/product'
 
 interface ProductFormProps
 {
 	method: string
 	companyId: string
-	lineId: string
 	
 	nome: string
 	setNome: Function
@@ -37,13 +18,15 @@ interface ProductFormProps
 	product?: Product
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nome, setNome, id, product}) =>
+const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNome, id, product}) =>
 {
 	const Router = useRouter()
     
 	const [imagem, setImagem] = useState<File>()
 	const [codigo, setCodigo] = useState(0)
 	const [unidade, setUnidade] = useState('')
+	const [peso, setPeso] = useState(0)
+	const [volume, setVolume] = useState(0)
 	const [ipi, setIpi] = useState(0)
 	const [st, setSt] = useState(0)
 	const [comissao, setComissao] = useState(0)
@@ -53,7 +36,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 
 	useEffect(() =>
 	{
-		api.get(`companies-all/${companyId}`).then(({data}:{data: {tabelas: Table[]}}) =>
+		api.get(`companies/${companyId}/raw`).then(({data}:{data: {tabelas: Table[]}}) =>
 		{
 			setTableNames(data.tabelas)
 
@@ -69,6 +52,8 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 			setNome(product.nome)
 			setCodigo(product.codigo)
 			setUnidade(product.unidade)
+			setPeso(product.peso)
+			setVolume(product.volume)
 			setIpi(product.ipi)
 			setSt(product.st)
 			setComissao(product.comissao)
@@ -100,7 +85,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 
 		if (method === 'post')
 		{
-			await api.post(`companies/${companyId}/lines/${lineId}/products`, data)
+			await api.post(`companies/${companyId}/products`, data)
 			.then(() =>
 			{
 				alert('Produto criado com sucesso!')
@@ -114,7 +99,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 		}
 		else if (method === 'put')
 		{
-			await api.put(`companies/${companyId}/lines/${lineId}/products/${id}`, data)
+			await api.put(`companies/${companyId}/products/${id}`, data)
 			.then(() =>
 			{
 				alert('Produto atualizado com sucesso!')
@@ -130,80 +115,112 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 
 	return (
 		<Container onSubmit={handleSubmit} >
+			{/* imagem */}
 			<div>
-				<label htmlFor="imagem">Imagem</label>
-				<input type="file" name="imagem" id="imagem" onChange={e => setImagem(e.target.files[0])}/>
+				<label htmlFor='imagem'>Imagem</label>
+				<input type='file' name='imagem' id='imagem' onChange={e => setImagem(e.target.files[0])}/>
 			</div>
+			{/* nome */}
 			<div>
-				<label htmlFor="nome">Nome</label>
+				<label htmlFor='nome'>Nome</label>
 				<input
-					type="text"
-					name="nome"
-					id="nome"
+					type='text'
+					name='nome'
+					id='nome'
 					value={nome}
 					onChange={e => setNome(e.target.value)}
 				/>
 			</div>
+			{/* codigo */}
 			<div>
-				<label htmlFor="codigo">Código</label>
+				<label htmlFor='codigo'>Código</label>
 				<input
-					type="number"
-					name="codigo"
-					id="codigo"
+					type='number'
+					name='codigo'
+					id='codigo'
 					value={codigo}
 					onChange={e => setCodigo(Number(e.target.value))}
 				/>
 			</div>
+			{/* unidade */}
 			<div>
-				<label htmlFor="unidade">Unidade</label>
+				<label htmlFor='unidade'>Unidade</label>
 				<input
-					type="text"
-					name="unidade"
-					id="unidade"
+					type='text'
+					name='unidade'
+					id='unidade'
 					value={unidade}
 					onChange={e => setUnidade(e.target.value)}
 				/>
 			</div>
+			{/* peso */}
 			<div>
-				<label htmlFor="ipi">Ipi</label>
+				<label htmlFor='peso'>Peso</label>
 				<input
-					type="number"
-					name="ipi"
-					id="ipi"
+					type='number'
+					name='peso'
+					id='peso'
+					value={peso !== 0 ? peso : undefined}
+					onChange={e => setPeso(Number(e.target.value))}
+					placeholder='Ex.: 2 kg'
+				/>
+			</div>
+			{/* volume */}
+			<div>
+				<label htmlFor='volume'>Volume</label>
+				<input
+					type='number'
+					name='volume'
+					id='volume'
+					value={volume !== 0 ? volume : undefined}
+					onChange={e => setVolume(Number(e.target.value))}
+					placeholder='Ex.: 0.5 m³'
+				/>
+			</div>
+			{/* ipi */}
+			<div>
+				<label htmlFor='ipi'>Ipi</label>
+				<input
+					type='number'
+					name='ipi'
+					id='ipi'
 					value={ipi}
 					onChange={e => setIpi(Number(e.target.value))}
 				/>
 			</div>
+			{/* st */}
 			<div>
-				<label htmlFor="st">St</label>
+				<label htmlFor='st'>St</label>
 				<input
-					type="number"
-					name="st"
-					id="st"
+					type='number'
+					name='st'
+					id='st'
 					value={st}
 					onChange={e => setSt(Number(e.target.value))}
 				/>
 			</div>
+			{/* comissao */}
 			<div>
-				<label htmlFor="comissao">Comissão</label>
+				<label htmlFor='comissao'>Comissão</label>
 				<input
-					type="number"
-					name="comissao"
-					id="comissao"
+					type='number'
+					name='comissao'
+					id='comissao'
 					value={comissao}
 					onChange={e => setComissao(Number(e.target.value))}
 				/>
 			</div>
+			{/* tabelas */}
 			<div>
-				<label htmlFor="tabela">Tabelas</label>
+				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
 					{tableNames.map(({nome}, index) => (
 						<li key={index}>
 							<span>Tabela {nome}: R$</span>
 							<input
-								type="number"
-								name="tabela"
-								id="tabela"
+								type='number'
+								name='tabela'
+								id='tabela'
 								value={tabelas[index] ? tabelas[index].preco : 0}
 								onChange={(e) => handleTablePriceChange(e, index)}
 							/>
@@ -211,9 +228,10 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, lineId, nom
 					))}
 				</ul>
 			</div>
-			<div className="buttons">
-				<button type="button" onClick={Router.back}>Cancelar</button>
-				<button type="submit">Confirmar</button>
+			
+			<div className='buttons'>
+				<button type='button' onClick={Router.back}>Cancelar</button>
+				<button type='submit'>Confirmar</button>
 			</div>
 		</Container>
 	)
