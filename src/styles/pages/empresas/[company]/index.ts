@@ -1,119 +1,120 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	overflow: hidden;
-
-	.scroll
+	main
 	{
-		overflow: auto;
+		height: 90vh;
 		width: 100%;
-		height: 80vh;
 
-		main
+		overflow: auto;
+
+		table
 		{
-			display: grid;
-			grid-auto-rows: 30rem;
-			grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
-			grid-gap: 2rem;
-			align-items: center;
-			justify-items: center;
-
-			width: 100%;
+			width: fit-content;
 			height: fit-content;
-			padding: 2rem;
-			
-			.line
+			margin: 2rem;
+
+			border-collapse: collapse;
+
+			thead
 			{
-				align-self: center;
-				justify-self: center;
-		
-				width: 75%;
-				height: 30rem;
-		
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: space-between;
-				gap: 1rem;
-		
-				background: #fff;
-				border-radius: 2rem;
-				padding: 1rem;
-		
-				position: relative;
-				
-				.buttons
+				background-color: ${p => p.theme.colors.primary};
+				color: ${p => p.theme.colors.secondary};
+
+				tr
 				{
-					width: 100%;
-					height: 15%;
+					height: 5rem;
 
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-
-					button
-					{				
-						width: 3rem;
-						height: 3rem;
-						padding: 0.5rem;
-						border-radius: 100rem;
-				
-						border: none;
-						background: none;
-				
-						cursor: pointer;
-						transition: 0.25s;
-						
-						:hover
-						{
-							background-color: rgb(201, 64, 64);
-						}
-			
-						:first-of-type:hover
-						{
-							background-color: ${p => p.theme.colors.background};
-						}
-					}
-				}
-
-				.img
-				{
-					height: 65%;
-					width: 100%;
-
-					display: flex;
-					align-items: center;
-					justify-content: center;
-
-					img
+					th
 					{
-						max-height: 100%;
-						max-width: 80%;
-					}
-				}
-			
-				h1
-				{
-					height: 20%;
-					
-					display: flex;
-					align-items: center;
-					justify-content: center;
+						font-family: Ubuntu;
+						font-size: 1.25rem;
 
-					font-family: Ubuntu;
-					font-size: 2rem;
-			
-					color: ${p => p.theme.colors.primaryDark};
-			
-					cursor: pointer;
-					transition: 0.25s;
-					
-					:hover
-					{
-						color: ${p => p.theme.colors.primaryLight};
+						padding-left: 0.5rem;
+						padding-right: 0.5rem;
 					}
 				}
 			}
+
+			tbody
+			{
+				tr
+				{
+					height: 5rem;
+
+					:nth-child(odd)
+					{
+						background-color: #ccc;
+					}
+
+					:nth-child(even)
+					{
+						background-color: #fff;
+					}
+
+					td
+					{
+						font-family: Roboto;
+						padding-left: 0.5rem;
+						padding-right: 0.5rem;
+
+						min-width: 7rem;
+
+						.actions
+						{
+							display: flex;
+							align-items: center;
+							justify-content: space-around;
+
+							height: 100%;
+							gap: 1rem;
+
+							button
+							{				
+								width: 2rem;
+								height: 2rem;
+								padding: 0.25rem;
+								border-radius: 100rem;
+						
+								border: none;
+								background: none;
+						
+								cursor: pointer;
+								transition: 0.25s;
+								
+								:hover
+								{
+									background-color: rgb(201, 64, 64);
+								}
+					
+								:first-of-type:hover
+								{
+									background-color: ${p => p.theme.colors.background};
+								}
+							}
+						}
+					}
+
+
+					.img
+					{
+						text-align: center;
+						width: 5rem;
+						padding: 0;
+
+						img
+						{
+							max-width: 90%;
+							max-height: 90%;
+						}
+					}
+				}
+			}
+		}
+
+		th, td
+		{
+			border: 1px solid rgba(0,0,0,0.25);
 		}
 	}
 `

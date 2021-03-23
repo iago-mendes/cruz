@@ -12,7 +12,7 @@ const Container = styled.header`
 	align-items: center;
 	justify-content: space-between;
 
- .display
+	.display
 	{
 		display: flex;
 		align-items: center;

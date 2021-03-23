@@ -2,7 +2,7 @@ import {useState} from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 
-import Container from '../../../styles/pages/empresas/[company]/[line]/adicionar'
+import Container from '../../../styles/pages/empresas/[company]/adicionar'
 import Header from '../../../components/Header'
 import ProductForm from '../../../components/forms/Product'
 import Loading from '../../../components/Loading'

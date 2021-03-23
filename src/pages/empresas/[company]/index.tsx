@@ -6,7 +6,7 @@ import {useState} from 'react'
 
 import api from '../../../services/api'
 import Header from '../../../components/Header'
-import Container from '../../../styles/pages/empresas/[company]/[line]/index'
+import Container from '../../../styles/pages/empresas/[company]/index'
 import Add from '../../../components/Add'
 import useUser from '../../../hooks/useUser'
 import {Product} from '../../../components/forms/Product'
@@ -80,6 +80,70 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 					</thead>
 
 					<tbody>
+						{products.map(product => (
+							<tr key={product._id} >
+								{user.role === 'admin' && (
+									<td>
+										<div className='actions'>
+											<button
+												title='Editar'
+												onClick={() => push(`/empresas/${companyId}/${product._id}/editar`)}>
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
+												<FiTrash size={15} />
+											</button>
+										</div>
+									</td>
+								)}
+								<td className='img' >
+									<img src={product.imagem} alt={product.nome} />
+								</td>
+								<td>{product.nome}</td>
+								<td>{product.unidade}</td>
+								<td>{product.codigo}</td>
+								<td>{formatNumber(product.st)} %</td>
+								<td>{formatNumber(product.ipi)} %</td>
+								<td>{formatNumber(product.comissao)} %</td>
+								{product.tabelas.map(({id, preco}) => (
+									<td key={id}>
+										R$ {formatNumber(preco)}
+									</td>
+								))}
+							</tr>
+						))}
+						{products.map(product => (
+							<tr key={product._id} >
+								{user.role === 'admin' && (
+									<td>
+										<div className='actions'>
+											<button
+												title='Editar'
+												onClick={() => push(`/empresas/${companyId}/${product._id}/editar`)}>
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
+												<FiTrash size={15} />
+											</button>
+										</div>
+									</td>
+								)}
+								<td className='img' >
+									<img src={product.imagem} alt={product.nome} />
+								</td>
+								<td>{product.nome}</td>
+								<td>{product.unidade}</td>
+								<td>{product.codigo}</td>
+								<td>{formatNumber(product.st)} %</td>
+								<td>{formatNumber(product.ipi)} %</td>
+								<td>{formatNumber(product.comissao)} %</td>
+								{product.tabelas.map(({id, preco}) => (
+									<td key={id}>
+										R$ {formatNumber(preco)}
+									</td>
+								))}
+							</tr>
+						))}
 						{products.map(product => (
 							<tr key={product._id} >
 								{user.role === 'admin' && (
