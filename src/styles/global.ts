@@ -10,15 +10,33 @@ export default createGlobalStyle`
 
 	*
 	{
-		box-sizing: border-box;
 		margin: 0;
 		padding: 0;
+		box-sizing: border-box;
 		outline: none;
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	body
 	{
 		background-color: ${p => p.theme.colors.background};
+		color: ${p => p.theme.colors.text};
+	}
+
+	body, input, textarea, button
+	{
+		font-family: Roboto;
+	}
+
+	button
+	{
+		cursor: pointer;
+	}
+
+	a
+	{
+		color: inherit;
+		text-decoration: none;
 	}
 
 	#__next

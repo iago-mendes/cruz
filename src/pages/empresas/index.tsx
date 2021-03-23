@@ -10,6 +10,7 @@ import Container from '../../styles/pages/empresas/index'
 import Add from '../../components/Add'
 import useUser from '../../hooks/useUser'
 import {CompanyListed} from '../../models/company'
+import Link from 'next/link'
 
 interface CompaniesProps
 {
@@ -59,33 +60,35 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 			<Header display='Empresas' showSearch />
 			<Add route='/empresas/adicionar' />
 
-			<div className='scroll'>
-				<main>
-					{companies.map(company => (
-						<div key={company.id} className='company'>
-							<img src={company.imagem} alt={company.nome_fantasia}/>
-							<div className='companyText'>
-								<h1 onClick={() => Router.push(`/empresas/${company.id}`)}>
+			<main>
+				{companies.map(company => (
+					<div key={company.id} className='company'>
+						<img src={company.imagem} alt={company.nome_fantasia}/>
+						<div className='companyText'>
+							<Link href={`/empresas/${company.id}`} >
+								<a className='name'>
 									{company.nome_fantasia}
-								</h1>
-								<h2>{company.descricao_curta}</h2>
-							</div>
-							{
-								user.role === 'admin' ?
-								<>
-										<button title='Editar' onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
-											<FiEdit3 size={25} />
-										</button>
-										<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
-											<FiTrash size={25} />
-										</button>
-								</>
-								: <div />
-							}
+								</a>
+							</Link>
+							<span className='description' >
+								{company.descricao_curta}
+							</span>
 						</div>
-					))}
-				</main>
-			</div>
+						{
+							user.role === 'admin' ?
+							<>
+									<button title='Editar' onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
+										<FiEdit3 size={25} />
+									</button>
+									<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
+										<FiTrash size={25} />
+									</button>
+							</>
+							: <div />
+						}
+					</div>
+				))}
+			</main>
 		</Container>
 	)
 }
