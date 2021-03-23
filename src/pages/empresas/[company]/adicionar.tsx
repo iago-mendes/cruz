@@ -2,9 +2,9 @@ import {useState} from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 
-import Container from '../../../styles/pages/empresas/[company]/adicionar'
+import Container from '../../../styles/pages/empresas/[company]/[line]/adicionar'
 import Header from '../../../components/Header'
-import LineForm from '../../../components/forms/Line'
+import ProductForm from '../../../components/forms/Product'
 import Loading from '../../../components/Loading'
 import NotAllowed from '../../../components/NotAllowed'
 import useUser from '../../../hooks/useUser'
@@ -12,7 +12,7 @@ import useUser from '../../../hooks/useUser'
 const AddCompany: React.FC = () =>
 {
 	const Router = useRouter()
-	const {company} = Router.query
+	const {company,line} = Router.query
 
 	const {user, loading} = useUser()
 	const [nome, setNome] = useState('')
@@ -31,9 +31,10 @@ const AddCompany: React.FC = () =>
 			<Header display={nome} />
 
 			<main>
-				<LineForm
+				<ProductForm
 					method='post'
-					company={String(company)}
+					companyId={String(company)}
+					lineId={String(line)}
 					nome={nome}
 					setNome={setNome}
 				/>

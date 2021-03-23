@@ -8,125 +8,185 @@ import {useState, useEffect} from 'react'
 import api from '../../../services/api'
 import Loading from '../../../components/Loading'
 import Header from '../../../components/Header'
-import Container from '../../../styles/pages/empresas/[company]/index'
+import Container from '../../../styles/pages/empresas/[company]/[line]/index'
 import {Line} from '../../../components/forms/Line'
 import Add from '../../../components/Add'
 import useUser from '../../../hooks/useUser'
+import {Product} from '../../../components/forms/Product'
+import Company, {CompanyTable as Table} from '../../../models/company'
 
-interface LinesProps
+interface ProductsProps
 {
+	products: Product[]
 	companyName: string
-	lines: Array<Line>
+	lineName: string
+	tables: Table[]
 }
 
-const Lines: React.FC<LinesProps> = ({lines, companyName}) =>
+const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, lineName, tables}) =>
 {
 	const Router = useRouter()
-	const {company: companyId} = Router.query
+	const {company: companyId, line: lineId} = Router.query
 	
 	const {user, loading} = useUser()
-	const {data, error, revalidate} = useSWR(`/api/listLines?company=${companyId}`)
-	const [shownLines, setShownLines] = useState<Line[]>([])
-	
+	const {data, error, revalidate} = useSWR(`/api/listProducts?company=${companyId}&line=${lineId}`)
+	const [products, setProducts] = useState<Product[]>([])
+
 	useEffect(() =>
 	{
 		if (data)
-			setShownLines(data)
-		else if (lines)
 		{
-			setShownLines(lines)
+			setProducts(data)
+		}
+		else if (staticProducts)
+		{
+			setProducts(staticProducts)
 
 			if (error)
 				console.error(error)
 		}
-	}, [data, error, lines])
+	}, [data, error, staticProducts])
 
 	if (loading)
 		return <Loading />
-	
-	async function handleDeleteLine(line: Line)
+
+	function formatNumber(n: number)
 	{
-		const yes = confirm(`Deseja deletar a empresa ${line.nome}?`)
+		return n.toFixed(2).replace('.', ',')
+	}
+
+	async function handleDeleteProduct(product: Product)
+	{
+		const yes = confirm(`Deseja deletar o produto ${product.nome}?`)
 		if (yes)
-		{
-			await api.delete(`companies/${companyId}/lines/${line.id}`).then(() =>
+			await api.delete(`companies/${companyId}/lines/${lineId}/products/${product._id}`).then(() =>
 			{
 				revalidate()
-				alert(`Empresa ${line.nome} deletada com sucesso!`)
+				alert(`Produto ${product.nome} deletado com sucesso!`)
 			})
-		}
 	}
 	
 	return (
 		<Container className="container">
 			<Head>
-				<title>{companyName} | Cruz Representações</title>
+				<title>{lineName} | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > Linhas`} showSearch />
-			<Add route={`/empresas/${companyId}/adicionar`} />
+			<Header display={`${companyName} > ${lineName} > Produtos`} showSearch />
+			<Add route={`/empresas/${companyId}/${lineId}/adicionar`} />
 
-			<div className="scroll">
-				<main>
-					{shownLines.map(line => (
-						<div key={line.id} className="line">
-							<div className="buttons">
-							{
-								user.role === 'admin' && (
-									<>
-										<button title="Editar" onClick={() => Router.push(`/empresas/${companyId}/${line.id}/editar`)} >
-											<FiEdit3 size={15} />
-										</button>
-										<button title='Deletar' onClick={() => handleDeleteLine(line)} >
-											<FiTrash size={15} />
-										</button>
-									</>
-								)
-							}
-							</div>
-							<div className="img">
-								<img src={line.imagem} alt={line.nome} />
-							</div>
-							<h1 onClick={() => Router.push(`/empresas/${companyId}/${line.id}`)} >{line.nome}</h1>
-						</div>
-					))}
-				</main>
-			</div>
+			<main>
+				<table>
+					<thead>
+						<tr>
+							{user.role === 'admin' && <th>Ações</th>}
+							<th>Imagem</th>
+							<th>Nome</th>
+							<th>Unidade</th>
+							<th>Código</th>
+							<th>St</th>
+							<th>Ipi</th>
+							<th>Comissão</th>
+							{tables.map(({_id, nome}) => (
+								<th key={_id} >Tabela {nome}</th>
+							))}
+						</tr>
+					</thead>
+
+					<tbody>
+						{products.map(product => (
+							<tr key={product._id} >
+								{user.role === 'admin' && (
+									<td>
+										<div className='actions'>
+											<button
+												title='Editar'
+												onClick={() => Router.push(`/empresas/${companyId}/${lineId}/${product._id}/editar`)}>
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
+												<FiTrash size={15} />
+											</button>
+										</div>
+									</td>
+								)}
+								<td className='img' >
+									<img src={product.imagem} alt={product.nome} />
+								</td>
+								<td>{product.nome}</td>
+								<td>{product.unidade}</td>
+								<td>{product.codigo}</td>
+								<td>{formatNumber(product.st)} %</td>
+								<td>{formatNumber(product.ipi)} %</td>
+								<td>{formatNumber(product.comissao)} %</td>
+								{product.tabelas.map(({id, preco}) => (
+									<td key={id}>
+										R$ {formatNumber(preco)}
+									</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</main>
 		</Container>
 	)
 }
 
 export const getStaticPaths: GetStaticPaths = async ctx =>
 {
-	const companies = await api.get('companies').then(res => res.data.map(company => (
+	interface Path
 	{
-		params: {company: company.id}
-	})))
+		params: { company: string, line: string }
+	}
+
+	interface Company
+	{
+		_id: string
+		linhas: Array<{_id: string}>
+	}
+
+	const paths: Path[] = await api.get('companies-all').then(({data}:{data: Company[]}) => data.map(company => (
+		company.linhas.map(line => (
+		{
+			params: {company: company._id, line: line._id}
+		}))
+	)).flat())
 
 	return {
-		paths: companies,
+		paths,
 		fallback: true
 	}
 }
 
 export const getStaticProps: GetStaticProps = async ctx =>
 {
-	const {company} = ctx.params
+	const {company, line} = ctx.params
 
-	let lines = []
-	await api.get(`companies/${company}/lines`)
-		.then(res => lines = res.data)
+	let staticProducts: Product[] = []
+	await api.get(`companies/${company}/lines/${line}/products-raw`)
+		.then(res => staticProducts = res.data)
 		.catch(err => console.error(err.message))
 
 	let companyName = ''
-	await api.get(`companies/${company}`)
-		.then(res => companyName = res.data.nome_fantasia)
+	let tables: Table[] = []
+	await api.get(`companies-all/${company}`)
+		.then(({data}:{data: Company}) =>
+		{
+			companyName = data.nome_fantasia
+			tables = data.tabelas
+		})
+		.catch(err => console.error(err.message))
+	
+	let lineName = ''
+	await api.get(`companies/${company}/lines`)
+		.then(({data}:{data: Line[]}) => lineName = data.find(ln => ln.id == line).nome)
 		.catch(err => console.error(err.message))
 
 	return {
-		props: {lines, companyName},
+		props: {staticProducts, companyName, lineName, tables},
 		revalidate: 1
 	}
 }
 
-export default Lines
+export default Products
