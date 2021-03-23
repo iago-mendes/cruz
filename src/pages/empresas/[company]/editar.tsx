@@ -2,65 +2,47 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import Head from 'next/head'
 
-import Container from '../../../styles/pages/empresas/[company]/[line]/editar'
 import api from '../../../services/api'
 import Header from '../../../components/Header'
-import LineForm, {Line} from '../../../components/forms/Line'
-import Loading from '../../../components/Loading'
-import NotAllowed from '../../../components/NotAllowed'
-import useUser from '../../../hooks/useUser'
+import CompanyForm from '../../../components/forms/Company'
+import Company, {defaultCompany} from '../../../models/company'
 
-const EditLine: React.FC = () =>
+const EditCompany: React.FC = () =>
 {
-	const Router = useRouter()
-	const {user, loading} = useUser()
-	
-	const {company: companyId, line: id} = Router.query
+	const {query} = useRouter()
+	const {company: companyId} = query
 
-	const [nome, setNome] = useState('')
-	const [line, setLine] = useState<Line>(
-	{
-		id: '',
-		nome: ''
-	})
+	const [company, setCompany] = useState<Company>(defaultCompany)
+	const [nomeFantasia, setNomeFantasia] = useState('')
 
 	useEffect(() =>
 	{
-		api.get(`companies/${companyId}/lines`).then(({data}:{data: Line[]}) =>
-		{
-			data.map(line =>
+		api.get(`companies/${companyId}/raw`)
+			.then(({data}:{data: Company}) =>
 			{
-				if (line.id == id)
-					setLine({id: id as string, nome: line.nome})
+				setCompany(data)
 			})
-		})
-	}, [companyId, id])
-
-	if (!companyId || loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+	}, [companyId])
 
 	return (
-		<Container className="container">
+		<div className='container'>
 			<Head>
-					<title>{nome} | Cruz Representações</title>
+					<title>{nomeFantasia} | Cruz Representações</title>
 			</Head>
 
-			<Header display={nome} />
+			<Header display={nomeFantasia} />
 
-			<div className="center">
-				<LineForm
+			<main className='main'>
+				<CompanyForm
 					method='put'
-					company={companyId as string}
-					nome={nome}
-					setNome={setNome}
-					id={id as string}
-					line={line}
+					nomeFantasia={nomeFantasia}
+					setNomeFantasia={setNomeFantasia}
+					id={String(companyId)}
+					company={company}
 				/>
-			</div>
-		</Container>
+			</main>
+		</div>
 	)
 }
 
-export default EditLine
+export default EditCompany
