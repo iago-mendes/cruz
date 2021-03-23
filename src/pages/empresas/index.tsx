@@ -2,67 +2,56 @@ import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {GetStaticProps } from 'next'
-import useSWR from 'swr'
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 
 import api from '../../services/api'
-import Loading from '../../components/Loading'
 import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
 import Add from '../../components/Add'
 import useUser from '../../hooks/useUser'
-
-interface Company
-{
-	id: string
-	imagem: string
-	nome_fantasia: string
-	descricao_curta: string
-}
+import {CompanyListed} from '../../models/company'
 
 interface CompaniesProps
 {
-	companies: Array<Company>
+	companies: CompanyListed[]
 }
 
-const Companies: React.FC<CompaniesProps> = ({companies}) =>
+const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 {
 	const Router = useRouter()
-	const {user, loading} = useUser()
-	const [shownCompanies, setShownCompanies] = useState<Company[]>([])
-	const {data, error, revalidate} = useSWR('/api/listCompanies')
+	const {user} = useUser()
 
-	useEffect(() =>
+	const [companies, setCompanies] = useState<CompanyListed[]>(staticCompanies)
+
+	async function updateCompanies()
 	{
-		if (data)
-			setShownCompanies(data)
-		else if (companies)
-		{
-			setShownCompanies(companies)
+		api.get('companies')
+			.then(({data}:{data: CompanyListed[]}) =>
+			{
+				setCompanies(data)
+			})
+			.catch(error =>
+			{
+				console.log('[error]', error)
+				setCompanies(staticCompanies)
+			})
+	}
 
-			if (error)
-				console.error(error)
-		}
-	}, [data, error, companies])
-
-	if (loading)
-		return <Loading />
-
-	async function handleDeleteCompany(company: Company)
+	async function handleDeleteCompany(company: CompanyListed)
 	{
 		const yes = confirm(`Deseja deletar a empresa ${company.nome_fantasia}?`)
+
 		if (yes)
-		{
-			await api.delete(`companies/${company.id}`).then(() =>
-			{
-				revalidate()
-				alert(`Empresa ${company.nome_fantasia} deletada com sucesso!`)
-			})
-		}
+			api.delete(`companies/${company.id}`)
+				.then(() =>
+				{
+					updateCompanies()
+					alert(`Empresa ${company.nome_fantasia} deletada com sucesso!`)
+				})
 	}
 
 	return (
-		<Container className="container">
+		<Container className='container'>
 			<Head>
 				<title>Empresas | Cruz Representações</title>
 			</Head>
@@ -70,12 +59,12 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 			<Header display='Empresas' showSearch />
 			<Add route='/empresas/adicionar' />
 
-			<div className="scroll">
+			<div className='scroll'>
 				<main>
-					{shownCompanies.map(company => (
-						<div key={company.id} className="company">
+					{companies.map(company => (
+						<div key={company.id} className='company'>
 							<img src={company.imagem} alt={company.nome_fantasia}/>
-							<div className="companyText">
+							<div className='companyText'>
 								<h1 onClick={() => Router.push(`/empresas/${company.id}`)}>
 									{company.nome_fantasia}
 								</h1>
@@ -84,7 +73,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 							{
 								user.role === 'admin' ?
 								<>
-										<button title="Editar" onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
+										<button title='Editar' onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
 											<FiEdit3 size={25} />
 										</button>
 										<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
@@ -103,10 +92,7 @@ const Companies: React.FC<CompaniesProps> = ({companies}) =>
 
 export const getStaticProps: GetStaticProps = async ctx =>
 {
-	let companies = []
-	await api.get('companies')
-		.then(res => companies = res.data)
-		.catch(err => console.error(err.message))
+	const companies = await api.get('companies').then(({data}:{data: CompanyListed[]}) => data)
 
 	return {
 		props: {companies},
