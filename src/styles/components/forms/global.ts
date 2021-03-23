@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Container = styled.form`
 	background-color: #fff;
-	width: 75%;
+	width: 90%;
 	max-width: 1100px;
 	border-radius: 2rem;
 	padding: 2rem;
@@ -11,20 +11,26 @@ const Container = styled.form`
 	align-items: flex-start;
 	justify-content: center;
 	flex-direction: column;
+	gap: 3rem;
 
 	.field
 	{
 		width: 80%;
-		padding: 1rem;
+		padding: 0 2rem;
 		
 		display: flex;
 		flex-direction: column;
-		gap: 0.5rem;
+		gap: 1rem;
 
 		label
 		{
 			font-family: Ubuntu;
-			font-size: 1.5rem;
+			font-weight: 700;
+			font-size: 2rem;
+
+			border-left: ${p => p.theme.colors.text} 5px solid;
+			padding-left: 1rem;
+			margin-left: -2rem;
 		}
 
 		input
@@ -33,8 +39,7 @@ const Container = styled.form`
 			border-bottom: ${p => `${p.theme.colors.text}40`} 2px solid;
 			height: 2.5rem;
 
-			font-family: Roboto;
-			font-size: 1.5rem;
+			font-size: 1.75rem;
 			color: ${p => p.theme.colors.text};
 
 			padding: 1rem;

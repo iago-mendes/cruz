@@ -1,10 +1,13 @@
 import {useRouter} from 'next/router'
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 
-import Container from '../../styles/components/forms/Product'
+import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
 import {CompanyTable as Table} from '../../models/company'
 import Product, {ProductTable} from '../../models/product'
+import Dropzone from '../Dropzone'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface ProductFormProps
 {
@@ -88,13 +91,13 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			await api.post(`companies/${companyId}/products`, data)
 			.then(() =>
 			{
-				alert('Produto criado com sucesso!')
+				successAlert('Produto criado com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 		else if (method === 'put')
@@ -102,13 +105,13 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			await api.put(`companies/${companyId}/products/${id}`, data)
 			.then(() =>
 			{
-				alert('Produto atualizado com sucesso!')
+				successAlert('Produto atualizado com sucesso!')
 				Router.back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 	}
@@ -116,12 +119,17 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	return (
 		<Container onSubmit={handleSubmit} >
 			{/* imagem */}
-			<div>
-				<label htmlFor='imagem'>Imagem</label>
-				<input type='file' name='imagem' id='imagem' onChange={e => setImagem(e.target.files[0])}/>
+			<div className='field' >
+				<label htmlFor='imageFile'>Imagem</label>
+				<Dropzone
+					name='imageFile'
+					id='imageFile'
+					onFileUploaded={setImagem}
+					shownFileUrl={product && product.imagem}
+				/>
 			</div>
 			{/* nome */}
-			<div>
+			<div className='field'>
 				<label htmlFor='nome'>Nome</label>
 				<input
 					type='text'
@@ -132,7 +140,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* codigo */}
-			<div>
+			<div className='field'>
 				<label htmlFor='codigo'>Código</label>
 				<input
 					type='number'
@@ -143,7 +151,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* unidade */}
-			<div>
+			<div className='field'>
 				<label htmlFor='unidade'>Unidade</label>
 				<input
 					type='text'
@@ -154,31 +162,29 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* peso */}
-			<div>
-				<label htmlFor='peso'>Peso</label>
+			<div className='field'>
+				<label htmlFor='peso'>Peso (kg)</label>
 				<input
 					type='number'
 					name='peso'
 					id='peso'
 					value={peso !== 0 ? peso : undefined}
 					onChange={e => setPeso(Number(e.target.value))}
-					placeholder='Ex.: 2 kg'
 				/>
 			</div>
 			{/* volume */}
-			<div>
-				<label htmlFor='volume'>Volume</label>
+			<div className='field'>
+				<label htmlFor='volume'>Volume (m³)</label>
 				<input
 					type='number'
 					name='volume'
 					id='volume'
 					value={volume !== 0 ? volume : undefined}
 					onChange={e => setVolume(Number(e.target.value))}
-					placeholder='Ex.: 0.5 m³'
 				/>
 			</div>
 			{/* ipi */}
-			<div>
+			<div className='field'>
 				<label htmlFor='ipi'>Ipi</label>
 				<input
 					type='number'
@@ -189,7 +195,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* st */}
-			<div>
+			<div className='field'>
 				<label htmlFor='st'>St</label>
 				<input
 					type='number'
@@ -200,7 +206,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* comissao */}
-			<div>
+			<div className='field'>
 				<label htmlFor='comissao'>Comissão</label>
 				<input
 					type='number'
@@ -211,7 +217,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* tabelas */}
-			<div>
+			<div className='field'>
 				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
 					{tableNames.map(({nome}, index) => (
@@ -230,8 +236,12 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			</div>
 			
 			<div className='buttons'>
-				<button type='button' onClick={Router.back}>Cancelar</button>
-				<button type='submit'>Confirmar</button>
+				<button type='button' onClick={Router.back} className='cancel' >
+					Cancelar
+				</button>
+				<button type='submit' className='submit' >
+					Confirmar
+				</button>
 			</div>
 		</Container>
 	)
