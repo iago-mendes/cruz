@@ -2,7 +2,7 @@ import {useState} from 'react'
 import {FaDownload} from 'react-icons/fa'
 import {SiGooglesheets} from 'react-icons/si'
 
-import Container from '../../styles/components/modals/Sheet'
+import Container, {OpenSheetButton} from '../../styles/components/modals/Sheet'
 import ModalContainer from './Container'
 
 interface SheetModalProps
@@ -14,27 +14,49 @@ interface SheetModalProps
 const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 {
 	const [isOpen, setIsOpen] = useState(false)
+	const [sheet, setSheet] = useState<File>()
+
+	function handleSubmit()
+	{}
 
 	return (
-		<Container>
+		<>
 			<ModalContainer
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 			>
-				<main>
-					<button>
+				<Container>
+					<button className='model' >
 						<FaDownload />
 						<span>
 							Baixar modelo
 						</span>
 					</button>
-				</main>
+					<form onSubmit={e => e.preventDefault()} >
+						<label htmlFor='sheet'>Planilha</label>
+						<input
+							type='file'
+							name='sheet'
+							id='sheet'
+							onChange={e => setSheet(e.target.files[0])}
+						/>
+					</form>
+					
+					<div className='buttons'>
+						<button type='button' onClick={() => setIsOpen(false)} className='cancel' >
+							Cancelar
+						</button>
+						<button type='submit' className='submit' onClick={handleSubmit} >
+							Confirmar
+						</button>
+					</div>
+				</Container>
 			</ModalContainer>
 
-			<button className='openSheet' title='Planilha' onClick={() => setIsOpen(true)} >
+			<OpenSheetButton title='Planilha' onClick={() => setIsOpen(true)} >
 				<SiGooglesheets />
-			</button>
-		</Container>
+			</OpenSheetButton>
+		</>
 	)
 }
 
