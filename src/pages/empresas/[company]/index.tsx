@@ -140,7 +140,7 @@ export const getStaticProps: GetStaticProps = async ctx =>
 {
 	const {company: companyId} = ctx.params
 
-	const staticProducts = await api.get(`companies/${companyId}/products/raw`)
+	const products = await api.get(`companies/${companyId}/products/raw`)
 		.then(({data}:{data: Product[]}) => data)
 
 	const {companyName, tables} = await api.get(`companies/${companyId}/raw`)
@@ -151,7 +151,7 @@ export const getStaticProps: GetStaticProps = async ctx =>
 		}))
 	
 	return {
-		props: {staticProducts, companyName, tables},
+		props: {products, companyName, tables},
 		revalidate: 1
 	}
 }
