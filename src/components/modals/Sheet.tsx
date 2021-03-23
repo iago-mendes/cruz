@@ -16,25 +16,25 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 	const [isOpen, setIsOpen] = useState(false)
 
 	return (
-		<>
+		<Container>
 			<ModalContainer
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 			>
-				<Container>
+				<main>
 					<button>
 						<FaDownload />
 						<span>
 							Baixar modelo
 						</span>
 					</button>
-				</Container>
+				</main>
 			</ModalContainer>
 
 			<button className='openSheet' title='Planilha' onClick={() => setIsOpen(true)} >
 				<SiGooglesheets />
 			</button>
-		</>
+		</Container>
 	)
 }
 

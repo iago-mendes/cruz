@@ -62,10 +62,12 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			<Header display={`${companyName} > Produtos`} showSearch />
 			<Add route={`/empresas/${companyId}/adicionar`} />
 
-			<SheetModal
-				headerPath={`companies/${companyId}/products/sheet/header`}
-				uploadPath={`/companies/${companyId}/products/sheet`}
-			/>
+			{user.role === 'admin' && (
+				<SheetModal
+					headerPath={`companies/${companyId}/products/sheet/header`}
+					uploadPath={`/companies/${companyId}/products/sheet`}
+				/>
+			)}
 
 			<main>
 				<table>

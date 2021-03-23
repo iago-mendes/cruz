@@ -14,7 +14,7 @@ const theme =
 		confirm: '#59d359',
 
 		buttonRed: '#c94040',
-		buttonGreen: '#59d359'
+		buttonGreen: '#009933'
 	}
 }
 
