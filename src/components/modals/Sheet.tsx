@@ -2,10 +2,11 @@ import {useState} from 'react'
 import {FaDownload} from 'react-icons/fa'
 import {FiCheck, FiX} from 'react-icons/fi'
 import {SiGooglesheets} from 'react-icons/si'
-import api from '../../services/api'
+import XLSX from 'xlsx'
 
 import Container, {OpenSheetButton} from '../../styles/components/modals/Sheet'
 import ModalContainer from './Container'
+import api from '../../services/api'
 
 const fileTypes =
 [
@@ -20,9 +21,12 @@ interface SheetModalProps
 {
 	headerPath: string
 	uploadPath: string
+
+	sheetName: string
+	fileName: string
 }
 
-const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
+const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetName, fileName}) =>
 {
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
@@ -30,7 +34,37 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 	async function getModel()
 	{
 		const header: string[] = await api.get(headerPath).then(res => res.data)
-		console.log('[header]', header)
+
+		let data: string[][] = []
+		data[0] = header
+
+		for (let i = 0; i < 10; i++)
+		{
+			let row: string[] = []
+
+			for (let j = 0; j < header.length; j++)
+				row.push('')
+			
+			data.push(row)
+		}
+
+		const wsCols = header.map(col =>
+		{
+			let width = 10
+
+			if (col.split(' ')[0] === 'Tabela')
+				width = 20
+			
+			return {wch: width}
+		})
+
+		const ws = XLSX.utils.aoa_to_sheet(data)
+		ws['!cols'] = wsCols
+		
+		const wb = XLSX.utils.book_new()
+		XLSX.utils.book_append_sheet(wb, ws, sheetName)
+
+		XLSX.writeFile(wb, `${fileName}.xlsx`)
 	}
 
 	function handleSubmit()
