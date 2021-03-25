@@ -2,9 +2,19 @@ import {useState} from 'react'
 import {FaDownload} from 'react-icons/fa'
 import {FiCheck, FiX} from 'react-icons/fi'
 import {SiGooglesheets} from 'react-icons/si'
+import api from '../../services/api'
 
 import Container, {OpenSheetButton} from '../../styles/components/modals/Sheet'
 import ModalContainer from './Container'
+
+const fileTypes =
+[
+	'xlsx',
+	'xls',
+	'xml',
+	'csv',
+	'ods',
+].map(function(x) { return '.' + x }).join(',')
 
 interface SheetModalProps
 {
@@ -17,6 +27,12 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
 
+	async function getModel()
+	{
+		const header: string[] = await api.get(headerPath).then(res => res.data)
+		console.log('[header]', header)
+	}
+
 	function handleSubmit()
 	{}
 
@@ -27,7 +43,7 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 				setIsOpen={setIsOpen}
 			>
 				<Container>
-					<button className='model' >
+					<button className='model' onClick={getModel} >
 						<FaDownload />
 						<span>
 							Baixar modelo
@@ -39,6 +55,7 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 							type='file'
 							name='sheet'
 							id='sheet'
+							accept={fileTypes}
 							onChange={e => setSheet(e.target.files[0])}
 						/>
 					</form>
