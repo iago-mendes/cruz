@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import {FaDownload} from 'react-icons/fa'
+import {FiCheck, FiX} from 'react-icons/fi'
 import {SiGooglesheets} from 'react-icons/si'
 
 import Container, {OpenSheetButton} from '../../styles/components/modals/Sheet'
@@ -44,9 +45,11 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath}) =>
 					
 					<div className='buttons'>
 						<button type='button' onClick={() => setIsOpen(false)} className='cancel' >
+							<FiX size={25} />
 							Cancelar
 						</button>
 						<button type='submit' className='submit' onClick={handleSubmit} >
+							<FiCheck size={25} />
 							Confirmar
 						</button>
 					</div>
