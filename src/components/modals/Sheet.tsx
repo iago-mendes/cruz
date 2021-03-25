@@ -68,7 +68,28 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 	}
 
 	function handleSubmit()
-	{}
+	{
+		const reader = new FileReader()
+		const rABS = !!reader.readAsBinaryString
+
+		reader.onload = (e) =>
+		{
+			const bstr = e.target.result
+			const wb = XLSX.read(bstr, {type: rABS ? 'binary' : 'array'})
+			
+			const wsname = wb.SheetNames[0]
+			const ws = wb.Sheets[wsname]
+			
+			const data = XLSX.utils.sheet_to_json(ws)
+
+			console.log('[data]', data)
+		}
+
+		if(rABS)
+			reader.readAsBinaryString(sheet)
+		else
+			reader.readAsArrayBuffer(sheet)
+	}
 
 	return (
 		<>
