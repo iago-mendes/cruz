@@ -93,7 +93,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 
 	useEffect(() =>
 	{
-		api.get('companies-all').then(({data}:{data: Company[]}) =>
+		api.get('companies/raw').then(({data}:{data: Company[]}) =>
 		{
 			let tmp: CompanyOption[] = []
 			data.map(company => tmp.push(
