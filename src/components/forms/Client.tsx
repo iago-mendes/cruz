@@ -66,7 +66,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			setSellerOptions(tmp)
 		})
 
-		api.get('companies-all').then(({data}:{data: Company[]}) =>
+		api.get('companies/raw').then(({data}:{data: Company[]}) =>
 		{
 			let tmpCompanies: SelectOption[] = []
 			let tmpTables: SelectOptionsList = {}
