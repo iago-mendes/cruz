@@ -12,6 +12,9 @@ import useUser from '../../../hooks/useUser'
 import Company, {CompanyListed, CompanyTable as Table} from '../../../models/company'
 import Product from '../../../models/product'
 import SheetModal from '../../../components/modals/Sheet'
+import confirmAlert from '../../../utils/alerts/confirm'
+import errorAlert from '../../../utils/alerts/error'
+import successAlert from '../../../utils/alerts/success'
 
 interface ProductsProps
 {
@@ -44,13 +47,20 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 
 	async function handleDeleteProduct(product: Product)
 	{
-		const yes = confirm(`Deseja deletar o produto ${product.nome}?`)
-		if (yes)
-			await api.delete(`companies/${companyId}/products/${product._id}`).then(() =>
-			{
-				updateProducts()
-				alert(`Produto ${product.nome} deletado com sucesso!`)
-			})
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, o produto ${product.nome} será deletado!`,
+			() => api.delete(`companies/${companyId}/products/${product._id}`)
+				.then(() =>
+				{
+					updateProducts()
+					successAlert(`Produto ${product.nome} deletado com sucesso!`)
+				})
+				.catch(err =>
+				{
+					errorAlert(err.response.message.data)
+				})
+		)
 	}
 	
 	return (
