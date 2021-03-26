@@ -4,11 +4,12 @@ import {FaWhatsapp} from 'react-icons/fa'
 import Select from 'react-select'
 import Switch from 'react-switch'
 
-import Container from '../../styles/components/forms/Seller'
+import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
 import Company from '../../models/company'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
+import FormButtons from '../FormButtons'
 
 interface SellerNumber
 {
@@ -62,7 +63,7 @@ interface SellerFormProps
 
 const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, seller}) =>
 {
-	const Router = useRouter()
+	const {back} = useRouter()
     
 	const [imagem, setImagem] = useState<File>()
 	const [telefones, setTelefones] = useState<SellerNumber[]>([])
@@ -182,10 +183,8 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		setRepresentadas(companies)
 	}
 
-	async function handleSubmit(e: FormEvent)
+	async function handleSubmit()
 	{
-		e.preventDefault()
-
 		const data = new FormData()
 
 		if (imagem) data.append('imagem', imagem)
@@ -203,7 +202,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			.then(() =>
 			{
 				alert('Vendedor criado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -217,7 +216,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			.then(() =>
 			{
 				alert('Vendedor atualizado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -228,9 +227,12 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	}
 
 	return (
-		<Container onSubmit={handleSubmit} >
+		<Container
+			onSubmit={e => e.preventDefault()}
+		>
+			{/* imagem */}
 			<div className='field'>
-				<label htmlFor="imagem">Imagem</label>
+				<label htmlFor='imagem'>Imagem</label>
 				<Dropzone
 					name='imageFile'
 					id='imageFile'
@@ -238,26 +240,28 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					shownFileUrl={seller && seller.imagem}
 				/>
 			</div>
+			{/* nome */}
 			<div className='field'>
-				<label htmlFor="nome">Nome</label>
+				<label htmlFor='nome'>Nome</label>
 				<input
-					type="text"
-					name="nome"
-					id="nome"
+					type='text'
+					name='nome'
+					id='nome'
 					value={nome}
 					onChange={e => setNome(e.target.value)}
 				/>
 			</div>
+			{/* telefone */}
 			<div className='field'>
-				<label htmlFor="telefone">Telefones</label>
+				<label htmlFor='telefone'>Telefones</label>
 				<ul>
 					{shownNumbers.map((number, index) => (
-						<li key={index} className="phone">
+						<li key={index} className='phone'>
 							<div className='group' >
 								<input
-									type="text"
-									name="telefone"
-									id="telefone"
+									type='text'
+									name='telefone'
+									id='telefone'
 									value={number}
 									onChange={(e) => handleNumberChange(e, index)}
 								/>
@@ -273,83 +277,89 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 									/>
 								</div>
 							</div>
-							<button type="button" onClick={() => handleRemoveNumber(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveNumber(index)}>-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddNumber}>+</button>
+					<button type='button' onClick={handleAddNumber}>+</button>
 				</ul>
 			</div>
+			{/* email */}
 			<div className='field'>
-				<label htmlFor="email">E-mail</label>
+				<label htmlFor='email'>E-mail</label>
 				<input
-					type="email"
-					name="email"
-					id="email"
+					type='email'
+					name='email'
+					id='email'
 					value={email}
 					onChange={e => setEmail(e.target.value)}
 				/>
 			</div>
+			{/* senha */}
 			<div className='field'>
-				<label htmlFor="senha">Senha</label>
+				<label htmlFor='senha'>Senha</label>
 				<input
-					type="senha"
-					name="senha"
-					id="senha"
+					type='senha'
+					name='senha'
+					id='senha'
 					value={senha}
 					onChange={e => setSenha(e.target.value)}
 				/>
 			</div>
+			{/* funcao */}
 			<div className='field'>
-				<label htmlFor="funcao">Função</label>
+				<label htmlFor='funcao'>Função</label>
 				<input
-					type="text"
-					name="funcao"
-					id="funcao"
+					type='text'
+					name='funcao'
+					id='funcao'
 					value={funcao}
 					onChange={e => setFuncao(e.target.value)}
 				/>
 			</div>
+			{/* admin */}
 			<div className='field'>
-				<label htmlFor="admin">Administrador</label>
+				<label htmlFor='admin'>Administrador</label>
 				<Switch
-					name="admin"
-					id="admin"
+					name='admin'
+					id='admin'
 					checked={admin}
 					onChange={setAdmin}
 					onHandleColor='#d8d8d8'
 					offHandleColor='#d8d8d8'
 				/>
 			</div>
+			{/* representadas */}
 			<div className='field'>
-				<label htmlFor="representadas">Representadas</label>
+				<label htmlFor='representadas'>Representadas</label>
 				<ul>
 					{representadas.map((company, index) => (
-						<li className="company" key={index}>
+						<li className='company' key={index}>
 							<Select
-								name="representadas"
+								name='representadas'
 								value={companyOptions.find(cmpn => cmpn.value === company.id)}
 								onChange={e => handleCompanyChange(e, index)}
 								options={companyOptions}
 								styles={selectStyles}
 							/>
-							<div className="comissao">
+							<div className='comissao'>
 								<label>Comissão: R$</label>
 								<input
-									type="number"
+									type='number'
 									value={company.comissao}
 									onChange={e => handleComissaoChange(e, index)}
 								/>
 							</div>
-							<button type="button" onClick={() => handleRemoveCompany(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveCompany(index)}>-</button>
 						</li>
 					))}
-					<button type="button" onClick={handleAddCompany}>+</button>
+					<button type='button' onClick={handleAddCompany}>+</button>
 				</ul>
 			</div>
-			<div className="buttons">
-				<button type="button" onClick={Router.back}>Cancelar</button>
-				<button type="submit">Confirmar</button>
-			</div>
+
+			<FormButtons
+				handleCancel={back}
+				handleSubmit={handleSubmit}
+			/>
 		</Container>
 	)
 }
