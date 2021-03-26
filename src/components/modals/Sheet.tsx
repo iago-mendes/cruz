@@ -7,6 +7,8 @@ import XLSX from 'xlsx'
 import Container, {OpenSheetButton} from '../../styles/components/modals/Sheet'
 import ModalContainer from './Container'
 import api from '../../services/api'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 const fileTypes =
 [
@@ -24,16 +26,24 @@ interface SheetModalProps
 
 	sheetName: string
 	fileName: string
+
+	callback?: () => void
 }
 
-const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetName, fileName}) =>
+const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetName, fileName, callback = () => {}}) =>
 {
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
 
-	async function getModel()
+	async function getHeader()
 	{
 		const header: string[] = await api.get(headerPath).then(res => res.data)
+		return header
+	}
+
+	async function getModel()
+	{
+		const header = await getHeader()
 
 		let data: string[][] = []
 		data[0] = header
@@ -72,7 +82,7 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 		const reader = new FileReader()
 		const rABS = !!reader.readAsBinaryString
 
-		reader.onload = (e) =>
+		reader.onload = async (e) =>
 		{
 			const bstr = e.target.result
 			const wb = XLSX.read(bstr, {type: rABS ? 'binary' : 'array'})
@@ -81,8 +91,19 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 			const ws = wb.Sheets[wsname]
 			
 			const data = XLSX.utils.sheet_to_json(ws)
+			const header = await getHeader()
 
-			console.log('[data]', data)
+			api.post(uploadPath, {header, data})
+				.then(() =>
+				{
+					successAlert('Planilha enviada com sucesso!')
+					setIsOpen(false)
+					callback()
+				})
+				.catch(err =>
+				{
+					errorAlert(err.response.message.data)
+				})
 		}
 
 		if(rABS)

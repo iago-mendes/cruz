@@ -68,6 +68,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 					uploadPath={`/companies/${companyId}/products/sheet`}
 					sheetName='Produtos'
 					fileName={`${companyName} (Produtos)`}
+					callback={updateProducts}
 				/>
 			)}
 
