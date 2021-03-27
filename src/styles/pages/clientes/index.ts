@@ -9,7 +9,7 @@ const Container = styled.div`
 		.client
 		{
 			background-color: #fff;
-			width: 75%;
+			width: 90%;
 			height: 15rem;
 
 			border-radius: 2rem;
@@ -110,7 +110,6 @@ const Container = styled.div`
 					}
 				}
 			}
-
 		}
 	}
 `
