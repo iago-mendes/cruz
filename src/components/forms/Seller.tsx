@@ -256,7 +256,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				<label htmlFor='telefone'>Telefones</label>
 				<ul>
 					{shownNumbers.map((number, index) => (
-						<li key={index} className='phone'>
+						<li key={index} >
 							<div className='group' >
 								<input
 									type='text'
@@ -333,16 +333,17 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				<label htmlFor='representadas'>Representadas</label>
 				<ul>
 					{representadas.map((company, index) => (
-						<li className='company' key={index}>
+						<li key={index} >
 							<Select
 								name='representadas'
 								value={companyOptions.find(cmpn => cmpn.value === company.id)}
 								onChange={e => handleCompanyChange(e, index)}
 								options={companyOptions}
 								styles={selectStyles}
+								className='select'
 							/>
-							<div className='comissao'>
-								<label>Comissão: R$</label>
+							<div className='comissao' >
+								<span>Comissão: R$</span>
 								<input
 									type='number'
 									value={company.comissao}

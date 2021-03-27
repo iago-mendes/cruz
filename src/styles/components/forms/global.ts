@@ -42,7 +42,7 @@ const Container = styled.form`
 			font-size: 1.75rem;
 			color: ${p => p.theme.colors.text};
 
-			padding: 1rem;
+			padding: 0 1rem;
 			transition: 0.25s;
 
 			:focus, :hover
@@ -67,7 +67,7 @@ const Container = styled.form`
 			{
 				display: flex;
 				align-items: center;
-				gap: 1rem;
+				gap: 2rem;
 				
 				width: 100%;
 
@@ -81,9 +81,44 @@ const Container = styled.form`
 					width: 40%;
 				}
 
+				.group
+				{
+					display: flex;
+					align-items: center;
+					gap: 5rem;
+
+					.whatsapp
+					{
+						color: green;
+
+						display: flex;
+						align-items: center;
+						gap: 1rem;
+					}
+				}
+
 				button:hover
 				{
 					background-color: rgb(201, 64, 64);
+				}
+
+				.comissao
+				{
+					width: fit-content;
+
+					display: flex;
+					align-items: center;
+
+					span
+					{
+						font-size: 1.75rem;
+						color: ${p => p.theme.colors.text};
+					}
+
+					input
+					{
+						width: 10rem;
+					}
 				}
 			}
 
