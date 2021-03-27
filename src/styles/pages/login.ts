@@ -39,7 +39,7 @@ const Container = styled.div`
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
-		gap: 1rem;
+		gap: 2rem;
 
 		padding: 5rem;
 		padding-left: 10rem;
@@ -51,7 +51,7 @@ const Container = styled.div`
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
-			gap: 0.5rem;
+			gap: 1rem;
 	
 			width: 100%;
 			
@@ -59,7 +59,8 @@ const Container = styled.div`
 			{
 				font-family: Ubuntu;
 				color: ${p => p.theme.colors.secondary};
-				font-size: 1.5rem;
+				font-size: 2rem;
+				font-weight: 700;
 			}
 		
 			input
@@ -79,7 +80,6 @@ const Container = styled.div`
 				
 				:hover, :focus
 				{
-					box-shadow: 5px 5px 5px black;
 					border-radius: 0;
 				}
 			}
@@ -97,18 +97,19 @@ const Container = styled.div`
 			color: ${p => p.theme.colors.primaryDark};
 			font-family: Ubuntu;
 			font-size: 2rem;
+			font-weight: 700;
 	
 			display: flex;
 			align-items: center;
 			justify-content: center;
 	
 			cursor: pointer;
-			transition: 0.5s;
+			transition: 0.25s;
 			
 			:hover
 			{
-				transform: scale(1.05);
-				box-shadow: 5px 5px 5px black;
+				transform: scale(1.1);
+				border-radius: 0;
 			}
 		}
 	}
