@@ -164,7 +164,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					sellerCompanies = seller.representadas.map(company => company.id)
 				})
 
-				await api.get('companies-all').then(({data: companies}) =>
+				await api.get('companies/raw').then(({data: companies}) =>
 				{
 					let tmpCompanies: SelectOption[] = []
 					let tmpLines: LineSelectOptions = {}
@@ -240,7 +240,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function getRawProductsList()
 	{
-		api.get('companies-all').then(({data: companies}) =>
+		api.get('companies/raw').then(({data: companies}) =>
 		{
 			let tmpRawProductsList: RawProductsList = {}
 
