@@ -57,11 +57,6 @@ export interface ListedRequest
 	valorTotal: number
 }
 
-interface LineSelectOptions
-{
-	[key: string]: SelectOption[]
-}
-
 interface RawProductsList
 {
 	[companyId: string]: RawProduct[]
@@ -83,7 +78,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [cliente, setCliente] = useState('')
 	const [vendedor, setVendedor] = useState('')
 	const [representada, setRepresentada] = useState('')
-	const [linha, setLinha] = useState('')
 	const [produtos, setProdutos] = useState<Product[]>([])
 	const [data, setData] = useState(getDate())
 	const [condicao, setCondicao] = useState('')
@@ -241,7 +235,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	function handleSelectCompany(e: SelectOption)
 	{
 		setRepresentada(e.value)
-		setLinha('')
 		setProdutos([])
 
 		let tmpSelected = {...selected}
@@ -288,8 +281,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function handleAddProduct()
 	{
-		if (linha === '')
-			return alert('Selecione a linha')
+		if (representada === '')
+			return alert('Você precisa selecionar uma representada!')
 
 		let tmpSelected = {...selected}
 		tmpSelected.product = defaultSelected.product
@@ -329,11 +322,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		let total = 0
 
-		if (representada !== '' && linha !== '')
+		if (representada !== '')
 		{
 			produtos.map(product =>
 			{
-				const rawProduct = rawProductsList[representada][linha].find(({_id}) => _id === product.id)
+				const rawProduct = rawProductsList[representada].find(({_id}) => _id === product.id)
 
 				if (rawProduct)
 				{
@@ -373,7 +366,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			cliente,
 			vendedor,
 			representada,
-			linha,
 			peso,
 			tipo,
 			status,
@@ -479,12 +471,12 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						</tr>
 					</thead>
 
-					{(representada !== '' && linha !== '') && (
+					{representada !== '' && (
 						<tbody>
 							{produtos.map((produto, index) =>
 								{
-									const rawProduct: RawProduct = (produto.id !== '' && representada !== '' && linha !== '')
-										? rawProductsList[representada][linha].find(({_id}) => _id === produto.id)
+									const rawProduct: RawProduct = (produto.id !== '' && representada !== '')
+										? rawProductsList[representada].find(({_id}) => _id === produto.id)
 										: defaultRawProduct
 
 									const tablePrice = produto.id !== ''
