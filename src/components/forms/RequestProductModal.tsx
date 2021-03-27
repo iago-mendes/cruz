@@ -4,7 +4,6 @@ import {ChangeEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/RequestProductModal'
 import {modalStyle, selectStyles} from '../../styles/global'
-import {Product as RawProduct} from './Product'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
 import api from '../../services/api'

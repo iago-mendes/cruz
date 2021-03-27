@@ -16,7 +16,7 @@ interface Product
 export const defaultProduct: Product =
 {
 	_id: '',
-	imagem: '',
+	imagem: undefined,
 	nome: '',
 	codigo: 0,
 	unidade: '',

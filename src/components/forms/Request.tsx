@@ -9,7 +9,7 @@ import {selectStyles} from '../../styles/global'
 import api from '../../services/api'
 import {ListedSeller, Seller} from './Seller'
 import useUser from '../../hooks/useUser'
-import {Product as RawProduct} from './Product'
+import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
 import formatImage from '../../utils/formatImage'
 import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
 import {SelectOption} from '../../utils/types'
@@ -547,17 +547,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 								{
 									const rawProduct: RawProduct = (produto.id !== '' && representada !== '' && linha !== '')
 										? rawProductsList[representada][linha].find(({_id}) => _id === produto.id)
-										: {
-											_id: '',
-											imagem: undefined,
-											nome: '',
-											codigo: 0,
-											unidade: '',
-											ipi: 0,
-											st: 0,
-											comissao: 0,
-											tabelas: []
-										}
+										: defaultRawProduct
 
 									const tablePrice = produto.id !== ''
 										? getTablePrice(rawProduct)

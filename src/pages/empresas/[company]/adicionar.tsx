@@ -34,7 +34,6 @@ const AddCompany: React.FC = () =>
 				<ProductForm
 					method='post'
 					companyId={String(company)}
-					lineId={String(line)}
 					nome={nome}
 					setNome={setNome}
 				/>
