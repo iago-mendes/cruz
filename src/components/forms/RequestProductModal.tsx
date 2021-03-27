@@ -23,7 +23,6 @@ export interface Selected
 {
 	clientId: string
 	companyId: string
-	lineId: string
 	product: Product
 }
 
@@ -31,7 +30,6 @@ export const defaultSelected: Selected =
 {
 	clientId: '',
 	companyId: '',
-	lineId: '',
 	product:
 	{
 		id: '',
@@ -79,9 +77,9 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 	useEffect(() =>
 	{
-		if (selected.clientId !== '' && selected.companyId !== '' && selected.lineId !== '')
+		if (selected.clientId !== '' && selected.companyId !== '')
 			api
-				.get(`companies/${selected.companyId}/lines/${selected.lineId}/products-priced`, {params: {client: selected.clientId}})
+				.get(`companies/${selected.companyId}/products/priced`, {params: {client: selected.clientId}})
 				.then(({data}:{data: PricedProduct[]}) =>
 				{
 					const tmpOptions: SelectOption[] = data.map(product => (
@@ -225,7 +223,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 										productOptions.find(({value}) => value === selected.product.id)
 								}
 								onChange={handleSelectProduct}
-								isDisabled={selected.lineId === ''}
+								isDisabled={selected.companyId === ''}
 								styles={selectStyles}
 								placeholder='Selecione o produto'
 							/>

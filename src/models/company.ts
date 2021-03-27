@@ -15,7 +15,7 @@ interface Company // raw
 	comissao: {porcentagem: number, obs: string[]}
 	tabelas: CompanyTable[]
 	condicoes: CompanyCondition[]
-	products: Product[]
+	produtos: Product[]
 }
 
 export const defaultCompany: Company =
@@ -29,7 +29,7 @@ export const defaultCompany: Company =
 	comissao: {porcentagem: 0, obs: []},
 	tabelas: [],
 	condicoes: [],
-	products: []
+	produtos: []
 }
 
 export interface CompanyTable

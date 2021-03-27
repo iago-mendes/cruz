@@ -1,6 +1,6 @@
 import {useRouter} from 'next/router'
 import Select from 'react-select'
-import {FormEvent, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
@@ -17,6 +17,7 @@ import getDate from '../../utils/getDate'
 import RawClient, {ClientListed} from '../../models/client'
 import Request from '../../models/request'
 import Company from '../../models/company'
+import FormButtons from '../FormButtons'
 
 interface Type
 {
@@ -72,7 +73,7 @@ interface RequestFormProps
 
 const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => 
 {
-	const Router = useRouter()
+	const {back} = useRouter()
 	const {user, loading} = useUser()
 
 	const [cliente, setCliente] = useState('')
@@ -155,7 +156,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 								value: company._id
 							})
 
-							tmpRawProductsList[company._id] = company.products
+							tmpRawProductsList[company._id] = company.produtos
 						}
 					})
 					
@@ -209,9 +210,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 			companies.map(company =>
 			{
-				tmpRawProductsList[company._id] = company.products
+				tmpRawProductsList[company._id] = company.produtos
 			})
-			
+
 			setRawProductsList(tmpRawProductsList)
 		})
 	}
@@ -354,10 +355,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			return 0
 	}
 
-	async function handleSubmit(e: FormEvent)
+	async function handleSubmit()
 	{
-		e.preventDefault()
-
 		const apiData =
 		{
 			data,
@@ -378,7 +377,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			.then(() =>
 			{
 				alert('Pedido criado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -392,7 +391,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			.then(() =>
 			{
 				alert('Pedido atualizado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -403,12 +402,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	}
 
 	return (
-		<Container onSubmit={handleSubmit}>
+		<Container onSubmit={e => e.preventDefault()}>
 			<RequestProductModal
 				isOpen={isModalOpen}
 				setIsOpen={setIsModalOpen}
+
 				selected={selected}
 				setSelected={setSelected}
+
 				products={produtos}
 				setProducts={setProdutos}
 			/>
@@ -637,10 +638,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				</div>
 			</div>
 			
-			<div className='buttons'>
-				<button type='button' onClick={Router.back}>Cancelar</button>
-				<button type='submit'>Confirmar</button>
-			</div>
+			<FormButtons
+				handleCancel={back}
+				handleSubmit={handleSubmit}
+			/>
 		</Container>
 	)
 }
