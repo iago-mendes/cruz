@@ -88,7 +88,7 @@ const Container = styled.div<ContainerProps>`
 					display: flex;
 					gap: 1rem;
 
-					button
+					a, button
 					{
 						width: 4rem;
 						height: 4rem;
@@ -108,11 +108,10 @@ const Container = styled.div<ContainerProps>`
 						{
 							background-color: ${p => p.theme.colors.background};
 						}
-
-						:last-of-type:hover
-						{
-							${p => p.isAdmin && 'background-color: rgb(201, 64, 64);'}
-						}
+					}
+					.delete:hover
+					{
+						${p => p.isAdmin && 'background-color: rgb(201, 64, 64);'}
 					}
 				}
 			}
