@@ -3,8 +3,9 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 
 import Header from '../../components/Header'
-import RequestForm, {Request} from '../../components/forms/Request'
+import RequestForm from '../../components/forms/Request'
 import api from '../../services/api'
+import Request from '../../models/request'
 
 const EditRequest: React.FC = () =>
 {
@@ -20,7 +21,6 @@ const EditRequest: React.FC = () =>
 		cliente: '',
 		vendedor: '',
 		representada: '',
-		linha: '',
 		tipo: {venda: true, troca: false},
 		status: {concluido: false,	enviado: false,	faturado: false},
 		produtos: []

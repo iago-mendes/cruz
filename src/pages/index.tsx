@@ -14,6 +14,7 @@ import api, {apiUrl} from '../services/api'
 import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
 import useUser from '../hooks/useUser'
+import successAlert from '../utils/alerts/success'
 
 interface RequestsProps
 {
@@ -48,7 +49,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 			api.delete(`requests/${request.id}`).then(() =>
 			{
 				revalidate()
-				alert(`Pedido feito em ${formatDate(request.data)} deletado com sucesso!`)
+				successAlert(`Pedido feito em ${formatDate(request.data)} deletado com sucesso!`)
 			})
 	}
 

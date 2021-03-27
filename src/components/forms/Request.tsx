@@ -18,6 +18,8 @@ import RawClient, {ClientListed} from '../../models/client'
 import Request from '../../models/request'
 import Company from '../../models/company'
 import FormButtons from '../FormButtons'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface Type
 {
@@ -376,13 +378,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			await api.post('requests', apiData)
 			.then(() =>
 			{
-				alert('Pedido criado com sucesso!')
+				successAlert('Pedido criado com sucesso!')
 				back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 		else if (method === 'put')
@@ -390,13 +392,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			await api.put(`requests/${id}`, apiData)
 			.then(() =>
 			{
-				alert('Pedido atualizado com sucesso!')
+				successAlert('Pedido atualizado com sucesso!')
 				back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 	}
