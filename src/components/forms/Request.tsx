@@ -15,6 +15,8 @@ import RequestProductModal, {Product, Selected, defaultSelected} from './Request
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
 import RawClient, {ClientListed} from '../../models/client'
+import Request from '../../models/request'
+import Company from '../../models/company'
 
 interface Type
 {
@@ -27,22 +29,6 @@ interface Status
 	concluido: boolean
 	enviado: boolean
 	faturado: boolean
-}
-
-export interface Request
-{
-	_id: string
-	cliente: string
-	vendedor: string
-	representada: string
-	linha: string
-	produtos: Product[]
-	data: string
-	condicao: string
-	peso?: number
-	digitado_por: string
-	tipo: Type
-	status: Status
 }
 
 export interface ListedRequest
@@ -78,10 +64,7 @@ interface LineSelectOptions
 
 interface RawProductsList
 {
-	[companyId: string]:
-	{
-		[lineId: string]: RawProduct[]
-	}
+	[companyId: string]: RawProduct[]
 }
 
 interface RequestFormProps
@@ -112,7 +95,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [clientOptions, setClientOptions] = useState<SelectOption[]>([])
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
-	const [lineOptions, setLineOptions] = useState<LineSelectOptions>({})
 
 	const [rawProductsList, setRawProductsList] = useState<RawProductsList>({})
 	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
@@ -164,10 +146,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					sellerCompanies = seller.representadas.map(company => company.id)
 				})
 
-				await api.get('companies/raw').then(({data: companies}) =>
+				await api.get('companies/raw').then(({data: companies}:{data: Company[]}) =>
 				{
 					let tmpCompanies: SelectOption[] = []
-					let tmpLines: LineSelectOptions = {}
 					let tmpRawProductsList: RawProductsList = {}
 
 					companies.map(company =>
@@ -180,22 +161,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 								value: company._id
 							})
 
-							tmpLines[company._id] = company.linhas.map(line => (
-							{
-								label: line.nome,
-								value: line._id
-							}))
-
-							tmpRawProductsList[company._id] = {}
-							company.linhas.map(line =>
-							{
-								tmpRawProductsList[company._id][line._id] = line.produtos
-							})
+							tmpRawProductsList[company._id] = company.products
 						}
 					})
 					
 					setCompanyOptions(tmpCompanies)
-					setLineOptions(tmpLines)
 					setRawProductsList(tmpRawProductsList)
 				})
 			}
@@ -226,7 +196,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setCliente(request.cliente)
 			setVendedor(request.vendedor)
 			setRepresentada(request.representada)
-			setLinha(request.linha)
 			setProdutos(request.produtos)
 			setData(request.data)
 			setCondicao(request.condicao)
@@ -240,17 +209,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function getRawProductsList()
 	{
-		api.get('companies/raw').then(({data: companies}) =>
+		api.get('companies/raw').then(({data: companies}:{data: Company[]}) =>
 		{
 			let tmpRawProductsList: RawProductsList = {}
 
 			companies.map(company =>
 			{
-				tmpRawProductsList[company._id] = {}
-				company.linhas.map(line =>
-				{
-					tmpRawProductsList[company._id][line._id] = line.produtos
-				})
+				tmpRawProductsList[company._id] = company.products
 			})
 			
 			setRawProductsList(tmpRawProductsList)
@@ -281,16 +246,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 		let tmpSelected = {...selected}
 		tmpSelected.companyId = e.value
-		setSelected(tmpSelected)
-	}
-
-	function handleSelectLine(e: SelectOption)
-	{
-		setLinha(e.value)
-		setProdutos([])
-
-		let tmpSelected = {...selected}
-		tmpSelected.lineId = e.value
 		setSelected(tmpSelected)
 	}
 
@@ -503,23 +458,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					options={companyOptions}
 					styles={selectStyles}
 					placeholder='Selecione a representada'
-				/>
-			</div>
-			{/* linha */}
-			<div className='field'>
-				<label htmlFor='linha'>Linha</label>
-				<Select
-					name='linha'
-					value=
-					{
-						(representada !== '' && lineOptions[representada]) &&
-							lineOptions[representada].find(option => option.value === linha)
-					}
-					onChange={handleSelectLine}
-					options={(representada !== '' && lineOptions[representada]) ? lineOptions[representada] : []}
-					isDisabled={representada === ''}
-					styles={selectStyles}
-					placeholder={representada !== '' ? 'Selecione a linha' : 'Selecione a representada'}
 				/>
 			</div>
 			{/* produtos */}

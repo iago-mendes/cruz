@@ -1,3 +1,5 @@
+import Product from "./product"
+
 interface Company // raw
 {
 	_id: string
@@ -13,7 +15,7 @@ interface Company // raw
 	comissao: {porcentagem: number, obs: string[]}
 	tabelas: CompanyTable[]
 	condicoes: CompanyCondition[]
-	// products
+	products: Product[]
 }
 
 export const defaultCompany: Company =
@@ -26,7 +28,8 @@ export const defaultCompany: Company =
 	email: '',
 	comissao: {porcentagem: 0, obs: []},
 	tabelas: [],
-	condicoes: []
+	condicoes: [],
+	products: []
 }
 
 export interface CompanyTable
