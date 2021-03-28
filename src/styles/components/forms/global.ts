@@ -190,6 +190,7 @@ const Container = styled.form`
 		textarea
 		{
 			width: 100%;
+			resize: vertical;
 			
 			border: ${p => p.theme.colors.text}40 2px solid;
 			border-radius: 1rem;
@@ -198,7 +199,7 @@ const Container = styled.form`
 			font-size: 1.5rem;
 			font-family: Roboto;
 
-			transition: 0.25s;
+			transition: border 0.25s;
 
 			:focus, :hover
 			{

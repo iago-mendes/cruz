@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import {FiMinus, FiPlus} from 'react-icons/fi'
 
 import Container from '../styles/components/NumberInput'
