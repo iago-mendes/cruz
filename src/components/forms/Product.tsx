@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import React, {FormEvent, useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'

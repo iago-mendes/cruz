@@ -20,6 +20,7 @@ const EditProduct: React.FC = () =>
 		api.get(`companies/${companyId}/products/${productId}/raw`)
 			.then(({data}:{data: Product}) =>
 			{
+				console.log('[data]', data)
 				setProduct(data)
 			})
 	}, [companyId, productId])
