@@ -10,6 +10,7 @@ import formatPrice from '../../utils/formatPrice'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import FormButtons from '../FormButtons'
+import NumberInput from '../NumberInput'
 
 interface CompanyFormProps
 {
@@ -193,18 +194,23 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setCondicoes(tmpConditions)
 	}
 
-	function handleChangeCondition(value: string, index: number, field: string)
+	function handleChangeCondition(value: string | number, index: number, field: string)
 	{
 		let tmpConditions = [...condicoes]
 
 		switch (field)
 		{
 			case 'name':
-				tmpConditions[index].nome = value
+				tmpConditions[index].nome = String(value)
 				break
 			case 'price':
-				const tmpPrice = Number(formatPrice(value))
-				tmpConditions[index].precoMin = tmpPrice
+				// const tmpPrice = Number(formatPrice(value))
+				if (typeof value === 'number')
+				{
+					const tmpPrice = value
+					console.log('[tmpPrice]', tmpPrice)
+					tmpConditions[index].precoMin = tmpPrice
+				}
 				break
 			default:
 				break
@@ -459,13 +465,21 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								onChange={(e) => handleChangeCondition(e.target.value, index, 'name')}
 								placeholder='Condição'
 							/>
-							<input
-								type='text'
+							{/* <input
+								type='number'
 								name='condicao'
-								pattern='[-+]?[0-9]*[.,]?[0-9]+'
+								// pattern='[-+]?[0-9]*[.,]?[0-9]+'
 								value={formatPrice(condicao.precoMin, false)}
 								onChange={(e) => handleChangeCondition(e.target.value, index, 'price')}
-								placeholder='Condição'
+								placeholder='Preço mínimo'
+							/> */}
+							<NumberInput
+								value={condicao.precoMin}
+								setValue={n => handleChangeCondition(n, index, 'price')}
+
+								name='condicao'
+								label='R$'
+								placeholder='Preço mínimo'
 							/>
 							<button type='button' title='Remover' onClick={() => handleRemoveCondition(index)}>
 								<FiMinus />
@@ -484,7 +498,6 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				</ul>
 			</div>
 			
-
 			<FormButtons
 				handleCancel={back}
 				handleSubmit={handleSubmit}
