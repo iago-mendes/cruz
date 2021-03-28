@@ -38,9 +38,24 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
     setIsEditing(!isEditing)
   }
 
+	function decrease()
+	{
+		if (value >= 1)
+			setValue(value - 1)
+	}
+
+	function increase()
+	{
+		setValue(value + 1)
+	}
+
 	return (
 		<Container>
-			<button className='controller'>
+			<button
+				className='controller'
+				title='Diminuir'
+				onClick={decrease}
+			>
 				<FiMinus />
 			</button>
 
@@ -74,7 +89,11 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 					)}
 			</div>
 
-			<button className='controller'>
+			<button
+				className='controller'
+				title='Aumentar'
+				onClick={increase}
+			>
 				<FiPlus />
 			</button>
 		</Container>
