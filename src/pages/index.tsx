@@ -15,6 +15,7 @@ import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
 import useUser from '../hooks/useUser'
 import successAlert from '../utils/alerts/success'
+import confirmAlert from '../utils/alerts/confirm'
 
 interface RequestsProps
 {
@@ -44,13 +45,16 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 
 	function handleDeleteRequest(request: Request)
 	{
-		const yes = confirm(`Deseja deletar o pedido feito em ${formatDate(request.data)}?`)
-		if (yes)
-			api.delete(`requests/${request.id}`).then(() =>
-			{
-				revalidate()
-				successAlert(`Pedido feito em ${formatDate(request.data)} deletado com sucesso!`)
-			})
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, o pedido feito em ${formatDate(request.data)} será deletado!`,
+			() => api.delete(`requests/${request.id}`)
+				.then(() =>
+				{
+					revalidate()
+					successAlert(`Pedido deletado com sucesso!`)
+				})
+		)
 	}
 
 	if (loading)

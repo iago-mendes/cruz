@@ -13,6 +13,8 @@ import {Seller} from '../../components/forms/Seller'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
 import useUser from '../../hooks/useUser'
+import confirmAlert from '../../utils/alerts/confirm'
+import successAlert from '../../utils/alerts/success'
 
 interface SellersProps
 {
@@ -47,15 +49,16 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 
 	async function handleDeleteSeller(seller: Seller)
 	{
-		const yes = confirm(`Deseja deletar o vendedor ${seller.nome}?`)
-		if (yes)
-		{
-			await api.delete(`sellers/${seller._id}`).then(() =>
-			{
-				revalidate()
-				alert(`Vendedor ${seller.nome} deletado com sucesso!`)
-			})
-		}
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, o vendedor ${seller.nome} será deletado!`,
+			() => api.delete(`sellers/${seller._id}`)
+				.then(() =>
+				{
+					revalidate()
+					successAlert(`Vendedor ${seller.nome} deletado com sucesso!`)
+				})
+		)
 	}
 
   return (
@@ -73,8 +76,8 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 					<div key={seller._id} className={`seller ${seller.admin && 'admin'}`}>
 						{
 							user.role === 'admin' && (
-								<div className="buttons">
-									<button title="Editar" onClick={() => Router.push(`/vendedores/${seller._id}`)} >
+								<div className='buttons'>
+									<button title='Editar' onClick={() => Router.push(`/vendedores/${seller._id}`)} >
 										<FiEdit3 size={15} />
 									</button>
 									<button title='Deletar' onClick={() => handleDeleteSeller(seller)} >
@@ -84,7 +87,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 							)
 						}
 						<img src={seller.imagem} alt={seller.nome} />
-						<div className="texts">
+						<div className='texts'>
 							<h1>
 								{seller.nome}
 							</h1>

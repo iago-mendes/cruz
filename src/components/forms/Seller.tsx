@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import {ChangeEvent, useEffect, useState} from 'react'
 import {FaWhatsapp} from 'react-icons/fa'
 import Select from 'react-select'
 import Switch from 'react-switch'
@@ -10,6 +10,8 @@ import Company from '../../models/company'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import FormButtons from '../FormButtons'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface SellerNumber
 {
@@ -201,13 +203,13 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			await api.post('sellers', data)
 			.then(() =>
 			{
-				alert('Vendedor criado com sucesso!')
+				successAlert('Vendedor criado com sucesso!')
 				back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 		else if (method === 'put')
@@ -215,13 +217,13 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			await api.put(`sellers/${id}`, data)
 			.then(() =>
 			{
-				alert('Vendedor atualizado com sucesso!')
+				successAlert('Vendedor atualizado com sucesso!')
 				back()
 			})
 			.catch(err =>
 			{
 				console.error(err)
-				alert('Algo errado aconteceu!')
+				errorAlert('Algo errado aconteceu!')
 			})
 		}
 	}
