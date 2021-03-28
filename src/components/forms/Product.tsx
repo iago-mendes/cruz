@@ -8,6 +8,8 @@ import Product, {ProductTable} from '../../models/product'
 import Dropzone from '../Dropzone'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import NumberInput from '../NumberInput'
+import FormButtons from '../FormButtons'
 
 interface ProductFormProps
 {
@@ -23,7 +25,7 @@ interface ProductFormProps
 
 const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNome, id, product}) =>
 {
-	const Router = useRouter()
+	const {back} = useRouter()
     
 	const [imagem, setImagem] = useState<File>()
 	const [codigo, setCodigo] = useState(0)
@@ -43,8 +45,11 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		{
 			setTableNames(data.tabelas)
 
-			const tmpTables = data.tabelas.map(table => ({id: table._id, preco: 0}))
-			setTabelas(tmpTables)
+			if (tabelas.length === 0)
+			{
+				const tmpTables = data.tabelas.map(table => ({id: table._id, preco: 0}))
+				setTabelas(tmpTables)
+			}
 		})
 	}, [])
 
@@ -72,10 +77,8 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		setTabelas(tmp)
 	}
 
-	async function handleSubmit(e: FormEvent)
+	async function handleSubmit()
 	{
-		e.preventDefault()
-
 		const data = new FormData()
 
 		if (imagem) data.append('imagem', imagem)
@@ -93,7 +96,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			.then(() =>
 			{
 				successAlert('Produto criado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -107,7 +110,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			.then(() =>
 			{
 				successAlert('Produto atualizado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -118,7 +121,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	}
 
 	return (
-		<Container onSubmit={handleSubmit} >
+		<Container onSubmit={e => e.preventDefault()} >
 			{/* imagem */}
 			<div className='field' >
 				<label htmlFor='imageFile'>Imagem</label>
@@ -165,23 +168,19 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			{/* peso */}
 			<div className='field'>
 				<label htmlFor='peso'>Peso (kg)</label>
-				<input
-					type='number'
+				<NumberInput
+					value={peso}
+					setValue={setPeso}
 					name='peso'
-					id='peso'
-					value={peso !== 0 ? peso : undefined}
-					onChange={e => setPeso(Number(e.target.value))}
 				/>
 			</div>
 			{/* volume */}
 			<div className='field'>
 				<label htmlFor='volume'>Volume (m³)</label>
-				<input
-					type='number'
+				<NumberInput
+					value={volume}
+					setValue={setVolume}
 					name='volume'
-					id='volume'
-					value={volume !== 0 ? volume : undefined}
-					onChange={e => setVolume(Number(e.target.value))}
 				/>
 			</div>
 			{/* ipi */}
@@ -236,14 +235,10 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				</ul>
 			</div>
 			
-			<div className='buttons'>
-				<button type='button' onClick={Router.back} className='cancel' >
-					Cancelar
-				</button>
-				<button type='submit' className='submit' >
-					Confirmar
-				</button>
-			</div>
+			<FormButtons
+				handleCancel={back}
+				handleSubmit={handleSubmit}
+			/>
 		</Container>
 	)
 }
