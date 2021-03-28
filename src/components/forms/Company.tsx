@@ -204,11 +204,9 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				tmpConditions[index].nome = String(value)
 				break
 			case 'price':
-				// const tmpPrice = Number(formatPrice(value))
 				if (typeof value === 'number')
 				{
 					const tmpPrice = value
-					console.log('[tmpPrice]', tmpPrice)
 					tmpConditions[index].precoMin = tmpPrice
 				}
 				break
@@ -465,21 +463,13 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								onChange={(e) => handleChangeCondition(e.target.value, index, 'name')}
 								placeholder='Condição'
 							/>
-							{/* <input
-								type='number'
-								name='condicao'
-								// pattern='[-+]?[0-9]*[.,]?[0-9]+'
-								value={formatPrice(condicao.precoMin, false)}
-								onChange={(e) => handleChangeCondition(e.target.value, index, 'price')}
-								placeholder='Preço mínimo'
-							/> */}
 							<NumberInput
 								value={condicao.precoMin}
 								setValue={n => handleChangeCondition(n, index, 'price')}
 
 								name='condicao'
 								label='R$'
-								placeholder='Preço mínimo'
+								placeholder='Preço'
 							/>
 							<button type='button' title='Remover' onClick={() => handleRemoveCondition(index)}>
 								<FiMinus />

@@ -30,6 +30,8 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
       style: 'decimal'
     })
 
+		if (number === 0)
+			return undefined
     return formatter.format(number)
   }
 	
