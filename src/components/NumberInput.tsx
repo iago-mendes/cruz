@@ -53,14 +53,6 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 
 	return (
 		<Container>
-			<button
-				className='controller'
-				title='Diminuir'
-				onClick={decrease}
-			>
-				<FiMinus />
-			</button>
-
 			<div className='numberInput'>
 				{label && (
 					<span>
@@ -91,13 +83,20 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 					)}
 			</div>
 
-			<button
-				className='controller'
-				title='Aumentar'
-				onClick={increase}
-			>
-				<FiPlus />
-			</button>
+			<div className='controllers'>
+				<button
+					title='Aumentar'
+					onClick={increase}
+				>
+					<FiPlus />
+				</button>
+				<button
+					title='Diminuir'
+					onClick={decrease}
+				>
+					<FiMinus />
+				</button>
+			</div>
 		</Container>
 	)
 }
