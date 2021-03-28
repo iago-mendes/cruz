@@ -117,17 +117,17 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setShownNumbers(formatedNumbers)
 	}
 
-	function handleComissaoChange(e: ChangeEvent<HTMLInputElement>, index = 0)
+	function handleComissaoChange(value: number | string, field: string, index = 0)
 	{
-		if (e.target.name === 'comissao_porcentagem')
+		if (field === 'comissao_porcentagem')
 		{
-			const porcentagem = Number(e.target.value)
+			const porcentagem = Number(value)
 			setComissao({porcentagem, obs: [...comissao.obs]})
 		}
-		else if (e.target.name === 'comissao_obs')
+		else if (field === 'comissao_obs')
 		{
 			let obs = [...comissao.obs]
-			obs[index] = e.target.value
+			obs[index] = String(value)
 			setComissao({porcentagem: comissao.porcentagem, obs})
 		}
 	}
@@ -352,12 +352,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			{/* comissao */}
 			<div className='field' >
 				<label htmlFor='comissao_porcentagem'>Comissão - Porcentagem</label>
-				<input
-					type='number'
-					name='comissao_porcentagem'
-					id='comissao_porcentagem'
+				<NumberInput
 					value={comissao.porcentagem}
-					onChange={(e) => handleComissaoChange(e)}
+					setValue={n => handleComissaoChange(n, 'comissao_porcentagem')}
+
+					name='comissao_porcentagem'
+					placeholder='Porcentagem'
 				/>
 				<label htmlFor='comissao_obs'>Comissão - Observações</label>
 				<ul>
@@ -368,7 +368,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								name='comissao_obs'
 								id='comissao_obs'
 								value={obs}
-								onChange={(e) => handleComissaoChange(e, index)}
+								onChange={e => handleComissaoChange(e.target.value, 'comissao_obs', index)}
 							/>
 							<button type='button' onClick={() => handleRemoveComissaoObs(index)} >
 								<FiMinus />
