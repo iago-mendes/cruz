@@ -189,7 +189,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	{
 		let tmpConditions = [...condicoes]
 		tmpConditions.splice(index, 1)
-		setTabelas(tmpConditions)
+		setCondicoes(tmpConditions)
 	}
 
 	function handleChangeCondition(value: string, index: number, field: string)
