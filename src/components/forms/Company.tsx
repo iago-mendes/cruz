@@ -1,14 +1,15 @@
 import {useRouter} from 'next/router'
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import {ChangeEvent, useEffect, useState} from 'react'
+import {FiMinus, FiPlus} from 'react-icons/fi'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
 import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'
-import { FiMinus, FiPlus } from 'react-icons/fi'
 import formatPrice from '../../utils/formatPrice'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import FormButtons from '../FormButtons'
 
 interface CompanyFormProps
 {
@@ -23,7 +24,7 @@ interface CompanyFormProps
 
 const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeFantasia, id, company}) =>
 {
-	const Router = useRouter()
+	const {back} = useRouter()
     
 	const [shownNumbers, setShownNumbers] = useState<string[]>([])
 	const [shownCnpj, setShownCnpj] = useState('')
@@ -212,10 +213,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setCondicoes(tmpConditions)
 	}
 
-	async function handleSubmit(e: FormEvent)
+	async function handleSubmit()
 	{
-		e.preventDefault()
-
 		const data = new FormData()
 
 		if (imagem)
@@ -238,7 +237,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			.then(() =>
 			{
 				successAlert('Empresa criada com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -251,7 +250,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			.then(() =>
 			{
 				successAlert('Empresa atualizada com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -261,7 +260,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	}
 
 	return (
-		<Container onSubmit={handleSubmit} >
+		<Container onSubmit={e => e.preventDefault()} >
 			{/* imagem */}
 			<div className='field' >
 				<label htmlFor='imageFile'>Imagem</label>
@@ -319,10 +318,20 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								value={number}
 								onChange={(e) => handleNumberChange(e, index)}
 							/>
-							<button type='button' onClick={() => handleRemoveNumber(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveNumber(index)}>
+								<FiMinus />
+								<span>
+									Remover telefone
+								</span>
+							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddNumber}>+</button>
+					<button type='button' onClick={handleAddNumber}>
+						<FiPlus />
+						<span>
+							Adicionar telefone
+						</span>
+					</button>
 				</ul>
 			</div>
 			{/* email */}
@@ -357,10 +366,20 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								value={obs}
 								onChange={(e) => handleComissaoChange(e, index)}
 							/>
-							<button type='button' onClick={() => handleRemoveComissaoObs(index)} >-</button>
+							<button type='button' onClick={() => handleRemoveComissaoObs(index)} >
+								<FiMinus />
+								<span>
+									Remover observação
+								</span>
+							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddComissaoObs}>+</button>
+					<button type='button' onClick={handleAddComissaoObs}>
+						<FiPlus />
+						<span>
+							Adicionar observação
+						</span>
+					</button>
 				</ul>
 			</div>
 			{/* descricao_curta */}
@@ -410,10 +429,20 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								value={tabela.nome}
 								onChange={(e) => handleTableChange(e, index)}
 							/>
-							<button type='button' onClick={() => handleRemoveTable(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveTable(index)}>
+								<FiMinus />
+								<span>
+									Remover tabela
+								</span>
+							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddTable}>+</button>
+					<button type='button' onClick={handleAddTable}>
+						<FiPlus />
+						<span>
+							Adicionar tabela
+						</span>
+					</button>
 				</ul>
 			</div>
 			{/* condicoes */}
@@ -439,21 +468,27 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 								placeholder='Condição'
 							/>
 							<button type='button' title='Remover' onClick={() => handleRemoveCondition(index)}>
-								<FiMinus size={15} />
+								<FiMinus />
+								<span>
+									Remover condição
+								</span>
 							</button>
 						</li>
 					))}
 					<button type='button' title='Adicionar' onClick={handleAddCondition}>
-						<FiPlus size={15} />
+						<FiPlus />
+						<span>
+							Adicionar condição
+						</span>
 					</button>
 				</ul>
 			</div>
 			
 
-			<div className='buttons'>
-				<button type='button' onClick={Router.back} className='cancel' >Cancelar</button>
-				<button type='submit' className='submit' >Confirmar</button>
-			</div>
+			<FormButtons
+				handleCancel={back}
+				handleSubmit={handleSubmit}
+			/>
 		</Container>
 	)
 }

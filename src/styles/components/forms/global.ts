@@ -124,10 +124,13 @@ const Container = styled.form`
 
 			button
 			{
-				width: 2.5rem;
-				height: 2.5rem;
-				border-radius: 100%;
+				display: flex;
+				align-items: center;
+				font-size:1.5rem;
+				gap: 1rem;
 				
+				padding: 0.5rem 1rem;
+				border-radius: 2rem;
 				border: none;
 				background-color: ${p => p.theme.colors.background};
 				
@@ -141,6 +144,11 @@ const Container = styled.form`
 				:hover
 				{
 					background-color: rgb(89, 211, 89);
+				}
+
+				span
+				{
+					white-space: nowrap;
 				}
 			}
 		}
