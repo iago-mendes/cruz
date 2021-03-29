@@ -12,6 +12,7 @@ import Dropzone from '../Dropzone'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import NumberInput from '../NumberInput'
 
 interface SellerNumber
 {
@@ -165,10 +166,10 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		setRepresentadas(companies)
 	}
 
-	function handleComissaoChange(e: ChangeEvent<HTMLInputElement>, index: number)
+	function handleComissaoChange(n: number, index: number)
 	{
 		let companies = [...representadas]
-		companies[index].comissao = Number(e.target.value)
+		companies[index].comissao = n
 
 		setRepresentadas(companies)
 	}
@@ -343,13 +344,16 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 								options={companyOptions}
 								styles={selectStyles}
 								className='select'
+								placeholder='Selecione uma representada'
 							/>
 							<div className='comissao' >
-								<span>Comissão: R$</span>
-								<input
-									type='number'
+								<span>Comissão:</span>
+								<NumberInput
 									value={company.comissao}
-									onChange={e => handleComissaoChange(e, index)}
+									setValue={n => handleComissaoChange(n, index)}
+
+									name='comissao'
+									placeholder='Porcentagem'
 								/>
 							</div>
 							<button type='button' onClick={() => handleRemoveCompany(index)}>-</button>
