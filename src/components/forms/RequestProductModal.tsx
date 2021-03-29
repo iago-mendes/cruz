@@ -261,11 +261,12 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 								setValue={n => handleChangeProduct(n, 'preco')}
 
 								name='price'
+								label='R$'
 							/>
 						</div>
 					</div>
-					<div className="group">
-						<div className="subGroup">
+					<div className='group'>
+						<div className='subGroup'>
 							<label>Subtotal (sem taxas)</label>
 							<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
 						</div>
