@@ -66,7 +66,7 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 						<input
 							type='number'
 							name={name}
-							value={value}
+							value={Math.round(value * 100) / 100}
 							placeholder={placeholder}
 							onChange={e => handleChange(e.target.value)}
 							onBlur={toggleEditing}
