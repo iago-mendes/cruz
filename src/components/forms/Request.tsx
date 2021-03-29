@@ -20,6 +20,7 @@ import Company from '../../models/company'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import NumberInput from '../NumberInput'
 
 interface Type
 {
@@ -553,12 +554,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* peso */}
 			<div className='field'>
 				<label htmlFor='peso'>Peso (kg)</label>
-				<input
-					type='number'
-					name='peso'
-					id='peso'
+				<NumberInput
 					value={peso}
-					onChange={e => setPeso(Number(e.target.value))}
+					setValue={setPeso}
+
+					name='peso'
 				/>
 			</div>
 			{/* digitado_por */}

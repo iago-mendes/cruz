@@ -8,6 +8,7 @@ import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
 import api from '../../services/api'
 import formatImage from '../../utils/formatImage'
+import NumberInput from '../NumberInput'
 
 Modal.setAppElement('#__next')
 
@@ -157,7 +158,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		
 	}
 
-	function handleChangeProduct(e: ChangeEvent<HTMLInputElement>, field: string)
+	function handleChangeProduct(n: number, field: string)
 	{
 		let tmpSelected = {...selected}
 		let tmpProducts = [...products]
@@ -168,14 +169,14 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 		if (field === 'quantidade')
 		{
-			const tmpQuantity = Number(e.target.value)
+			const tmpQuantity = n
 
 			tmpSelected.product.quantidade = tmpQuantity
 			tmpProducts[index].quantidade = tmpQuantity
 		}
 		if (field === 'preco')
 		{
-			const tmpPrice = priceToNumber(e.target.value)
+			const tmpPrice = n
 
 			tmpSelected.product.preco = tmpPrice
 			tmpProducts[index].preco = tmpPrice
@@ -235,12 +236,14 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							<span>{pricedProduct.unidade}</span>
 						</div>
 						<div className='subGroup'>
-							<label>Quantidade</label>
-							<input
-								type='number'
+							<label htmlFor='quantidade' >
+								Quantidade
+							</label>
+							<NumberInput
 								value={selected.product.quantidade}
-								onChange={e => handleChangeProduct(e, 'quantidade')}
-								disabled={selected.product.id === ''}
+								setValue={n => handleChangeProduct(n, 'quantidade')}
+
+								name='quantidade'
 							/>
 						</div>
 					</div>
@@ -250,12 +253,14 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							<span>{priceToString(pricedProduct.preco)}</span>
 						</div>
 						<div className='subGroup'>
-							<label>Preço líquido</label>
-							<input
-								type='text'
-								value={priceToString(selected.product.preco)}
-								onChange={e => handleChangeProduct(e, 'preco')}
-								disabled={selected.product.id === ''}
+							<label htmlFor='price' >
+								Preço líquido
+							</label>
+							<NumberInput
+								value={selected.product.preco}
+								setValue={n => handleChangeProduct(n, 'preco')}
+
+								name='price'
 							/>
 						</div>
 					</div>
