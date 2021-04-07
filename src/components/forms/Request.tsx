@@ -21,6 +21,7 @@ import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
+import warningAlert from '../../utils/alerts/warning'
 
 interface Type
 {
@@ -286,7 +287,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	function handleAddProduct()
 	{
 		if (representada === '')
-			return alert('Você precisa selecionar uma representada!')
+			return warningAlert('Você precisa selecionar uma representada!')
 
 		let tmpSelected = {...selected}
 		tmpSelected.product = defaultSelected.product
