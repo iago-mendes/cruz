@@ -250,13 +250,13 @@ const Container = styled.form`
 
 		.add
 		{
-			width: 2.5rem;
-			height: 2.5rem;
 			border-radius: 100rem;
+			padding: 1rem 2rem;
 
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			gap: 1rem;
 	
 			border: none;
 			background: none;
@@ -268,6 +268,11 @@ const Container = styled.form`
 			:hover
 			{
 				background-color: ${p => p.theme.colors.confirm};
+			}
+
+			span
+			{
+				font-weight: 700;
 			}
 		}
 

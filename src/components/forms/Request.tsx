@@ -524,6 +524,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				</table>
 				<button type='button' onClick={handleAddProduct} className='add' >
 					<FiPlus size={20} />
+					<span>Adicionar produto</span>
 				</button>
 				<div className="total">
 					<span>Total = {priceToString(calcTotal())}</span>
