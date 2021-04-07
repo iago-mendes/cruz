@@ -69,7 +69,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 
 			<Add route='/vendedores/adicionar' />
 
-			<Header display='Vendedores' showSearch />
+			<Header display='Vendedores' />
 
       <main>
 				{sellers.map(seller => (

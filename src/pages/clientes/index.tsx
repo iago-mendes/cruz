@@ -63,7 +63,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			</Head>
 
 			<Add route='/clientes/adicionar' />
-			<Header display='Clientes' showSearch />
+			<Header display='Clientes' />
 
 			<main className='main'>
 				{clients.map(client => (

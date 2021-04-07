@@ -57,7 +57,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 				<title>Empresas | Cruz Representações</title>
 			</Head>
 
-			<Header display='Empresas' showSearch />
+			<Header display='Empresas' />
 			<Add route='/empresas/adicionar' />
 
 			<main>

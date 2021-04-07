@@ -74,7 +74,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 				<title>{companyName} - Produtos | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > Produtos`} showSearch />
+			<Header display={`${companyName} > Produtos`} />
 			<Add route={`/empresas/${companyId}/adicionar`} />
 
 			{user.role === 'admin' && (
