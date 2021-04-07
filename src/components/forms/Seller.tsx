@@ -308,29 +308,6 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					onChange={e => setSenha(e.target.value)}
 				/>
 			</div>
-			{/* funcao */}
-			<div className='field'>
-				<label htmlFor='funcao'>Função</label>
-				<input
-					type='text'
-					name='funcao'
-					id='funcao'
-					value={funcao}
-					onChange={e => setFuncao(e.target.value)}
-				/>
-			</div>
-			{/* admin */}
-			<div className='field'>
-				<label htmlFor='admin'>Administrador</label>
-				<Switch
-					name='admin'
-					id='admin'
-					checked={admin}
-					onChange={setAdmin}
-					onHandleColor='#d8d8d8'
-					offHandleColor='#d8d8d8'
-				/>
-			</div>
 			{/* representadas */}
 			<div className='field'>
 				<label htmlFor='representadas'>Representadas</label>
@@ -361,6 +338,29 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					))}
 					<button type='button' onClick={handleAddCompany}>+</button>
 				</ul>
+			</div>
+			{/* funcao */}
+			<div className='field'>
+				<label htmlFor='funcao'>Função</label>
+				<input
+					type='text'
+					name='funcao'
+					id='funcao'
+					value={funcao}
+					onChange={e => setFuncao(e.target.value)}
+				/>
+			</div>
+			{/* admin */}
+			<div className='field'>
+				<label htmlFor='admin'>Administrador</label>
+				<Switch
+					name='admin'
+					id='admin'
+					checked={admin}
+					onChange={setAdmin}
+					onHandleColor='#d8d8d8'
+					offHandleColor='#d8d8d8'
+				/>
 			</div>
 
 			<FormButtons
