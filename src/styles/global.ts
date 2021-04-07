@@ -50,7 +50,7 @@ export default createGlobalStyle`
 	.container
 	{
 		height: 100vh;
-		width: 100%;
+		width: calc(100% - 20rem);
 		overflow-y: auto;
 	}
 
