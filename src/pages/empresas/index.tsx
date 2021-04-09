@@ -41,8 +41,6 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 
 	async function handleDeleteCompany(company: CompanyListed)
 	{
-		const yes = confirm(`Deseja deletar a empresa ${company.nome_fantasia}?`)
-
 		confirmAlert(
 			'Você tem certeza?',
 			`Se você continuar, a empresa ${company.nome_fantasia} será deletada!`,
