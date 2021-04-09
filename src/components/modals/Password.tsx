@@ -3,18 +3,26 @@ import {FiEye, FiEyeOff, FiSend} from 'react-icons/fi'
 
 import Container from '../../styles/components/modals/Password'
 import ModalContainer from './Container'
+import useUser from '../../hooks/useUser'
+import api from '../../services/api'
+import errorAlert from '../../utils/alerts/error'
+import sucessAlert from '../../utils/alerts/success'
+import warningAlert from '../../utils/alerts/warning'
 
 interface PasswordModalProps
 {
 	isOpen: boolean
 	setIsOpen: (p: boolean) => void
+
+	role: string
+	setPwd?: (p: string) => void
 }
 
-const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen}) =>
+const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, setPwd}) =>
 {
+	const {user} = useUser()
 	const [inputType, setInputType] = useState('password')
 
-	const [currentPwd, setCurrentPwd] = useState('')
 	const [newPwd, setNewPwd] = useState('')
 	const [newPwd2, setNewPwd2] = useState('')
 
@@ -27,7 +35,34 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen}) =>
 	}
 
 	function handleSubmit()
-	{}
+	{
+		if (newPwd !== newPwd2)
+			return warningAlert('A confirmação da senha não corresponde à senha!')
+		
+		if (setPwd)
+		{
+			setPwd(newPwd)
+			setIsOpen(false)
+			
+			return
+		}
+
+		const data =
+		{
+			senha: newPwd
+		}
+
+		api.put(`change-password/${role}/${user.id}`, data)
+			.then(() =>
+			{
+				setIsOpen(false)
+				sucessAlert('Senha enviada com sucesso!')
+			})
+			.catch(error =>
+			{
+				errorAlert(error.response.data.message)
+			})
+	}
 
 	return (
 		<ModalContainer
@@ -52,16 +87,6 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen}) =>
 				</button>
 
 				<form onSubmit={e => e.preventDefault()} >
-					<div className='field'>
-						<label htmlFor='current'>Senha atual</label>
-						<input
-							type={inputType}
-							id='current'
-							name='current'
-							value={currentPwd}
-							onChange={e => setCurrentPwd(e.target.value)}
-						/>
-					</div>
 					<div className='field'>
 						<label htmlFor='new'>Nova senha</label>
 						<input

@@ -13,6 +13,7 @@ import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
+import PasswordModal from '../modals/Password'
 
 interface SellerNumber
 {
@@ -78,6 +79,8 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	
 	const [shownNumbers, setShownNumbers] = useState<string[]>([])
 	const [companyOptions, setCompanyOptions] = useState<CompanyOption[]>([])
+
+	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
@@ -233,6 +236,14 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		<Container
 			onSubmit={e => e.preventDefault()}
 		>
+			<PasswordModal
+				isOpen={isPasswordModalOpen}
+				setIsOpen={setIsPasswordModalOpen}
+
+				role='seller'
+				setPwd={method === 'post' ? setSenha : undefined}
+			/>
+
 			{/* imagem */}
 			<div className='field'>
 				<label htmlFor='imagem'>Imagem</label>
@@ -300,13 +311,10 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			{/* senha */}
 			<div className='field'>
 				<label htmlFor='senha'>Senha</label>
-				<input
-					type='senha'
-					name='senha'
-					id='senha'
-					value={senha}
-					onChange={e => setSenha(e.target.value)}
-				/>
+				<button className='password' onClick={() => setIsPasswordModalOpen(true)} >
+					{method === 'post' && 'Criar senha'}
+					{method === 'put' && 'Mudar senha'}
+				</button>
 			</div>
 			{/* representadas */}
 			<div className='field'>
