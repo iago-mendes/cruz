@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
-import {GetStaticProps } from 'next'
+import {GetStaticProps} from 'next'
 import {useState} from 'react'
 
 import api from '../../services/api'
@@ -11,6 +11,7 @@ import Add from '../../components/Add'
 import useUser from '../../hooks/useUser'
 import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
+import confirmAlert from '../../utils/alerts/confirm'
 
 interface CompaniesProps
 {
@@ -42,13 +43,16 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 	{
 		const yes = confirm(`Deseja deletar a empresa ${company.nome_fantasia}?`)
 
-		if (yes)
-			api.delete(`companies/${company.id}`)
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, a empresa ${company.nome_fantasia} será deletada!`,
+			() => api.delete(`companies/${company.id}`)
 				.then(() =>
 				{
 					updateCompanies()
 					alert(`Empresa ${company.nome_fantasia} deletada com sucesso!`)
 				})
+		)
 	}
 
 	return (
