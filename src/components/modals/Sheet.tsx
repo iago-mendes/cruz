@@ -9,6 +9,7 @@ import ModalContainer from './Container'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import useUser from '../../hooks/useUser'
 
 const fileTypes =
 [
@@ -32,6 +33,8 @@ interface SheetModalProps
 
 const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetName, fileName, callback = () => {}}) =>
 {
+	const {user} = useUser()
+
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
 
@@ -111,6 +114,9 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 		else
 			reader.readAsArrayBuffer(sheet)
 	}
+
+	if (user.role !== 'admin')
+		return null
 
 	return (
 		<>

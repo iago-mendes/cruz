@@ -77,15 +77,13 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			<Header display={`${companyName} > Produtos`} />
 			<Add route={`/empresas/${companyId}/adicionar`} />
 
-			{user.role === 'admin' && (
-				<SheetModal
-					headerPath={`companies/${companyId}/products/sheet/header`}
-					uploadPath={`/companies/${companyId}/products/sheet`}
-					sheetName='Produtos'
-					fileName={`${companyName} (Produtos)`}
-					callback={updateProducts}
-				/>
-			)}
+			<SheetModal
+				headerPath={`companies/${companyId}/products/sheet/header`}
+				uploadPath={`/companies/${companyId}/products/sheet`}
+				sheetName='Produtos'
+				fileName={`${companyName} (Produtos)`}
+				callback={updateProducts}
+			/>
 
 			<main>
 				<table>
