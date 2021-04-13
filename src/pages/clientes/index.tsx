@@ -64,8 +64,8 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			<Header display='Clientes' />
 
 			<SheetModal
-				headerPath={'clients/sheet/header'}
-				uploadPath={'clients/sheet'}
+				headerPath={'sheet/clients/header'}
+				uploadPath={'sheet/clients'}
 				sheetName='Clientes'
 				fileName={'Clientes (Cruz Representações)'}
 				callback={updateCompanies}

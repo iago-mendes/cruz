@@ -106,6 +106,18 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 				})
 				.catch(err =>
 				{
+					if (!err.response)
+					{
+						errorAlert('Erro interno do servidor!')
+						return console.error('[error]', err)
+					}
+
+					if (!err.response.message)
+					{
+						errorAlert('Erro interno do servidor!')
+						return console.error('[error]', err.response)
+					}
+
 					errorAlert(err.response.message.data)
 				})
 		}
