@@ -56,6 +56,7 @@ const Container = styled.main`
 		:hover
 		{
 			transform: scale(1.1);
+			border-radius: 0;
 
 			background-color: ${p => p.theme.colors.primary};
 			color: #fff;
@@ -87,16 +88,11 @@ const Container = styled.main`
 			font-size: 1.75rem;
 
 			background-color: #fff;
-			border-radius: 2rem;
+			border-radius: 0.5rem;
 			padding: 0.5rem 1rem;
 
 			cursor: pointer;
 			transition: 0.25s;
-
-			:focus, :hover
-			{
-				border-radius: 0;
-			}
 		}
 	}
 

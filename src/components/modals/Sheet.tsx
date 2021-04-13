@@ -10,6 +10,7 @@ import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import useUser from '../../hooks/useUser'
+import FormButtons from '../FormButtons'
 
 const fileTypes =
 [
@@ -131,6 +132,7 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 							Baixar modelo
 						</span>
 					</button>
+					
 					<form onSubmit={e => e.preventDefault()} >
 						<label htmlFor='sheet'>Planilha</label>
 						<input
@@ -141,17 +143,11 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 							onChange={e => setSheet(e.target.files[0])}
 						/>
 					</form>
-					
-					<div className='buttons'>
-						<button type='button' onClick={() => setIsOpen(false)} className='cancel' >
-							<FiX size={25} />
-							Cancelar
-						</button>
-						<button type='submit' className='submit' onClick={handleSubmit} >
-							<FiCheck size={25} />
-							Confirmar
-						</button>
-					</div>
+
+					<FormButtons
+						handleCancel={() => setIsOpen(false)}
+						handleSubmit={handleSubmit}
+					/>
 				</Container>
 			</ModalContainer>
 
