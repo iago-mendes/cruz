@@ -1,6 +1,5 @@
 import {useState} from 'react'
 import {FaDownload} from 'react-icons/fa'
-import {FiCheck, FiX} from 'react-icons/fi'
 import {SiGooglesheets} from 'react-icons/si'
 import XLSX from 'xlsx'
 
