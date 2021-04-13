@@ -10,6 +10,7 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import useUser from '../../hooks/useUser'
 import FormButtons from '../FormButtons'
+import LoadingModal from './Loading'
 
 const fileTypes =
 [
@@ -37,6 +38,7 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
+	const [loading, setLoading] = useState(false)
 
 	async function getHeader()
 	{
@@ -82,6 +84,8 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 
 	function handleSubmit()
 	{
+		setLoading(true)
+
 		const reader = new FileReader()
 		const rABS = !!reader.readAsBinaryString
 
@@ -99,12 +103,16 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 			api.post(uploadPath, {header, data})
 				.then(() =>
 				{
+					setLoading(false)
+					
 					successAlert('Planilha enviada com sucesso!')
 					setIsOpen(false)
 					callback()
 				})
 				.catch(err =>
 				{
+					setLoading(false)
+
 					if (!err.response)
 					{
 						errorAlert('Erro interno do servidor!')
@@ -136,6 +144,10 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 			>
+				<LoadingModal
+					isOpen={loading}
+				/>
+
 				<Container>
 					<button className='model' onClick={getModel} >
 						<FaDownload />
