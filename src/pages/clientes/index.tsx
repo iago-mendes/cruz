@@ -13,6 +13,7 @@ import api from '../../services/api'
 import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
 import useUser from '../../hooks/useUser'
+import SheetModal from '../../components/modals/Sheet'
 
 interface ClientsProps
 {
@@ -22,26 +23,23 @@ interface ClientsProps
 const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 {
 	const Router = useRouter()
-	const {user, loading} = useUser()
+	const {user} = useUser()
 	
-	const [clients, setClients] = useState<Client[]>([])
-	const {data, error, revalidate} = useSWR('/api/getClients')
+	const [clients, setClients] = useState<Client[]>(staticClients)
 
-	useEffect(() =>
+	async function updateCompanies()
 	{
-		if (data)
-			setClients(data)
-		else if (staticClients)
-		{
-			setClients(staticClients)
-
-			if (error)
-				console.error(error)
-		}
-	}, [data, error, staticClients])
-
-	if (loading)
-		return <Loading />
+		api.get('clients')
+			.then(({data}:{data: Client[]}) =>
+			{
+				setClients(data)
+			})
+			.catch(error =>
+			{
+				console.log('[error]', error)
+				setClients(staticClients)
+			})
+	}
 
 	async function handleDeleteClient(client: Client)
 	{
@@ -50,7 +48,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 		{
 			await api.delete(`clients/${client.id}`).then(() =>
 			{
-				revalidate()
+				updateCompanies()
 				alert(`Cliente ${client.nome_fantasia} deletado com sucesso!`)
 			})
 		}
@@ -64,6 +62,14 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 
 			<Add route='/clientes/adicionar' />
 			<Header display='Clientes' />
+
+			<SheetModal
+				headerPath={'clients/sheet/header'}
+				uploadPath={'clients/sheet'}
+				sheetName='Clientes'
+				fileName={'Clientes (Cruz Representações)'}
+				callback={updateCompanies}
+			/>
 
 			<main className='main'>
 				{clients.map(client => (
