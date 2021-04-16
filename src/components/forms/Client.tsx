@@ -14,6 +14,7 @@ import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import PasswordModal from '../modals/Password'
+import FormButtons from '../FormButtons'
 
 interface ClientFormProps
 {
@@ -28,7 +29,7 @@ interface ClientFormProps
 
 const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFantasia, id, client}) =>
 {
-	const Router = useRouter()
+	const {back} = useRouter()
 
 	const [razao_social, setRazaoSocial] = useState('')
 	const [imagem, setImagem] = useState<File>()
@@ -208,10 +209,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		setCondicoes(tmpConditions)
 	}
 
-	async function handleSubmit(e: FormEvent)
+	async function handleSubmit()
 	{
-		e.preventDefault()
-
 		const data = new FormData()
 
 		if (imagem)
@@ -234,7 +233,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			.then(() =>
 			{
 				successAlert('Cliente criado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -247,7 +246,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			.then(() =>
 			{
 				successAlert('Cliente atualizado com sucesso!')
-				Router.back()
+				back()
 			})
 			.catch(err =>
 			{
@@ -258,7 +257,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	}
 
 	return (
-		<Container onSubmit={handleSubmit} >
+		<Container onSubmit={e => e.preventDefault()} >
 			<PasswordModal
 				isOpen={isPasswordModalOpen}
 				setIsOpen={setIsPasswordModalOpen}
@@ -533,10 +532,10 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				</div>
 			</div>
 
-			<div className='buttons'>
-				<button type='button' onClick={Router.back} className='cancel' >Cancelar</button>
-				<button type='submit' className='submit' >Confirmar</button>
-			</div>	
+			<FormButtons
+				handleCancel={back}
+				handleSubmit={handleSubmit}
+			/>
 		</Container>
 	)
 }
