@@ -30,22 +30,21 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 	const [page, setPage]	= useState(1)
 	const [totalPages, setTotalPages] = useState(1)
 	const [loading, setLoading] = useState(false)
+	const [search, setSearch] = useState('')
 
 	useEffect(() =>
 	{
+		setLoading(true)
+
 		updateClients()
-	}, [])
+	}, [page, search])
 
 	async function updateClients()
 	{
-		api.get('clients')
+		await api.get('clients', {params: {page, search}})
 			.then(({data, headers}:{data: Client[], headers: any}) =>
 			{
 				setClients(data)
-
-				console.log('[headers]', headers)
-				console.log('[headers[page]]', headers['page'])
-				console.log('[headers[total-pages]]', headers['total-pages'])
 
 				const tmpPage = Number(headers['page'])
 				if (Number.isNaN(tmpPage))
@@ -67,6 +66,8 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 				setPage(1)
 				setTotalPages(1)
 			})
+		
+		setLoading(false)
 	}
 
 	async function handleDeleteClient(client: Client)
@@ -89,7 +90,13 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			</Head>
 
 			<Add route='/clientes/adicionar' />
-			<Header display='Clientes' />
+			<Header
+				display='Clientes'
+
+				showSearch
+				search={search}
+				setSearch={setSearch}
+			/>
 
 			<SheetModal
 				headerPath={'sheet/clients/header'}
