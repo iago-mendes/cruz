@@ -13,6 +13,7 @@ import Client, {ClientCompany, Address, Status, Conditions} from '../../models/c
 import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import PasswordModal from '../modals/Password'
 
 interface ClientFormProps
 {
@@ -53,6 +54,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 	const [tableOptions, setTableOptions] = useState<SelectOptionsList>({})
+
+	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
@@ -256,6 +259,14 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 
 	return (
 		<Container onSubmit={handleSubmit} >
+			<PasswordModal
+				isOpen={isPasswordModalOpen}
+				setIsOpen={setIsPasswordModalOpen}
+
+				role='client'
+				setPwd={method === 'post' ? setSenha : undefined}
+			/>
+
 			{/* imagem */}
 			<div className='field'>
 				<label htmlFor='imagem'>Imagem</label>
@@ -324,13 +335,10 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			{/* senha */}
 			<div className='field'>
 				<label htmlFor='senha'>Senha</label>
-				<input
-					type='text'
-					name='senha'
-					id='senha'
-					value={senha}
-					onChange={e => setSenha(e.target.value)}
-				/>
+				<button type='button' className='password' onClick={() => setIsPasswordModalOpen(true)} >
+					{method === 'post' && 'Criar senha'}
+					{method === 'put' && 'Mudar senha'}
+				</button>
 			</div>
 			{/* vendedores */}
 			<div className='field'>
