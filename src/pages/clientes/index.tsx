@@ -15,6 +15,9 @@ import Container from '../../styles/pages/clientes/index'
 import useUser from '../../hooks/useUser'
 import SheetModal from '../../components/modals/Sheet'
 import Paginate from '../../components/Paginate'
+import confirmAlert from '../../utils/alerts/confirm'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface ClientsProps
 {
@@ -72,15 +75,20 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 
 	async function handleDeleteClient(client: Client)
 	{
-		const yes = confirm(`Deseja deletar o cliente ${client.nome_fantasia}?`)
-		if (yes)
-		{
-			await api.delete(`clients/${client.id}`).then(() =>
-			{
-				updateClients()
-				alert(`Cliente ${client.nome_fantasia} deletado com sucesso!`)
-			})
-		}
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, o cliente ${client.nome_fantasia} será deletado!`,
+			() => api.delete(`clients/${client.id}`)
+				.then(() =>
+				{
+					updateClients()
+					successAlert('Cliente deletado com sucesso!')
+				})
+				.catch(error =>
+				{
+					errorAlert(error.response.message.data)
+				})
+		)
 	}
 
 	return (
