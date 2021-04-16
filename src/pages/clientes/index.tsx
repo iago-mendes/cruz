@@ -14,6 +14,7 @@ import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
 import useUser from '../../hooks/useUser'
 import SheetModal from '../../components/modals/Sheet'
+import Paginate from '../../components/Paginate'
 
 interface ClientsProps
 {
@@ -26,18 +27,45 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 	const {user} = useUser()
 	
 	const [clients, setClients] = useState<Client[]>(staticClients)
+	const [page, setPage]	= useState(1)
+	const [totalPages, setTotalPages] = useState(1)
+	const [loading, setLoading] = useState(false)
 
-	async function updateCompanies()
+	useEffect(() =>
+	{
+		updateClients()
+	}, [])
+
+	async function updateClients()
 	{
 		api.get('clients')
-			.then(({data}:{data: Client[]}) =>
+			.then(({data, headers}:{data: Client[], headers: any}) =>
 			{
 				setClients(data)
+
+				console.log('[headers]', headers)
+				console.log('[headers[page]]', headers['page'])
+				console.log('[headers[total-pages]]', headers['total-pages'])
+
+				const tmpPage = Number(headers['page'])
+				if (Number.isNaN(tmpPage))
+					setPage(1)
+				else
+					setPage(tmpPage)
+					
+				const tmpTotalPages = Number(headers['total-pages'])
+				if (Number.isNaN(tmpTotalPages))
+					setTotalPages(1)
+				else
+					setTotalPages(tmpTotalPages)
 			})
 			.catch(error =>
 			{
 				console.log('[error]', error)
 				setClients(staticClients)
+
+				setPage(1)
+				setTotalPages(1)
 			})
 	}
 
@@ -48,7 +76,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 		{
 			await api.delete(`clients/${client.id}`).then(() =>
 			{
-				updateCompanies()
+				updateClients()
 				alert(`Cliente ${client.nome_fantasia} deletado com sucesso!`)
 			})
 		}
@@ -68,10 +96,16 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 				uploadPath={'sheet/clients'}
 				sheetName='Clientes'
 				fileName={'Clientes (Cruz Representações)'}
-				callback={updateCompanies}
+				callback={updateClients}
 			/>
 
-			<main className='main'>
+			<Paginate
+				page={page}
+				setPage={setPage}
+				totalPages={totalPages}
+				loading={loading}
+				noResults={clients.length === 0 && !loading}
+			>
 				{clients.map(client => (
 					<div className='client' key={client.id} >
 						<div className='left'>
@@ -96,20 +130,19 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 							<div className='buttons'>
 								{user.role === 'admin' && (
 									<>
-											<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
-												<FiEdit3 size={25} />
-											</button>
-											<button title='Deletar' onClick={() => handleDeleteClient(client)} >
-												<FiTrash size={25} />
-											</button>
+										<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
+											<FiEdit3 size={25} />
+										</button>
+										<button title='Deletar' onClick={() => handleDeleteClient(client)} >
+											<FiTrash size={25} />
+										</button>
 									</>
 								)}
 							</div>
 						</div>
 					</div>
 				))}
-			</main>
-
+			</Paginate>
 		</Container>
 	)
 }
