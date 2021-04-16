@@ -2,13 +2,11 @@ import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
-import useSWR from 'swr'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 
 
 import {ClientListed as Client} from '../../models/client'
 import Header from '../../components/Header'
-import Loading from '../../components/Loading'
 import api from '../../services/api'
 import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
