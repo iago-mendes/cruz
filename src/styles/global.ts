@@ -61,6 +61,7 @@ export default createGlobalStyle`
 		justify-content: center;
 
 		padding: 2rem;
+		width: 100%;
 	}
 
 	.swal2-popup

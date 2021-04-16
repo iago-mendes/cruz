@@ -41,7 +41,7 @@ const Paginate: React.FC<PaginateProps> =
 		<Container>
 			{
 				loading
-					? <Loading style={{marginTop: '10rem'}} />
+					? <Loading style={{marginTop: '40vh'}} />
 					: noResults
 						? (
 							<div className='noResults'>
