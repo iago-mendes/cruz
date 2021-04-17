@@ -15,6 +15,7 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import PasswordModal from '../modals/Password'
 import FormButtons from '../FormButtons'
+import { FiMinus, FiPlus } from 'react-icons/fi'
 
 interface ClientFormProps
 {
@@ -385,10 +386,20 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 									placeholder={representada.id !== '' ? 'Selecione a tabela' : 'Selecione a representada'}
 								/>
 							</div>
-							<button type='button' onClick={() => handleRemoveCompany(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveCompany(index)}>
+								<FiMinus />
+								<span>
+									Remover telefone
+								</span>
+							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddCompany}>+</button>
+					<button type='button' onClick={handleAddCompany}>
+						<FiPlus />
+						<span>
+							Adicionar representada
+						</span>
+					</button>
 				</ul>
 			</div>
 			{/* endereco */}
