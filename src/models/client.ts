@@ -45,7 +45,7 @@ export interface Address
 	numero?: number
 	complemento?: string
 	bairro?: string
-	cep?: number
+	cep?: string
 	cidade?: string
 	uf?: string
 }

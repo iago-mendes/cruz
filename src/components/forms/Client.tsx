@@ -46,12 +46,12 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		numero: 0,
 		complemento: '',
 		bairro: '',
-		cep: 0,
+		cep: '',
 		cidade: '',
 		uf: ''
 	})
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
-	const [condicoes, setCondicoes] = useState<Conditions>({prazo: false, vista: false, cheque: false})
+	const [condicoes, setCondicoes] = useState<Conditions>({prazo: true, vista: true, cheque: true})
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
@@ -173,7 +173,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		if (field === 'bairro')
 			tmp.bairro = e.target.value
 		if (field === 'cep')
-			tmp.cep = Number(e.target.value)
+			tmp.cep = e.target.value
 		if (field === 'cidade')
 			tmp.cidade = e.target.value
 		if (field === 'uf')
@@ -448,7 +448,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				<div className='addressField'>
 					<label htmlFor='cep'>CEP</label>
 					<input
-						type='number'
+						type='string'
 						name='cep'
 						id='cep'
 						value={endereco.cep}
