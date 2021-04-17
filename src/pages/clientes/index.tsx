@@ -35,7 +35,8 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 
 	useEffect(() =>
 	{
-		setLoading(true)
+		if (page !== 1 || totalPages !== 1 || search !== '')
+			setLoading(true)
 
 		updateClients()
 	}, [page, search])
