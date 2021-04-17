@@ -390,7 +390,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 							<button type='button' onClick={() => handleRemoveCompany(index)}>
 								<FiMinus />
 								<span>
-									Remover telefone
+									Remover representada
 								</span>
 							</button>
 						</li>
