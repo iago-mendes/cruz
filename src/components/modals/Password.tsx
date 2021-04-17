@@ -9,6 +9,7 @@ import api from '../../services/api'
 import errorAlert from '../../utils/alerts/error'
 import sucessAlert from '../../utils/alerts/success'
 import warningAlert from '../../utils/alerts/warning'
+import getRandomNumber from '../../utils/getRandomNumber'
 
 interface PasswordModalProps
 {
@@ -33,6 +34,16 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, s
 			setInputType('text')
 		if (inputType === 'text')
 			setInputType('password')
+	}
+
+	function createRandomPwd()
+	{
+		const tmpPwd = String(getRandomNumber(4))
+
+		setNewPwd(tmpPwd)
+		setNewPwd2(tmpPwd)
+
+		setInputType('text')
 	}
 
 	function handleSubmit()
@@ -89,6 +100,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, s
 
 					<button
 						title='Gerar senha aleatória'
+						onClick={createRandomPwd}
 					>
 						<FaRandom />
 						<span>
