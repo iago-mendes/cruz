@@ -31,11 +31,17 @@ const Container = styled.main`
 		}
 	}
 	
-	.showPwd
+	.options
 	{
-		margin-left: 35%;
-		
-		:hover
+		width: 100%;
+		padding-right: 2rem;
+
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		gap: 2rem;
+
+		button:hover
 		{
 			background-color: ${p => p.theme.colors. primaryDark};
 			color: ${p => p.theme.colors.background};
@@ -46,7 +52,7 @@ const Container = styled.main`
 	{
 		background-color: ${p => p.theme.colors.buttonGreen};
 		border-color: ${p => p.theme.colors.buttonGreen};
-		
+
 		transform: scale(1.1);
 	}
 	

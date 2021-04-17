@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import {FiEye, FiEyeOff, FiSend} from 'react-icons/fi'
+import {FaRandom} from 'react-icons/fa'
 
 import Container from '../../styles/components/modals/Password'
 import ModalContainer from './Container'
@@ -70,21 +71,31 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, s
 			setIsOpen={setIsOpen}
 		>
 			<Container>
-				<button
-					className='showPwd'
-					title={inputType === 'password' ? 'Mostrar senhas' : 'Esconder senhas'}
-					onClick={toggleVisibility}
-				>
-					{inputType === 'password' && <FiEye size={25} />}
-					{inputType === 'text' && <FiEyeOff size={25} />}
-					<span>
-						{
-							inputType === 'password'
-							? 'Mostrar senhas'
-							: 'Esconder senhas'
-						}
-					</span>
-				</button>
+				<div className='options'>
+					<button
+						title={inputType === 'password' ? 'Mostrar senhas' : 'Esconder senhas'}
+						onClick={toggleVisibility}
+					>
+						{inputType === 'password' && <FiEye />}
+						{inputType === 'text' && <FiEyeOff />}
+						<span>
+							{
+								inputType === 'password'
+								? 'Mostrar senhas'
+								: 'Esconder senhas'
+							}
+						</span>
+					</button>
+
+					<button
+						title='Gerar senha aleatória'
+					>
+						<FaRandom />
+						<span>
+							Gerar senha aleatória
+						</span>
+					</button>
+				</div>
 
 				<form onSubmit={e => e.preventDefault()} >
 					<div className='field'>
