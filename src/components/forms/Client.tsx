@@ -264,6 +264,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				setIsOpen={setIsPasswordModalOpen}
 
 				role='client'
+				id={id}
 				setPwd={method === 'post' ? setSenha : undefined}
 			/>
 

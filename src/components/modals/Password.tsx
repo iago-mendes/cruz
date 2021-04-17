@@ -17,12 +17,12 @@ interface PasswordModalProps
 	setIsOpen: (p: boolean) => void
 
 	role: string
+	id?: string
 	setPwd?: (p: string) => void
 }
 
-const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, setPwd}) =>
+const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, id, setPwd}) =>
 {
-	const {user} = useUser()
 	const [inputType, setInputType] = useState('password')
 
 	const [newPwd, setNewPwd] = useState('')
@@ -64,7 +64,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, s
 			senha: newPwd
 		}
 
-		api.put(`change-password/${role}/${user.id}`, data)
+		api.put(`change-password/${role}/${id}`, data)
 			.then(() =>
 			{
 				setIsOpen(false)
