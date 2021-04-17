@@ -250,6 +250,30 @@ const Container = styled.form`
 			background-color:  rgb(201, 64, 64);
 		}
 	}
+
+	.password
+	{
+		width: fit-content;
+		padding: 0.5rem 1rem;
+
+		background: none;
+		border: ${p => p.theme.colors.primaryDark} 2px solid;
+		border-radius: 2rem;
+
+		color: ${p => p.theme.colors.primaryDark};
+		font-family: Ubuntu;
+		font-size: 1.75rem;
+
+		transition: 0.25s;
+		
+		:hover
+		{
+			background-color: ${p => p.theme.colors.primaryDark};
+			color: #fff;
+
+			border-radius: 0;
+		}
+	}
 `
 
 export default Container

@@ -12,19 +12,22 @@ const Container = styled.main`
 		display: flex;
 		align-items: center;
 		gap: 1rem;
-		padding: 1rem;
+
+		padding: 0.5rem 1rem;
+
 		background: none;
 		border: ${p => p.theme.colors.primaryDark} 2px solid;
-		border-radius: 100rem;
+		border-radius: 2rem;
+
 		color: ${p => p.theme.colors.primaryDark};
 		font-family: Ubuntu;
 		font-size: 2rem;
-		cursor: pointer;
+
 		transition: 0.25s;
 		
 		:hover
 		{
-			transform: scale(1.1);
+			border-radius: 0;
 		}
 	}
 	
@@ -43,6 +46,8 @@ const Container = styled.main`
 	{
 		background-color: ${p => p.theme.colors.buttonGreen};
 		border-color: ${p => p.theme.colors.buttonGreen};
+		
+		transform: scale(1.1);
 	}
 	
 	form
