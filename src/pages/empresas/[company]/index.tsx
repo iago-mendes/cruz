@@ -45,8 +45,11 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			})
 	}
 
-	function formatNumber(n: number)
+	function formatNumber(n: number | undefined)
 	{
+		if (!n)
+			return '0,00'
+
 		return n.toFixed(2).replace('.', ',')
 	}
 
