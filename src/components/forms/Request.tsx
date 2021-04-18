@@ -22,6 +22,7 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
 import warningAlert from '../../utils/alerts/warning'
+import SelectClientModal from '../modals/SelectClient'
 
 interface Type
 {
@@ -100,6 +101,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selected, setSelected] = useState<Selected>(defaultSelected)
+	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
@@ -418,10 +420,15 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				setProducts={setProdutos}
 			/>
 
+			<SelectClientModal
+				isOpen={isSelectClientModalOpen}
+				setIsOpen={setIsSelectClientModalOpen}
+			/>
+
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
-				<Select
+				{/* <Select
 					name='cliente'
 					id='cliente'
 					value={clientOptions.find(option => option.value === cliente)}
@@ -429,7 +436,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					options={clientOptions}
 					styles={selectStyles}
 					placeholder='Selecione o cliente'
-				/>
+				/> */}
+				<button className="modal" onClick={() => setIsSelectClientModalOpen(true)} >
+					Selecionar cliente
+				</button>
 			</div>
 			{/* vendedor */}
 			<div className='field'>

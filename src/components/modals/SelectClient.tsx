@@ -24,7 +24,7 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}
 	{
 		setLoading(true)
 		updateClients()
-	}, [search])
+	}, [search, page])
 
 	async function updateClients()
 	{
@@ -71,10 +71,11 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}
 						onChange={e => setSearch(e.target.value)}
 						placeholder='Pesquise por um cliente'
 					/>
-					<button className='clear'>
+					<button className='clear' title='Limpar pesquisa' onClick={() => setSearch('')} >
 						<FiX />
 					</button>
 				</div>
+
 				<Paginate
 					page={page}
 					setPage={setPage}
@@ -82,21 +83,23 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}
 					loading={loading}
 					noResults={clients.length === 0 && !loading}
 				>
-					{clients.map((client, index) => (
-						<div className='client' key={index} >
-							<div className='img'>
-								<img src={client.imagem} alt={client.nome_fantasia} />
+					<div className='results'>
+						{clients.map((client, index) => (
+							<div className='client' key={index} >
+								<div className='img'>
+									<img src={client.imagem} alt={client.nome_fantasia} />
+								</div>
+								<div className='info'>
+									<span className='highlight'>
+										{client.nome_fantasia}
+									</span>
+									<span>
+										{client.razao_social}
+									</span>
+								</div>
 							</div>
-							<div className='info'>
-								<span className='highlight'>
-									{client.nome_fantasia}
-								</span>
-								<span>
-									{client.razao_social}
-								</span>
-							</div>
-						</div>
-					))}
+						))}
+					</div>
 				</Paginate>
 			</Container>
 		</ModalContainer>
