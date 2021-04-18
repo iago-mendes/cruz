@@ -92,7 +92,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
 	const [status, setStatus] = useState<Status>({concluido: false,	enviado: false,	faturado: false})
 
-	const [clientOptions, setClientOptions] = useState<SelectOption[]>([])
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 
@@ -112,19 +111,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		async function getOptions()
 		{
-			await api.get('clients').then(({data: clients}:{data: ClientListed[]}) =>
-			{
-				let tmpOptions: SelectOption[] = []
-
-				clients.map(client => tmpOptions.push(
-				{
-					label: `${client.nome_fantasia} (${client.razao_social})`,
-					value: client.id
-				}))
-
-				setClientOptions(tmpOptions)
-			})
-
 			await api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
 			{
 				let tmpOptions: SelectOption[] = []
@@ -221,16 +207,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 			setRawProductsList(tmpRawProductsList)
 		})
-	}
-
-	function handleSelectClient(e: SelectOption)
-	{
-		setCliente(e.value)
-		setProdutos([])
-
-		let tmpSelected = {...selected}
-		tmpSelected.clientId = e.value
-		setSelected(tmpSelected)
 	}
 
 	function handleSelectSeller(e: SelectOption)
@@ -423,22 +399,21 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			<SelectClientModal
 				isOpen={isSelectClientModalOpen}
 				setIsOpen={setIsSelectClientModalOpen}
+
+				setClient={setCliente}
 			/>
 
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
-				{/* <Select
-					name='cliente'
-					id='cliente'
-					value={clientOptions.find(option => option.value === cliente)}
-					onChange={handleSelectClient}
-					options={clientOptions}
-					styles={selectStyles}
-					placeholder='Selecione o cliente'
-				/> */}
 				<button className="modal" onClick={() => setIsSelectClientModalOpen(true)} >
-					Selecionar cliente
+					{method === 'post' && (
+						'Selecionar cliente'
+					)}
+
+					{method === 'put' && (
+						'Mudar cliente'
+					)}
 				</button>
 			</div>
 			{/* vendedor */}

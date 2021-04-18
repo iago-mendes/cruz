@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FiSearch, FiX } from 'react-icons/fi'
-import { ClientListed } from '../../models/client'
+import client, { ClientListed } from '../../models/client'
 import api from '../../services/api'
 import Container from '../../styles/components/modals/SelectClient'
 import Paginate from '../Paginate'
@@ -10,9 +10,11 @@ interface SelectClientModalProps
 {
 	isOpen: boolean
 	setIsOpen: (p: boolean) => void
+
+	setClient: (p: string) => void
 }
 
-const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}) =>
+const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen, setClient}) =>
 {
 	const [search, setSearch] = useState('')
 	const [clients, setClients] = useState<ClientListed[]>([])
@@ -57,6 +59,14 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}
 		setLoading(false)
 	}
 
+	function handleSelectClient(client: ClientListed)
+	{
+		const tmpClient = client.id
+		setClient(tmpClient)
+
+		setIsOpen(false)
+	}
+
 	return (
 		<ModalContainer
 			isOpen={isOpen}
@@ -85,7 +95,11 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen}
 				>
 					<div className='results'>
 						{clients.map((client, index) => (
-							<div className='client' key={index} >
+							<div
+								className='client'
+								key={index}
+								onClick={() => handleSelectClient(client)}
+							>
 								<div className='img'>
 									<img src={client.imagem} alt={client.nome_fantasia} />
 								</div>
