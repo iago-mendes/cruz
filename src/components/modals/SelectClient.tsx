@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FiSearch, FiX } from 'react-icons/fi'
-import client, { ClientListed } from '../../models/client'
+import { ClientListed } from '../../models/client'
 import api from '../../services/api'
 import Container from '../../styles/components/modals/SelectClient'
 import Paginate from '../Paginate'
