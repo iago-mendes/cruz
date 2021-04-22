@@ -7,9 +7,9 @@ interface Request
 	produtos: Array<{id: string, quantidade: number, preco: number, linhaId: string}>
 	data: string
 	condicao: string
+	frete: string
+	contato: {nome: string, telefone: string}
 	digitado_por?: string
-	peso?: number
-	volume?: number
 	tipo: {venda: boolean, troca: boolean}
 	status: {concluido: boolean, enviado: boolean, faturado: boolean}
 }

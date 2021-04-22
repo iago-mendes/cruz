@@ -4,6 +4,8 @@ import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
+import freteOptions from '../../../db/options/frete.json'
+
 import Container from '../../styles/components/forms/global'
 import Products from '../../styles/components/forms/RequestProducts'
 import {selectStyles} from '../../styles/global'
@@ -21,7 +23,6 @@ import Company from '../../models/company'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
-import NumberInput from '../NumberInput'
 import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
 
@@ -88,7 +89,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [produtos, setProdutos] = useState<Product[]>([])
 	const [data, setData] = useState(getDate())
 	const [condicao, setCondicao] = useState('')
-	const [peso, setPeso] = useState(0)
+	const [frete, setFrete] = useState(freteOptions[0].value)
+	const [contato, setContato] = useState({nome: '', telefone: ''})
 	const [digitado_por, setDigitadoPor] = useState('')
 	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
 	const [status, setStatus] = useState<Status>({concluido: false,	enviado: false,	faturado: false})
@@ -187,8 +189,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setProdutos(request.produtos)
 			setData(request.data)
 			setCondicao(request.condicao)
-			if (request.peso)
-				setPeso(request.peso)
+			setFrete(request.frete)
+			setContato(request.contato)
 			setDigitadoPor(request.digitado_por)
 			setTipo(request.tipo)
 			setStatus(request.status)
@@ -342,16 +344,17 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		const apiData =
 		{
-			data,
-			condicao,
-			digitado_por,
 			cliente,
 			vendedor,
 			representada,
-			peso,
+			produtos,
+			data,
+			condicao,
+			frete,
+			contato,
+			digitado_por,
 			tipo,
-			status,
-			produtos
+			status
 		}
 
 		if (method === 'post')
@@ -540,14 +543,16 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					onChange={e => setCondicao(e.target.value)}
 				/>
 			</div>
-			{/* peso */}
+			{/* frete */}
 			<div className='field'>
-				<label htmlFor='peso'>Peso (kg)</label>
-				<NumberInput
-					value={peso}
-					setValue={setPeso}
-
-					name='peso'
+				<label htmlFor='frete'>Frete</label>
+				<Select
+					value={freteOptions.find(option => option.label === frete)}
+					options={freteOptions}
+					onChange={e => setFrete(e.value)}
+					styles={selectStyles}
+					placeholder='Escolha uma opção de frete'
+					isSearchable={false}
 				/>
 			</div>
 			{/* digitado_por */}
