@@ -81,6 +81,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	const [companyOptions, setCompanyOptions] = useState<CompanyOption[]>([])
 
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+	const [sendCredentialsViaMail, setSendCredentialsViaMail] = useState(false)
 
 	useEffect(() =>
 	{
@@ -189,6 +190,33 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		setRepresentadas(companies)
 	}
 
+	async function handleSendCredentialsViaMail(pwd: string)
+	{
+		if (!sendCredentialsViaMail)
+			return
+
+		const text =
+			'<p>Suas credenciais no sistema da <strong>Cruz Representações</strong> foram atualizadas!</p>'
+			+ '<p>A partir de agora, você pode fazer seu login em <a href="https://sistema.cruzrepresentacoes.com.br">sistema.cruzrepresentacoes.com.br</a> usando as seguintes informações:</p>'
+			+ '<br />'
+			+ `<span><strong>E-mail:</strong> ${email}</span><br />`
+			+ `<span><strong>Senha:</strong> ${pwd}</span>`
+			+ '<br />'
+			+ '<p>Mantenha sempre suas credenciais seguras!</p>'
+			+ '<br />'
+			+ '<h2>Cruz Representações</h2>'
+			+ '<h3>Excelência em Representação Comercial!</h3>'
+		
+		const data =
+		{
+			to: [email],
+			subject: 'Novas credenciais | Cruz Representações',
+			text
+		}
+
+		await api.post('/mail', data)
+	}
+
 	async function handleSubmit()
 	{
 		const data = new FormData()
@@ -208,6 +236,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			.then(() =>
 			{
 				successAlert('Vendedor criado com sucesso!')
+				handleSendCredentialsViaMail(senha)
 				back()
 			})
 			.catch(err =>
@@ -240,8 +269,13 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				isOpen={isPasswordModalOpen}
 				setIsOpen={setIsPasswordModalOpen}
 
+				id={id}
 				role='seller'
 				setPwd={method === 'post' ? setSenha : undefined}
+
+				sendCredentialsViaMail={sendCredentialsViaMail}
+				setSendCredentialsViaMail={setSendCredentialsViaMail}
+				handleSendCredentialsViaMail={handleSendCredentialsViaMail}
 			/>
 
 			{/* imagem */}

@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import {FiEye, FiEyeOff, FiSend} from 'react-icons/fi'
 import {FaRandom} from 'react-icons/fa'
+import Switch from 'react-switch'
 
 import Container from '../../styles/components/modals/Password'
 import ModalContainer from './Container'
-import useUser from '../../hooks/useUser'
 import api from '../../services/api'
 import errorAlert from '../../utils/alerts/error'
 import sucessAlert from '../../utils/alerts/success'
@@ -19,9 +19,14 @@ interface PasswordModalProps
 	role: string
 	id?: string
 	setPwd?: (p: string) => void
+
+	sendCredentialsViaMail: boolean
+	setSendCredentialsViaMail: (p: boolean) => void
+	handleSendCredentialsViaMail: (pwd: string) => void
 }
 
-const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, id, setPwd}) =>
+const PasswordModal: React.FC<PasswordModalProps> =
+({isOpen, setIsOpen, role, id, setPwd, sendCredentialsViaMail, setSendCredentialsViaMail, handleSendCredentialsViaMail}) =>
 {
 	const [inputType, setInputType] = useState('password')
 
@@ -69,6 +74,7 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, i
 			{
 				setIsOpen(false)
 				sucessAlert('Senha enviada com sucesso!')
+				handleSendCredentialsViaMail(newPwd)
 			})
 			.catch(error =>
 			{
@@ -128,6 +134,17 @@ const PasswordModal: React.FC<PasswordModalProps> = ({isOpen, setIsOpen, role, i
 							name='new2'
 							value={newPwd2}
 							onChange={e => setNewPwd2(e.target.value)}
+						/>
+					</div>
+					<div className='field'>
+						<label htmlFor='sendCredentials'>Enviar credenciais por e-mail</label>
+						<Switch
+							name='sendCredentials'
+							id='sendCredentials'
+							checked={sendCredentialsViaMail}
+							onChange={setSendCredentialsViaMail}
+							onHandleColor='#d8d8d8'
+							offHandleColor='#d8d8d8'
 						/>
 					</div>
 				</form>
