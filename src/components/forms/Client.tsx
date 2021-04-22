@@ -58,6 +58,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [tableOptions, setTableOptions] = useState<SelectOptionsList>({})
 
 	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+	const [sendCredentialsViaMail, setSendCredentialsViaMail] = useState(false)
 
 	useEffect(() =>
 	{
@@ -210,6 +211,33 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		setCondicoes(tmpConditions)
 	}
 
+	async function handleSendCredentialsViaMail(pwd: string)
+	{
+		if (!sendCredentialsViaMail)
+			return
+
+		const text =
+			'<p>Suas credenciais no e-commerce da <strong>Cruz Representações</strong> foram atualizadas!</p>'
+			+ '<p>A partir de agora, você pode fazer seu login em <a href="https://cruzrepresentacoes.com.br">cruzrepresentacoes.com.br</a> usando as seguintes informações:</p>'
+			+ '<br />'
+			+ `<span><strong>E-mail:</strong> ${email}</span><br />`
+			+ `<span><strong>Senha:</strong> ${pwd}</span>`
+			+ '<br />'
+			+ '<p>Mantenha sempre suas credenciais seguras!</p>'
+			+ '<br />'
+			+ '<h2>Cruz Representações</h2>'
+			+ '<h3>Excelência em Representação Comercial!</h3>'
+		
+		const data =
+		{
+			to: [email],
+			subject: 'Novas credenciais | Cruz Representações',
+			text
+		}
+
+		await api.post('/mail', data)
+	}
+
 	async function handleSubmit()
 	{
 		const data = new FormData()
@@ -234,6 +262,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			.then(() =>
 			{
 				successAlert('Cliente criado com sucesso!')
+				handleSendCredentialsViaMail(senha)
 				back()
 			})
 			.catch(err =>
@@ -266,6 +295,10 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				role='client'
 				id={id}
 				setPwd={method === 'post' ? setSenha : undefined}
+
+				sendCredentialsViaMail={sendCredentialsViaMail}
+				setSendCredentialsViaMail={setSendCredentialsViaMail}
+				handleSendCredentialsViaMail={handleSendCredentialsViaMail}
 			/>
 
 			{/* imagem */}
