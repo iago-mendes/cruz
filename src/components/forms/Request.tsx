@@ -19,7 +19,7 @@ import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
 import RawClient from '../../models/client'
 import Request from '../../models/request'
-import Company from '../../models/company'
+import Company, { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
@@ -97,6 +97,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
+	const [conditionOptions, setConditionOptions] = useState<CompanyCondition[]>([])
 
 	const [rawProductsList, setRawProductsList] = useState<RawProductsList>({})
 	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
@@ -104,6 +105,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selected, setSelected] = useState<Selected>(defaultSelected)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
+
+	const conditionSelectOptions = conditionOptions
+		.filter(option => option.precoMin <= calcTotal())
+		.sort((a,b) => a.precoMin < b.precoMin ? -1 : 1)
+		.map(option => ({label: option.nome, value: option.nome}))
 
 	useEffect(() =>
 	{
@@ -535,12 +541,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* condicao */}
 			<div className='field'>
 				<label htmlFor='condicao'>Condição</label>
-				<input
-					type='text'
-					name='condicao'
-					id='condicao'
-					value={condicao}
-					onChange={e => setCondicao(e.target.value)}
+				<Select
+					value={conditionSelectOptions.find(option => option.label === condicao)}
+					options={conditionSelectOptions}
+					onChange={e => setCondicao(e.value)}
+					styles={selectStyles}
+					placeholder='Escolha uma condição de pagamento'
+					isSearchable={false}
 				/>
 			</div>
 			{/* frete */}
