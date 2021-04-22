@@ -345,7 +345,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 			{/* senha */}
 			<div className='field'>
 				<label htmlFor='senha'>Senha</label>
-				<button className='password' onClick={() => setIsPasswordModalOpen(true)} >
+				<button className='modal' onClick={() => setIsPasswordModalOpen(true)} >
 					{method === 'post' && 'Criar senha'}
 					{method === 'put' && 'Mudar senha'}
 				</button>

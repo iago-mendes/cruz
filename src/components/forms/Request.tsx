@@ -4,7 +4,8 @@ import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
-import Container from '../../styles/components/forms/Request'
+import Container from '../../styles/components/forms/global'
+import Products from '../../styles/components/forms/RequestProducts'
 import {selectStyles} from '../../styles/global'
 import api from '../../services/api'
 import {ListedSeller, Seller} from './Seller'
@@ -406,7 +407,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
-				<button className="modal" onClick={() => setIsSelectClientModalOpen(true)} >
+				<button className='modal' onClick={() => setIsSelectClientModalOpen(true)} >
 					{method === 'post' && (
 						'Selecionar cliente'
 					)}
@@ -442,8 +443,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					placeholder='Selecione a representada'
 				/>
 			</div>
-			{/* produtos */}
-			<div className='products'>
+			
+			<Products>
 				<table>
 					<thead>
 						<tr>
@@ -512,10 +513,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					<FiPlus size={20} />
 					<span>Adicionar produto</span>
 				</button>
-				<div className="total">
+				<div className='total'>
 					<span>Total = {priceToString(calcTotal())}</span>
 				</div>
-			</div>
+			</Products>
+
 			{/* data */}
 			<div className='field'>
 				<label htmlFor='data'>Data</label>
@@ -562,8 +564,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* tipo */}
 			<div className='field'>
 				<label htmlFor='tipo'>Tipo</label>
-				<div className='toggle'>
-					<div className='toggleField'>
+				<div className='switchFields'>
+					<div className='switchField'>
 						<span>venda</span>
 						<Switch
 							name='venda'
@@ -574,7 +576,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className='toggleField'>
+					<div className='switchField'>
 						<span>troca</span>
 						<Switch
 							name='troca'
@@ -590,8 +592,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* status */}
 			<div className='field'>
 				<label htmlFor='status'>status</label>
-				<div className='toggle'>
-					<div className='toggleField'>
+				<div className='switchFields'>
+					<div className='switchField'>
 						<span>concluído</span>
 						<Switch
 							name='concluido'
@@ -602,7 +604,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className='toggleField'>
+					<div className='switchField'>
 						<span>enviado</span>
 						<Switch
 							name='enviado'
@@ -613,7 +615,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							offHandleColor='#d8d8d8'
 						/>
 					</div>
-					<div className='toggleField'>
+					<div className='switchField'>
 						<span>faturado</span>
 						<Switch
 							name='faturado'

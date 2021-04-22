@@ -251,7 +251,7 @@ const Container = styled.form`
 		}
 	}
 
-	.password
+	button.modal
 	{
 		width: fit-content;
 		padding: 0.5rem 1rem;
