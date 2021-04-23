@@ -230,10 +230,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		})
 	}
 
+	function handleSelectClient(id: string)
+	{
+		setCliente(id)
+		setProdutos([])
+
+		let tmpSelected = {...selected}
+		tmpSelected.clientId = id
+		setSelected(tmpSelected)
+	}
+
 	function handleSelectSeller(e: SelectOption)
 	{
 		setVendedor(e.value)
-		setProdutos([])
 	}
 
 	function handleSelectCompany(e: SelectOption)
@@ -422,7 +431,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				isOpen={isSelectClientModalOpen}
 				setIsOpen={setIsSelectClientModalOpen}
 
-				setClient={setCliente}
+				setClient={handleSelectClient}
 			/>
 
 			{/* cliente */}

@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 import {FiX} from 'react-icons/fi'
-import {ChangeEvent, useEffect, useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/RequestProductModal'
 import {modalStyle, selectStyles} from '../../styles/global'
@@ -105,7 +105,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		}
 		else
 			setPricedProduct(defaultPricedProduct)
-	}, [selected.product])
+	}, [selected.product.id])
 
 	useEffect(() =>
 	{
@@ -147,15 +147,9 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 			tmpProducts.push(tmpProduct)
 		setProducts(tmpProducts)
 
-		// const tablePrice =  rawCompaniesList[representada]
-		// 	.linhas.find(({_id}) => _id == linha)
-		// 	.produtos.find(({_id}) => _id == productId)
-		// 	.tabelas.find(({id}) => id === clientCompanyTableId).preco		
-
 		let tmpSelected = {...selected}
 		tmpSelected.product = tmpProduct
 		setSelected(tmpSelected)
-		
 	}
 
 	function handleChangeProduct(n: number, field: string)
@@ -191,13 +185,6 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		return 'R$ ' + p.toFixed(2).replace('.', ',')
 	}
 
-	function priceToNumber(p: string)
-	{
-		const [integers, decimals] = p.split(',').map(str => Number(str.replace('/\D/g', '')))
-
-		return Number(integers + '.' + decimals)
-	}
-
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -211,6 +198,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 				</header>
 
 				<form>
+					{/* img & select */}
 					<div className='group'>
 						<div className='img'>
 							<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
@@ -230,6 +218,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							/>
 						</div>
 					</div>
+					{/* unit & quantity */}
 					<div className='group'>
 						<div className='subGroup'>
 							<label>Unidade</label>
@@ -247,6 +236,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							/>
 						</div>
 					</div>
+					{/* prices */}
 					<div className='group'>
 						<div className='subGroup'>
 							<label>Preço de tabela</label>
@@ -265,6 +255,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							/>
 						</div>
 					</div>
+					{/* subtotal */}
 					<div className='group'>
 						<div className='subGroup'>
 							<label>Subtotal (sem taxas)</label>
