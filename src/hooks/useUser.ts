@@ -30,6 +30,8 @@ function useUser()
 	const [session, loading] = useSession()
 	const [user, setUser] = useState<User>(defaultUser)
 
+	const isLogged = user.id !== 'not-logged'
+
 	useEffect(() =>
 	{
 		if (!loading && session)
@@ -73,7 +75,7 @@ function useUser()
 			})
 	}, [user.id])
 
-	return {user, loading}
+	return {user, loading, isLogged}
 }
 
 export default useUser

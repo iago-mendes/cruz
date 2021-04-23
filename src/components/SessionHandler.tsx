@@ -1,15 +1,27 @@
-import {useSession} from "next-auth/client";
-
-import Loading from './Loading'
 import Login from '../pages/login'
+import useUser from '../hooks/useUser';
+import useDimensions from '../hooks/useDimensions';
+import LoadingModal from './modals/Loading';
+import { MobileView } from '../styles/components/SessionHandler';
 
 const SessionHandler: React.FC = ({children}) =>
 {
-	const [session, loading] = useSession()
+	const {loading, isLogged} = useUser()
+	const {inDesktop} = useDimensions()
 	
-	if (loading) return <Loading style={{height: '100vh'}} />
+	if (!inDesktop)
+		return (
+			<MobileView>
+				<h1>Acesso negado!</h1>
+				<p>O acesso ao sistema da <strong>Cruz Representações</strong> não é permitido em dispositivos móveis.</p>
+			</MobileView>
+		)
 
-	if (!session && !loading) return <Login />
+	if (loading)
+		return <LoadingModal isOpen={loading} />
+
+	if (!isLogged)
+		return <Login />
 
 	return (
 		<>
