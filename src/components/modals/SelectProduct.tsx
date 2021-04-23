@@ -1,5 +1,5 @@
 import Modal from 'react-modal'
-import {FiX} from 'react-icons/fi'
+import {FiCheck, FiX} from 'react-icons/fi'
 import {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/modals/SelectProduct'
@@ -197,7 +197,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 					</button>
 				</header>
 
-				<form>
+				<form onSubmit={e => e.preventDefault()} >
 					{/* img & select */}
 					<div className='group'>
 						<div className='img'>
@@ -261,6 +261,14 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							<label>Subtotal (sem taxas)</label>
 							<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
 						</div>
+						<button
+							type='submit'
+							className='confirm'
+							onClick={() => setIsOpen(false)}
+						>
+							<FiCheck />
+							<span>Confirmar</span>
+						</button>
 					</div>
 				</form>
 			</Container>

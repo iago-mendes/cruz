@@ -58,7 +58,6 @@ const Container = styled.div`
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
-			gap: 1rem;
 
 			.img
 			{
@@ -122,6 +121,35 @@ const Container = styled.div`
 					{
 						border-bottom-color: ${p => p.theme.colors.primary};
 					}
+				}
+			}
+
+			button.confirm
+			{
+				font-family: Ubuntu;
+				font-size: 1.75rem;
+				font-weight: 700;
+				background-color: #fff;
+
+				color: ${p => p.theme.colors.text};
+
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+
+				padding: 1rem 2rem;
+				
+				border: none;
+				border-radius: 2rem;
+				
+				cursor: pointer;
+				transition: 0.25s;
+
+				:hover
+				{
+					transform: scale(1.1);
+					border-radius: 0;
+					background-color: ${p => p.theme.colors.buttonGreen};
 				}
 			}
 		}
