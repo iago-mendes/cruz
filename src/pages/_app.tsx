@@ -3,17 +3,17 @@ import {Provider} from 'next-auth/client'
 import {ThemeProvider} from 'styled-components'
 
 import theme from '../styles/theme'
-import LoginHandler from '../components/LoginHandler'
+import SessionHandler from '../components/SessionHandler'
 import GlobalStyle from '../styles/global'
 
 function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
       <ThemeProvider theme={theme}>
-				<LoginHandler>
+				<SessionHandler>
 					<Sidebar/>
 					<Component {...pageProps} />
-				</LoginHandler>
+				</SessionHandler>
 				<GlobalStyle />
 			</ThemeProvider>
     </Provider>
