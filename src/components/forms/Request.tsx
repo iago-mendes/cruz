@@ -17,7 +17,7 @@ import formatImage from '../../utils/formatImage'
 import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
-import RawClient from '../../models/client'
+import RawClient, { ClientListed } from '../../models/client'
 import Request from '../../models/request'
 import Company, { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
@@ -105,6 +105,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [selected, setSelected] = useState<Selected>(defaultSelected)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
+
+	const [clientData, setClientData] = useState('')
 
 	const conditionSelectOptions = conditionOptions
 		.filter(option => option.precoMin <= calcTotal())
@@ -202,6 +204,16 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setStatus(request.status)
 		}
 	}, [request])
+
+	useEffect(() =>
+	{
+		if (cliente !== '')
+			api.get(`clients/${cliente}`).then(({data}:{data: ClientListed}) =>
+			{
+				const tmpClientData = `${data.nome_fantasia} | ${data.razao_social}`
+				setClientData(tmpClientData)
+			})
+	}, [cliente])
 
 	function getRawProductsList()
 	{
@@ -416,6 +428,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
+				<span className='modalResult' >
+					{clientData}
+				</span>
 				<button className='modal' onClick={() => setIsSelectClientModalOpen(true)} >
 					{method === 'post' && (
 						'Selecionar cliente'

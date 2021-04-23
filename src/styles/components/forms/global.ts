@@ -181,6 +181,35 @@ const Container = styled.form`
 				}
 			}
 		}
+
+		button.modal
+		{
+			width: fit-content;
+			padding: 0.5rem 1rem;
+
+			background: none;
+			border: ${p => p.theme.colors.primaryDark} 2px solid;
+			border-radius: 2rem;
+
+			color: ${p => p.theme.colors.primaryDark};
+			font-family: Ubuntu;
+			font-size: 1.75rem;
+
+			transition: 0.25s;
+			
+			:hover
+			{
+				background-color: ${p => p.theme.colors.primaryDark};
+				color: #fff;
+
+				border-radius: 0;
+			}
+		}
+
+		span.modalResult
+		{
+			font-size: 1.75rem;
+		}
 	}
 
 	.textareaField
@@ -205,73 +234,6 @@ const Container = styled.form`
 			{
 				border-color: ${p => p.theme.colors.primary};
 			}
-		}
-	}
-
-	.buttons
-	{
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-around;
-
-		margin-top: 5rem;
-		width: 100%;
-
-		button
-		{
-			width: 15rem;
-			height: 5rem;
-			
-			font-family: Ubuntu;
-			font-size: 1.75rem;
-			font-weight: 700;
-			background-color: ${p => p.theme.colors.background};
-			
-			border: none;
-			border-radius: 2rem;
-			
-			cursor: pointer;
-			transition: 0.25s;
-
-			:hover
-			{
-				transform: scale(1.1);
-			}			
-		}
-
-		.submit:hover
-		{
-			background-color: rgb(89, 211, 89);
-		}
-
-		.cancel:hover
-		{
-			background-color:  rgb(201, 64, 64);
-		}
-	}
-
-	button.modal
-	{
-		width: fit-content;
-		padding: 0.5rem 1rem;
-
-		background: none;
-		border: ${p => p.theme.colors.primaryDark} 2px solid;
-		border-radius: 2rem;
-
-		color: ${p => p.theme.colors.primaryDark};
-		font-family: Ubuntu;
-		font-size: 1.75rem;
-
-		transition: 0.25s;
-		
-		:hover
-		{
-			background-color: ${p => p.theme.colors.primaryDark};
-			color: #fff;
-
-			border-radius: 0;
 		}
 	}
 `
