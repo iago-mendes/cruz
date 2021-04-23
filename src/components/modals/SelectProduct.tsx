@@ -2,7 +2,7 @@ import Modal from 'react-modal'
 import {FiX} from 'react-icons/fi'
 import {useEffect, useState} from 'react'
 
-import Container from '../../styles/components/forms/RequestProductModal'
+import Container from '../../styles/components/modals/SelectProduct'
 import {modalStyle, selectStyles} from '../../styles/global'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'

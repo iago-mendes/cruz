@@ -14,7 +14,7 @@ import {ListedSeller, Seller} from './Seller'
 import useUser from '../../hooks/useUser'
 import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
 import formatImage from '../../utils/formatImage'
-import RequestProductModal, {Product, Selected, defaultSelected} from './RequestProductModal'
+import SelectProductModal, {Product, Selected, defaultSelected} from '../modals/SelectProduct'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
 import RawClient, { ClientListed } from '../../models/client'
@@ -416,7 +416,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	return (
 		<Container onSubmit={e => e.preventDefault()}>
-			<RequestProductModal
+			<SelectProductModal
 				isOpen={isModalOpen}
 				setIsOpen={setIsModalOpen}
 
