@@ -85,7 +85,47 @@ const SheetModal: React.FC<SheetModalProps> =
 	}
 
 	async function getSheet()
-	{}
+	{
+		setLoading(true)
+
+		if (downloadPath)
+			await api.get(downloadPath)
+				.then(async ({data}:{data: {[fieldName: string]: string | number}[]}) =>
+				{
+					const header = await getHeader()
+					const wsCols = header.map(col =>
+						{
+							let width = 10
+				
+							if (col.split(' ')[0] === 'Tabela')
+								width = 20
+							
+							return {wch: width}
+						})
+					
+					const aoa =
+					[
+						header,
+						...data.map(row => Object.values(row))
+					]
+
+					const ws = XLSX.utils.aoa_to_sheet(aoa)
+					ws['!cols'] = wsCols
+
+					const wb = XLSX.utils.book_new()
+					XLSX.utils.book_append_sheet(wb, ws, sheetName)
+
+					XLSX.writeFile(wb, `${fileName}.xlsx`)
+					setLoading(false)
+				})
+				.catch(error =>
+				{
+					if (error.response.message)
+						errorAlert(error.response.message.data)
+
+					setLoading(false)
+				})
+	}
 
 	function handleSubmit()
 	{
