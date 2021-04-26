@@ -34,33 +34,39 @@ const Container = styled.main`
 
 	padding: 4rem 2rem !important;
 
-	.model
+	.actions
 	{
-		font-family: Ubuntu;
-		font-size: 1.75rem;
-		font-weight: 700;
-		background-color: #fff;
-
 		display: flex;
 		align-items: center;
-		gap: 1rem;
+		gap: 2rem;
 
-		padding: 1rem 2rem;
-		
-		border: none;
-		border-radius: 2rem;
-		
-		cursor: pointer;
-		transition: 0.25s;
-
-		:hover
+		button
 		{
-			transform: scale(1.1);
-			border-radius: 0;
+			font-family: Ubuntu;
+			font-size: 1.75rem;
+			font-weight: 700;
+			background-color: #fff;
 
-			background-color: ${p => p.theme.colors.primary};
-			color: #fff;
-		}	
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+
+			padding: 1rem 2rem;
+			
+			border: none;
+			border-radius: 2rem;
+			
+			cursor: pointer;
+			transition: 0.25s;
+
+			:hover
+			{
+				border-radius: 0;
+
+				background-color: ${p => p.theme.colors.primary};
+				color: #fff;
+			}
+		}
 	}
 
 	form

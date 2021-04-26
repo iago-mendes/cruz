@@ -25,6 +25,7 @@ interface SheetModalProps
 {
 	headerPath: string
 	uploadPath: string
+	downloadPath?: string
 
 	sheetName: string
 	fileName: string
@@ -32,7 +33,8 @@ interface SheetModalProps
 	callback?: () => void
 }
 
-const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetName, fileName, callback = () => {}}) =>
+const SheetModal: React.FC<SheetModalProps> =
+({headerPath, uploadPath, downloadPath, sheetName, fileName, callback = () => {}}) =>
 {
 	const {user} = useUser()
 
@@ -81,6 +83,9 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 
 		XLSX.writeFile(wb, `${fileName}.xlsx`)
 	}
+
+	async function getSheet()
+	{}
 
 	function handleSubmit()
 	{
@@ -149,12 +154,22 @@ const SheetModal: React.FC<SheetModalProps> = ({headerPath, uploadPath, sheetNam
 				/>
 
 				<Container>
-					<button className='model' onClick={getModel} >
-						<FaDownload />
-						<span>
-							Baixar modelo
-						</span>
-					</button>
+					<div className='actions'>
+						<button onClick={getModel} >
+							<FaDownload />
+							<span>
+								Baixar modelo
+							</span>
+						</button>
+						{downloadPath && (
+							<button onClick={getSheet} >
+								<FaDownload />
+								<span>
+									Baixar planilha
+								</span>
+							</button>
+						)}
+					</div>
 					
 					<form onSubmit={e => e.preventDefault()} >
 						<label htmlFor='sheet'>Planilha</label>

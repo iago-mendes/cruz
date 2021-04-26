@@ -83,6 +83,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			<SheetModal
 				headerPath={`sheet/companies/${companyId}/products/header`}
 				uploadPath={`sheet/companies/${companyId}/products`}
+				downloadPath={`sheet/companies/${companyId}/products`}
 				sheetName='Produtos'
 				fileName={`${companyName} (Produtos)`}
 				callback={updateProducts}
