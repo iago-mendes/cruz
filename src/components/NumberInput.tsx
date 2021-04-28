@@ -8,7 +8,7 @@ interface NumberInputProps
 	value: number
 	setValue: (p: number) => void
 
-	name: string
+	name?: string
 	label?: string
 	placeholder?: string
 }

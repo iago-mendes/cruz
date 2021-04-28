@@ -3,6 +3,7 @@ import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {GetStaticPaths, GetStaticProps} from 'next'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
+import {MdUpdate} from 'react-icons/md'
 
 import api from '../../../services/api'
 import Header from '../../../components/Header'
@@ -15,6 +16,7 @@ import SheetModal from '../../../components/modals/Sheet'
 import confirmAlert from '../../../utils/alerts/confirm'
 import errorAlert from '../../../utils/alerts/error'
 import successAlert from '../../../utils/alerts/success'
+import TableUpdatesModal from '../../../components/modals/TableUpdates'
 
 interface ProductsProps
 {
@@ -30,6 +32,8 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	
 	const {user} = useUser()
 	const [products, setProducts] = useState<Product[]>(staticProducts)
+
+	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
@@ -77,9 +81,6 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 				<title>{companyName} - Produtos | Cruz Representações</title>
 			</Head>
 
-			<Header display={`${companyName} > Produtos`} />
-			<Add route={`/empresas/${companyId}/adicionar`} />
-
 			<SheetModal
 				headerPath={`sheet/companies/${companyId}/products/header`}
 				uploadPath={`sheet/companies/${companyId}/products`}
@@ -88,6 +89,24 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 				fileName={`${companyName} (Produtos)`}
 				callback={updateProducts}
 			/>
+
+			<TableUpdatesModal
+				isOpen={isTableUpdatesModalOpen}
+				setIsOpen={setIsTableUpdatesModalOpen}
+				companyId={String(companyId)}
+			/>
+
+			<Header display={`${companyName} > Produtos`} />
+			<Add route={`/empresas/${companyId}/adicionar`} />
+
+			<div className='actions'>
+				<button
+					onClick={() => setIsTableUpdatesModalOpen(true)}
+				>
+					<MdUpdate />
+					<span>Atualizar tabelas</span>
+				</button>
+			</div>
 
 			<main>
 				<table>
