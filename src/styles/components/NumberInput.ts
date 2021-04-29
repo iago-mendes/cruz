@@ -17,6 +17,21 @@ const Container = styled.div`
 		input
 		{
 			width: 15rem !important;
+
+			border: none;
+			border-bottom: ${p => `${p.theme.colors.text}40`} 2px solid;
+			height: 2.5rem;
+
+			font-size: 1.75rem;
+			color: ${p => p.theme.colors.text};
+
+			padding: 0 1rem;
+			transition: 0.25s;
+
+			:focus, :hover
+			{
+				border-bottom-color: ${p => p.theme.colors.primary};
+			}
 		}
 	}
 

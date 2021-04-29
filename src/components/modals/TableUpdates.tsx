@@ -115,35 +115,39 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 				</div>
 
 				<ul className='related'>
-					<h2>Tabelas relacionadas</h2>
+					<h1>Tabelas relacionadas</h1>
 
 					{relatedTables.map((table, index) => (
-						<div className='table' key={index} >
-							<label>Tabela</label>
-							<Select
-								options={relatedTableOptions}
-								styles={selectStyles}
-							/>
-
-							<label>Relação</label>
-							<div className='changeGroup'>
+						<li className='table' key={index} >
+							<div className='group'>
+								<label>Tabela</label>
 								<Select
-									options={changeOptions}
+									options={relatedTableOptions}
 									styles={selectStyles}
 								/>
-								<NumberInput
-									value={targetTable.change}
-									setValue={n => setTargetTable({id: targetTable.id, change: n})}
-								/>
+							</div>
+
+							<div className='group'>
+								<label>Relação</label>
+								<div className='changeGroup'>
+									<Select
+										options={changeOptions}
+										styles={selectStyles}
+									/>
+									<NumberInput
+										value={targetTable.change}
+										setValue={n => setTargetTable({id: targetTable.id, change: n})}
+									/>
+								</div>
 							</div>
 
 							<button className='listButton remove' onClick={() => handleRemoveRelatedTable(index)}>
 								<FiMinus />
 								<span>
-									Remover representada
+									Remover tabela
 								</span>
 							</button>
-						</div>
+						</li>
 					))}
 
 					<button className='listButton add' onClick={handleAddRelatedTable}>
