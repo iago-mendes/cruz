@@ -29,6 +29,9 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 	const [companyTables, setCompanyTables] = useState<CompanyTable[]>([])
 	const [targetTable, setTargetTable] = useState({id: '', change: 1})
 	const [relatedTables, setRelatedTables] = useState<Array<{id: string, relation: number}>>([])
+
+	const [targetChangeOption, setTargetChangeOption] = useState('increase')
+	const [relatedTablesRelationOption, setRelatedTablesRelationOption] = useState<string[]>([])
 	
 	const targetTableOptions: SelectOption[] = companyTables
 		.map(table => (
@@ -63,18 +66,88 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 			})
 	}, [])
 
+	function getPercentChange(change: number)
+	{
+		const percentChange = (change - 1) * 100
+
+		return Math.abs(percentChange)
+	}
+
+	function getChange(percentChange: number, changeOption = 'increase')
+	{
+		const decimalChange = percentChange / 100
+
+		let change = 1
+		if (changeOption === 'increase')
+			change += decimalChange
+		if (changeOption === 'decrease')
+			change -= decimalChange
+
+		return change
+	}
+
+	function handleTargetTableChange(n: number)
+	{
+		let tmpTargetTable = {...targetTable}
+
+		const change = getChange(n, targetChangeOption)
+		tmpTargetTable.change = change
+
+		setTargetTable(tmpTargetTable)
+	}
+
+	function handleTargetTableChangeOption(option: SelectOption)
+	{
+		let tmpTargetTable = {...targetTable}
+		
+		const percentChange = getPercentChange(targetTable.change)
+		const change = getChange(percentChange, option.value)
+		tmpTargetTable.change = change
+		
+		setTargetChangeOption(option.value)
+		setTargetTable(tmpTargetTable)
+	}
+
 	function handleAddRelatedTable()
 	{
 		let tmpRelatedTables = [...relatedTables]
 		tmpRelatedTables.push({id: '', relation: 1})
 
+		let tmpRelatedTablesRelationOption = [...relatedTablesRelationOption]
+		tmpRelatedTablesRelationOption.push('increase')
+
 		setRelatedTables(tmpRelatedTables)
+		setRelatedTablesRelationOption(tmpRelatedTablesRelationOption)
 	}
 
 	function handleRemoveRelatedTable(index: number)
 	{
 		let tmpRelatedTables = [...relatedTables]
 		tmpRelatedTables.splice(index, 1)
+
+		let tmpRelatedTablesRelationOption = [...relatedTablesRelationOption]
+		tmpRelatedTablesRelationOption.splice(index, 1)
+
+		setRelatedTables(tmpRelatedTables)
+		setRelatedTablesRelationOption(tmpRelatedTablesRelationOption)
+	}
+
+	function handleRelatedTable(option: SelectOption, index: number)
+	{
+		let tmpRelatedTables = [...relatedTables]
+
+		tmpRelatedTables[index] = {id: option.value, relation: 1}
+
+		setRelatedTables(tmpRelatedTables)
+	}
+
+	function handleTargetTableRelation(n: number, index: number)
+	{
+		let tmpRelatedTables = [...relatedTables]
+
+		const relationOption = relatedTablesRelationOption[index]
+		const relation = getChange(n, relationOption)
+		tmpRelatedTables[index].relation = relation
 
 		setRelatedTables(tmpRelatedTables)
 	}
@@ -104,12 +177,14 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 					<label>Mudança</label>
 					<div className='changeGroup'>
 						<Select
+							value={changeOptions.find(({value}) => value === targetChangeOption)}
 							options={changeOptions}
+							onChange={handleTargetTableChangeOption}
 							styles={selectStyles}
 						/>
 						<NumberInput
-							value={targetTable.change}
-							setValue={n => setTargetTable({id: targetTable.id, change: n})}
+							value={getPercentChange(targetTable.change)}
+							setValue={handleTargetTableChange}
 						/>
 					</div>
 				</div>
@@ -122,7 +197,9 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 							<div className='group'>
 								<label>Tabela</label>
 								<Select
+									value={relatedTableOptions.find(({value}) => value === table.id)}
 									options={relatedTableOptions}
+									onChange={option => handleRelatedTable(option, index)}
 									styles={selectStyles}
 								/>
 							</div>
@@ -136,7 +213,7 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 									/>
 									<NumberInput
 										value={targetTable.change}
-										setValue={n => setTargetTable({id: targetTable.id, change: n})}
+										setValue={n => handleTargetTableRelation(n, index)}
 									/>
 								</div>
 							</div>
