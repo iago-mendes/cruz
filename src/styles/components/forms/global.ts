@@ -120,6 +120,11 @@ const Container = styled.form`
 						width: 10rem;
 					}
 				}
+
+				span.label
+				{
+					font-size: 1.75rem;
+				}
 			}
 
 			button

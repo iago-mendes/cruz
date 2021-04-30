@@ -222,7 +222,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				<ul>
 					{tableNames.map(({nome}, index) => (
 						<li key={index}>
-							<span>Tabela {nome}: R$</span>
+							<span className='label' >Tabela {nome}: R$</span>
 							<NumberInput
 								value={tabelas[index] ? tabelas[index].preco : 0}
 								setValue={n => handleTablePriceChange(n, index)}
