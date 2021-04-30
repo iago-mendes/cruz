@@ -10,10 +10,10 @@ const Container = styled.div`
 		{
 			background-color: #fff;
 			width: 90%;
-			height: 15rem;
+			height: 7.5rem;
 
-			border-radius: 2rem;
-			padding: 1rem;
+			border-radius: 1rem;
+			padding: 0.5rem;
 
 			display: flex;
 			align-items: center;
@@ -32,7 +32,7 @@ const Container = styled.div`
 				img
 				{
 					max-height: 100%;
-					border-radius: 1rem;
+					border-radius: 0.5rem;
 				}
 
 				.names
@@ -41,7 +41,9 @@ const Container = styled.div`
 					h1
 					{
 						font-family: Ubuntu;
-						font-size: 2.5rem;
+						font-size: 1.75rem;
+						
+						color: ${p => p.theme.colors.primary};
 					}
 
 					h2
@@ -69,9 +71,7 @@ const Container = styled.div`
 
 					span
 					{
-						padding: 1rem;
-						padding-left: 1.5rem;
-						padding-right: 1.5rem;
+						padding: 0.5rem 1rem;
 
 						color: #fff;
 						font-family: Ubuntu;
@@ -100,12 +100,12 @@ const Container = styled.div`
 						
 						:hover
 						{
-							background-color: rgb(201, 64, 64);
+							background-color: ${p => p.theme.colors.delete};
 						}
 			
 						:first-of-type:hover
 						{
-							background-color: ${p => p.theme.colors.background};
+							background-color: ${p => p.theme.colors.secondary};
 						}
 					}
 				}
