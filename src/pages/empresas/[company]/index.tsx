@@ -94,6 +94,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 				isOpen={isTableUpdatesModalOpen}
 				setIsOpen={setIsTableUpdatesModalOpen}
 				companyId={String(companyId)}
+				callback={updateProducts}
 			/>
 
 			<Header display={`${companyName} > Produtos`} />

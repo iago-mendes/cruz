@@ -24,9 +24,11 @@ interface TableUpdatesModalProps
 	setIsOpen: (p: boolean) => void
 
 	companyId: string
+
+	callback?: () => void
 }
 
-const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen, companyId}) =>
+const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen, companyId, callback = () => {}}) =>
 {
 	const [targetTable, setTargetTable] = useState({id: '', change: 1})
 	const [relatedTables, setRelatedTables] = useState<Array<{id: string, relation: number}>>([])
@@ -189,6 +191,8 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 			{
 				successAlert('Tabelas atualizadas com sucesso!')
 				setIsOpen(false)
+
+				callback()
 			})
 			.catch(error =>
 			{
