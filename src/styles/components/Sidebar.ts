@@ -8,6 +8,8 @@ const Container = styled.nav`
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
+
+	box-shadow: 5px 0px 10px rgba(0,0,0,0.25);
 	
 	transition: 0.25s;
 

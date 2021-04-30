@@ -12,6 +12,8 @@ const Container = styled.header`
 	align-items: center;
 	justify-content: space-between;
 
+	box-shadow: 0px 5px 10px rgba(0,0,0,0.25);
+
 	.display
 	{
 		display: flex;
