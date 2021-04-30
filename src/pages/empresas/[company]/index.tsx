@@ -100,16 +100,16 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			<Header display={`${companyName} > Produtos`} />
 			<Add route={`/empresas/${companyId}/adicionar`} />
 
-			<div className='actions'>
-				<button
-					onClick={() => setIsTableUpdatesModalOpen(true)}
-				>
-					<MdUpdate />
-					<span>Atualizar tabelas</span>
-				</button>
-			</div>
-
 			<main>
+				<div className='productsActions'>
+					<button
+						onClick={() => setIsTableUpdatesModalOpen(true)}
+					>
+						<MdUpdate />
+						<span>Atualizar tabelas</span>
+					</button>
+				</div>
+
 				<table>
 					<thead>
 						<tr>
@@ -136,10 +136,10 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 											<button
 												title='Editar'
 												onClick={() => push(`/empresas/${companyId}/${product._id}/editar`)}>
-												<FiEdit3 size={15} />
+												<FiEdit3 />
 											</button>
 											<button title='Deletar' onClick={() => handleDeleteProduct(product)}>
-												<FiTrash size={15} />
+												<FiTrash />
 											</button>
 										</div>
 									</td>
