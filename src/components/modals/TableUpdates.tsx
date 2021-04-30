@@ -6,6 +6,8 @@ import { SelectOption } from '../../models'
 import api from '../../services/api'
 import Container from '../../styles/components/modals/TableUpdates'
 import { selectStyles } from '../../styles/global'
+import errorAlert from '../../utils/alerts/error'
+import successAlert from '../../utils/alerts/success'
 import FormButtons from '../FormButtons'
 import NumberInput from '../NumberInput'
 import ModalContainer from './Container'
@@ -26,10 +28,10 @@ interface TableUpdatesModalProps
 
 const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen, companyId}) =>
 {
-	const [companyTables, setCompanyTables] = useState<CompanyTable[]>([])
 	const [targetTable, setTargetTable] = useState({id: '', change: 1})
 	const [relatedTables, setRelatedTables] = useState<Array<{id: string, relation: number}>>([])
-
+	
+	const [companyTables, setCompanyTables] = useState<CompanyTable[]>([])
 	const [targetChangeOption, setTargetChangeOption] = useState('increase')
 	const [relatedTablesRelationOption, setRelatedTablesRelationOption] = useState<string[]>([])
 	
@@ -141,7 +143,7 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 		setRelatedTables(tmpRelatedTables)
 	}
 
-	function handleTargetTableRelation(n: number, index: number)
+	function handleRelatedTableRelation(n: number, index: number)
 	{
 		let tmpRelatedTables = [...relatedTables]
 
@@ -152,11 +154,47 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 		setRelatedTables(tmpRelatedTables)
 	}
 
-	function handleCancel()
-	{}
+	function handleRelatedTableRelationOption(option: SelectOption, index: number)
+	{
+		let tmpRelatedTablesRelationOption = [...relatedTablesRelationOption]
+		let tmpRelatedTables = [...relatedTables]
 
-	function handleSubmit()
-	{}
+		const relatedTable = tmpRelatedTables[index]
+		
+		const percentRelation = getPercentChange(relatedTable.relation)
+		const relation = getChange(percentRelation, option.value)
+		tmpRelatedTables[index].relation = relation
+
+		tmpRelatedTablesRelationOption[index] = option.value
+		
+		setRelatedTablesRelationOption(tmpRelatedTablesRelationOption)
+		setRelatedTables(tmpRelatedTables)
+	}
+
+	function handleCancel()
+	{
+		setIsOpen(false)
+	}
+
+	async function handleSubmit()
+	{
+		const data =
+		{
+			targetTable,
+			relatedTables
+		}
+
+		await api.put(`companies/${companyId}/tables`, data)
+			.then(() =>
+			{
+				successAlert('Tabelas atualizadas com sucesso!')
+				setIsOpen(false)
+			})
+			.catch(error =>
+			{
+				errorAlert(error.response.message.data)
+			})
+	}
 
 	return (
 		<ModalContainer
@@ -208,12 +246,14 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 								<label>Relação</label>
 								<div className='changeGroup'>
 									<Select
+										value={changeOptions.find(({value}) => value === relatedTablesRelationOption[index])}
 										options={changeOptions}
+										onChange={option => handleRelatedTableRelationOption(option, index)}
 										styles={selectStyles}
 									/>
 									<NumberInput
-										value={targetTable.change}
-										setValue={n => handleTargetTableRelation(n, index)}
+										value={getPercentChange(relatedTables[index].relation)}
+										setValue={n => handleRelatedTableRelation(n, index)}
 									/>
 								</div>
 							</div>
