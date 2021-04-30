@@ -14,4 +14,20 @@ interface Request
 	status: {concluido: boolean, enviado: boolean, faturado: boolean}
 }
 
+export const defaultRequest: Request =
+{
+	_id: '',
+	cliente: '',
+	vendedor: '',
+	representada: '',
+	produtos: [],
+	data: '',
+	condicao: '',
+	frete: '',
+	contato: {nome: '', telefone: ''},
+	digitado_por: '',
+	tipo: {venda: true, troca: false},
+	status: {concluido: false, enviado: false, faturado: false}
+}
+
 export default Request

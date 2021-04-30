@@ -5,26 +5,14 @@ import {useEffect, useState} from 'react'
 import Header from '../../components/Header'
 import RequestForm from '../../components/forms/Request'
 import api from '../../services/api'
-import Request from '../../models/request'
+import Request, { defaultRequest } from '../../models/request'
 
 const EditRequest: React.FC = () =>
 {
 	const Router = useRouter()
 	const {request: id} = Router.query
 
-	const [request, setRequest] = useState<Request>(
-	{
-		_id: '',
-		data: '',
-		condicao: '',
-		digitado_por: '',
-		cliente: '',
-		vendedor: '',
-		representada: '',
-		tipo: {venda: true, troca: false},
-		status: {concluido: false,	enviado: false,	faturado: false},
-		produtos: []
-	})
+	const [request, setRequest] = useState<Request>(defaultRequest)
 
 	useEffect(() =>
 	{
