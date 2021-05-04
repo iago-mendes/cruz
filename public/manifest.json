@@ -1,0 +1,22 @@
+{
+  "short_name": "Cruz",
+  "name": "Cruz Representações",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#84130B",
+  "background_color": "#E2DADB",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+		{
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
