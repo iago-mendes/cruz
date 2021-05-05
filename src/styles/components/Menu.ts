@@ -90,7 +90,7 @@ export const BurgerMenu = styled.div<BurgerMenuProps>`
 	position: fixed;
 	left: ${p => p.isOpen ? 0 : '-100vw'};
 	top: 0;
-	z-index: 1;
+	z-index: 2;
 
 	width: 75vw;
 	height: 100vh;

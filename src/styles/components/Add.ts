@@ -4,6 +4,7 @@ const Container = styled.button`
 	position: fixed;
 	bottom: 2rem;
 	right: 2rem;
+	z-index: 1;
 	
 	width: 5rem;
 	height: 5rem;

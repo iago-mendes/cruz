@@ -4,6 +4,7 @@ export const OpenSheetButton = styled.button`
 	position: fixed;
 	bottom: calc(2rem + 5rem + 2rem);
 	right: 2rem;
+	z-index: 1;
 	
 	width: 5rem;
 	height: 5rem;
