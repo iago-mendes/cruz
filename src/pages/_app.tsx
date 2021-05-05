@@ -1,4 +1,4 @@
-import Sidebar from '../components/Sidebar'
+import Menu from '../components/Menu'
 import {Provider} from 'next-auth/client'
 import {ThemeProvider} from 'styled-components'
 
@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }) {
     <Provider session={pageProps.session}>
       <ThemeProvider theme={theme}>
 				<SessionHandler>
-					<Sidebar/>
+					<Menu/>
 					<Component {...pageProps} />
 				</SessionHandler>
 				<GlobalStyle />

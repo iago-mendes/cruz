@@ -6,9 +6,9 @@ import {FaStore} from 'react-icons/fa'
 import {signOut} from 'next-auth/client'
 
 import Logo from '../assets/logo.svg'
-import Container from '../styles/components/Sidebar'
+import Container from '../styles/components/Menu'
 
-export default function Sidebar()
+const Menu: React.FC = () =>
 {
 	const {pathname} = useRouter()
 
@@ -82,3 +82,5 @@ export default function Sidebar()
 		</Container>
 	)
 }
+
+export default Menu
