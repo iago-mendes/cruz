@@ -82,6 +82,20 @@ export default createGlobalStyle`
 			font-family: Ubuntu !important;
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		#__next
+		{
+			flex-direction: column;
+		}
+
+		.container
+		{
+			height: fit-content;
+			width: 100%;
+		}
+	}
 `
 
 export const selectStyles: Styles =

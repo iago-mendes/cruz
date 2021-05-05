@@ -1,86 +1,138 @@
 import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
-import {FiUsers, FiLogOut} from 'react-icons/fi'
+import {FiUsers, FiLogOut, FiMenu, FiX} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
 import {signOut} from 'next-auth/client'
+import {useEffect, useState} from 'react'
 
 import Logo from '../assets/logo.svg'
-import Container from '../styles/components/Menu'
+import {Sidebar, MobileMenu, BurgerMenu, OptionsList} from '../styles/components/Menu'
+import useDimensions from '../hooks/useDimensions'
+import useClickOutside from '../hooks/useClickOutside'
 
 const Menu: React.FC = () =>
 {
 	const {pathname} = useRouter()
+	const {inDesktop} = useDimensions()
+	
+	const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false)
+	const burguerMenuRef = useClickOutside(() => setIsBurgerMenuOpen(false))
+
+	useEffect(() =>
+	{
+		setIsBurgerMenuOpen(false)
+	}, [pathname])
 
 	if (pathname === '/login')
 		return null
 
-	function checkRoute(routes: string[])
-	{
-		const current = pathname.split('/')
-		if (routes.includes(`/${current[1]}`))
-			return "#CC9749"
-		else
-			return "#E2DADB"
-	}
+	if (inDesktop)
+		return (
+			<Sidebar>
+				<header>
+					<img src={Logo} alt='Cruz Representações' />
+				</header>
 
+				<MainOptions />
+
+				<FooterOptions />
+			</Sidebar>
+		)
+	
 	return (
-		<Container>
-			<header>
-				<img src={Logo} alt="Cruz Representações" />
-			</header>
+		<MobileMenu>
+			<button
+				className='controller'
+				onClick={() => setIsBurgerMenuOpen(true)}
+			>
+				<FiMenu />
+			</button>
 
-			<main>
-				<ul>
-					<Link href='/' >
-						<a>
-							<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
-							<span>Pedidos</span>
-						</a>
-					</Link>
-					<Link href='/clientes' >
-						<a>
-							<FaStore size={25} color={checkRoute(['/clientes'])}/>
-							<span>Clientes</span>
-						</a>
-					</Link>
-					<Link href='/empresas' >
-						<a>
-							<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
-							<span>Empresas</span>
-						</a>
-					</Link>
-					<Link href='/vendedores' >
-						<a>
-							<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
-							<span>Vendedores</span>
-						</a>
-					</Link>
-					<Link href='/indicadores' >
-						<a>
-							<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
-							<span>Indicadores</span>
-						</a>
-					</Link>
-				</ul>
-			</main>
+			<img src={Logo} alt='Cruz Representações' />
 
-			<footer>
-				<ul>
-					<Link href='/usuario' >
-						<a>
-							<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
-							<span>Usuário</span>
-						</a>
-					</Link>
-					<a onClick={() => signOut({callbackUrl: '/login'})}>
-						<FiLogOut size={25} color="#E2DADB"/>
-						<span>Sair</span>
-					</a>
-				</ul>
-			</footer>
-		</Container>
+			<BurgerMenu
+				isOpen={isBurgerMenuOpen}
+				ref={burguerMenuRef}
+			>
+				<button
+					className='controller'
+					onClick={() => setIsBurgerMenuOpen(false)}
+				>
+					<FiX />
+				</button>
+
+				<MainOptions />
+
+				<FooterOptions />
+			</BurgerMenu>
+		</MobileMenu>
 	)
 }
+
+function checkRoute(routes: string[])
+{
+	const {pathname} = useRouter()
+
+	const current = pathname.split('/')
+	if (routes.includes(`/${current[1]}`))
+		return '#CC9749'
+	else
+		return '#E2DADB'
+}
+
+const MainOptions: React.FC = () => (
+	<main>
+		<OptionsList>
+			<Link href='/' >
+				<a>
+					<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
+					<span>Pedidos</span>
+				</a>
+			</Link>
+			<Link href='/clientes' >
+				<a>
+					<FaStore size={25} color={checkRoute(['/clientes'])}/>
+					<span>Clientes</span>
+				</a>
+			</Link>
+			<Link href='/empresas' >
+				<a>
+					<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
+					<span>Empresas</span>
+				</a>
+			</Link>
+			<Link href='/vendedores' >
+				<a>
+					<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
+					<span>Vendedores</span>
+				</a>
+			</Link>
+			<Link href='/indicadores' >
+				<a>
+					<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
+					<span>Indicadores</span>
+				</a>
+			</Link>
+		</OptionsList>
+	</main>
+)
+
+const FooterOptions: React.FC = () => (
+	<footer>
+		<OptionsList>
+			<Link href='/usuario' >
+				<a>
+					<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
+					<span>Usuário</span>
+				</a>
+			</Link>
+			<a onClick={() => signOut({callbackUrl: '/login'})}>
+				<FiLogOut size={25} color='#E2DADB'/>
+				<span>Sair</span>
+			</a>
+		</OptionsList>
+	</footer>
+)
 
 export default Menu

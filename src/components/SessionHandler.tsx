@@ -9,13 +9,13 @@ const SessionHandler: React.FC = ({children}) =>
 	const {loading, isLogged} = useUser()
 	const {inDesktop} = useDimensions()
 	
-	if (!inDesktop)
-		return (
-			<MobileView>
-				<h1>Acesso negado!</h1>
-				<p>O acesso ao sistema da <strong>Cruz Representações</strong> não é permitido em dispositivos móveis.</p>
-			</MobileView>
-		)
+	// if (!inDesktop)
+	// 	return (
+	// 		<MobileView>
+	// 			<h1>Acesso negado!</h1>
+	// 			<p>O acesso ao sistema da <strong>Cruz Representações</strong> não é permitido em dispositivos móveis.</p>
+	// 		</MobileView>
+	// 	)
 
 	if (loading)
 		return <LoadingModal isOpen={loading} />
