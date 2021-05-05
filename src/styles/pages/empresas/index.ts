@@ -50,6 +50,8 @@ const Container = styled.div`
 					font-family: Ubuntu;
 					font-weight: 700;
 					font-size: 2.5rem;
+
+					text-decoration: underline;
 	
 					color: ${p => p.theme.colors.primaryDark};
 					transition: 0.25s;
@@ -66,27 +68,66 @@ const Container = styled.div`
 					font-size: 1.5rem;
 				}
 			}
-	
-			button
+
+			.actions
 			{
-				width: 50px;
-				height: 50px;
-				border-radius: 100px;
-	
-				border: none;
-				background: none;
-	
-				cursor: pointer;
-				transition: 0.25s;
-				
-				:hover
+				display: flex;
+				gap: 1rem;
+
+				button
 				{
-					background-color: rgb(201, 64, 64);
+					width: 5rem;
+					height: 5rem;
+					border-radius: 2.5rem;
+
+					display: flex;
+					align-items: center;
+					justify-content: center;
+		
+					border: none;
+					background: none;
+					font-size: 2.5rem;
+		
+					transition: background-color 0.25s;
+				}
+
+				.delete:hover
+				{
+					background-color: ${p => p.theme.colors.buttonRed};
 				}
 	
-				:first-of-type:hover
+				.edit:hover
 				{
-					background-color: ${p => p.theme.colors.background};
+					background-color: ${p => p.theme.colors.secondary};
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		main .company
+		{
+			width: 100%;
+			height: fit-content;
+			flex-direction: column;
+
+			img
+			{
+				max-height: 7.5rem;
+				max-width: 100%;
+			}
+
+			.actions
+			{
+				margin-right: auto;
+
+				button
+				{
+					font-size: 2rem;
+
+					width: 4rem;
+					height: 4rem;
 				}
 			}
 		}

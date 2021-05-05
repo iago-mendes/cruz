@@ -78,14 +78,22 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 						</div>
 						{
 							user.role === 'admin' ?
-							<>
-									<button title='Editar' onClick={() => Router.push(`/empresas/${company.id}/editar`)}>
-										<FiEdit3 size={25} />
+							<div className='actions'>
+									<button
+										title='Editar'
+										onClick={() => Router.push(`/empresas/${company.id}/editar`)}
+										className='edit'
+									>
+										<FiEdit3 />
 									</button>
-									<button title='Deletar' onClick={() => handleDeleteCompany(company)} >
-										<FiTrash size={25} />
+									<button
+										title='Deletar'
+										onClick={() => handleDeleteCompany(company)}
+										className='delete'
+									>
+										<FiTrash />
 									</button>
-							</>
+							</div>
 							: <div />
 						}
 					</div>
