@@ -34,8 +34,8 @@ const Container = styled.div`
 
 			img
 			{
-				width: 30%;
-				height: auto;
+				max-width: 30%;
+				max-height: 100%;
 
 				border-radius: 100rem;
 			}
@@ -96,6 +96,24 @@ const Container = styled.div`
 					{
 						background-color: ${p => p.theme.colors.background};
 					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		main
+		{
+			padding: 1rem;
+
+			.seller
+			{
+				padding-bottom: 5rem;
+
+				.buttons
+				{
+					left: 0.5rem;
 				}
 			}
 		}
