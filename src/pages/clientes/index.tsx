@@ -122,14 +122,14 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			>
 				{clients.map(client => (
 					<div className='client' key={client.id} >
-						<div className='left'>
+						<div className='imgNames'>
 							<img src={client.imagem} alt={client.nome_fantasia} />
 							<div className='names'>
 								<h1>{client.nome_fantasia}</h1>
 								<h2>{client.razao_social}</h2>
 							</div>
 						</div>
-						<div className='right'>
+						<div className='statusActions'>
 							<div className='status'>
 								<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
 									{client.status.ativo ? 'ativo' : 'inativo' }
@@ -145,10 +145,10 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 								{user.role === 'admin' && (
 									<>
 										<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
-											<FiEdit3 size={25} />
+											<FiEdit3 />
 										</button>
 										<button title='Deletar' onClick={() => handleDeleteClient(client)} >
-											<FiTrash size={25} />
+											<FiTrash />
 										</button>
 									</>
 								)}

@@ -19,7 +19,7 @@ const Container = styled.div`
 			align-items: center;
 			justify-content: space-between;
 
-			.left
+			.imgNames
 			{
 				display: flex;
 				align-items: center;
@@ -54,7 +54,7 @@ const Container = styled.div`
 				}
 			}
 
-			.right
+			.statusActions
 			{
 				display: flex;
 				align-items: center;
@@ -94,6 +94,11 @@ const Container = styled.div`
 			
 						border: none;
 						background: none;
+						font-size: 2.5rem;
+
+						display: flex;
+						align-items: center;
+						justify-content: center;
 			
 						cursor: pointer;
 						transition: 0.25s;
@@ -107,6 +112,64 @@ const Container = styled.div`
 						{
 							background-color: ${p => p.theme.colors.secondary};
 						}
+					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		main .client
+		{
+			height: fit-content;
+			flex-direction: column;
+			gap: 1rem;
+
+			.imgNames
+			{
+				width: 100%;
+
+				img
+				{
+					max-height: 5rem;
+				}
+
+				.names
+				{
+					h1
+					{
+						font-size: 1.5rem;
+					}
+
+					h2
+					{
+						font-size: 1.25rem;
+					}
+				}
+			}
+
+			.statusActions
+			{
+				width: 100%;
+				flex-direction: column;
+				gap: 1rem;
+
+				.status span
+				{
+					font-size: 1.25rem;
+				}
+
+				.buttons
+				{
+					margin-right: auto;
+
+					button
+					{
+						width: 4rem;
+						height: 4rem;
+
+						font-size: 2rem;
 					}
 				}
 			}
