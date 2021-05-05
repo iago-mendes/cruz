@@ -95,6 +95,11 @@ export default createGlobalStyle`
 			height: fit-content;
 			width: 100%;
 		}
+
+		.main
+		{
+			padding: 1rem;
+		}
 	}
 `
 

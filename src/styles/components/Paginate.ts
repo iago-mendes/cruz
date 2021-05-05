@@ -99,6 +99,16 @@ const Container = styled.div`
 			color: ${p => p.theme.colors.primary};
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		margin-bottom: 15rem;
+
+		.paginate
+		{
+			gap: 1rem;
+		}
+	}
 `
 
 export default Container

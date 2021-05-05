@@ -12,6 +12,7 @@ export const OpenSheetButton = styled.button`
 	
 	background-color: ${p => p.theme.colors.buttonGreen};
 	color: ${p => p.theme.colors.background};
+	box-shadow: 0px 0px 10px #000;
 	
 	cursor: pointer;
 	transition: 0.25s;
@@ -24,6 +25,12 @@ export const OpenSheetButton = styled.button`
 	svg
 	{
 		font-size: 3rem;
+	}
+
+	@media (max-width: 1000px)
+	{
+		right: 1rem;
+		bottom: calc(1rem + 5rem + 1rem);
 	}
 `
 const Container = styled.main`

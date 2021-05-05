@@ -5,8 +5,7 @@ const Container = styled.header`
 	height: 10vh;
 	background: #fff;
 
-	padding-left: 5rem;
-	padding-right: 5rem;
+	padding: 0 5rem;
 
 	display: flex;
 	align-items: center;
@@ -70,6 +69,18 @@ const Container = styled.header`
 
 			font-family: Roboto;
 			font-size: 1.5rem;
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		padding: 0 1rem;
+		gap: 1rem;
+
+		.inputField
+		{
+			width: 100%;
+			max-width: 25rem;
 		}
 	}
 `
