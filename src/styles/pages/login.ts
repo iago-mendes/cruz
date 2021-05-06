@@ -33,7 +33,6 @@ const Container = styled.div`
 		}
 	}
 
-
 	form
 	{
 		display: flex;
@@ -111,6 +110,33 @@ const Container = styled.div`
 				transform: scale(1.1);
 				border-radius: 0;
 			}
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		flex-direction: column;
+
+		.logo
+		{
+			width: 100%;
+			gap: 1rem;
+
+			img
+			{
+				width: 50vw;
+			}
+
+			h1
+			{
+				font-size: 2rem;
+			}
+		}
+
+		form
+		{
+			width: 100%;
+			padding: 2rem;
 		}
 	}
 `
