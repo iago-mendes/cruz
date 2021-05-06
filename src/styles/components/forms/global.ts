@@ -241,6 +241,41 @@ const Container = styled.form`
 			}
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		width: 100%;
+		border-radius: 0.5rem;
+
+		.field
+		{
+			width: 100%;
+
+			ul
+			{
+				li
+				{
+					flex-direction: column;
+
+					input
+					{
+						width: 100%;
+					}
+
+					.select
+					{
+						width: 100%;
+					}
+
+					.group
+					{
+						flex-direction: column;
+						gap: 1rem;
+					}
+				}
+			}
+		}
+	}
 `
 
 export default Container
