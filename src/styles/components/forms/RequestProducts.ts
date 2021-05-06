@@ -165,6 +165,15 @@ const Products = styled.div`
 			font-size: 2rem;
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		.tableContainer
+		{
+			width: 100%;
+			overflow-x: auto;
+		}
+	}
 `
 
 export default Products

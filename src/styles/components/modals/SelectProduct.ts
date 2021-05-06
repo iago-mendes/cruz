@@ -1,156 +1,128 @@
 import styled from 'styled-components'
 
-const Container = styled.div`
-	width: 75vw;
-	height: 80vh;
+const Container = styled.main`
+	padding: 1rem;
+	padding-bottom: 5rem;
+	height: calc(80vh - 4rem);
 
-	background-color: ${p => p.theme.colors.background};
-	border-radius: 1rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-	header
+	.group
 	{
-		background-color: ${p => p.theme.colors.primary};
-		padding: 0.5rem;
-		border-top-left-radius: 1rem;
-		border-top-right-radius: 1rem;
-
 		display: flex;
-		flex-direction: column;
-		align-items: flex-end;
+		align-items: center;
+		justify-content: space-around;
 
-		button
+		.img
 		{
-			background: none;
-			border: none;
-			border-radius: 100rem;
+			width: 15rem;
+			height: 15rem;
 
-			width: 3rem;
-			height: 3rem;
-			color: ${p => p.theme.colors.secondary};
+			display: flex;
+			justify-content: center;
+
+			img
+			{
+				max-width: 100%;
+				max-height: 100%;
+			}
+		}
+
+		.select
+		{
+			width: calc(100% - 15rem - 1rem);
+		}
+
+		.subGroup
+		{
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+
+			font-family: Roboto;
+
+			label
+			{
+				font-size: 2rem;
+				font-weight: 700;
+
+				color: ${p => p.theme.colors.primaryDark};
+				padding-left: 1rem;
+				border-left: ${p => p.theme.colors.primaryDark} 5px solid;
+			}
+
+			span, input
+			{
+				font-size: 1.75rem;
+				margin-left: 2rem;
+				color: ${p => p.theme.colors.text};
+			}
+
+			input
+			{
+				border: none;
+				border-bottom: ${p => `${p.theme.colors.text}80`} 2px solid;
+
+				height: 3rem;
+				width: 15rem;
+				border-radius: 0.25rem;
+
+				padding-left: 1rem;
+				padding-right: 1rem;
+				transition: 0.25s;
+
+				:focus, :hover
+				{
+					border-bottom-color: ${p => p.theme.colors.primary};
+				}
+			}
+		}
+
+		button.confirm
+		{
+			font-family: Ubuntu;
+			font-size: 1.75rem;
+			font-weight: 700;
+			background-color: #fff;
+
+			color: ${p => p.theme.colors.text};
 
 			display: flex;
 			align-items: center;
-			justify-content: center;
+			gap: 1rem;
 
-			transition: 0.25s;
+			padding: 1rem 2rem;
+			
+			border: none;
+			border-radius: 2rem;
+			
 			cursor: pointer;
+			transition: 0.25s;
 
 			:hover
 			{
-				background-color: ${p => p.theme.colors.secondary};
-				color: ${p => p.theme.colors.primary};
+				transform: scale(1.1);
+				border-radius: 0;
+				background-color: ${p => p.theme.colors.buttonGreen};
 			}
 		}
 	}
 
-	form
+	@media (max-width: 1000px)
 	{
-		padding: 1rem;
-		padding-bottom: 5rem;
-		height: calc(80vh - 4rem);
-
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+		gap: 2rem;
 
 		.group
 		{
-			display: flex;
-			align-items: center;
-			justify-content: space-around;
-
-			.img
-			{
-				width: 15rem;
-				height: 15rem;
-
-				display: flex;
-				justify-content: center;
-
-				img
-				{
-					max-width: 100%;
-					max-height: 100%;
-				}
-			}
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
 
 			.select
 			{
-				width: calc(100% - 15rem - 1rem);
-			}
-
-			.subGroup
-			{
-				display: flex;
-				flex-direction: column;
-				gap: 1rem;
-
-				font-family: Roboto;
-
-				label
-				{
-					font-size: 2rem;
-					font-weight: 700;
-
-					color: ${p => p.theme.colors.primaryDark};
-					padding-left: 1rem;
-					border-left: ${p => p.theme.colors.primaryDark} 5px solid;
-				}
-
-				span, input
-				{
-					font-size: 1.75rem;
-					margin-left: 2rem;
-					color: ${p => p.theme.colors.text};
-				}
-
-				input
-				{
-					border: none;
-					border-bottom: ${p => `${p.theme.colors.text}80`} 2px solid;
-
-					height: 3rem;
-					width: 15rem;
-					border-radius: 0.25rem;
-
-					padding-left: 1rem;
-					padding-right: 1rem;
-					transition: 0.25s;
-
-					:focus, :hover
-					{
-						border-bottom-color: ${p => p.theme.colors.primary};
-					}
-				}
-			}
-
-			button.confirm
-			{
-				font-family: Ubuntu;
-				font-size: 1.75rem;
-				font-weight: 700;
-				background-color: #fff;
-
-				color: ${p => p.theme.colors.text};
-
-				display: flex;
-				align-items: center;
-				gap: 1rem;
-
-				padding: 1rem 2rem;
-				
-				border: none;
-				border-radius: 2rem;
-				
-				cursor: pointer;
-				transition: 0.25s;
-
-				:hover
-				{
-					transform: scale(1.1);
-					border-radius: 0;
-					background-color: ${p => p.theme.colors.buttonGreen};
-				}
+				width: 100%;
 			}
 		}
 	}

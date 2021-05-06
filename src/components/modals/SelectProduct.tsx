@@ -9,6 +9,7 @@ import {SelectOption} from '../../utils/types'
 import api from '../../services/api'
 import formatImage from '../../utils/formatImage'
 import NumberInput from '../NumberInput'
+import ModalContainer from './Container'
 
 Modal.setAppElement('#__next')
 
@@ -60,7 +61,7 @@ const defaultPricedProduct: PricedProduct =
 interface RequestProductModalProps
 {
 	isOpen: boolean
-	setIsOpen: Function
+	setIsOpen: (p: boolean) => void
 
 	selected: Selected
 	setSelected: Function
@@ -186,77 +187,70 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	}
 
 	return (
-		<Modal
+		<ModalContainer
 			isOpen={isOpen}
-			style={modalStyle}
+			setIsOpen={setIsOpen}
 		>
 			<Container>
-				<header>
-					<button onClick={() => setIsOpen(false)}>
-						<FiX size={25} />
-					</button>
-				</header>
-
-				<form onSubmit={e => e.preventDefault()} >
-					{/* img & select */}
-					<div className='group'>
-						<div className='img'>
-							<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
-						</div>
-						<div className='select'>
-							<Select
-								options={productOptions}
-								value=
-								{
-									selected.product.id !== '' &&
-										productOptions.find(({value}) => value === selected.product.id)
-								}
-								onChange={handleSelectProduct}
-								isDisabled={selected.companyId === ''}
-								styles={selectStyles}
-								placeholder='Selecione o produto'
-							/>
-						</div>
+				{/* img & select */}
+				<div className='group'>
+					<div className='img'>
+						<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
 					</div>
-					{/* unit & quantity */}
-					<div className='group'>
-						<div className='subGroup'>
-							<label>Unidade</label>
-							<span>{pricedProduct.unidade}</span>
-						</div>
-						<div className='subGroup'>
-							<label htmlFor='quantidade' >
-								Quantidade
-							</label>
-							<NumberInput
-								value={selected.product.quantidade}
-								setValue={n => handleChangeProduct(n, 'quantidade')}
-
-								name='quantidade'
-							/>
-						</div>
+					<div className='select'>
+						<Select
+							options={productOptions}
+							value=
+							{
+								selected.product.id !== '' &&
+									productOptions.find(({value}) => value === selected.product.id)
+							}
+							onChange={handleSelectProduct}
+							isDisabled={selected.companyId === ''}
+							styles={selectStyles}
+							placeholder='Selecione o produto'
+						/>
 					</div>
-					{/* prices */}
-					<div className='group'>
-						<div className='subGroup'>
-							<label>Preço de tabela</label>
-							<span>{priceToString(pricedProduct.preco)}</span>
-						</div>
-						<div className='subGroup'>
-							<label htmlFor='price' >
-								Preço líquido
-							</label>
-							<NumberInput
-								value={selected.product.preco}
-								setValue={n => handleChangeProduct(n, 'preco')}
-
-								name='price'
-								label='R$'
-							/>
-						</div>
+				</div>
+				{/* unit & quantity */}
+				<div className='group'>
+					<div className='subGroup'>
+						<label>Unidade</label>
+						<span>{pricedProduct.unidade}</span>
 					</div>
-					{/* subtotal */}
-					<div className='group'>
+					<div className='subGroup'>
+						<label htmlFor='quantidade' >
+							Quantidade
+						</label>
+						<NumberInput
+							value={selected.product.quantidade}
+							setValue={n => handleChangeProduct(n, 'quantidade')}
+
+							name='quantidade'
+						/>
+					</div>
+				</div>
+				{/* prices */}
+				<div className='group'>
+					<div className='subGroup'>
+						<label>Preço de tabela</label>
+						<span>{priceToString(pricedProduct.preco)}</span>
+					</div>
+					<div className='subGroup'>
+						<label htmlFor='price' >
+							Preço líquido
+						</label>
+						<NumberInput
+							value={selected.product.preco}
+							setValue={n => handleChangeProduct(n, 'preco')}
+
+							name='price'
+							label='R$'
+						/>
+					</div>
+				</div>
+				{/* subtotal */}
+				<div className='group'>
 						<div className='subGroup'>
 							<label>Subtotal (sem taxas)</label>
 							<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
@@ -270,9 +264,8 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 							<span>Confirmar</span>
 						</button>
 					</div>
-				</form>
 			</Container>
-		</Modal>
+		</ModalContainer>
 	)
 }
 

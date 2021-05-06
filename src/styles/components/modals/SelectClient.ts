@@ -104,6 +104,14 @@ const Container = styled.main`
 			}
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		.search
+		{
+			margin-left: 1rem;
+		}
+	}
 `
 
 export default Container

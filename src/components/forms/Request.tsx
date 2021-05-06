@@ -478,70 +478,72 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			</div>
 			
 			<Products>
-				<table>
-					<thead>
-						<tr>
-							<th>Ações</th>
-							<th>Imagem</th>
-							<th>Nome</th>
-							<th>Unidade</th>
-							<th>Código</th>
-							<th>St</th>
-							<th>Ipi</th>
-							<th>Quantidade</th>
-							<th>Preço de tabela</th>
-							<th>Preço líquido</th>
-							<th>Subtotal (com taxas)</th>
-						</tr>
-					</thead>
+				<div className='tableContainer' >
+					<table>
+						<thead>
+							<tr>
+								<th>Ações</th>
+								<th>Imagem</th>
+								<th>Nome</th>
+								<th>Unidade</th>
+								<th>Código</th>
+								<th>St</th>
+								<th>Ipi</th>
+								<th>Quantidade</th>
+								<th>Preço de tabela</th>
+								<th>Preço líquido</th>
+								<th>Subtotal (com taxas)</th>
+							</tr>
+						</thead>
 
-					{representada !== '' && (
-						<tbody>
-							{produtos.map((produto, index) =>
-								{
-									const rawProduct: RawProduct = (produto.id !== '' && representada !== '')
-										? rawProductsList[representada].find(({_id}) => _id === produto.id)
-										: defaultRawProduct
+						{representada !== '' && (
+							<tbody>
+								{produtos.map((produto, index) =>
+									{
+										const rawProduct: RawProduct = (produto.id !== '' && representada !== '')
+											? rawProductsList[representada].find(({_id}) => _id === produto.id)
+											: defaultRawProduct
 
-									const tablePrice = produto.id !== ''
-										? getTablePrice(rawProduct)
-										: 0
+										const tablePrice = produto.id !== ''
+											? getTablePrice(rawProduct)
+											: 0
 
-									return (
-										<tr key={index} >
-											<td>
-												<div className='actions'>
-													<button
-														title='Editar'
-														onClick={() => handleEditProduct(produto)}>
-														<FiEdit3 size={15} />
-													</button>
-													<button title='Remover' onClick={() => handleRemoveProduct(index)}>
-														<FiTrash size={15} />
-													</button>
-												</div>
-											</td>
-											<td className='img' >
-												<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
-											</td>
-											<td>{rawProduct.nome}</td>
-											<td>{rawProduct.unidade}</td>
-											<td>{rawProduct.codigo}</td>
-											<td>{formatNumber(rawProduct.st)} %</td>
-											<td>{formatNumber(rawProduct.ipi)} %</td>
-											<td>{produto.quantidade}</td>
-											<td>{priceToString(tablePrice)}</td>
-											<td>{priceToString(produto.preco)}</td>
-											<td>
-												{priceToString(
-													calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
-												)}
-											</td>
-										</tr>
-									)})}
-						</tbody>
-					)}
-				</table>
+										return (
+											<tr key={index} >
+												<td>
+													<div className='actions'>
+														<button
+															title='Editar'
+															onClick={() => handleEditProduct(produto)}>
+															<FiEdit3 size={15} />
+														</button>
+														<button title='Remover' onClick={() => handleRemoveProduct(index)}>
+															<FiTrash size={15} />
+														</button>
+													</div>
+												</td>
+												<td className='img' >
+													<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
+												</td>
+												<td>{rawProduct.nome}</td>
+												<td>{rawProduct.unidade}</td>
+												<td>{rawProduct.codigo}</td>
+												<td>{formatNumber(rawProduct.st)} %</td>
+												<td>{formatNumber(rawProduct.ipi)} %</td>
+												<td>{produto.quantidade}</td>
+												<td>{priceToString(tablePrice)}</td>
+												<td>{priceToString(produto.preco)}</td>
+												<td>
+													{priceToString(
+														calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
+													)}
+												</td>
+											</tr>
+										)})}
+							</tbody>
+						)}
+					</table>
+				</div>
 				<button type='button' onClick={handleAddProduct} className='add' >
 					<FiPlus size={20} />
 					<span>Adicionar produto</span>
