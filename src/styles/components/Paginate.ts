@@ -102,8 +102,6 @@ const Container = styled.div`
 
 	@media (max-width: 1000px)
 	{
-		margin-bottom: 15rem;
-
 		.paginate
 		{
 			gap: 1rem;

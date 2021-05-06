@@ -118,6 +118,11 @@ const Container = styled.div`
 				max-width: 100%;
 			}
 
+			.companyText .name
+			{
+				font-size: 2rem;
+			}
+
 			.actions
 			{
 				margin-right: auto;

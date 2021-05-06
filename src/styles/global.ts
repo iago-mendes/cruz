@@ -94,6 +94,8 @@ export default createGlobalStyle`
 		{
 			height: fit-content;
 			width: 100%;
+			
+			margin-bottom: 15rem;
 		}
 
 		.main
