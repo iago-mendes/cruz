@@ -105,6 +105,19 @@ const Container = styled.main`
 			background-color: ${p => p.theme.colors.delete};
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		.changeGroup
+		{
+			grid-template-columns: 1fr;
+		}
+
+		ul li.table
+		{
+			flex-direction: column;
+		}
+	}
 `
 
 export default Container

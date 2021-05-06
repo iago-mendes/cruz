@@ -51,9 +51,15 @@ const Container = styled.div`
 		overflow-y: auto;
 	}
 	
-	@media(max-width: 600px)
+	@media(max-width: 1000px)
 	{
 		width: 95vw;
+		height: 95vh;
+
+		main
+		{
+			min-height: calc(95vh - (3.5rem + 1rem + 1rem));
+		}
 	}
 `
 

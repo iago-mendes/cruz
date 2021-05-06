@@ -154,6 +154,19 @@ const Container = styled.main`
 			background-color:  rgb(201, 64, 64);
 		}
 	}
+
+	@media (max-width: 1000px)
+	{
+		.actions
+		{
+			flex-direction: column;
+		}
+
+		form
+		{
+			width: 100%;
+		}
+	}
 `
 
 export default Container

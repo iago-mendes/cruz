@@ -3,7 +3,6 @@ import styled from 'styled-components'
 const Container = styled.div`
 	main
 	{
-		height: 90vh;
 		width: 100%;
 
 		overflow: auto;

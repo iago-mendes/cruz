@@ -45,6 +45,12 @@ const Container = styled.div`
 	{
 		background-color: ${p => p.theme.colors.buttonRed};
 	}
+
+	@media (max-width: 1000px)
+	{
+		flex-direction: column-reverse;
+		gap: 1rem;
+	}
 `
 
 export default Container
