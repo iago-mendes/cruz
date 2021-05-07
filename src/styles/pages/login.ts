@@ -117,6 +117,11 @@ const Container = styled.div`
 	{
 		flex-direction: column;
 
+		overflow-y: auto;
+		height: fit-content;
+		min-height: 100vh;
+		padding-top: 1rem;
+
 		.logo
 		{
 			width: 100%;
