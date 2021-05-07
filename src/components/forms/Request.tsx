@@ -9,22 +9,21 @@ import freteOptions from '../../../db/options/frete.json'
 import Container from '../../styles/components/forms/global'
 import Products from '../../styles/components/forms/RequestProducts'
 import {selectStyles} from '../../styles/global'
-import api from '../../services/api'
-import {ListedSeller, Seller} from './Seller'
 import useUser from '../../hooks/useUser'
 import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
 import formatImage from '../../utils/formatImage'
 import SelectProductModal, {Product, Selected, defaultSelected} from '../modals/SelectProduct'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
-import RawClient, { ClientListed } from '../../models/client'
 import Request from '../../models/request'
-import Company, { CompanyCondition } from '../../models/company'
+import { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
-import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
+import { getRawCompanies, getRawCompany } from '../../services/requests/company'
+import { getRawSellers } from '../../services/requests/seller'
+import { getRawClient } from '../../services/requests/client'
+import { createRequest, updateRequest } from '../../services/requests/request'
 
 interface Type
 {
@@ -109,86 +108,79 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [clientData, setClientData] = useState('')
 
 	const conditionSelectOptions = conditionOptions
-		.filter(option => option.precoMin <= calcTotal())
+		// .filter(option => option.precoMin <= calcTotal())
 		.sort((a,b) => a.precoMin < b.precoMin ? -1 : 1)
 		.map(option => ({label: option.nome, value: option.nome}))
-
+	
 	useEffect(() =>
 	{
+		async function getSellers()
+		{
+			const sellers = await getRawSellers()
+			const tmpSellerOptions: SelectOption[] = sellers.map(seller => (
+				{
+					label: seller.nome,
+					value: seller._id
+				}))
+			
+			setSellerOptions(tmpSellerOptions)
+		}
+
+		async function getCompanies()
+		{
+			const companies = await getRawCompanies()
+			const tmpCompanyOptions: SelectOption[] = companies.map(company => (
+				{
+					label: company.nome_fantasia,
+					value: company._id
+				}))
+			
+			setCompanyOptions(tmpCompanyOptions)
+		}
+
+		async function getRawProductsList()
+		{
+			let tmpRawProductsList: RawProductsList = {}
+			
+			const companies = await getRawCompanies()
+			companies.map(company =>
+			{
+				tmpRawProductsList[company._id] = company.produtos
+			})
+
+			setRawProductsList(tmpRawProductsList)
+		}
+
+		getSellers()
+		getCompanies()
 		getRawProductsList()
 	}, [])
 
 	useEffect(() =>
 	{
-		async function getOptions()
-		{
-			await api.get('sellers').then(({data: sellers}:{data: ListedSeller[]}) =>
-			{
-				let tmpOptions: SelectOption[] = []
-
-				sellers.map(seller => tmpOptions.push(
-				{
-					label: seller.nome,
-					value: seller.id
-				}))
-
-				setSellerOptions(tmpOptions)
-			})
-
-			if (!loading && user.id !== 'not-logged')
-			{
-				let sellerCompanies: string[] = []
-
-				await api.get(`sellers-raw/${user.id}`).then(({data: seller}:{data: Seller}) =>
-				{
-					sellerCompanies = seller.representadas.map(company => company.id)
-				})
-
-				await api.get('companies/raw').then(({data: companies}:{data: Company[]}) =>
-				{
-					let tmpCompanies: SelectOption[] = []
-					let tmpRawProductsList: RawProductsList = {}
-
-					companies.map(company =>
-					{
-						if (sellerCompanies.includes(company._id))
-						{
-							tmpCompanies.push(
-							{
-								label: company.nome_fantasia,
-								value: company._id
-							})
-
-							tmpRawProductsList[company._id] = company.produtos
-						}
-					})
-					
-					setCompanyOptions(tmpCompanies)
-					setRawProductsList(tmpRawProductsList)
-				})
-			}
-		}
-
-		getOptions()
 		if (!loading)
 			setVendedor(user.id)
 	}, [loading, user])
 
 	useEffect(() =>
 	{
-		if (cliente !== '' && representada !== '')
-			api.get(`/clients-raw/${cliente}`).then(({data: client}:{data: RawClient}) =>
+		async function updateTable()
+		{
+			if (cliente !== '' && representada !== '')
 			{
+				const client = await getRawClient(cliente)
+
 				const clientCompany = client.representadas.find(({id}) => id === representada)
 				if (clientCompany)
 					setClientCompanyTableId(clientCompany.tabela)
-			})
+			}
+		}
+		
+		updateTable()
 	}, [cliente, representada])
 
 	useEffect(() =>
 	{
-		getRawProductsList()
-
 		if (request)
 		{
 			setCliente(request.cliente)
@@ -205,32 +197,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 	}, [request])
 
-	useEffect(() =>
-	{
-		if (cliente !== '')
-			api.get(`clients/${cliente}`).then(({data}:{data: ClientListed}) =>
-			{
-				const tmpClientData = `${data.nome_fantasia} | ${data.razao_social}`
-				setClientData(tmpClientData)
-			})
-	}, [cliente])
-
-	function getRawProductsList()
-	{
-		api.get('companies/raw').then(({data: companies}:{data: Company[]}) =>
-		{
-			let tmpRawProductsList: RawProductsList = {}
-
-			companies.map(company =>
-			{
-				tmpRawProductsList[company._id] = company.produtos
-			})
-
-			setRawProductsList(tmpRawProductsList)
-		})
-	}
-
-	function handleSelectClient(id: string)
+	async function handleSelectClient(id: string)
 	{
 		setCliente(id)
 		setProdutos([])
@@ -238,6 +205,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		let tmpSelected = {...selected}
 		tmpSelected.clientId = id
 		setSelected(tmpSelected)
+
+		const client = await getRawClient(id)
+		const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
+		setClientData(tmpClientData)
 	}
 
 	function handleSelectSeller(e: SelectOption)
@@ -245,14 +216,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setVendedor(e.value)
 	}
 
-	function handleSelectCompany(e: SelectOption)
+	async function handleSelectCompany(e: SelectOption)
 	{
-		setRepresentada(e.value)
+		const companyId = e.value
+
+		setRepresentada(companyId)
 		setProdutos([])
 
 		let tmpSelected = {...selected}
-		tmpSelected.companyId = e.value
+		tmpSelected.companyId = companyId
 		setSelected(tmpSelected)
+
+		const company = await getRawCompany(companyId)
+		setConditionOptions(company.condicoes)
 	}
 
 	function handleTypeChange(e: boolean, field: string)
@@ -385,33 +361,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 
 		if (method === 'post')
-		{
-			await api.post('requests', apiData)
-			.then(() =>
-			{
-				successAlert('Pedido criado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
-		}
+			await createRequest(apiData, back)
 		else if (method === 'put')
-		{
-			await api.put(`requests/${id}`, apiData)
-			.then(() =>
-			{
-				successAlert('Pedido atualizado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
-		}
+			await updateRequest(id, apiData, back)
 	}
 
 	return (
@@ -572,7 +524,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					options={conditionSelectOptions}
 					onChange={e => setCondicao(e.value)}
 					styles={selectStyles}
-					placeholder='Escolha uma condição de pagamento'
+					placeholder='Condição de pagamento'
 					isSearchable={false}
 				/>
 			</div>
