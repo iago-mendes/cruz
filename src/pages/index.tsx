@@ -104,19 +104,19 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 									target='_blank'
 									rel='nonreferrer'
 								>
-									<FaRegEye size={20} />
+									<FaRegEye />
 								</a>
 								{user.role === 'admin' && (
 									<>
 										<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
-											<FiEdit3 size={20} />
+											<FiEdit3 />
 										</button>
 										<button
 											title='Deletar'
 											onClick={() => handleDeleteRequest(request)}
 											className='delete'
 										>
-											<FiTrash size={20} />
+											<FiTrash />
 										</button>
 									</>
 								)}

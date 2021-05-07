@@ -92,6 +92,7 @@ const Container = styled.div<ContainerProps>`
 					{
 						width: 4rem;
 						height: 4rem;
+						font-size: 2rem;
 						border-radius: 10rem;
 			
 						border: none;
@@ -106,12 +107,13 @@ const Container = styled.div<ContainerProps>`
 			
 						:hover
 						{
-							background-color: ${p => p.theme.colors.background};
+							background-color: ${p => p.theme.colors.secondary};
 						}
 					}
+
 					.delete:hover
 					{
-						${p => p.isAdmin && 'background-color: rgb(201, 64, 64);'}
+						background-color: ${p => p.theme.colors.buttonRed};
 					}
 				}
 			}
@@ -150,10 +152,10 @@ const Container = styled.div<ContainerProps>`
 
 						img
 						{
-							width: 5rem;
+							max-width: 5rem;
 							max-height: 5rem;
 
-							border-radius: 100rem;
+							border-radius: 0.5rem;
 						}
 
 						h1
@@ -173,6 +175,62 @@ const Container = styled.div<ContainerProps>`
 							font-size: 1.5rem;
 						}
 					}
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1000px)
+	{
+		main .request
+		{
+			width: 100%;
+
+			.header
+			{
+				height: fit-content;
+				flex-direction: column;
+				align-items: flex-start;
+
+				padding: 1rem;
+				gap: 1rem;
+
+				.status span
+				{
+					font-size: 1rem;
+				}
+
+				.buttons a, .buttons button
+				{
+					width: 3rem;
+					height: 3rem;
+					font-size: 1.75rem;
+				}
+			}
+
+			ul li
+			{
+				height: fit-content;
+				flex-direction: column;
+				align-items: flex-start;
+
+				.imgName
+				{
+					img
+					{
+						max-width: 4rem;
+						max-height: 4rem;
+					}
+
+					h1
+					{
+						font-size: 1.75rem;
+					}
+				}
+
+				.description h2
+				{
+					font-size: 1.25rem;
 				}
 			}
 		}
