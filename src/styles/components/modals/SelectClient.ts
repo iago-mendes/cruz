@@ -109,7 +109,20 @@ const Container = styled.main`
 	{
 		.search
 		{
-			margin-left: 1rem;
+			margin-left: auto;
+			margin-right: auto;
+
+			font-size: 1.5rem;
+
+			input
+			{
+				font-size: 1.5rem;
+			}
+
+			.clear
+			{
+				font-size: 1.5rem;
+			}
 		}
 	}
 `

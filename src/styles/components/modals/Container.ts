@@ -53,12 +53,17 @@ const Container = styled.div`
 	
 	@media(max-width: 1000px)
 	{
-		width: 95vw;
-		height: 95vh;
+		width: 100vw;
+		height: 100vh;
+
+		header
+		{
+			border-radius: 0;
+		}
 
 		main
 		{
-			min-height: calc(95vh - (3.5rem + 1rem + 1rem));
+			min-height: calc(100vh - (3.5rem + 1rem + 1rem));
 		}
 	}
 `

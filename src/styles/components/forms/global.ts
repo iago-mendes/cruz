@@ -251,6 +251,16 @@ const Container = styled.form`
 		{
 			width: 100%;
 
+			label
+			{
+				font-size: 1.75rem;
+			}
+
+			input
+			{
+				font-size: 1.5rem;
+			}
+
 			ul
 			{
 				li
@@ -273,6 +283,16 @@ const Container = styled.form`
 						gap: 1rem;
 					}
 				}
+			}
+
+			button.modal
+			{
+				font-size: 1.5rem;
+			}
+
+			span.modalResult
+			{
+				font-size: 1.5rem;
 			}
 		}
 	}
