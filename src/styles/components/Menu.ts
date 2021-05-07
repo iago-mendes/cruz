@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const Sidebar = styled.nav`
   background-color: ${props => props.theme.colors.primary};
@@ -95,7 +95,7 @@ export const BurgerMenu = styled.div<BurgerMenuProps>`
 	width: 75vw;
 	height: 100vh;
 	background-color: ${p => p.theme.colors.primary};
-	box-shadow: 5px 5px 5px rgba(0,0, 0, 0.5);
+	box-shadow: 5px 0px 5px rgba(0,0, 0, 0.5);
 
 	padding: 1rem;
 
