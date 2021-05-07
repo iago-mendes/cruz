@@ -8,8 +8,11 @@ export async function getRawCompanies()
 	return data
 }
 
-export async function getRawCompany(id: string)
+export async function getRawCompany(id?: string)
 {
+	if (!id || id === '')
+		return null
+
 	const {data}:{data: Company} = await api.get(`companies/${id}/raw`)
 
 	return data

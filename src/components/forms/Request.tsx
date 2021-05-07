@@ -194,6 +194,20 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setDigitadoPor(request.digitado_por)
 			setTipo(request.tipo)
 			setStatus(request.status)
+
+			getRawClient(request.cliente)
+				.then(client =>
+				{
+					const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
+					setClientData(tmpClientData)
+				})
+
+			getRawCompany(request.representada)
+				.then(company =>
+				{
+					if (company)
+						setConditionOptions(company.condicoes)
+				})
 		}
 	}, [request])
 
@@ -315,12 +329,15 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		{
 			produtos.map(product =>
 			{
-				const rawProduct = rawProductsList[representada].find(({_id}) => _id === product.id)
-
-				if (rawProduct)
+				if (rawProductsList[representada])
 				{
-					const subtotal = calcSubtotal(product.quantidade, product.preco, rawProduct.st, rawProduct.ipi)
-					total += subtotal
+					const rawProduct = rawProductsList[representada].find(({_id}) => _id === product.id)
+	
+					if (rawProduct)
+					{
+						const subtotal = calcSubtotal(product.quantidade, product.preco, rawProduct.st, rawProduct.ipi)
+						total += subtotal
+					}
 				}
 			})
 		}
@@ -452,7 +469,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 							<tbody>
 								{produtos.map((produto, index) =>
 									{
-										const rawProduct: RawProduct = (produto.id !== '' && representada !== '')
+										const rawProduct: RawProduct = (produto.id !== '' && representada !== '' && rawProductsList[representada])
 											? rawProductsList[representada].find(({_id}) => _id === produto.id)
 											: defaultRawProduct
 
