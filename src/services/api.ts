@@ -6,12 +6,13 @@ const {publicRuntimeConfig: env} = getConfig()
 export const apiUrl = String(env.apiUrl)
 
 const api = axios.create(
-{
-	baseURL: apiUrl,
-	headers:
 	{
-		key: env.apiKey
+		baseURL: apiUrl,
+		headers:
+		{
+			key: env.apiKey
+		}
 	}
-})
+)
 
 export default api

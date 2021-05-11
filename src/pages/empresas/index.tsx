@@ -12,6 +12,7 @@ import useUser from '../../hooks/useUser'
 import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
+import { getData } from '../../services/cache'
 
 interface CompaniesProps
 {
@@ -27,7 +28,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 
 	async function updateCompanies()
 	{
-		api.get('companies')
+		getData('companies', true)
 			.then(({data}:{data: CompanyListed[]}) =>
 			{
 				setCompanies(data)
@@ -78,7 +79,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 						</div>
 						{
 							user.role === 'admin' ?
-							<div className='actions'>
+								<div className='actions'>
 									<button
 										title='Editar'
 										onClick={() => Router.push(`/empresas/${company.id}/editar`)}
@@ -93,8 +94,8 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 									>
 										<FiTrash />
 									</button>
-							</div>
-							: <div />
+								</div>
+								: <div />
 						}
 					</div>
 				))}
@@ -103,7 +104,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 	)
 }
 
-export const getStaticProps: GetStaticProps = async ctx =>
+export const getStaticProps: GetStaticProps = async () =>
 {
 	const companies = await api.get('companies').then(({data}:{data: CompanyListed[]}) => data)
 
