@@ -90,10 +90,12 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 		if (isOffline)
 		{
-			const sessionToken = cookies.get('next-auth.session-token')
+			const savedUser = cookies.get('auth-user')
+			const tmpUser = savedUser == undefined
+				? defaultUser
+				: JSON.parse(savedUser)
 
-			if (sessionToken == undefined)
-				setUser(defaultUser)
+			setUser(tmpUser)
 
 			setLoading(false)
 			return
@@ -105,17 +107,22 @@ const AuthContextProvider: React.FC = ({children}) =>
 			const tmpUser: User = tmp
 
 			if (tmpUser && user.id !== tmpUser.id)
+			{
 				setUser(tmpUser)
+				cookies.set('auth-user', JSON.stringify(tmpUser))
+			}
 			else if (tmpUser.errorMessage)
 			{
 				let tmp = {...user}
 				tmp.errorMessage = tmpUser.errorMessage
 				setUser(tmp)
+				cookies.set('auth-user', JSON.stringify(defaultUser))
 			}
 		}
 		else if (!session)
 		{
 			setUser(defaultUser)
+			cookies.set('auth-user', JSON.stringify(defaultUser))
 		}
 	}
 
