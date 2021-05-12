@@ -20,12 +20,6 @@ type User =
 	errorMessage?: string
 }
 
-const defaultUser: User =
-{
-	id: 'not-logged',
-	role: 'none'
-}
-
 type AuthContextData =
 {
 	user: User
@@ -40,15 +34,31 @@ export const AuthContext = createContext({} as AuthContextData)
 
 const AuthContextProvider: React.FC = ({children}) =>
 {
-	const [session, loading] = useSession()
+	const [session, isSessionLoading] = useSession()
+
+	const defaultUser: User =
+	{
+		id: 'not-logged',
+		role: 'none'
+	}
 	const [user, setUser] = useState<User>(defaultUser)
+	const [loading, setLoading] = useState(true)
 
 	const isLogged = user.id !== 'not-logged'
 
 	useEffect(() =>
 	{
-		updateSession()
-	}, [loading, session])
+		setTimeout(() =>
+		{
+			setLoading(false)
+		}, 1000 * 2) // 2s
+	}, [])
+
+	useEffect(() =>
+	{
+		if (loading)
+			updateSession()
+	}, [isSessionLoading, session, loading])
 
 	useEffect(() =>
 	{
@@ -85,10 +95,11 @@ const AuthContextProvider: React.FC = ({children}) =>
 			if (sessionToken == undefined)
 				setUser(defaultUser)
 
+			setLoading(false)
 			return
 		}
 
-		if (!loading && session)
+		if (!isSessionLoading && session)
 		{
 			const {user: tmp}:{user: any} = session
 			const tmpUser: User = tmp
