@@ -6,11 +6,11 @@ import Header from '../../components/Header'
 import CompanyForm from '../../components/forms/Company'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 
 const AddCompany: React.FC = () =>
 {
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nomeFantasia, setNomeFantasia] = useState('')
 	
 	if (loading)

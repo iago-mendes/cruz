@@ -8,7 +8,7 @@ import ModalContainer from './Container'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import FormButtons from '../FormButtons'
 import LoadingModal from './Loading'
 
@@ -36,7 +36,7 @@ interface SheetModalProps
 const SheetModal: React.FC<SheetModalProps> =
 ({headerPath, uploadPath, downloadPath, sheetName, fileName, callback = () => {}}) =>
 {
-	const {user} = useUser()
+	const {user} = useAuth()
 
 	const [isOpen, setIsOpen] = useState(false)
 	const [sheet, setSheet] = useState<File>()
@@ -94,14 +94,14 @@ const SheetModal: React.FC<SheetModalProps> =
 				{
 					const header = await getHeader()
 					const wsCols = header.map(col =>
-						{
-							let width = 10
+					{
+						let width = 10
 				
-							if (col.split(' ')[0] === 'Tabela')
-								width = 20
+						if (col.split(' ')[0] === 'Tabela')
+							width = 20
 							
-							return {wch: width}
-						})
+						return {wch: width}
+					})
 					
 					const aoa =
 					[

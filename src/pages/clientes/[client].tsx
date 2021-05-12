@@ -7,7 +7,7 @@ import ClientForm from '../../components/forms/Client'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import api from '../../services/api'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import Client, {defaultClient} from '../../models/client'
 
 const EditClient: React.FC = () =>
@@ -15,7 +15,7 @@ const EditClient: React.FC = () =>
 	const Router = useRouter()
 	const {client: id} = Router.query
 
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nome_fantasia, setNomeFantasia] = useState('')
 	const [client, setClient] = useState<Client>(defaultClient)
 	

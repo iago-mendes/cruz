@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import {FiPlus} from 'react-icons/fi'
 
-import useUser from '../hooks/useUser'
+import useAuth from '../hooks/useAuth'
 import Container from '../styles/components/Add'
 
 interface AddProps
@@ -11,7 +11,7 @@ interface AddProps
 
 const Add: React.FC<AddProps> = ({route}) =>
 {
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const Router = useRouter()
 
 	if (loading)

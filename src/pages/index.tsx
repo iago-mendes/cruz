@@ -13,7 +13,7 @@ import Loading from '../components/Loading'
 import api, {apiUrl} from '../services/api'
 import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
-import useUser from '../hooks/useUser'
+import useAuth from '../hooks/useAuth'
 import successAlert from '../utils/alerts/success'
 import confirmAlert from '../utils/alerts/confirm'
 
@@ -25,7 +25,7 @@ interface RequestsProps
 const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 {
 	const Router = useRouter()
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	
 	const [requests, setRequests] = useState<Request[]>([])
 	const {data, error, revalidate} = useSWR('/api/getRequests')
@@ -52,7 +52,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 				.then(() =>
 				{
 					revalidate()
-					successAlert(`Pedido deletado com sucesso!`)
+					successAlert('Pedido deletado com sucesso!')
 				})
 		)
 	}
@@ -102,7 +102,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 									title='Ver pedido'
 									href={`${apiUrl}/pdf/requests/${request.id}`}
 									target='_blank'
-									rel='nonreferrer'
+									rel="nonreferrer noreferrer"
 								>
 									<FaRegEye />
 								</a>

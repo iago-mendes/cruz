@@ -4,13 +4,12 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 
-
 import {ClientListed as Client} from '../../models/client'
 import Header from '../../components/Header'
 import api from '../../services/api'
 import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import SheetModal from '../../components/modals/Sheet'
 import Paginate from '../../components/Paginate'
 import confirmAlert from '../../utils/alerts/confirm'
@@ -25,7 +24,7 @@ interface ClientsProps
 const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 {
 	const Router = useRouter()
-	const {user} = useUser()
+	const {user} = useAuth()
 	
 	const [clients, setClients] = useState<Client[]>(staticClients)
 	const [page, setPage]	= useState(1)
@@ -161,7 +160,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 	)
 }
 
-export const getStaticProps: GetStaticProps = async ctx =>
+export const getStaticProps: GetStaticProps = async () =>
 {
 	let clients: Client[] = []
 

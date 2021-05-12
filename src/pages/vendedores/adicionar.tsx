@@ -5,11 +5,11 @@ import SellerForm from '../../components/forms/Seller'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 
 const AddCompany: React.FC = () =>
 {
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nome, setNome] = useState('')
 	
 	if (loading)

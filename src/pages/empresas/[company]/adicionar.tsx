@@ -7,14 +7,14 @@ import Header from '../../../components/Header'
 import ProductForm from '../../../components/forms/Product'
 import Loading from '../../../components/Loading'
 import NotAllowed from '../../../components/NotAllowed'
-import useUser from '../../../hooks/useUser'
+import useAuth from '../../../hooks/useAuth'
 
 const AddCompany: React.FC = () =>
 {
 	const Router = useRouter()
-	const {company,line} = Router.query
+	const {company} = Router.query
 
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nome, setNome] = useState('')
 	
 	if (loading)
@@ -23,7 +23,7 @@ const AddCompany: React.FC = () =>
 		return <NotAllowed />
 
 	return (
-		<Container className="container">
+		<Container className='container'>
 			<Head>
 				<title>{nome} | Cruz Representações</title>
 			</Head>

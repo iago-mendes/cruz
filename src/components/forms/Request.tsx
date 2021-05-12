@@ -9,7 +9,7 @@ import freteOptions from '../../../db/options/frete.json'
 import Container from '../../styles/components/forms/global'
 import Products from '../../styles/components/forms/RequestProducts'
 import {selectStyles} from '../../styles/global'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
 import formatImage from '../../utils/formatImage'
 import SelectProductModal, {Product, Selected, defaultSelected} from '../modals/SelectProduct'
@@ -80,7 +80,7 @@ interface RequestFormProps
 const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => 
 {
 	const {back} = useRouter()
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 
 	const [cliente, setCliente] = useState('')
 	const [vendedor, setVendedor] = useState('')

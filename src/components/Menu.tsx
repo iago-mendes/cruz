@@ -3,13 +3,13 @@ import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
 import {FiUsers, FiLogOut, FiMenu, FiX} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
-import {signOut} from 'next-auth/client'
 import {useEffect, useState} from 'react'
 
 import Logo from '../assets/logo.svg'
 import {Sidebar, MobileMenu, BurgerMenu, OptionsList} from '../styles/components/Menu'
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
+import { useAuth } from '../contexts/Auth'
 
 const Menu: React.FC = () =>
 {
@@ -118,21 +118,26 @@ const MainOptions: React.FC = () => (
 	</main>
 )
 
-const FooterOptions: React.FC = () => (
-	<footer>
-		<OptionsList>
-			<Link href='/usuario' >
-				<a>
-					<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
-					<span>Usuário</span>
+const FooterOptions: React.FC = () =>
+{
+	const {logOut} = useAuth()
+
+	return (
+		<footer>
+			<OptionsList>
+				<Link href='/usuario' >
+					<a>
+						<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
+						<span>Usuário</span>
+					</a>
+				</Link>
+				<a onClick={logOut} >
+					<FiLogOut size={25} color='#E2DADB'/>
+					<span>Sair</span>
 				</a>
-			</Link>
-			<a onClick={() => signOut({callbackUrl: '/login'})}>
-				<FiLogOut size={25} color='#E2DADB'/>
-				<span>Sair</span>
-			</a>
-		</OptionsList>
-	</footer>
-)
+			</OptionsList>
+		</footer>
+	)
+}
 
 export default Menu

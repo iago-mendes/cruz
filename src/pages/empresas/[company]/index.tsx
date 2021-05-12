@@ -9,7 +9,7 @@ import api from '../../../services/api'
 import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/index'
 import Add from '../../../components/Add'
-import useUser from '../../../hooks/useUser'
+import useAuth from '../../../hooks/useAuth'
 import Company, {CompanyListed, CompanyTable as Table} from '../../../models/company'
 import Product from '../../../models/product'
 import SheetModal from '../../../components/modals/Sheet'
@@ -30,7 +30,7 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	const {query, push} = useRouter()
 	const {company: companyId} = query
 	
-	const {user} = useUser()
+	const {user} = useAuth()
 	const [products, setProducts] = useState<Product[]>(staticProducts)
 
 	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
@@ -167,15 +167,15 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 	)
 }
 
-export const getStaticPaths: GetStaticPaths = async ctx =>
+export const getStaticPaths: GetStaticPaths = async () =>
 {
 	const paths = await api.get('companies')
 		.then(({data}:{data: CompanyListed[]}) => (
 		
 			data.map(company => (
-			{
-				params: {company: company.id}
-			}))
+				{
+					params: {company: company.id}
+				}))
 		))
 
 	return {
@@ -193,10 +193,10 @@ export const getStaticProps: GetStaticProps = async ctx =>
 
 	const {companyName, tables} = await api.get(`companies/${companyId}/raw`)
 		.then(({data}:{data: Company}) => (
-		{
-			companyName: data.nome_fantasia,
-			tables: data.tabelas
-		}))
+			{
+				companyName: data.nome_fantasia,
+				tables: data.tabelas
+			}))
 	
 	return {
 		props: {products, companyName, tables},

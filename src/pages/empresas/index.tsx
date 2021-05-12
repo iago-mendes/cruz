@@ -8,7 +8,7 @@ import api from '../../services/api'
 import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
 import Add from '../../components/Add'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
@@ -22,7 +22,7 @@ interface CompaniesProps
 const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 {
 	const Router = useRouter()
-	const {user} = useUser()
+	const {user} = useAuth()
 
 	const [companies, setCompanies] = useState<CompanyListed[]>(staticCompanies)
 

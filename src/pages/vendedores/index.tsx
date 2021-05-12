@@ -12,7 +12,7 @@ import Add from '../../components/Add'
 import {Seller} from '../../components/forms/Seller'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
 
@@ -23,7 +23,7 @@ interface SellersProps
 
 const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 {
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const Router = useRouter()
 
 	const [sellers, setSellers] = useState<Seller[]>([])
@@ -61,17 +61,17 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 		)
 	}
 
-  return (
-    <Container className='container'>
-      <Head>
-        <title>Vendedores | Cruz Representações</title>
-      </Head>
+	return (
+		<Container className='container'>
+			<Head>
+				<title>Vendedores | Cruz Representações</title>
+			</Head>
 
 			<Add route='/vendedores/adicionar' />
 
 			<Header display='Vendedores' />
 
-      <main>
+			<main>
 				{sellers.map(seller => (
 					<div key={seller._id} className={`seller ${seller.admin && 'admin'}`}>
 						{
@@ -97,11 +97,11 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 					</div>
 				))}
 			</main>
-    </Container>
-  )
+		</Container>
+	)
 }
 
-export const getStaticProps: GetStaticProps = async ctx =>
+export const getStaticProps: GetStaticProps = async () =>
 {
 	let sellers: Seller[] = []
 

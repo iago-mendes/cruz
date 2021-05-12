@@ -5,11 +5,11 @@ import Client from '../../components/forms/Client'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 
 const AddClient: React.FC = () =>
 {
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nomeFantasia, setNomeFantasia] = useState('')
 	
 	if (loading)

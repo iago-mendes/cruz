@@ -1,17 +1,16 @@
 import Head from 'next/head'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
-import {signIn} from 'next-auth/client'
 import { useRouter } from 'next/router'
 
 import logo from '../assets/logo.svg'
 import Container from '../styles/pages/login'
 import LoadingModal from '../components/modals/Loading'
-import useUser from '../hooks/useUser'
 import errorAlert from '../utils/alerts/error'
+import { useAuth } from '../contexts/Auth'
 
 export default function Login()
 {
-	const {user} = useUser()
+	const {user, logIn} = useAuth()
 	const router = useRouter()
 
 	const [email, setEmail] = useState('')
@@ -45,7 +44,7 @@ export default function Login()
 		e.preventDefault()
 
 		setLoading(true)
-		signIn('credentials', {email, password, callbackUrl: '/'})
+		logIn(email, password)
 	}
 	
 	return (

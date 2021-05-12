@@ -1,13 +1,13 @@
 import Login from '../pages/login'
-import useUser from '../hooks/useUser';
-import useDimensions from '../hooks/useDimensions';
-import LoadingModal from './modals/Loading';
-import { MobileView } from '../styles/components/SessionHandler';
+import useAuth from '../hooks/useAuth'
+import LoadingModal from './modals/Loading'
+// import useDimensions from '../hooks/useDimensions'
+// import { MobileView } from '../styles/components/SessionHandler'
 
 const SessionHandler: React.FC = ({children}) =>
 {
-	const {loading, isLogged} = useUser()
-	const {inDesktop} = useDimensions()
+	const {loading, isLogged} = useAuth()
+	// const {inDesktop} = useDimensions()
 	
 	// if (!inDesktop)
 	// 	return (

@@ -7,27 +7,27 @@ import ProductForm, {Seller} from '../../components/forms/Seller'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import api from '../../services/api'
-import useUser from '../../hooks/useUser'
+import useAuth from '../../hooks/useAuth'
 
 const EditSeller: React.FC = () =>
 {
 	const Router = useRouter()
 	const {seller: id} = Router.query
 
-	const {user, loading} = useUser()
+	const {user, loading} = useAuth()
 	const [nome, setNome] = useState('')
 	const [seller, setSeller] = useState<Seller>(
-	{
-		_id: '',
-		nome: '',
-		imagem: '',
-		telefones: [],
-		email: '',
-		senha: '',
-		funcao: '',
-		admin: false,
-		representadas: []
-	})
+		{
+			_id: '',
+			nome: '',
+			imagem: '',
+			telefones: [],
+			email: '',
+			senha: '',
+			funcao: '',
+			admin: false,
+			representadas: []
+		})
 	
 	useEffect(() =>
 	{
