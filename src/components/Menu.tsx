@@ -9,7 +9,7 @@ import Logo from '../assets/logo.svg'
 import {Sidebar, MobileMenu, BurgerMenu, OptionsList} from '../styles/components/Menu'
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../hooks/useAuth'
 
 const Menu: React.FC = () =>
 {

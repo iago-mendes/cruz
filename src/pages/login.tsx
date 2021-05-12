@@ -6,7 +6,7 @@ import logo from '../assets/logo.svg'
 import Container from '../styles/pages/login'
 import LoadingModal from '../components/modals/Loading'
 import errorAlert from '../utils/alerts/error'
-import { useAuth } from '../contexts/Auth'
+import useAuth from '../hooks/useAuth'
 
 export default function Login()
 {
