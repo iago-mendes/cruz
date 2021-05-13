@@ -133,6 +133,9 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 	async function logOut()
 	{
+		cookies.remove('auth-user')
+		setUser(defaultUser)
+
 		await signOut({callbackUrl: '/login'})
 	}
 
