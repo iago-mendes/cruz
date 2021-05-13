@@ -51,7 +51,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 		setTimeout(() =>
 		{
 			setLoading(false)
-		}, 1000 * 2) // 2s
+		}, 1000 * 3) // 3s
 	}, [])
 
 	useEffect(() =>
