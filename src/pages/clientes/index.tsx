@@ -15,6 +15,7 @@ import Paginate from '../../components/Paginate'
 import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import { Image } from '../../components/Image'
 
 interface ClientsProps
 {
@@ -122,7 +123,7 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 				{clients.map(client => (
 					<div className='client' key={client.id} >
 						<div className='imgNames'>
-							<img src={client.imagem} alt={client.nome_fantasia} />
+							<Image src={client.imagem} alt={client.nome_fantasia} />
 							<div className='names'>
 								<h1>{client.nome_fantasia}</h1>
 								<h2>{client.razao_social}</h2>

@@ -3,6 +3,7 @@ import {useDropzone} from 'react-dropzone'
 import {FiUpload} from 'react-icons/fi'
 
 import Container from '../styles/components/Dropzone'
+import { Image } from './Image'
 
 interface Props
 {
@@ -33,21 +34,21 @@ const Dropzone: React.FC<Props> = ({shownFileUrl, onFileUploaded, name, id}) =>
 
 	const {getRootProps, getInputProps} = useDropzone({onDrop, accept: 'image/*'})
 
-return (
-	<Container {...getRootProps()}>
-		<input {...getInputProps()} accept='image/*' name={name} id={id} />
-		{
-			selectedFileUrl !== ''
-			? <img src={selectedFileUrl} alt='Image thumbnail' />
-			: (
-				<p>
-					<FiUpload />
+	return (
+		<Container {...getRootProps()}>
+			<input {...getInputProps()} accept='image/*' name={name} id={id} />
+			{
+				selectedFileUrl !== ''
+					? <Image src={selectedFileUrl} alt='Image thumbnail' />
+					: (
+						<p>
+							<FiUpload />
 					Selecione uma imagem
-				</p>
-			)
-		}
-	</Container>
-)
+						</p>
+					)
+			}
+		</Container>
+	)
 }
 
 export default Dropzone

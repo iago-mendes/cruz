@@ -15,6 +15,7 @@ import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
+import { Image } from '../../components/Image'
 
 interface SellersProps
 {
@@ -86,7 +87,7 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 								</div>
 							)
 						}
-						<img src={seller.imagem} alt={seller.nome} />
+						<Image src={seller.imagem} alt={seller.nome} />
 						<div className='texts'>
 							<h1>
 								{seller.nome}

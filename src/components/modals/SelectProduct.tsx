@@ -1,15 +1,16 @@
 import Modal from 'react-modal'
-import {FiCheck, FiX} from 'react-icons/fi'
+import {FiCheck} from 'react-icons/fi'
 import {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/modals/SelectProduct'
-import {modalStyle, selectStyles} from '../../styles/global'
+import {selectStyles} from '../../styles/global'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
 import api from '../../services/api'
 import formatImage from '../../utils/formatImage'
 import NumberInput from '../NumberInput'
 import ModalContainer from './Container'
+import { Image } from '../Image'
 
 Modal.setAppElement('#__next')
 
@@ -64,9 +65,11 @@ interface RequestProductModalProps
 	setIsOpen: (p: boolean) => void
 
 	selected: Selected
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	setSelected: Function
 
 	products: Product[]
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	setProducts: Function
 }
 
@@ -85,10 +88,10 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 				.then(({data}:{data: PricedProduct[]}) =>
 				{
 					const tmpOptions: SelectOption[] = data.map(product => (
-					{
-						value: product.id,
-						label: product.nome
-					}))
+						{
+							value: product.id,
+							label: product.nome
+						}))
 					setProductOptions(tmpOptions)
 
 					setPricedProducts(data)
@@ -195,16 +198,16 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 				{/* img & select */}
 				<div className='group'>
 					<div className='img'>
-						<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
+						<Image src={pricedProduct.imagem} alt={pricedProduct.nome} />
 					</div>
 					<div className='select'>
 						<Select
 							options={productOptions}
 							value=
-							{
-								selected.product.id !== '' &&
+								{
+									selected.product.id !== '' &&
 									productOptions.find(({value}) => value === selected.product.id)
-							}
+								}
 							onChange={handleSelectProduct}
 							isDisabled={selected.companyId === ''}
 							styles={selectStyles}
@@ -251,19 +254,19 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 				</div>
 				{/* subtotal */}
 				<div className='group'>
-						<div className='subGroup'>
-							<label>Subtotal (sem taxas)</label>
-							<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
-						</div>
-						<button
-							type='submit'
-							className='confirm'
-							onClick={() => setIsOpen(false)}
-						>
-							<FiCheck />
-							<span>Confirmar</span>
-						</button>
+					<div className='subGroup'>
+						<label>Subtotal (sem taxas)</label>
+						<span>= {priceToString(selected.product.quantidade * selected.product.preco)}</span>
 					</div>
+					<button
+						type='submit'
+						className='confirm'
+						onClick={() => setIsOpen(false)}
+					>
+						<FiCheck />
+						<span>Confirmar</span>
+					</button>
+				</div>
 			</Container>
 		</ModalContainer>
 	)

@@ -13,6 +13,7 @@ import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
 import { getData } from '../../services/cache'
+import { Image } from '../../components/Image'
 
 interface CompaniesProps
 {
@@ -66,7 +67,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 			<main>
 				{companies.map(company => (
 					<div key={company.id} className='company'>
-						<img src={company.imagem} alt={company.nome_fantasia}/>
+						<Image src={company.imagem} alt={company.nome_fantasia}/>
 						<div className='companyText'>
 							<Link href={`/empresas/${company.id}`} >
 								<a className='name'>

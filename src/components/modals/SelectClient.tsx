@@ -3,6 +3,7 @@ import { FiSearch, FiX } from 'react-icons/fi'
 import { ClientListed } from '../../models/client'
 import api from '../../services/api'
 import Container from '../../styles/components/modals/SelectClient'
+import { Image } from '../Image'
 import Paginate from '../Paginate'
 import ModalContainer from './Container'
 
@@ -101,7 +102,7 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen,
 								onClick={() => handleSelectClient(client)}
 							>
 								<div className='img'>
-									<img src={client.imagem} alt={client.nome_fantasia} />
+									<Image src={client.imagem} alt={client.nome_fantasia} />
 								</div>
 								<div className='info'>
 									<span className='highlight'>

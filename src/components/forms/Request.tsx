@@ -24,6 +24,7 @@ import { getRawSellers } from '../../services/requests/seller'
 import { getRawClient } from '../../services/requests/client'
 import { createRequest, updateRequest } from '../../services/requests/request'
 import { getData } from '../../services/cache'
+import { Image } from '../Image'
 
 interface Type
 {
@@ -492,7 +493,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 												</div>
 											</td>
 											<td className='img' >
-												<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
+												<Image src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
 											</td>
 											<td>{rawProduct.nome}</td>
 											<td>{rawProduct.unidade}</td>

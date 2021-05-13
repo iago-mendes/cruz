@@ -16,6 +16,7 @@ import formatDate from '../utils/formatDate'
 import useAuth from '../hooks/useAuth'
 import successAlert from '../utils/alerts/success'
 import confirmAlert from '../utils/alerts/confirm'
+import { Image } from '../components/Image'
 
 interface RequestsProps
 {
@@ -125,7 +126,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 						<ul>
 							<li>
 								<div className='imgName'>
-									<img src={request.cliente.imagem} alt={request.cliente.nome_fantasia}/>
+									<Image src={request.cliente.imagem} alt={request.cliente.nome_fantasia}/>
 									<h1>{request.cliente.nome_fantasia}</h1>
 								</div>
 								<div className='description'>
@@ -134,7 +135,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 							</li>
 							<li>
 								<div className='imgName'>
-									<img src={request.representada.imagem} alt={request.representada.nome_fantasia}/>
+									<Image src={request.representada.imagem} alt={request.representada.nome_fantasia}/>
 									<h1>{request.representada.nome_fantasia}</h1>
 								</div>
 								<div className='description'>
@@ -143,7 +144,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 							</li>
 							<li>
 								<div className='imgName'>
-									<img src={request.vendedor.imagem} alt={request.vendedor.nome}/>
+									<Image src={request.vendedor.imagem} alt={request.vendedor.nome}/>
 									<h1>{request.vendedor.nome}</h1>
 								</div>
 							</li>
