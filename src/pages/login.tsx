@@ -7,6 +7,7 @@ import Container from '../styles/pages/login'
 import LoadingModal from '../components/modals/Loading'
 import errorAlert from '../utils/alerts/error'
 import useAuth from '../hooks/useAuth'
+import warningAlert from '../utils/alerts/warning'
 
 export default function Login()
 {
@@ -42,6 +43,9 @@ export default function Login()
 	async function handleSubmit(e: FormEvent)
 	{
 		e.preventDefault()
+
+		if (!navigator.onLine)
+			return warningAlert('Você precisa estar online para entrar no sistema!')
 
 		setLoading(true)
 		logIn(email, password)
