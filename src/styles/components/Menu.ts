@@ -147,3 +147,30 @@ export const OptionsList = styled.ul`
 		}
 	}
 `
+
+export const OfflineIndicatorContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+
+	color: ${p => p.theme.colors.secondary};
+	font-size: 2.5rem;
+
+	svg
+	{
+		font-size: 5rem;
+	}
+
+	@media (max-width: 1000px)
+	{
+		flex-direction: row-reverse;
+
+		font-size: 2rem;
+
+		svg
+		{
+			font-size: 2.5rem;
+		}
+	}
+`

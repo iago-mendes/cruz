@@ -3,10 +3,11 @@ import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
 import {FiUsers, FiLogOut, FiMenu, FiX} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
+import {RiWifiOffLine} from 'react-icons/ri'
 import {useEffect, useState} from 'react'
 
 import Logo from '../assets/logo.svg'
-import {Sidebar, MobileMenu, BurgerMenu, OptionsList} from '../styles/components/Menu'
+import {Sidebar, MobileMenu, BurgerMenu, OptionsList, OfflineIndicatorContainer} from '../styles/components/Menu'
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
@@ -31,7 +32,15 @@ const Menu: React.FC = () =>
 		return (
 			<Sidebar>
 				<header>
-					<img src={Logo} alt='Cruz Representações' />
+					{
+						navigator.onLine
+							? (
+								<img src={Logo} alt='Cruz Representações' />
+							)
+							: (
+								<OfflineIndicator />
+							)
+					}
 				</header>
 
 				<MainOptions />
@@ -49,7 +58,15 @@ const Menu: React.FC = () =>
 				<FiMenu />
 			</button>
 
-			<img src={Logo} alt='Cruz Representações' />
+			{
+				navigator.onLine
+					? (
+						<img src={Logo} alt='Cruz Representações' />
+					)
+					: (
+						<OfflineIndicator />
+					)
+			}
 
 			<BurgerMenu
 				isOpen={isBurgerMenuOpen}
@@ -137,6 +154,16 @@ const FooterOptions: React.FC = () =>
 				</a>
 			</OptionsList>
 		</footer>
+	)
+}
+
+const OfflineIndicator: React.FC = () =>
+{
+	return (
+		<OfflineIndicatorContainer>
+			<RiWifiOffLine />
+			<span>Offline</span>
+		</OfflineIndicatorContainer>
 	)
 }
 
