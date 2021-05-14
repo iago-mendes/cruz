@@ -4,10 +4,8 @@ export const Sidebar = styled.nav`
   background-color: ${props => props.theme.colors.primary};
   height: 100vh;
   width: 20rem;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-between;
+
+	overflow-y: auto;
 
 	box-shadow: 5px 0px 10px rgba(0,0,0,0.25);
 	
@@ -97,6 +95,7 @@ export const BurgerMenu = styled.div<BurgerMenuProps>`
 	background-color: ${p => p.theme.colors.primary};
 	box-shadow: 5px 0px 5px rgba(0,0, 0, 0.5);
 
+	overflow-y: auto;
 	padding: 1rem;
 
 	transition: left 0.25s;
