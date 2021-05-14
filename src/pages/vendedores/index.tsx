@@ -1,6 +1,6 @@
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 
@@ -26,7 +26,12 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	const {user, loading} = useAuth()
 	const Router = useRouter()
 
-	const [sellers, setSellers] = useState<SellerRaw[]>([])
+	const [sellers, setSellers] = useState<SellerRaw[]>(staticSellers)
+
+	useEffect(() =>
+	{
+		updateSellers()
+	}, [])
 
 	if (loading)
 		return <Loading />

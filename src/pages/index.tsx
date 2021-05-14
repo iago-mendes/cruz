@@ -1,7 +1,7 @@
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {FaRegEye} from 'react-icons/fa'
 
@@ -27,7 +27,12 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 	const Router = useRouter()
 	const {user, loading} = useAuth()
 	
-	const [requests, setRequests] = useState<Request[]>([])
+	const [requests, setRequests] = useState<Request[]>(staticRequests)
+
+	useEffect(() =>
+	{
+		updateRequests()
+	}, [])
 
 	async function updateRequests()
 	{
