@@ -1,8 +1,7 @@
 import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
-import {useEffect, useState} from 'react'
-import useSWR from 'swr'
+import {useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {FaRegEye} from 'react-icons/fa'
 
@@ -29,20 +28,20 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 	const {user, loading} = useAuth()
 	
 	const [requests, setRequests] = useState<Request[]>([])
-	const {data, error, revalidate} = useSWR('/api/getRequests')
 
-	useEffect(() =>
+	async function updateRequests()
 	{
-		if (data)
-			setRequests(data)
-		else
-		{
-			setRequests(staticRequests)
-
-			if (error)
-				console.error(error)
-		}
-	}, [data, error, staticRequests])
+		await api.get('requests')
+			.then(({data}) =>
+			{
+				setRequests(data)
+			})
+			.catch(error =>
+			{
+				console.log('<< error >>', error)
+				setRequests(staticRequests)
+			})
+	}
 
 	function handleDeleteRequest(request: Request)
 	{
@@ -52,7 +51,7 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 			() => api.delete(`requests/${request.id}`)
 				.then(() =>
 				{
-					revalidate()
+					updateRequests()
 					successAlert('Pedido deletado com sucesso!')
 				})
 		)
