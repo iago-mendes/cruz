@@ -3,6 +3,7 @@ import ClientRaw from '../../models/client'
 import CompanyRaw from '../../models/company'
 import RequestRaw from '../../models/request'
 import { SellerRaw } from '../../models/seller'
+import successAlert from '../../utils/alerts/success'
 import api from '../api'
 
 export async function synchronize(setLoading: (loading: boolean) => void)
@@ -12,6 +13,7 @@ export async function synchronize(setLoading: (loading: boolean) => void)
 	await getData()
 
 	setLoading(false)
+	successAlert('Sincronização concluída com sucesso!')
 }
 
 async function getData()
