@@ -51,7 +51,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 		setTimeout(() =>
 		{
 			setLoading(false)
-		}, 1000 * 3) // 3s
+		}, 1000 * 2) // 2s
 	}, [])
 
 	useEffect(() =>
@@ -101,7 +101,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 			return
 		}
 
-		if (!isSessionLoading && session)
+		if (session)
 		{
 			const {user: tmp}:{user: any} = session
 			const tmpUser: User = tmp
@@ -119,7 +119,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 				cookies.set('auth-user', JSON.stringify(defaultUser))
 			}
 		}
-		else if (!session)
+		else (!session)
 		{
 			setUser(defaultUser)
 			cookies.set('auth-user', JSON.stringify(defaultUser))
