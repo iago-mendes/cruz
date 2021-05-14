@@ -2,7 +2,7 @@ import Link from 'next/link'
 import {useRouter} from 'next/router'
 import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
 import {FiUsers, FiLogOut, FiMenu, FiX} from 'react-icons/fi'
-import {FaStore} from 'react-icons/fa'
+import {FaStore, FaSync} from 'react-icons/fa'
 import {RiWifiOffLine} from 'react-icons/ri'
 import {useEffect, useState} from 'react'
 
@@ -11,6 +11,7 @@ import {Sidebar, MobileMenu, BurgerMenu, OptionsList, OfflineIndicatorContainer}
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
+import { synchronize } from '../services/db/synchronize'
 
 const Menu: React.FC = () =>
 {
@@ -152,6 +153,10 @@ const FooterOptions: React.FC = () =>
 					<FiLogOut size={25} color='#E2DADB'/>
 					<span>Sair</span>
 				</a>
+				<button className='sync' onClick={synchronize} >
+					<FaSync />
+					<span>Sincronizar</span>
+				</button>
 			</OptionsList>
 		</footer>
 	)

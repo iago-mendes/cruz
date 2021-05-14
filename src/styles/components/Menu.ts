@@ -146,6 +146,30 @@ export const OptionsList = styled.ul`
 			font-family: Ubuntu;
 		}
 	}
+
+	button.sync
+	{
+		background: none;
+		padding: 0.5rem 1rem;
+		border: ${p => p.theme.colors.background} 2px solid;
+		border-radius: 2rem;
+
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+
+		color: ${p => p.theme.colors.background};
+		font-family: Ubuntu;
+		font-weight: 700;
+		font-size: 1.5rem;
+
+		transition: background-color 0.25s;
+
+		:hover
+		{
+			background-color: ${p => p.theme.colors.primaryDark}80;
+		}
+	}
 `
 
 export const OfflineIndicatorContainer = styled.div`
