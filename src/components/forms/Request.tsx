@@ -23,8 +23,8 @@ import SelectClientModal from '../modals/SelectClient'
 import { getRawSellers } from '../../services/requests/seller'
 import { getRawClient } from '../../services/requests/client'
 import { createRequest, updateRequest } from '../../services/requests/request'
-import { getData } from '../../services/cache'
 import { Image } from '../Image'
+import { getRawCompanies, getRawCompany } from '../../services/requests/company'
 
 interface Type
 {
@@ -129,7 +129,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 		async function getCompanies()
 		{
-			const companies = await getData('companies/raw')
+			const companies = await getRawCompanies()
 			const tmpCompanyOptions: SelectOption[] = companies.map(company => (
 				{
 					label: company.nome_fantasia,
@@ -143,7 +143,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		{
 			let tmpRawProductsList: RawProductsList = {}
 			
-			const companies = await getData('companies/raw')
+			const companies = await getRawCompanies()
 			companies.map(company =>
 			{
 				tmpRawProductsList[company._id] = company.produtos
@@ -203,7 +203,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					setClientData(tmpClientData)
 				})
 
-			getData(`companies/${request.representada}/raw`)
+			getRawCompany(request.representada)
 				.then(company =>
 				{
 					if (company)
@@ -242,7 +242,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		tmpSelected.companyId = companyId
 		setSelected(tmpSelected)
 
-		const company = await getData(`companies/${companyId}/raw`)
+		const company = await getRawCompany(companyId)
 		setConditionOptions(company.condicoes)
 	}
 

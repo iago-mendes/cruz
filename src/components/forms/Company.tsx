@@ -16,7 +16,7 @@ interface CompanyFormProps
 	method: string
 	
 	nomeFantasia: string
-	setNomeFantasia: Function
+	setNomeFantasia: (p: string) => void
 	
 	id?: string
 	company?: Company
@@ -199,18 +199,18 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 
 		switch (field)
 		{
-			case 'name':
-				tmpConditions[index].nome = String(value)
-				break
-			case 'price':
-				if (typeof value === 'number')
-				{
-					const tmpPrice = value
-					tmpConditions[index].precoMin = tmpPrice
-				}
-				break
-			default:
-				break
+		case 'name':
+			tmpConditions[index].nome = String(value)
+			break
+		case 'price':
+			if (typeof value === 'number')
+			{
+				const tmpPrice = value
+				tmpConditions[index].precoMin = tmpPrice
+			}
+			break
+		default:
+			break
 		}
 
 		setCondicoes(tmpConditions)
@@ -237,28 +237,28 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		if (method === 'post')
 		{
 			await api.post('companies', data)
-			.then(() =>
-			{
-				successAlert('Empresa criada com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				errorAlert(err.response.message.data)
-			})
+				.then(() =>
+				{
+					successAlert('Empresa criada com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					errorAlert(err.response.message.data)
+				})
 		}
 		else if (method === 'put')
 		{
 			await api.put(`companies/${id}`, data)
-			.then(() =>
-			{
-				successAlert('Empresa atualizada com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				errorAlert(err.response.message.data)
-			})
+				.then(() =>
+				{
+					successAlert('Empresa atualizada com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					errorAlert(err.response.message.data)
+				})
 		}
 	}
 

@@ -12,7 +12,6 @@ import useAuth from '../../hooks/useAuth'
 import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
-import { getData } from '../../services/cache'
 import { Image } from '../../components/Image'
 
 interface CompaniesProps
@@ -29,7 +28,7 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 
 	async function updateCompanies()
 	{
-		getData('companies', true)
+		api.get('companies')
 			.then(({data}:{data: CompanyListed[]}) =>
 			{
 				setCompanies(data)
