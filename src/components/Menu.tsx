@@ -12,6 +12,7 @@ import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
 import { synchronize } from '../services/db/synchronize'
+import LoadingModal from './modals/Loading'
 
 const Menu: React.FC = () =>
 {
@@ -139,9 +140,14 @@ const MainOptions: React.FC = () => (
 const FooterOptions: React.FC = () =>
 {
 	const {logOut} = useAuth()
+	const [loading, setLoading] = useState(false)
 
 	return (
 		<footer>
+			<LoadingModal
+				isOpen={loading}
+			/>
+
 			<OptionsList>
 				<Link href='/usuario' >
 					<a>
@@ -153,7 +159,7 @@ const FooterOptions: React.FC = () =>
 					<FiLogOut size={25} color='#E2DADB'/>
 					<span>Sair</span>
 				</a>
-				<button className='sync' onClick={synchronize} >
+				<button className='sync' onClick={() => synchronize(setLoading)} >
 					<FaSync />
 					<span>Sincronizar</span>
 				</button>
