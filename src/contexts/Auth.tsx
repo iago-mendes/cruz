@@ -101,7 +101,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 			return
 		}
 
-		if (!loading && session)
+		if (!isSessionLoading && session)
 		{
 			const {user: tmp}:{user: any} = session
 			const tmpUser: User = tmp
