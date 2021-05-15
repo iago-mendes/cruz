@@ -6,7 +6,8 @@ import SessionHandler from '../components/SessionHandler'
 import GlobalStyle from '../styles/global'
 import AuthContextProvider from '../contexts/Auth'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps })
+{
 	return (
 		<AuthContextProvider>
 			<ThemeProvider theme={theme}>

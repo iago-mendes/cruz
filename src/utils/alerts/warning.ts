@@ -3,11 +3,12 @@ import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-function warningAlert(message: string)
+function warningAlert(title: string, text?: string)
 {
 	MySwal.fire({
 		icon: 'warning',
-		title: message
+		title,
+		text
 	})
 }
 
