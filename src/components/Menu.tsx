@@ -11,7 +11,7 @@ import {Sidebar, MobileMenu, BurgerMenu, OptionsList, OfflineIndicatorContainer}
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
-import { synchronize } from '../services/db/synchronize'
+import { sync } from '../services/db/sync'
 import LoadingModal from './modals/Loading'
 
 const Menu: React.FC = () =>
@@ -159,7 +159,7 @@ const FooterOptions: React.FC = () =>
 					<FiLogOut size={25} color='#E2DADB'/>
 					<span>Sair</span>
 				</a>
-				<button className='sync' onClick={() => synchronize(setLoading)} >
+				<button className='sync' onClick={() => sync(setLoading)} >
 					<FaSync />
 					<span>Sincronizar</span>
 				</button>
