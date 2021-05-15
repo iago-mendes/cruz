@@ -101,7 +101,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 			return
 		}
 
-		if (session)
+		if (!loading && session)
 		{
 			const {user: tmp}:{user: any} = session
 			const tmpUser: User = tmp
@@ -119,7 +119,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 				cookies.set('auth-user', JSON.stringify(defaultUser))
 			}
 		}
-		else (!session)
+		else if (!session)
 		{
 			setUser(defaultUser)
 			cookies.set('auth-user', JSON.stringify(defaultUser))
