@@ -1,15 +1,24 @@
+import pLimit from 'p-limit'
+
 import db from '.'
 import successAlert from '../../utils/alerts/success'
 import getDate from '../../utils/getDate'
 import api from '../api'
+
+const limit = pLimit(10)
+
+type SyncId =
+{
+	id: string
+	modifiedAt: string
+}
 
 export async function sync(setLoading?: (loading: boolean) => void)
 {
 	if (setLoading)
 		setLoading(true)
 
-	const lastSync = localStorage.getItem('last-sync')
-	await getData(lastSync)
+	await getData()
 
 	const today = getDate()
 	localStorage.setItem('last-sync', today)
@@ -21,14 +30,8 @@ export async function sync(setLoading?: (loading: boolean) => void)
 	}
 }
 
-async function getData(lastSync?: string)
+async function getData()
 {
-	type SyncId =
-	{
-		id: string
-		modifiedAt: string
-	}
-
 	const {data: syncIds}:
 	{
 		data:
@@ -41,70 +44,44 @@ async function getData(lastSync?: string)
 		}
 	} = await api.get('sync')
 
+	const lastSync = localStorage.getItem('last-sync')
 	if (lastSync && lastSync > syncIds.lastModifiedAt)
 		return
+	
+	await handleAsyncCalls(syncIds.clients, 'clients')
+	await handleAsyncCalls(syncIds.companies, 'companies')
+	await handleAsyncCalls(syncIds.requests, 'requests')
+	await handleAsyncCalls(syncIds.sellers, 'sellers')
+}
 
-	await Promise.all(syncIds.clients.map(async ({id, modifiedAt}) =>
+async function handleAsyncCalls(ids: SyncId[], table: string)
+{
+	const lastSync = localStorage.getItem('last-sync')
+	
+	const promises = ids.map(({id, modifiedAt}) =>
 	{
-		const existing = await db.table('clients').get(id)
+		const apiRoute = table === 'companies'
+			? `${table}/${id}/raw`
+			: `${table}-raw/${id}`
 
-		if (!existing)
+		async function promise()
 		{
-			const {data} = await api.get(`clients-raw/${id}`)
-			await db.table('clients').add(data)
+			const existing = await db.table(table).get(id)
+	
+			if (!existing)
+			{
+				const {data} = await api.get(apiRoute)
+				await db.table(table).add(data)
+			}
+			else if (lastSync && lastSync <= modifiedAt)
+			{
+				const {data} = await api.get(apiRoute)
+				await db.table(table).put(data)
+			}
 		}
-		else if (lastSync && lastSync <= modifiedAt)
-		{
-			const {data} = await api.get(`clients-raw/${id}`)
-			await db.table('clients').put(data)
-		}
-	}))
 
-	await Promise.all(syncIds.companies.map(async ({id, modifiedAt}) =>
-	{
-		const existing = await db.table('companies').get(id)
+		return limit(promise)
+	})
 
-		if (!existing)
-		{
-			const {data} = await api.get(`companies/${id}/raw`)
-			await db.table('companies').add(data)
-		}
-		else if (lastSync && lastSync <= modifiedAt)
-		{
-			const {data} = await api.get(`companies/${id}/raw`)
-			await db.table('companies').put(data)
-		}
-	}))
-
-	await Promise.all(syncIds.requests.map(async ({id, modifiedAt}) =>
-	{
-		const existing = await db.table('requests').get(id)
-
-		if (!existing)
-		{
-			const {data} = await api.get(`requests-raw/${id}`)
-			await db.table('requests').add(data)
-		}
-		else if (lastSync && lastSync <= modifiedAt)
-		{
-			const {data} = await api.get(`requests-raw/${id}`)
-			await db.table('requests').put(data)
-		}
-	}))
-
-	await Promise.all(syncIds.sellers.map(async ({id, modifiedAt}) =>
-	{
-		const existing = await db.table('sellers').get(id)
-
-		if (!existing)
-		{
-			const {data} = await api.get(`sellers-raw/${id}`)
-			await db.table('sellers').add(data)
-		}
-		else if (lastSync && lastSync <= modifiedAt)
-		{
-			const {data} = await api.get(`sellers-raw/${id}`)
-			await db.table('sellers').put(data)
-		}
-	}))
+	await Promise.all(promises)
 }

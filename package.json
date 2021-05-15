@@ -15,6 +15,7 @@
     "next-auth": "^3.1.0",
     "next-images": "^1.6.2",
     "next-pwa": "^5.2.21",
+    "p-limit": "^3.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-dropzone": "^11.2.4",
