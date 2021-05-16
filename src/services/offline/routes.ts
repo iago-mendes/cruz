@@ -5,38 +5,38 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 {
 	let isRouteAvailableOffline = false
 
-	if (compareRoutes('/requests', route) && method === 'post')
+	if (method === 'post' && compareRoutes('requests', route))
 	{
 		request.create(route, body)
 		isRouteAvailableOffline = true
 	}
-	if (compareRoutes('/requests/:id', route) && method === 'put')
+	if (method === 'put' && compareRoutes('requests/:id', route))
 	{
 		request.update(route, body)
 		isRouteAvailableOffline = true
 	}
-	if (compareRoutes('/requests/:id', route) && method === 'delete')
+	if (method === 'delete' && compareRoutes('requests/:id', route))
 	{
 		request.remove(route, body)
 		isRouteAvailableOffline = true
 	}
 	
-	if (compareRoutes('/clients', route) && method === 'post')
+	if (method === 'post' && compareRoutes('clients', route))
 	{
 		client.create(route, body)
 		isRouteAvailableOffline = true
 	}
-	if (compareRoutes('/clients/:id', route) && method === 'put')
+	if (method === 'put' && compareRoutes('clients/:id', route))
 	{
 		client.update(route, body)
 		isRouteAvailableOffline = true
 	}
-	if (compareRoutes('/clients/:id', route) && method === 'delete')
+	if (method === 'delete' && compareRoutes('clients/:id', route))
 	{
 		client.remove(route, body)
 		isRouteAvailableOffline = true
 	}
-	if (compareRoutes('/clients/:client/contacts', route) && method === 'post')
+	if (method === 'post' && compareRoutes('clients/:client/contacts', route))
 	{
 		client.addContact(route, body)
 		isRouteAvailableOffline = true

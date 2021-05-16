@@ -1,5 +1,6 @@
 import axios from 'axios'
 import getConfig from 'next/config'
+import { apiHandler } from './offline/api'
 
 const {publicRuntimeConfig: env} = getConfig()
 
@@ -14,5 +15,7 @@ const api = axios.create(
 		}
 	}
 )
+
+api.interceptors.request.use(apiHandler)
 
 export default api
