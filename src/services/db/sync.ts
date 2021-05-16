@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from 'axios'
 import pLimit from 'p-limit'
 
 import db from '.'
@@ -18,6 +19,7 @@ export async function sync(setLoading?: (loading: boolean) => void)
 	if (setLoading)
 		setLoading(true)
 
+	await sendApiCalls()
 	await getData()
 
 	const today = getDate()
@@ -84,4 +86,24 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 	})
 
 	await Promise.all(promises)
+}
+
+async function sendApiCalls()
+{
+	const apiCalls: Array<
+	{
+		date: string
+		config: string
+	}> = await db.table('apiQueue').toArray()
+
+	apiCalls.sort((a, b) => a.date < b.date ? -1 : 1)
+	const promises = apiCalls.map(async apiCall =>
+	{
+		const config: AxiosRequestConfig = JSON.parse(apiCall.config)
+		await api.request(config)
+	})
+
+	await Promise.all(promises)
+
+	await db.table('apiQueue').clear()
 }
