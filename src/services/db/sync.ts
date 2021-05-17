@@ -92,22 +92,33 @@ async function sendApiCalls()
 {
 	const apiCalls: Array<
 	{
+		id: string
 		date: string
 		config: Config
 	}> = await db.table('apiQueue').toArray()
 
 	apiCalls.sort((a, b) => a.date < b.date ? -1 : 1)
-	const promises = apiCalls.map(({config}) =>
+	const promises = apiCalls.map(({id, config}) =>
 	{
+		const dataArray = Object.entries(config.data)
+		const data = new FormData()
+
+		dataArray.forEach(([key, value]) =>
+		{
+			if (!(value instanceof File))
+				data.append(key, String(value))
+		})
+
 		async function promise()
 		{
-			await api.request(config)
+			const requestConfig = {data, ...config}
+			await api.request(requestConfig)
+
+			await db.table('apiQueue').delete(id)
 		}
 
 		return limit(promise)
 	})
 
 	await Promise.all(promises)
-
-	await db.table('apiQueue').clear()
 }

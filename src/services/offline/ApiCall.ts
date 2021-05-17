@@ -31,7 +31,7 @@ export class ApiCall
 			baseURL: axiosConfig.baseURL,
 			headers: axiosConfig.headers,
 			params: axiosConfig.params,
-			data: axiosConfig.data
+			data: this.formatData(axiosConfig.data)
 		}
 	}
 
@@ -39,6 +39,24 @@ export class ApiCall
 	{
 		const id = '_' + Math.random().toString(36).substr(2, 9)
 		return id
+	}
+
+	private formatData(data: any)
+	{
+		if (!(data instanceof FormData))
+			return data
+		
+		let dataObj:
+		{
+			[key: string]: FormDataEntryValue
+		} = {}
+
+		data.forEach((value, key) =>
+		{
+			dataObj[key] = value
+		})
+
+		return dataObj
 	}
 
 	async save()
