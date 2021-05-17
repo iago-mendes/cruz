@@ -1,10 +1,10 @@
-import { AxiosRequestConfig } from 'axios'
 import pLimit from 'p-limit'
 
 import db from '.'
 import successAlert from '../../utils/alerts/success'
 import getDate from '../../utils/getDate'
 import api from '../api'
+import { Config } from '../offline/ApiCall'
 
 const limit = pLimit(10)
 
@@ -93,14 +93,18 @@ async function sendApiCalls()
 	const apiCalls: Array<
 	{
 		date: string
-		config: string
+		config: Config
 	}> = await db.table('apiQueue').toArray()
 
 	apiCalls.sort((a, b) => a.date < b.date ? -1 : 1)
-	const promises = apiCalls.map(async apiCall =>
+	const promises = apiCalls.map(({config}) =>
 	{
-		const config: AxiosRequestConfig = JSON.parse(apiCall.config)
-		await api.request(config)
+		async function promise()
+		{
+			await api.request(config)
+		}
+
+		return limit(promise)
 	})
 
 	await Promise.all(promises)

@@ -7,7 +7,7 @@ db.version(1).stores(
 		clients: '_id, razao_social, nome_fantasia, imagem, cnpj, insc_estadual, email, senha, vendedores, representadas, endereco, status, condicoes',
 		sellers: '_id, nome, imagem, telefones, email, senha, funcao, admin, representadas',
 		requests: '_id, cliente, vendedor, representada, produtos, data, condicao, frete, contato, digitado_por, tipo, status',
-		apiQueue: 'date, config'
+		apiQueue: 'id, date, config'
 	}
 )
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import getConfig from 'next/config'
-import { apiHandler } from './offline/api'
+import { apiHandler } from './offline/apiHandler'
 
 const {publicRuntimeConfig: env} = getConfig()
 
