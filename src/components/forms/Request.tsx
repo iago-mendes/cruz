@@ -22,9 +22,11 @@ import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
 import { getRawSellers } from '../../services/requests/seller'
 import { getRawClient } from '../../services/requests/client'
-import { createRequest, updateRequest } from '../../services/requests/request'
 import { Image } from '../Image'
 import { getRawCompanies, getRawCompany } from '../../services/requests/company'
+import api from '../../services/api'
+import successAlert from '../../utils/alerts/success'
+import errorAlert from '../../utils/alerts/error'
 
 interface Type
 {
@@ -379,9 +381,29 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 
 		if (method === 'post')
-			await createRequest(apiData, back)
+			await api.post('requests', apiData)
+				.then(() =>
+				{
+					successAlert('Pedido criado com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					console.error(err)
+					errorAlert('Algo errado aconteceu!')
+				})
 		else if (method === 'put')
-			await updateRequest(id, apiData, back)
+			await api.put(`requests/${id}`, apiData)
+				.then(() =>
+				{
+					successAlert('Pedido atualizado com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					console.error(err)
+					errorAlert('Algo errado aconteceu!')
+				})
 	}
 
 	return (
