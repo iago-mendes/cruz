@@ -60,7 +60,7 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 {
 	const lastSync = localStorage.getItem('last-sync')
 	
-	const promises = ids.map(({id, modifiedAt}) =>
+	await Promise.all(ids.map(({id, modifiedAt}) =>
 	{
 		const apiRoute = table === 'companies'
 			? `${table}/${id}/raw`
@@ -83,9 +83,22 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 		}
 
 		return limit(promise)
-	})
+	}))
 
-	await Promise.all(promises)
+	const savedIds = await db.table(table).toCollection().primaryKeys()
+	await Promise.all(savedIds.map(savedId =>
+	{
+		const id = String(savedId.valueOf())
+
+		async function promise()
+		{
+			const wasDeleted = ids.findIndex(({id: apiId}) => apiId === id) < 0
+			if (wasDeleted)
+				await db.table(table).delete(id)
+		}
+
+		return limit(promise)
+	}))
 }
 
 async function sendApiCalls()
