@@ -46,6 +46,11 @@ async function getData()
 		}
 	} = await api.get('sync')
 
+	await handleDeletedItems(syncIds.clients, 'clients')
+	await handleDeletedItems(syncIds.companies, 'companies')
+	await handleDeletedItems(syncIds.requests, 'requests')
+	await handleDeletedItems(syncIds.sellers, 'sellers')
+
 	const lastSync = localStorage.getItem('last-sync')
 	if (lastSync && lastSync > syncIds.lastModifiedAt)
 		return
@@ -84,7 +89,10 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 
 		return limit(promise)
 	}))
+}
 
+async function handleDeletedItems(ids: SyncId[], table: string)
+{
 	const savedIds = await db.table(table).toCollection().primaryKeys()
 	await Promise.all(savedIds.map(savedId =>
 	{
