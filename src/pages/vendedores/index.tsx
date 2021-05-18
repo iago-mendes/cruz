@@ -1,4 +1,3 @@
-import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useEffect, useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
@@ -15,18 +14,19 @@ import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
 import { Image } from '../../components/Image'
 import { SellerRaw } from '../../models/seller'
+import { sellerController } from '../../services/offline/controllers/seller'
 
 interface SellersProps
 {
 	sellers: SellerRaw[]
 }
 
-const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
+const Sellers: React.FC<SellersProps> = () =>
 {
 	const {user, loading} = useAuth()
 	const Router = useRouter()
 
-	const [sellers, setSellers] = useState<SellerRaw[]>(staticSellers)
+	const [sellers, setSellers] = useState<SellerRaw[]>([])
 
 	useEffect(() =>
 	{
@@ -40,15 +40,15 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 	
 	async function updateSellers()
 	{
-		await api.get('sellers-raw')
-			.then(({data}:{data: SellerRaw[]}) =>
+		await sellerController.raw()
+			.then(data =>
 			{
 				setSellers(data)
 			})
 			.catch(error =>
 			{
 				console.log('<< error >>', error)
-				setSellers(staticSellers)
+				setSellers([])
 			})
 	}
 
@@ -104,18 +104,6 @@ const Sellers: React.FC<SellersProps> = ({sellers: staticSellers}) =>
 			</main>
 		</Container>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async () =>
-{
-	let sellers: SellerRaw[] = []
-
-	await api.get('sellers-raw').then(({data}) => sellers = data)
-
-	return {
-		props: {sellers},
-		revalidate: 1
-	}
 }
 
 export default Sellers

@@ -6,8 +6,8 @@ import Header from '../../components/Header'
 import ProductForm, {Seller} from '../../components/forms/Seller'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
-import api from '../../services/api'
 import useAuth from '../../hooks/useAuth'
+import { sellerController } from '../../services/offline/controllers/seller'
 
 const EditSeller: React.FC = () =>
 {
@@ -31,8 +31,8 @@ const EditSeller: React.FC = () =>
 	
 	useEffect(() =>
 	{
-		api.get(`sellers-raw/${id}`)
-			.then(res => setSeller(res.data))
+		sellerController.rawOne((String(id)))
+			.then(data => setSeller(data))
 	}, [id])
 
 	if (loading)
