@@ -1,6 +1,7 @@
 import { AxiosRequestConfig, Method } from 'axios'
 
 import getDate from '../../utils/getDate'
+import { getRandomString } from '../../utils/getRandomString'
 import db from '../db'
 
 export type Config =
@@ -37,7 +38,7 @@ export class ApiCall
 
 	private getId()
 	{
-		const id = '_' + Math.random().toString(36).substr(2, 9)
+		const id = getRandomString()
 		return id
 	}
 

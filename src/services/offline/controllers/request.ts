@@ -1,11 +1,89 @@
+import { getRandomString } from '../../../utils/getRandomString'
+import db from '../../db'
+
 export const request =
 {
-	create: (route: string, body: unknown) =>
-	{},
+	create: async (body: any) =>
+	{
+		const
+			{
+				data,
+				condicao,
+				digitado_por,
+				cliente,
+				vendedor,
+				representada,
+				contato,
+				frete,
+				tipo,
+				status,
+				produtos,
+			} = body
 
-	update: (route: string, body: unknown) =>
-	{},
+		const id = getRandomString('tmpId')
+		const addedRequest =
+		{
+			id,
+			data,
+			condicao,
+			digitado_por,
+			cliente,
+			vendedor,
+			representada,
+			contato,
+			frete,
+			tipo,
+			status,
+			produtos
+		}
 
-	remove: (route: string, body: unknown) =>
-	{}
+		await db.table('requests').add(addedRequest, id)
+	},
+
+	update: async (body: any, id?: string) =>
+	{
+		if (!id)
+			return
+		
+		const
+			{
+				data,
+				condicao,
+				digitado_por,
+				cliente,
+				vendedor,
+				representada,
+				contato,
+				frete,
+				tipo,
+				status,
+				produtos
+			} = body
+
+		const updatedRequest =
+		{
+			id,
+			data,
+			condicao,
+			digitado_por,
+			cliente,
+			vendedor,
+			representada,
+			contato,
+			frete,
+			tipo,
+			status,
+			produtos
+		}
+
+		await db.table('requests').put(updatedRequest, id)
+	},
+
+	remove: async (id?: string) =>
+	{
+		if (!id)
+			return
+		
+		await db.table('requests').delete(id)
+	}
 }

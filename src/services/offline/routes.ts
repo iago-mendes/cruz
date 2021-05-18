@@ -1,3 +1,4 @@
+import { getRouteParam } from '../../utils/getRouteParam'
 import { client } from './controllers/client'
 import { request } from './controllers/request'
 
@@ -7,17 +8,19 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 
 	if (method === 'post' && compareRoutes('requests', route))
 	{
-		request.create(route, body)
+		request.create(body)
 		isRouteAvailableOffline = true
 	}
 	if (method === 'put' && compareRoutes('requests/:id', route))
 	{
-		request.update(route, body)
+		const id = getRouteParam('requests/:id', route, 'id')
+		request.update(body, id)
 		isRouteAvailableOffline = true
 	}
 	if (method === 'delete' && compareRoutes('requests/:id', route))
 	{
-		request.remove(route, body)
+		const id = getRouteParam('requests/:id', route, 'id')
+		request.remove(id)
 		isRouteAvailableOffline = true
 	}
 	
