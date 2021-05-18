@@ -26,22 +26,25 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 	
 	if (method === 'post' && compareRoutes('clients', route))
 	{
-		client.create(route, body)
+		client.create(body)
 		isRouteAvailableOffline = true
 	}
 	if (method === 'put' && compareRoutes('clients/:id', route))
 	{
-		client.update(route, body)
+		const id = getRouteParam('clients/:id', route, 'id')
+		client.update(body, id)
 		isRouteAvailableOffline = true
 	}
 	if (method === 'delete' && compareRoutes('clients/:id', route))
 	{
-		client.remove(route, body)
+		const id = getRouteParam('clients/:id', route, 'id')
+		client.remove(id)
 		isRouteAvailableOffline = true
 	}
 	if (method === 'post' && compareRoutes('clients/:client/contacts', route))
 	{
-		client.addContact(route, body)
+		const id = getRouteParam('clients/:client/contacts', route, 'id')
+		client.addContact(body, id)
 		isRouteAvailableOffline = true
 	}
 

@@ -5,25 +5,24 @@ export const request =
 {
 	create: async (body: any) =>
 	{
-		const
-			{
-				data,
-				condicao,
-				digitado_por,
-				cliente,
-				vendedor,
-				representada,
-				contato,
-				frete,
-				tipo,
-				status,
-				produtos,
-			} = body
+		const {
+			data,
+			condicao,
+			digitado_por,
+			cliente,
+			vendedor,
+			representada,
+			contato,
+			frete,
+			tipo,
+			status,
+			produtos,
+		} = body
 
 		const id = getRandomString('tmpId')
 		const addedRequest =
 		{
-			id,
+			_id: id,
 			data,
 			condicao,
 			digitado_por,
@@ -45,24 +44,23 @@ export const request =
 		if (!id)
 			return
 		
-		const
-			{
-				data,
-				condicao,
-				digitado_por,
-				cliente,
-				vendedor,
-				representada,
-				contato,
-				frete,
-				tipo,
-				status,
-				produtos
-			} = body
+		const {
+			data,
+			condicao,
+			digitado_por,
+			cliente,
+			vendedor,
+			representada,
+			contato,
+			frete,
+			tipo,
+			status,
+			produtos
+		} = body
 
 		const updatedRequest =
 		{
-			id,
+			_id: id,
 			data,
 			condicao,
 			digitado_por,
