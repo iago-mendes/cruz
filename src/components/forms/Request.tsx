@@ -20,13 +20,13 @@ import { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
 import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
-import { getRawSellers } from '../../services/requests/seller'
 import { getRawClient } from '../../services/requests/client'
 import { Image } from '../Image'
 import { getRawCompanies, getRawCompany } from '../../services/requests/company'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
+import { sellerController } from '../../services/offline/controllers/seller'
 
 interface Type
 {
@@ -119,7 +119,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	{
 		async function getSellers()
 		{
-			const sellers = await getRawSellers()
+			const sellers = await sellerController.raw()
 			const tmpSellerOptions: SelectOption[] = sellers.map(seller => (
 				{
 					label: seller.nome,
