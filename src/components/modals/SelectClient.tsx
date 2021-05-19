@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { FiSearch, FiX } from 'react-icons/fi'
 
 import { ClientListed } from '../../models/client'
-import { listClients } from '../../services/requests/client'
+import { clientController } from '../../services/offline/controllers/client'
 import Container from '../../styles/components/modals/SelectClient'
 import { Image } from '../Image'
 import Paginate from '../Paginate'
@@ -32,26 +32,24 @@ const SelectClientModal: React.FC<SelectClientModalProps> = ({isOpen, setIsOpen,
 
 	async function updateClients()
 	{
-		await listClients(page, search)
-			.then(({data, paginate}) =>
+		await clientController.list(search, page)
+			.then(({clients, page, totalPages}) =>
 			{
-				setClients(data)
+				setClients(clients)
 
-				const tmpPage = paginate.page
-				if (Number.isNaN(tmpPage))
+				if (Number.isNaN(page))
 					setPage(1)
 				else
-					setPage(tmpPage)
+					setPage(page)
 					
-				const tmpTotalPages = paginate.totalPages
-				if (Number.isNaN(tmpTotalPages))
+				if (Number.isNaN(totalPages))
 					setTotalPages(1)
 				else
-					setTotalPages(tmpTotalPages)
+					setTotalPages(totalPages)
 			})
 			.catch(error =>
 			{
-				console.log('[error]', error)
+				console.log('<< error >>', error)
 				setClients([])
 
 				setPage(1)

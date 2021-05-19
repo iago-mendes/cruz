@@ -2,7 +2,7 @@ import { getRandomString } from '../../../utils/getRandomString'
 import db from '../../db'
 import ClientRaw, { ClientListed } from '../../../models/client'
 
-export const client =
+export const clientController =
 {
 	create: async (body: any) =>
 	{

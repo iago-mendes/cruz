@@ -20,13 +20,13 @@ import { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
 import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
-import { getRawClient } from '../../services/requests/client'
 import { Image } from '../Image'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import { sellerController } from '../../services/offline/controllers/seller'
 import { companyController } from '../../services/offline/controllers/company'
+import { clientController } from '../../services/offline/controllers/client'
 
 interface Type
 {
@@ -166,7 +166,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		{
 			if (cliente !== '' && representada !== '')
 			{
-				const client = await getRawClient(cliente)
+				const client = await clientController.rawOne(cliente)
 
 				const clientCompany = client.representadas.find(({id}) => id === representada)
 				if (clientCompany)
@@ -193,7 +193,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setTipo(request.tipo)
 			setStatus(request.status)
 
-			getRawClient(request.cliente)
+			clientController.rawOne(request.cliente)
 				.then(client =>
 				{
 					const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
@@ -218,7 +218,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		tmpSelected.clientId = id
 		setSelected(tmpSelected)
 
-		const client = await getRawClient(id)
+		const client = await clientController.rawOne(id)
 		const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
 		setClientData(tmpClientData)
 	}
