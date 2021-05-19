@@ -1,5 +1,6 @@
 import { getRandomString } from '../../../utils/getRandomString'
 import db from '../../db'
+import ClientRaw, { ClientListed } from '../../../models/client'
 
 export const client =
 {
@@ -130,5 +131,79 @@ export const client =
 		}
 		
 		await db.table('clients').put(updatedClient, id)
+	},
+
+	list: async (search?: string, requestedPage?: number) =>
+	{
+		const rawClients: ClientRaw[] = await db.table('clients')
+			.where(['razao_social', 'nome_fantasia', 'endereco']).equals(search)
+			.sortBy('nome_fantasia')
+
+		const clientsPerPage = 15
+		const totalPages = rawClients.length > 0
+			? Math.ceil(rawClients.length / clientsPerPage)
+			: 1
+		
+		let page = requestedPage ? Number(requestedPage) : 1
+		if (!(page > 0 && page <= totalPages) || Number.isNaN(page))
+			return undefined
+		
+		const sliceStart = (page-1) * clientsPerPage
+		const clients: ClientListed[] = rawClients.slice(sliceStart, sliceStart + clientsPerPage)
+			.map(client => (
+				{
+					id: client._id,
+					imagem: client.imagem,
+					nome_fantasia: client.nome_fantasia,
+					razao_social: client.razao_social,
+					status: client.status
+				}
+			))
+
+		const paginated =
+		{
+			clients,
+			page,
+			totalPages
+		}
+
+		return paginated
+	},
+
+	raw: async (search?: string, requestedPage?: number) =>
+	{
+		const rawClients: ClientRaw[] = await db.table('clients')
+			.where(['razao_social', 'nome_fantasia', 'endereco']).equals(search)
+			.sortBy('nome_fantasia')
+
+		const clientsPerPage = 15
+		const totalPages = rawClients.length > 0
+			? Math.ceil(rawClients.length / clientsPerPage)
+			: 1
+		
+		let page = requestedPage ? Number(requestedPage) : 1
+		if (!(page > 0 && page <= totalPages) || Number.isNaN(page))
+			return undefined
+		
+		const sliceStart = (page-1) * clientsPerPage
+		const clients = rawClients.slice(sliceStart, sliceStart + clientsPerPage)
+
+		const paginated =
+		{
+			clients,
+			page,
+			totalPages
+		}
+
+		return paginated
+	},
+
+	rawOne: async (id?: string) =>
+	{
+		if (!id)
+			return undefined
+		
+		const rawClient: ClientRaw = await db.table('clients').get(id)
+		return rawClient
 	}
 }
