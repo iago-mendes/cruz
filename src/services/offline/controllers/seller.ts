@@ -3,6 +3,21 @@ import db from '../../db'
 
 export const sellerController =
 {
+	list: async () =>
+	{
+		const sellers: SellerRaw[] = await db.table('sellers').toArray()
+
+		const list = sellers.map(seller => (
+			{
+				id: seller._id,
+				imagem: seller.imagem,
+				nome: seller.nome,
+				funcao: seller.funcao
+			}))
+
+		return list
+	},
+
 	raw: async () =>
 	{
 		const sellers: SellerRaw[] = await db.table('sellers').toArray()

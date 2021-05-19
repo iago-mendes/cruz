@@ -1,14 +1,12 @@
 import {useRouter} from 'next/router'
-import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
+import {ChangeEvent, useEffect, useState} from 'react'
 import Select, {OptionsType} from 'react-select'
-import api from '../../services/api'
 import Switch from 'react-switch'
 
+import api from '../../services/api'
 import Container from '../../styles/components/forms/global'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
-import {ListedSeller} from './Seller'
-import Company from '../../models/company'
 import Client, {ClientCompany, Address, Status, Conditions} from '../../models/client'
 import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
@@ -16,13 +14,15 @@ import errorAlert from '../../utils/alerts/error'
 import PasswordModal from '../modals/Password'
 import FormButtons from '../FormButtons'
 import { FiMinus, FiPlus } from 'react-icons/fi'
+import { companyController } from '../../services/offline/controllers/company'
+import { sellerController } from '../../services/offline/controllers/seller'
 
 interface ClientFormProps
 {
 	method: string
 	
 	nome_fantasia: string
-	setNomeFantasia: Function
+	setNomeFantasia: (name: string) => void
 	
 	id?: string
 	client?: Client
@@ -41,15 +41,15 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [vendedores, setVendedores] = useState<string[]>([])
 	const [representadas, setRepresentadas] = useState<ClientCompany[]>([])
 	const [endereco, setEndereco] = useState<Address>(
-	{
-		rua: '',
-		numero: 0,
-		complemento: '',
-		bairro: '',
-		cep: '',
-		cidade: '',
-		uf: ''
-	})
+		{
+			rua: '',
+			numero: 0,
+			complemento: '',
+			bairro: '',
+			cep: '',
+			cidade: '',
+			uf: ''
+		})
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
 	const [condicoes, setCondicoes] = useState<Conditions>({prazo: true, vista: true, cheque: true})
 
@@ -62,39 +62,41 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 
 	useEffect(() =>
 	{
-		api.get('sellers').then(({data}:{data: ListedSeller[]}) =>
-		{
-			const tmp = data.map(seller => (
+		sellerController.list()
+			.then(data =>
 			{
-				value: seller.id,
-				label: seller.nome
-			}))
-			setSellerOptions(tmp)
-		})
-
-		api.get('companies/raw').then(({data}:{data: Company[]}) =>
-		{
-			let tmpCompanies: SelectOption[] = []
-			let tmpTables: SelectOptionsList = {}
-
-			data.map(company =>
-			{
-				tmpCompanies.push(
-				{
-					label: company.nome_fantasia,
-					value: company._id
-				})
-
-				tmpTables[company._id] = company.tabelas.map(tabela => (
-				{
-					label: tabela.nome,
-					value: tabela._id
-				}))
+				const tmp = data.map(seller => (
+					{
+						value: seller.id,
+						label: seller.nome
+					}))
+				setSellerOptions(tmp)
 			})
 
-			setCompanyOptions(tmpCompanies)
-			setTableOptions(tmpTables)
-		})
+		companyController.raw()
+			.then(data =>
+			{
+				let tmpCompanies: SelectOption[] = []
+				let tmpTables: SelectOptionsList = {}
+
+				data.map(company =>
+				{
+					tmpCompanies.push(
+						{
+							label: company.nome_fantasia,
+							value: company._id
+						})
+
+					tmpTables[company._id] = company.tabelas.map(tabela => (
+						{
+							label: tabela.nome,
+							value: tabela._id
+						}))
+				})
+
+				setCompanyOptions(tmpCompanies)
+				setTableOptions(tmpTables)
+			})
 	}, [])
 
 	useEffect(() =>
@@ -259,30 +261,30 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		if (method === 'post')
 		{
 			await api.post('clients', data)
-			.then(() =>
-			{
-				successAlert('Cliente criado com sucesso!')
-				handleSendCredentialsViaMail(senha)
-				back()
-			})
-			.catch(err =>
-			{
-				errorAlert(err.response.message.data)
-			})
+				.then(() =>
+				{
+					successAlert('Cliente criado com sucesso!')
+					handleSendCredentialsViaMail(senha)
+					back()
+				})
+				.catch(err =>
+				{
+					errorAlert(err.response.message.data)
+				})
 		}
 		else if (method === 'put')
 		{
 			await api.put(`clients/${id}`, data)
-			.then(() =>
-			{
-				successAlert('Cliente atualizado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
+				.then(() =>
+				{
+					successAlert('Cliente atualizado com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					console.error(err)
+					errorAlert('Algo errado aconteceu!')
+				})
 		}
 	}
 
@@ -409,10 +411,10 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 								<Select
 									name='tabela'
 									value=
-									{
-										(representada.id !== '' && tableOptions[representada.id]) &&
+										{
+											(representada.id !== '' && tableOptions[representada.id]) &&
 											tableOptions[representada.id].find(option => option.value === representada.tabela)
-									}
+										}
 									onChange={e => handleCompanyChange(e, index, 'tabela')}
 									options={representada.id !== '' ? tableOptions[representada.id] : []}
 									isDisabled={representada.id === ''}

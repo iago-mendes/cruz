@@ -6,7 +6,6 @@ import Switch from 'react-switch'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
-import Company from '../../models/company'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import FormButtons from '../FormButtons'
@@ -14,6 +13,7 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
 import PasswordModal from '../modals/Password'
+import { companyController } from '../../services/offline/controllers/company'
 
 interface SellerNumber
 {
@@ -59,7 +59,7 @@ interface SellerFormProps
 	method: string
 	
 	nome: string
-	setNome: Function
+	setNome: (name: string) => void
 	
 	id?: string
 	seller?: Seller
@@ -101,17 +101,18 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 
 	useEffect(() =>
 	{
-		api.get('companies/raw').then(({data}:{data: Company[]}) =>
-		{
-			let tmp: CompanyOption[] = []
-			data.map(company => tmp.push(
+		companyController.raw()
+			.then(data =>
 			{
-				value: company._id,
-				label: `${company.nome_fantasia} (${company.razao_social})`
-			}))
+				let tmp: CompanyOption[] = []
+				data.map(company => tmp.push(
+					{
+						value: company._id,
+						label: `${company.nome_fantasia} (${company.razao_social})`
+					}))
 
-			setCompanyOptions(tmp)
-		})
+				setCompanyOptions(tmp)
+			})
 	}, [])
 
 	function formatNumber(number: number | string)
@@ -233,31 +234,31 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		if (method === 'post')
 		{
 			await api.post('sellers', data)
-			.then(() =>
-			{
-				successAlert('Vendedor criado com sucesso!')
-				handleSendCredentialsViaMail(senha)
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
+				.then(() =>
+				{
+					successAlert('Vendedor criado com sucesso!')
+					handleSendCredentialsViaMail(senha)
+					back()
+				})
+				.catch(err =>
+				{
+					console.error(err)
+					errorAlert('Algo errado aconteceu!')
+				})
 		}
 		else if (method === 'put')
 		{
 			await api.put(`sellers/${id}`, data)
-			.then(() =>
-			{
-				successAlert('Vendedor atualizado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
+				.then(() =>
+				{
+					successAlert('Vendedor atualizado com sucesso!')
+					back()
+				})
+				.catch(err =>
+				{
+					console.error(err)
+					errorAlert('Algo errado aconteceu!')
+				})
 		}
 	}
 

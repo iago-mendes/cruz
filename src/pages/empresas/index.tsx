@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
-import {GetStaticProps} from 'next'
 import {useState} from 'react'
 
 import api from '../../services/api'
@@ -13,30 +12,23 @@ import {CompanyListed} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
 import { Image } from '../../components/Image'
+import { companyController } from '../../services/offline/controllers/company'
 
-interface CompaniesProps
-{
-	companies: CompanyListed[]
-}
-
-const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
+const Companies: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user} = useAuth()
 
-	const [companies, setCompanies] = useState<CompanyListed[]>(staticCompanies)
+	const [companies, setCompanies] = useState<CompanyListed[]>([])
 
 	async function updateCompanies()
 	{
-		api.get('companies')
-			.then(({data}:{data: CompanyListed[]}) =>
-			{
-				setCompanies(data)
-			})
+		await companyController.list()
+			.then(data => setCompanies(data))
 			.catch(error =>
 			{
-				console.log('[error]', error)
-				setCompanies(staticCompanies)
+				console.log('<< error >>', error)
+				setCompanies([])
 			})
 	}
 
@@ -102,16 +94,6 @@ const Companies: React.FC<CompaniesProps> = ({companies: staticCompanies}) =>
 			</main>
 		</Container>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async () =>
-{
-	const companies = await api.get('companies').then(({data}:{data: CompanyListed[]}) => data)
-
-	return {
-		props: {companies},
-		revalidate: 1
-	}
 }
 
 export default Companies

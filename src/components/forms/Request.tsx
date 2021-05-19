@@ -22,11 +22,11 @@ import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
 import { getRawClient } from '../../services/requests/client'
 import { Image } from '../Image'
-import { getRawCompanies, getRawCompany } from '../../services/requests/company'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import { sellerController } from '../../services/offline/controllers/seller'
+import { companyController } from '../../services/offline/controllers/company'
 
 interface Type
 {
@@ -129,34 +129,29 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setSellerOptions(tmpSellerOptions)
 		}
 
-		async function getCompanies()
+		async function getCompaniesAndRawProductsList()
 		{
-			const companies = await getRawCompanies()
-			const tmpCompanyOptions: SelectOption[] = companies.map(company => (
-				{
-					label: company.nome_fantasia,
-					value: company._id
-				}))
-			
-			setCompanyOptions(tmpCompanyOptions)
-		}
-
-		async function getRawProductsList()
-		{
+			const companies = await companyController.raw()
 			let tmpRawProductsList: RawProductsList = {}
-			
-			const companies = await getRawCompanies()
-			companies.map(company =>
+
+			const tmpCompanyOptions: SelectOption[] = companies.map(company =>
 			{
 				tmpRawProductsList[company._id] = company.produtos
-			})
 
+				return (
+					{
+						label: company.nome_fantasia,
+						value: company._id
+					}
+				)
+			})
+			
+			setCompanyOptions(tmpCompanyOptions)
 			setRawProductsList(tmpRawProductsList)
 		}
 
 		getSellers()
-		getCompanies()
-		getRawProductsList()
+		getCompaniesAndRawProductsList()
 	}, [])
 
 	useEffect(() =>
@@ -205,7 +200,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					setClientData(tmpClientData)
 				})
 
-			getRawCompany(request.representada)
+			companyController.rawOne(request.representada)
 				.then(company =>
 				{
 					if (company)
@@ -244,7 +239,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		tmpSelected.companyId = companyId
 		setSelected(tmpSelected)
 
-		const company = await getRawCompany(companyId)
+		const company = await companyController.rawOne(companyId)
 		setConditionOptions(company.condicoes)
 	}
 
