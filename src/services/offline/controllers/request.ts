@@ -92,7 +92,8 @@ export const requestController =
 
 	list: async () =>
 	{
-		const rawRequests: RequestRaw[] = await db.table('requests').toArray()
+		let rawRequests: RequestRaw[] = await db.table('requests').toArray()
+		rawRequests.sort((a, b) => a.data > b.data ? -1 : 1)
 
 		const requests = await Promise.all(rawRequests.map(async request =>
 		{

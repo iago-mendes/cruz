@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {useRouter} from 'next/router'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 
 import api from '../../services/api'
 import Header from '../../components/Header'
@@ -20,6 +20,11 @@ const Companies: React.FC = () =>
 	const {user} = useAuth()
 
 	const [companies, setCompanies] = useState<CompanyListed[]>([])
+
+	useEffect(() =>
+	{
+		updateCompanies()
+	}, [])
 
 	async function updateCompanies()
 	{
