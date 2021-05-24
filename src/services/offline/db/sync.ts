@@ -4,6 +4,7 @@ import withReactContent from 'sweetalert2-react-content'
 
 import db from '.'
 import successAlert from '../../../utils/alerts/success'
+import warningAlert from '../../../utils/alerts/warning'
 import getDate from '../../../utils/getDate'
 import api from '../../api'
 import { Config } from '../ApiCall'
@@ -19,6 +20,12 @@ type SyncId =
 
 export async function sync()
 {
+	if (!navigator.onLine)
+		return warningAlert(
+			'Você está offline!',
+			'Sincronização de dados só é possível com acesso à internet.'
+		)
+
 	MySwal.fire(
 		{
 			title: 'Sincronizando dados...',
