@@ -23,10 +23,10 @@ import SelectClientModal from '../modals/SelectClient'
 import { Image } from '../Image'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import { sellerController } from '../../services/offline/controllers/seller'
 import { companyController } from '../../services/offline/controllers/company'
 import { clientController } from '../../services/offline/controllers/client'
+import { catchError } from '../../utils/catchError'
 
 interface Type
 {
@@ -382,11 +382,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					successAlert('Pedido criado com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					console.error(err)
-					errorAlert('Algo errado aconteceu!')
-				})
+				.catch(catchError)
 		else if (method === 'put')
 			await api.put(`requests/${id}`, apiData)
 				.then(() =>
@@ -394,11 +390,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					successAlert('Pedido atualizado com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					console.error(err)
-					errorAlert('Algo errado aconteceu!')
-				})
+				.catch(catchError)
 	}
 
 	return (

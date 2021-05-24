@@ -10,12 +10,12 @@ import Dropzone from '../Dropzone'
 import Client, {ClientCompany, Address, Status, Conditions} from '../../models/client'
 import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import PasswordModal from '../modals/Password'
 import FormButtons from '../FormButtons'
 import { FiMinus, FiPlus } from 'react-icons/fi'
 import { companyController } from '../../services/offline/controllers/company'
 import { sellerController } from '../../services/offline/controllers/seller'
+import { catchError } from '../../utils/catchError'
 
 interface ClientFormProps
 {
@@ -267,10 +267,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					handleSendCredentialsViaMail(senha)
 					back()
 				})
-				.catch(err =>
-				{
-					errorAlert(err.response.message.data)
-				})
+				.catch(catchError)
 		}
 		else if (method === 'put')
 		{
@@ -280,11 +277,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					successAlert('Cliente atualizado com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					console.error(err)
-					errorAlert('Algo errado aconteceu!')
-				})
+				.catch(catchError)
 		}
 	}
 

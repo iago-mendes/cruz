@@ -7,9 +7,9 @@ import api from '../../services/api'
 import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'
 import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import FormButtons from '../FormButtons'
 import NumberInput from '../NumberInput'
+import { catchError } from '../../utils/catchError'
 
 interface CompanyFormProps
 {
@@ -242,10 +242,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					successAlert('Empresa criada com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					errorAlert(err.response.message.data)
-				})
+				.catch(catchError)
 		}
 		else if (method === 'put')
 		{
@@ -255,10 +252,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					successAlert('Empresa atualizada com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					errorAlert(err.response.message.data)
-				})
+				.catch(catchError)
 		}
 	}
 

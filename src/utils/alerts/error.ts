@@ -3,12 +3,12 @@ import withReactContent from 'sweetalert2-react-content'
 
 const MySwal = withReactContent(Swal)
 
-function errorAlert(message: string)
+function errorAlert(text?: string, title?: string)
 {
 	MySwal.fire({
 		icon: 'error',
-		title: 'Algo deu errado',
-		text: message
+		title: title ? title : 'Algo errado aconteceu!',
+		text
 	})
 }
 

@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, Method } from 'axios'
+import warningAlert from '../../utils/alerts/warning'
 
 import getDate from '../../utils/getDate'
 import { getRandomString } from '../../utils/getRandomString'
@@ -70,5 +71,10 @@ export class ApiCall
 		}
 
 		await db.table('apiQueue').add(apiCall)
+
+		warningAlert(
+			'Você está offline!',
+			'A sua ação foi salva, mas será processada pelo sistema somente quando você estiver online.'
+		)
 	}
 }

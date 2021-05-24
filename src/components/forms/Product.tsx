@@ -1,5 +1,5 @@
 import {useRouter} from 'next/router'
-import React, {FormEvent, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
@@ -7,9 +7,9 @@ import {CompanyTable as Table} from '../../models/company'
 import Product, {ProductTable} from '../../models/product'
 import Dropzone from '../Dropzone'
 import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
 import FormButtons from '../FormButtons'
+import { catchError } from '../../utils/catchError'
 
 interface ProductFormProps
 {
@@ -17,7 +17,7 @@ interface ProductFormProps
 	companyId: string
 	
 	nome: string
-	setNome: Function
+	setNome: (name: string) => void
 	
 	id?: string
 	product?: Product
@@ -93,30 +93,22 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		if (method === 'post')
 		{
 			await api.post(`companies/${companyId}/products`, data)
-			.then(() =>
-			{
-				successAlert('Produto criado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
+				.then(() =>
+				{
+					successAlert('Produto criado com sucesso!')
+					back()
+				})
+				.catch(catchError)
 		}
 		else if (method === 'put')
 		{
 			await api.put(`companies/${companyId}/products/${id}`, data)
-			.then(() =>
-			{
-				successAlert('Produto atualizado com sucesso!')
-				back()
-			})
-			.catch(err =>
-			{
-				console.error(err)
-				errorAlert('Algo errado aconteceu!')
-			})
+				.then(() =>
+				{
+					successAlert('Produto atualizado com sucesso!')
+					back()
+				})
+				.catch(catchError)
 		}
 	}
 

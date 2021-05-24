@@ -10,10 +10,10 @@ import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import NumberInput from '../NumberInput'
 import PasswordModal from '../modals/Password'
 import { companyController } from '../../services/offline/controllers/company'
+import { catchError } from '../../utils/catchError'
 
 interface SellerNumber
 {
@@ -240,11 +240,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					handleSendCredentialsViaMail(senha)
 					back()
 				})
-				.catch(err =>
-				{
-					console.error(err)
-					errorAlert('Algo errado aconteceu!')
-				})
+				.catch(catchError)
 		}
 		else if (method === 'put')
 		{
@@ -254,11 +250,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 					successAlert('Vendedor atualizado com sucesso!')
 					back()
 				})
-				.catch(err =>
-				{
-					console.error(err)
-					errorAlert('Algo errado aconteceu!')
-				})
+				.catch(catchError)
 		}
 	}
 
