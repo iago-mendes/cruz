@@ -1,5 +1,5 @@
 import { SellerRaw } from '../../../models/seller'
-import db from '../../db'
+import db from '../db'
 
 export const sellerController =
 {

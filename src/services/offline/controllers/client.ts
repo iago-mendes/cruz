@@ -1,5 +1,5 @@
 import { getRandomString } from '../../../utils/getRandomString'
-import db from '../../db'
+import db from '../db'
 import ClientRaw, { ClientListed } from '../../../models/client'
 
 export const clientController =

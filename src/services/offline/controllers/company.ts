@@ -1,5 +1,5 @@
 import CompanyRaw from '../../../models/company'
-import db from '../../db'
+import db from '../db'
 
 export const companyController =
 {

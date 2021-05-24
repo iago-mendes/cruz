@@ -1,5 +1,5 @@
 import { getRandomString } from '../../../utils/getRandomString'
-import db from '../../db'
+import db from '../db'
 
 export const request =
 {

@@ -11,7 +11,7 @@ import {Sidebar, MobileMenu, BurgerMenu, OptionsList, OfflineIndicatorContainer}
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
-import { sync } from '../services/db/sync'
+import { sync } from '../services/offline/db/sync'
 import LoadingModal from './modals/Loading'
 import warningAlert from '../utils/alerts/warning'
 

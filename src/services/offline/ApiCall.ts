@@ -2,7 +2,7 @@ import { AxiosRequestConfig, Method } from 'axios'
 
 import getDate from '../../utils/getDate'
 import { getRandomString } from '../../utils/getRandomString'
-import db from '../db'
+import db from './db'
 
 export type Config =
 {
