@@ -6,11 +6,11 @@ import Container from '../../styles/components/modals/SelectProduct'
 import {selectStyles} from '../../styles/global'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
-import api from '../../services/api'
 import formatImage from '../../utils/formatImage'
 import NumberInput from '../NumberInput'
 import ModalContainer from './Container'
 import { Image } from '../Image'
+import { companyController } from '../../services/offline/controllers/company'
 
 Modal.setAppElement('#__next')
 
@@ -83,9 +83,8 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	useEffect(() =>
 	{
 		if (selected.clientId !== '' && selected.companyId !== '')
-			api
-				.get(`companies/${selected.companyId}/products/priced`, {params: {client: selected.clientId}})
-				.then(({data}:{data: PricedProduct[]}) =>
+			companyController.listPricedProducts(selected.companyId, selected.clientId)
+				.then(data =>
 				{
 					const tmpOptions: SelectOption[] = data.map(product => (
 						{
@@ -96,7 +95,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 					setPricedProducts(data)
 				})
-				.catch(err => console.log('[err]', err))
+				.catch(error => console.log('<< error >>', error))
 	}, [selected])
 
 	useEffect(() =>
