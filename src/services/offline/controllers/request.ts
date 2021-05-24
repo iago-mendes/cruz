@@ -6,7 +6,7 @@ import { SellerRaw } from '../../../models/seller'
 import CompanyRaw from '../../../models/company'
 import getPricedProducts from '../../../utils/getPricedProducts'
 
-export const request =
+export const requestController =
 {
 	create: async (body: any) =>
 	{

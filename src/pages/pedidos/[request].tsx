@@ -6,6 +6,7 @@ import Header from '../../components/Header'
 import RequestForm from '../../components/forms/Request'
 import api from '../../services/api'
 import Request, { defaultRequest } from '../../models/request'
+import { requestController } from '../../services/offline/controllers/request'
 
 const EditRequest: React.FC = () =>
 {
@@ -16,8 +17,12 @@ const EditRequest: React.FC = () =>
 
 	useEffect(() =>
 	{
-		api.get(`requests-raw/${id}`)
-			.then(({data}:{data: Request}) => setRequest(data))
+		if (navigator.onLine)
+			api.get(`requests-raw/${id}`)
+				.then(({data}:{data: Request}) => setRequest(data))
+		else
+			requestController.rawOne(String(id))
+				.then(data => setRequest(data))
 	}, [])
 
 	return (

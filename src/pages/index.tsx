@@ -1,4 +1,3 @@
-import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
@@ -16,18 +15,14 @@ import useAuth from '../hooks/useAuth'
 import successAlert from '../utils/alerts/success'
 import confirmAlert from '../utils/alerts/confirm'
 import { Image } from '../components/Image'
+import { requestController } from '../services/offline/controllers/request'
 
-interface RequestsProps
-{
-	requests: Request[]
-}
-
-const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
+const Requests: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user, loading} = useAuth()
 	
-	const [requests, setRequests] = useState<Request[]>(staticRequests)
+	const [requests, setRequests] = useState<Request[]>([])
 
 	useEffect(() =>
 	{
@@ -36,15 +31,15 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 
 	async function updateRequests()
 	{
-		await api.get('requests')
-			.then(({data}) =>
+		await requestController.list()
+			.then(data =>
 			{
 				setRequests(data)
 			})
 			.catch(error =>
 			{
 				console.log('<< error >>', error)
-				setRequests(staticRequests)
+				setRequests([])
 			})
 	}
 
@@ -159,18 +154,6 @@ const Requests: React.FC<RequestsProps> = ({requests: staticRequests}) =>
 
 		</Container>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async () =>
-{
-	let requests: Request[] = []
-
-	await api.get('requests').then(({data}) => requests = data)
-
-	return {
-		props: {requests},
-		revalidate: 1
-	}
 }
 
 export default Requests
