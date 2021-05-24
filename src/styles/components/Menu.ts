@@ -109,14 +109,16 @@ export const BurgerMenu = styled.div<BurgerMenuProps>`
 export const OptionsList = styled.ul`
 	height: 100%;
 	width: 100%;
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
 	gap: 2rem;
+
 	list-style: none;
-	padding-top: 5rem;
-	padding-bottom: 5rem;
+
+	padding: 2.5rem 0;
 
 	a
 	{
