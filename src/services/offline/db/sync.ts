@@ -149,8 +149,11 @@ async function sendApiCalls()
 
 		async function promise()
 		{
-			const requestConfig = {data, ...config}
-			await api.request(requestConfig)
+			if (!config.url.includes('tmpId'))
+			{
+				const requestConfig = {data, ...config}
+				await api.request(requestConfig)
+			}
 
 			await db.table('apiQueue').delete(id)
 		}
