@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
-import {GetStaticPaths, GetStaticProps} from 'next'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {MdUpdate} from 'react-icons/md'
@@ -10,43 +9,43 @@ import Header from '../../../components/Header'
 import Container from '../../../styles/pages/empresas/[company]/index'
 import Add from '../../../components/Add'
 import useAuth from '../../../hooks/useAuth'
-import Company, {CompanyListed, CompanyTable as Table} from '../../../models/company'
+import { CompanyTable } from '../../../models/company'
 import Product from '../../../models/product'
 import SheetModal from '../../../components/modals/Sheet'
 import confirmAlert from '../../../utils/alerts/confirm'
 import errorAlert from '../../../utils/alerts/error'
 import successAlert from '../../../utils/alerts/success'
 import TableUpdatesModal from '../../../components/modals/TableUpdates'
+import { companyController } from '../../../services/offline/controllers/company'
 
-interface ProductsProps
-{
-	products: Product[]
-	companyName: string
-	tables: Table[]
-}
-
-const Products: React.FC<ProductsProps> = ({products: staticProducts, companyName, tables}) =>
+const Products: React.FC = () =>
 {
 	const {query, push} = useRouter()
 	const {company: companyId} = query
 	
 	const {user} = useAuth()
-	const [products, setProducts] = useState<Product[]>(staticProducts)
+	const [products, setProducts] = useState<Product[]>([])
+	const [companyName, setCompanyName] = useState('')
+	const [tables, setTables] = useState<CompanyTable[]>([])
 
 	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
+		companyController.rawOne(String(companyId))
+			.then(data =>
+			{
+				setCompanyName(data.nome_fantasia)
+				setTables(data.tabelas)
+			})
+
 		updateProducts()
 	}, [])
 
-	function updateProducts()
+	async function updateProducts()
 	{
-		api.get(`companies/${companyId}/products/raw`)
-			.then(({data}:{data: Product[]}) =>
-			{
-				setProducts(data)
-			})
+		await companyController.rawProducts(String(companyId))
+			.then(data => setProducts(data))
 	}
 
 	function formatNumber(n: number | undefined)
@@ -165,43 +164,6 @@ const Products: React.FC<ProductsProps> = ({products: staticProducts, companyNam
 			</main>
 		</Container>
 	)
-}
-
-export const getStaticPaths: GetStaticPaths = async () =>
-{
-	const paths = await api.get('companies')
-		.then(({data}:{data: CompanyListed[]}) => (
-		
-			data.map(company => (
-				{
-					params: {company: company.id}
-				}))
-		))
-
-	return {
-		paths,
-		fallback: true
-	}
-}
-
-export const getStaticProps: GetStaticProps = async ctx =>
-{
-	const {company: companyId} = ctx.params
-
-	const products = await api.get(`companies/${companyId}/products/raw`)
-		.then(({data}:{data: Product[]}) => data)
-
-	const {companyName, tables} = await api.get(`companies/${companyId}/raw`)
-		.then(({data}:{data: Company}) => (
-			{
-				companyName: data.nome_fantasia,
-				tables: data.tabelas
-			}))
-	
-	return {
-		props: {products, companyName, tables},
-		revalidate: 1
-	}
 }
 
 export default Products

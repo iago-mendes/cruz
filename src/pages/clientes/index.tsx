@@ -1,4 +1,3 @@
-import {GetStaticProps} from 'next'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
@@ -16,18 +15,14 @@ import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import { Image } from '../../components/Image'
+import { clientController } from '../../services/offline/controllers/client'
 
-interface ClientsProps
-{
-	clients: Client[]
-}
-
-const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
+const Clients: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user} = useAuth()
 	
-	const [clients, setClients] = useState<Client[]>(staticClients)
+	const [clients, setClients] = useState<Client[]>([])
 	const [page, setPage]	= useState(1)
 	const [totalPages, setTotalPages] = useState(1)
 	const [loading, setLoading] = useState(false)
@@ -43,27 +38,25 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 
 	async function updateClients()
 	{
-		await api.get('clients', {params: {page, search}})
-			.then(({data, headers}:{data: Client[], headers: any}) =>
+		await clientController.list(search, page)
+			.then(({clients, page, totalPages}) =>
 			{
-				setClients(data)
+				setClients(clients)
 
-				const tmpPage = Number(headers['page'])
-				if (Number.isNaN(tmpPage))
+				if (Number.isNaN(page))
 					setPage(1)
 				else
-					setPage(tmpPage)
+					setPage(page)
 					
-				const tmpTotalPages = Number(headers['total-pages'])
-				if (Number.isNaN(tmpTotalPages))
+				if (Number.isNaN(totalPages))
 					setTotalPages(1)
 				else
-					setTotalPages(tmpTotalPages)
+					setTotalPages(totalPages)
 			})
 			.catch(error =>
 			{
-				console.log('[error]', error)
-				setClients(staticClients)
+				console.log('<< error >>', error)
+				setClients([])
 
 				setPage(1)
 				setTotalPages(1)
@@ -159,18 +152,6 @@ const Clients: React.FC<ClientsProps> = ({clients: staticClients}) =>
 			</Paginate>
 		</Container>
 	)
-}
-
-export const getStaticProps: GetStaticProps = async () =>
-{
-	let clients: Client[] = []
-
-	await api.get('clients').then(({data}) => clients = data)
-
-	return {
-		props: {clients},
-		revalidate: 1
-	}
 }
 
 export default Clients

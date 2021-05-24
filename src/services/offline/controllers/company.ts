@@ -32,5 +32,16 @@ export const companyController =
 		
 		const rawCompany: CompanyRaw = await db.table('companies').get(id)
 		return rawCompany
+	},
+
+	rawProducts: async (id?: string) =>
+	{
+		if (!id)
+			return undefined
+		
+		const rawCompany: CompanyRaw = await db.table('companies').get(id)
+		const products = rawCompany.produtos
+
+		return products
 	}
 }
