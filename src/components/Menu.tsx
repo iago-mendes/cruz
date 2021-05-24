@@ -34,6 +34,11 @@ const Menu: React.FC = () =>
 
 		if (navigator.onLine)
 			sync()
+		else
+			warningAlert(
+				'Você está offline!', 
+				'Algumas funções podem não funcionar perfeitamente.'
+			)
 	}, [])
 
 	useEffect(() =>
