@@ -1,5 +1,10 @@
 import { getRandomString } from '../../../utils/getRandomString'
 import db from '../db'
+import RequestRaw from '../../../models/request'
+import ClientRaw from '../../../models/client'
+import { SellerRaw } from '../../../models/seller'
+import CompanyRaw from '../../../models/company'
+import getPricedProducts from '../../../utils/getPricedProducts'
 
 export const request =
 {
@@ -83,5 +88,61 @@ export const request =
 			return
 		
 		await db.table('requests').delete(id)
+	},
+
+	list: async () =>
+	{
+		const rawRequests: RequestRaw[] = await db.table('requests').toArray()
+
+		const requests = await Promise.all(rawRequests.map(async request =>
+		{
+			const client: ClientRaw = await db.table('clients').get(request.cliente)
+			const seller: SellerRaw = await db.table('sellers').get(request.vendedor)
+			const company: CompanyRaw = await db.table('companies').get(request.representada)
+
+			const {totalValue} = getPricedProducts(request, company, client)
+
+			return {
+				id: request._id,
+				data: request.data,
+				cliente:
+				{
+					imagem: client.imagem,
+					nome_fantasia: client.nome_fantasia,
+					razao_social: client.razao_social
+				},
+				vendedor:
+				{
+					imagem: seller.imagem,
+					nome: seller ? seller.nome : 'E-Commerce'
+				},
+				representada:
+				{
+					imagem: company.imagem,
+					nome_fantasia: company.nome_fantasia,
+					razao_social: company.razao_social
+				},
+				tipo: request.tipo,
+				status: request.status,
+				valorTotal: totalValue
+			}
+		}))
+
+		return requests
+	},
+
+	raw: async () =>
+	{
+		const requests = await db.table('requests').toArray()
+		return requests
+	},
+
+	rawOne: async (id?: string) =>
+	{
+		if (!id)
+			return undefined
+
+		const rawRequest: RequestRaw = await db.table('requests').get(id)
+		return rawRequest
 	}
 }
