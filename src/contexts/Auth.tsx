@@ -2,8 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 import { createContext, useEffect, useState } from 'react'
 import cookies from 'js-cookie'
 
-import api from '../services/api'
-import { SellerRaw } from '../models/seller'
+import { sellerController } from '../services/offline/controllers/seller'
 
 type User =
 {
@@ -62,9 +61,9 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 	useEffect(() =>
 	{
-		if (user.id && user.id !== 'not-logged')
-			api.get(`sellers-raw/${user.id}`)
-				.then(({data}:{data: SellerRaw}) =>
+		if (user.id && isLogged)
+			sellerController.rawOne(user.id)
+				.then(data =>
 				{
 					let tmpUser = {...user}
 
@@ -77,9 +76,9 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 					setUser(tmpUser)
 				})
-				.catch(err =>
+				.catch(error =>
 				{
-					console.log('<< error >>', err.response.data.message)
+					console.log('<< error >>', error.response.data.message)
 					console.log('<< user.id >>', user.id)
 				})
 	}, [user.id])
