@@ -1,6 +1,7 @@
 import { getRandomString } from '../../../utils/getRandomString'
 import db from '../db'
 import ClientRaw, { ClientListed } from '../../../models/client'
+import { isSubstring } from '../../../utils/isSubstring'
 
 export const clientController =
 {
@@ -135,13 +136,23 @@ export const clientController =
 
 	list: async (search?: string, requestedPage?: number) =>
 	{
-		const rawClients: ClientRaw[] = await db.table('clients')
-			.where(['razao_social', 'nome_fantasia', 'endereco']).equals(search)
-			.sortBy('nome_fantasia')
+		const rawClients: ClientRaw[] = await db.table('clients').orderBy('nome_fantasia').toArray()
+		
+		const searchedClients = (!search || search === '')
+			? rawClients
+			: rawClients
+				.filter((client: ClientRaw) =>
+				{
+					const searchResult1 = isSubstring(client.nome_fantasia, search)
+					const searchResult2 = isSubstring(client.razao_social, search)
+					const searchResult3 = isSubstring(client.endereco.cidade, search)
+
+					return searchResult1 || searchResult2 || searchResult3
+				})
 
 		const clientsPerPage = 15
-		const totalPages = rawClients.length > 0
-			? Math.ceil(rawClients.length / clientsPerPage)
+		const totalPages = searchedClients.length > 0
+			? Math.ceil(searchedClients.length / clientsPerPage)
 			: 1
 		
 		let page = requestedPage ? Number(requestedPage) : 1
@@ -149,7 +160,7 @@ export const clientController =
 			return undefined
 		
 		const sliceStart = (page-1) * clientsPerPage
-		const clients: ClientListed[] = rawClients.slice(sliceStart, sliceStart + clientsPerPage)
+		const clients: ClientListed[] = searchedClients.slice(sliceStart, sliceStart + clientsPerPage)
 			.map(client => (
 				{
 					id: client._id,
