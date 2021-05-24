@@ -24,7 +24,7 @@ export async function sync()
 			title: 'Sincronizando dados...',
 			allowOutsideClick: false,
 			showConfirmButton: false,
-			onBeforeOpen: () => {
+			willOpen: () => {
 				MySwal.showLoading()
 			}
 		})
