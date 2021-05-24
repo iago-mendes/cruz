@@ -135,14 +135,17 @@ async function sendApiCalls()
 	apiCalls.sort((a, b) => a.date < b.date ? -1 : 1)
 	const promises = apiCalls.map(({id, config}) =>
 	{
-		const dataArray = Object.entries(config.data)
-		const data = new FormData()
-
-		dataArray.forEach(([key, value]) =>
+		const data = config.data ? new FormData() : undefined
+		
+		if (data)
 		{
-			if (!(value instanceof File))
-				data.append(key, String(value))
-		})
+			const dataArray = Object.entries(config.data)
+			dataArray.forEach(([key, value]) =>
+			{
+				if (!(value instanceof File))
+					data.append(key, String(value))
+			})
+		}
 
 		async function promise()
 		{
