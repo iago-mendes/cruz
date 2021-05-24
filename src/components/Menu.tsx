@@ -12,7 +12,6 @@ import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
 import { sync } from '../services/offline/db/sync'
-import LoadingModal from './modals/Loading'
 import warningAlert from '../utils/alerts/warning'
 
 const Menu: React.FC = () =>
@@ -32,6 +31,9 @@ const Menu: React.FC = () =>
 				'Algumas funções podem não funcionar perfeitamente.'
 			)
 		})
+
+		if (navigator.onLine)
+			sync()
 	}, [])
 
 	useEffect(() =>
@@ -152,14 +154,9 @@ const MainOptions: React.FC = () => (
 const FooterOptions: React.FC = () =>
 {
 	const {logOut} = useAuth()
-	const [loading, setLoading] = useState(false)
 
 	return (
 		<footer>
-			<LoadingModal
-				isOpen={loading}
-			/>
-
 			<OptionsList>
 				<Link href='/usuario' >
 					<a>
@@ -171,7 +168,7 @@ const FooterOptions: React.FC = () =>
 					<FiLogOut size={25} color='#E2DADB'/>
 					<span>Sair</span>
 				</a>
-				<button className='sync' onClick={() => sync(setLoading)} >
+				<button className='sync' onClick={sync} >
 					<FaSync />
 					<span>Sincronizar</span>
 				</button>

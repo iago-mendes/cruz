@@ -1,4 +1,6 @@
 import pLimit from 'p-limit'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 import db from '.'
 import successAlert from '../../../utils/alerts/success'
@@ -7,6 +9,7 @@ import api from '../../api'
 import { Config } from '../ApiCall'
 
 const limit = pLimit(10)
+const MySwal = withReactContent(Swal)
 
 type SyncId =
 {
@@ -14,10 +17,17 @@ type SyncId =
 	modifiedAt: string
 }
 
-export async function sync(setLoading?: (loading: boolean) => void)
+export async function sync()
 {
-	if (setLoading)
-		setLoading(true)
+	MySwal.fire(
+		{
+			title: 'Sincronizando dados...',
+			allowOutsideClick: false,
+			showConfirmButton: false,
+			onBeforeOpen: () => {
+				MySwal.showLoading()
+			}
+		})
 
 	await sendApiCalls()
 	await getData()
@@ -25,11 +35,8 @@ export async function sync(setLoading?: (loading: boolean) => void)
 	const today = getDate()
 	localStorage.setItem('last-sync', today)
 
-	if (setLoading)
-	{
-		setLoading(false)
-		successAlert('Sincronização concluída com sucesso!')
-	}
+	MySwal.close()
+	successAlert('Sincronização concluída com sucesso!')
 }
 
 async function getData()
