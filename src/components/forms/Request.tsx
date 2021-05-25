@@ -358,7 +358,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			return 0
 	}
 
-	async function handleSubmit()
+	function handleSubmit()
 	{
 		const apiData =
 		{
@@ -376,21 +376,28 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 
 		if (method === 'post')
-			await api.post('requests', apiData)
+		{
+			api.post('requests', apiData)
 				.then(() =>
 				{
 					successAlert('Pedido criado com sucesso!')
 					back()
 				})
 				.catch(catchError)
+		}
 		else if (method === 'put')
-			await api.put(`requests/${id}`, apiData)
+		{
+			api.put(`requests/${id}`, apiData)
 				.then(() =>
 				{
 					successAlert('Pedido atualizado com sucesso!')
 					back()
 				})
 				.catch(catchError)
+		}
+		
+		if (!navigator.onLine)
+			back()
 	}
 
 	return (

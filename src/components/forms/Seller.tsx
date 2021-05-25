@@ -218,7 +218,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		await api.post('/mail', data)
 	}
 
-	async function handleSubmit()
+	function handleSubmit()
 	{
 		const data = new FormData()
 
@@ -233,7 +233,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 
 		if (method === 'post')
 		{
-			await api.post('sellers', data)
+			api.post('sellers', data)
 				.then(() =>
 				{
 					successAlert('Vendedor criado com sucesso!')
@@ -244,7 +244,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		}
 		else if (method === 'put')
 		{
-			await api.put(`sellers/${id}`, data)
+			api.put(`sellers/${id}`, data)
 				.then(() =>
 				{
 					successAlert('Vendedor atualizado com sucesso!')
@@ -252,6 +252,9 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				})
 				.catch(catchError)
 		}
+
+		if (!navigator.onLine)
+			back()
 	}
 
 	return (

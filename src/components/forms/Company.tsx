@@ -216,7 +216,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setCondicoes(tmpConditions)
 	}
 
-	async function handleSubmit()
+	function handleSubmit()
 	{
 		const data = new FormData()
 
@@ -236,7 +236,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 
 		if (method === 'post')
 		{
-			await api.post('companies', data)
+			api.post('companies', data)
 				.then(() =>
 				{
 					successAlert('Empresa criada com sucesso!')
@@ -246,7 +246,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		}
 		else if (method === 'put')
 		{
-			await api.put(`companies/${id}`, data)
+			api.put(`companies/${id}`, data)
 				.then(() =>
 				{
 					successAlert('Empresa atualizada com sucesso!')
@@ -254,6 +254,9 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				})
 				.catch(catchError)
 		}
+
+		if (!navigator.onLine)
+			back()
 	}
 
 	return (

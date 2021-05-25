@@ -240,7 +240,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		await api.post('/mail', data)
 	}
 
-	async function handleSubmit()
+	function handleSubmit()
 	{
 		const data = new FormData()
 
@@ -260,7 +260,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 
 		if (method === 'post')
 		{
-			await api.post('clients', data)
+			api.post('clients', data)
 				.then(() =>
 				{
 					successAlert('Cliente criado com sucesso!')
@@ -271,7 +271,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		}
 		else if (method === 'put')
 		{
-			await api.put(`clients/${id}`, data)
+			api.put(`clients/${id}`, data)
 				.then(() =>
 				{
 					successAlert('Cliente atualizado com sucesso!')
@@ -279,6 +279,9 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				})
 				.catch(catchError)
 		}
+
+		if (!navigator.onLine)
+			back()
 	}
 
 	return (

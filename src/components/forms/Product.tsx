@@ -77,7 +77,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		setTabelas(tmp)
 	}
 
-	async function handleSubmit()
+	function handleSubmit()
 	{
 		const data = new FormData()
 
@@ -92,7 +92,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 
 		if (method === 'post')
 		{
-			await api.post(`companies/${companyId}/products`, data)
+			api.post(`companies/${companyId}/products`, data)
 				.then(() =>
 				{
 					successAlert('Produto criado com sucesso!')
@@ -102,7 +102,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		}
 		else if (method === 'put')
 		{
-			await api.put(`companies/${companyId}/products/${id}`, data)
+			api.put(`companies/${companyId}/products/${id}`, data)
 				.then(() =>
 				{
 					successAlert('Produto atualizado com sucesso!')
@@ -110,6 +110,9 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				})
 				.catch(catchError)
 		}
+
+		if (!navigator.onLine)
+			back()
 	}
 
 	return (
