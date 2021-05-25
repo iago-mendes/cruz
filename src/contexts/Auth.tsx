@@ -33,7 +33,7 @@ export const AuthContext = createContext({} as AuthContextData)
 
 const AuthContextProvider: React.FC = ({children}) =>
 {
-	const [session, isSessionLoading] = useSession()
+	const [session, loading] = useSession()
 
 	const defaultUser: User =
 	{
@@ -41,23 +41,13 @@ const AuthContextProvider: React.FC = ({children}) =>
 		role: 'none'
 	}
 	const [user, setUser] = useState<User>(defaultUser)
-	const [loading, setLoading] = useState(true)
 
 	const isLogged = user.id !== 'not-logged'
 
 	useEffect(() =>
 	{
-		setTimeout(() =>
-		{
-			setLoading(false)
-		}, 1000 * 2) // 2s
-	}, [])
-
-	useEffect(() =>
-	{
-		if (loading)
-			updateSession()
-	}, [isSessionLoading, session, loading])
+		updateSession()
+	}, [loading])
 
 	useEffect(() =>
 	{
@@ -95,12 +85,10 @@ const AuthContextProvider: React.FC = ({children}) =>
 				: JSON.parse(savedUser)
 
 			setUser(tmpUser)
-
-			setLoading(false)
 			return
 		}
 
-		if (!isSessionLoading && session)
+		if (!loading && session)
 		{
 			const {user: tmp}:{user: any} = session
 			const tmpUser: User = tmp
