@@ -131,15 +131,11 @@ async function sendApiCalls()
 		date: string
 		config: Config
 	}> = await db.table('apiQueue').toArray()
-	if (!apiCalls)
-		return
 
 	apiCalls.sort((a, b) => a.date < b.date ? -1 : 1)
 	await Promise.all(apiCalls.map(({id, config}) =>
 	{
-		const data = (config && config.data)
-			? new FormData()
-			: undefined
+		const data = config.data ? new FormData() : undefined
 		
 		if (data)
 		{
