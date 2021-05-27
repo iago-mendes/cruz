@@ -71,7 +71,7 @@ export const companyController =
 		let products = rawCompany.produtos.map(product => (
 			{
 				id: product._id,
-				imagem: product.imagem,
+				imagem: formatImage(product.imagem),
 				nome: product.nome,
 				unidade: product.unidade,
 				st: product.st,
