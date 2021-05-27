@@ -1,5 +1,6 @@
 import ClientRaw from '../../../models/client'
 import CompanyRaw from '../../../models/company'
+import formatImage from '../../../utils/formatImage'
 import db from '../db'
 
 export const companyController =
@@ -41,7 +42,13 @@ export const companyController =
 			return undefined
 		
 		const rawCompany: CompanyRaw = await db.table('companies').get(id)
-		const products = rawCompany.produtos
+		const products = rawCompany.produtos.map(product =>
+		{
+			let tmpProduct = product
+			tmpProduct.imagem = formatImage(product.imagem)
+
+			return tmpProduct
+		})
 
 		return products
 	},
