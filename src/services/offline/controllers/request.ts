@@ -5,6 +5,7 @@ import ClientRaw from '../../../models/client'
 import { SellerRaw } from '../../../models/seller'
 import CompanyRaw from '../../../models/company'
 import getPricedProducts from '../../../utils/getPricedProducts'
+import formatImage from '../../../utils/formatImage'
 
 export const requestController =
 {
@@ -98,8 +99,10 @@ export const requestController =
 		const requests = await Promise.all(rawRequests.map(async request =>
 		{
 			const client: ClientRaw = await db.table('clients').get(request.cliente)
-			const seller: SellerRaw = await db.table('sellers').get(request.vendedor)
 			const company: CompanyRaw = await db.table('companies').get(request.representada)
+			const seller: SellerRaw = request.vendedor
+				? await db.table('sellers').get(request.vendedor)
+				: undefined
 
 			const {totalValue} = getPricedProducts(request, company, client)
 
@@ -114,7 +117,7 @@ export const requestController =
 				},
 				vendedor:
 				{
-					imagem: seller.imagem,
+					imagem: seller ? seller.imagem : formatImage(undefined),
 					nome: seller ? seller.nome : 'E-Commerce'
 				},
 				representada:
