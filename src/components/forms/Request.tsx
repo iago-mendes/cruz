@@ -2,31 +2,27 @@ import {useRouter} from 'next/router'
 import Select from 'react-select'
 import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
-import {FiEdit3, FiTrash, FiPlus} from 'react-icons/fi'
 
 import freteOptions from '../../../db/options/frete.json'
 
 import Container from '../../styles/components/forms/global'
-import Products from '../../styles/components/forms/RequestProducts'
 import {selectStyles} from '../../styles/global'
 import useAuth from '../../hooks/useAuth'
-import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
-import formatImage from '../../utils/formatImage'
+import RawProduct from '../../models/product'
 import SelectProductModal, {Product, Selected, defaultSelected} from '../modals/SelectProduct'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
 import Request from '../../models/request'
 import { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
-import warningAlert from '../../utils/alerts/warning'
 import SelectClientModal from '../modals/SelectClient'
-import { Image } from '../Image'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
 import { sellerController } from '../../services/offline/controllers/seller'
 import { companyController } from '../../services/offline/controllers/company'
 import { clientController } from '../../services/offline/controllers/client'
 import { catchError } from '../../utils/catchError'
+import RequestSummaryModal from '../modals/RequestSummary'
 
 interface Type
 {
@@ -275,89 +271,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setStatus(tmp)
 	}
 
-	function formatNumber(n: number)
-	{
-		return n.toFixed(2).replace('.', ',')
-	}
-
-	function handleAddProduct()
-	{
-		if (representada === '')
-			return warningAlert('Você precisa selecionar uma representada!')
-
-		let tmpSelected = {...selected}
-		tmpSelected.product = defaultSelected.product
-		setSelected(tmpSelected)
-
-		setIsModalOpen(true)
-	}
-
-	function handleEditProduct(product: Product)
-	{
-		let tmpSelected = {...selected}
-		tmpSelected.product = product
-		setSelected(tmpSelected)
-
-		setIsModalOpen(true)
-	}
-
-	function handleRemoveProduct(index: number)
-	{
-		let tmpProdutos = [...produtos]
-
-		tmpProdutos.splice(index, 1)
-
-		setProdutos(tmpProdutos)
-	}
-
-	function calcSubtotal(quantity: number, price: number, st: number, ipi: number)
-	{
-		let subtotal = quantity * price
-		subtotal += subtotal * st / 100
-		subtotal += subtotal * ipi / 100
-
-		return subtotal
-	}
-
-	function calcTotal()
-	{
-		let total = 0
-
-		if (representada !== '')
-		{
-			produtos.map(product =>
-			{
-				if (rawProductsList[representada])
-				{
-					const rawProduct = rawProductsList[representada].find(({_id}) => _id === product.id)
-	
-					if (rawProduct)
-					{
-						const subtotal = calcSubtotal(product.quantidade, product.preco, rawProduct.st, rawProduct.ipi)
-						total += subtotal
-					}
-				}
-			})
-		}
-
-		return total
-	}
-
-	function priceToString(p: number)
-	{
-		return 'R$ ' + p.toFixed(2).replace('.', ',')
-	}
-
-	function getTablePrice(product: RawProduct)
-	{
-		const table =	product.tabelas.find(({id}) => id === clientCompanyTableId)
-
-		if (table)
-			return table.preco
-		else
-			return 0
-	}
-
 	function handleSubmit()
 	{
 		const apiData =
@@ -420,6 +333,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				setClient={handleSelectClient}
 			/>
 
+			<RequestSummaryModal
+				companyId={representada}
+				products={produtos}
+				rawProductsList={rawProductsList}
+				clientCompanyTableId={clientCompanyTableId}
+			/>
+
 			{/* cliente */}
 			<div className='field'>
 				<label htmlFor='cliente'>Cliente</label>
@@ -462,82 +382,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					placeholder='Selecione a representada'
 				/>
 			</div>
-			
-			<Products>
-				<div className='tableContainer' >
-					<table>
-						<thead>
-							<tr>
-								<th>Ações</th>
-								<th>Imagem</th>
-								<th>Nome</th>
-								<th>Unidade</th>
-								<th>Código</th>
-								<th>St</th>
-								<th>Ipi</th>
-								<th>Quantidade</th>
-								<th>Preço de tabela</th>
-								<th>Preço líquido</th>
-								<th>Subtotal (com taxas)</th>
-							</tr>
-						</thead>
-
-						{representada !== '' && (
-							<tbody>
-								{produtos.map((produto, index) =>
-								{
-									const rawProduct: RawProduct = (produto.id !== '' && representada !== '' && rawProductsList[representada])
-										? rawProductsList[representada].find(({_id}) => _id === produto.id)
-										: defaultRawProduct
-
-									const tablePrice = produto.id !== ''
-										? getTablePrice(rawProduct)
-										: 0
-
-									return (
-										<tr key={index} >
-											<td>
-												<div className='actions'>
-													<button
-														title='Editar'
-														onClick={() => handleEditProduct(produto)}>
-														<FiEdit3 size={15} />
-													</button>
-													<button title='Remover' onClick={() => handleRemoveProduct(index)}>
-														<FiTrash size={15} />
-													</button>
-												</div>
-											</td>
-											<td className='img' >
-												<Image src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />
-											</td>
-											<td>{rawProduct.nome}</td>
-											<td>{rawProduct.unidade}</td>
-											<td>{rawProduct.codigo}</td>
-											<td>{formatNumber(rawProduct.st)} %</td>
-											<td>{formatNumber(rawProduct.ipi)} %</td>
-											<td>{produto.quantidade}</td>
-											<td>{priceToString(tablePrice)}</td>
-											<td>{priceToString(produto.preco)}</td>
-											<td>
-												{priceToString(
-													calcSubtotal(produto.quantidade, produto.preco, rawProduct.st, rawProduct.ipi)
-												)}
-											</td>
-										</tr>
-									)})}
-							</tbody>
-						)}
-					</table>
-				</div>
-				<button type='button' onClick={handleAddProduct} className='add' >
-					<FiPlus size={20} />
-					<span>Adicionar produto</span>
+			{/* produtos */}
+			<div className='field'>
+				<label htmlFor='produtos'>Produtos</label>
+				<button className='modal' onClick={() => {}} >
+					Selecionar produtos
 				</button>
-				<div className='total'>
-					<span>Total = {priceToString(calcTotal())}</span>
-				</div>
-			</Products>
+			</div>
 
 			{/* data */}
 			<div className='field'>

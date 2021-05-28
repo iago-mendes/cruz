@@ -30,4 +30,12 @@ export const defaultRequest: Request =
 	status: {concluido: false, enviado: false, faturado: false}
 }
 
+export type RequestProduct =
+{
+	_id?: string
+	id: string
+	quantidade: number
+	preco: number
+}
+
 export default Request
