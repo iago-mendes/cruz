@@ -85,7 +85,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [vendedor, setVendedor] = useState('')
 	const [representada, setRepresentada] = useState('')
 	const [produtos, setProdutos] = useState<Product[]>([])
-	const [data, setData] = useState(getDate())
+	const [data, setData] = useState(getDate(true))
 	const [condicao, setCondicao] = useState('')
 	const [frete, setFrete] = useState(freteOptions[0].value)
 	const [contato, setContato] = useState({nome: '', telefone: ''})
