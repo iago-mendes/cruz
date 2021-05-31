@@ -108,13 +108,13 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 
 					return (
 						<li key={index} >
-							<span className='title'>
+							<span className='detail'>
 								{rawProduct.codigo} - {rawProduct.nome}
 							</span>
-							<span className='price'>
+							<span className='detail'>
 								{formatPrice(product.preco, true)}
 							</span>
-							<span className='quantity'>
+							<span>
 								Qtde.: {product.quantidade}
 							</span>
 							<div className='actions'>
