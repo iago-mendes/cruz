@@ -12,6 +12,7 @@ type RequestSummaryModalProps =
 {
 	companyId: string
 	products: RequestProduct[]
+	setProducts: (products: RequestProduct[]) => void
 	rawProductsList:
 	{
 		[companyId: string]: RawProduct[]
@@ -19,7 +20,7 @@ type RequestSummaryModalProps =
 }
 
 const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
-({companyId, products, rawProductsList}) =>
+({companyId, products, setProducts, rawProductsList}) =>
 {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const ref = useClickOutside(() => setIsExpanded(false))
@@ -68,6 +69,18 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 		})
 
 		return total
+	}
+
+	function handleRemoveProduct(product: RequestProduct)
+	{
+		let tmpProducts = [...products]
+		let productIndex = products.findIndex(({id}) => id === product.id)
+
+		if (productIndex < 0)
+			return
+		
+		tmpProducts.splice(productIndex, 1)
+		setProducts(tmpProducts)
 	}
 
 	return (
@@ -123,7 +136,7 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 									onClick={() => {}}>
 									<FiEdit3 />
 								</button>
-								<button title='Remover' onClick={() => {}}>
+								<button title='Remover' onClick={() => handleRemoveProduct(product)} >
 									<FiTrash />
 								</button>
 							</div>

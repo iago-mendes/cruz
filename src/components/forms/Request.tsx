@@ -297,6 +297,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			<RequestSummaryModal
 				companyId={representada}
 				products={produtos}
+				setProducts={setProdutos}
 				rawProductsList={rawProductsList}
 			/>
 
