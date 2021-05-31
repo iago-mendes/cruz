@@ -65,6 +65,8 @@ const Container = styled.main`
 			
 			input
 			{
+				width: 100%;
+
 				background: none;
 				border: none;
 			}

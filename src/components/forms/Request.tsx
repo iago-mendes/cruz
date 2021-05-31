@@ -283,8 +283,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				setIsOpen={setIsSelectProductsModalOpen}
 
 				selected={selected}
-				setSelected={setSelected}
-
 				products={produtos}
 				setProducts={setProdutos}
 			/>
