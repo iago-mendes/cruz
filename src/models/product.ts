@@ -1,3 +1,5 @@
+import formatImage from '../utils/formatImage'
+
 interface Product
 {
 	_id: string
@@ -32,6 +34,24 @@ export interface ProductTable
 {
 	id: string
 	preco: number
+}
+
+export type PricedProduct =
+{
+	id: string
+	imagem: string
+	nome: string
+	unidade: string
+	preco: number
+}
+
+export const defaultPricedProduct: PricedProduct =
+{
+	id: '',
+	imagem: formatImage(undefined),
+	nome: '',
+	unidade: '',
+	preco: 0
 }
 
 export default Product

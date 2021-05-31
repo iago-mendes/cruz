@@ -6,71 +6,25 @@ import Container from '../../styles/components/modals/SelectProduct'
 import {selectStyles} from '../../styles/global'
 import Select from 'react-select'
 import {SelectOption} from '../../utils/types'
-import formatImage from '../../utils/formatImage'
 import NumberInput from '../NumberInput'
 import ModalContainer from './Container'
 import { Image } from '../Image'
 import { companyController } from '../../services/offline/controllers/company'
+import { RequestProduct, Selected } from '../../models/request'
+import { defaultPricedProduct, PricedProduct } from '../../models/product'
 
 Modal.setAppElement('#__next')
 
-export interface Product
-{
-	_id?: string
-	id: string
-	quantidade: number
-	preco: number
-}
-
-export interface Selected
-{
-	clientId: string
-	companyId: string
-	product: Product
-}
-
-export const defaultSelected: Selected =
-{
-	clientId: '',
-	companyId: '',
-	product:
-	{
-		id: '',
-		quantidade: 0,
-		preco: 0
-	}
-}
-
-interface PricedProduct
-{
-	id: string
-	imagem: string
-	nome: string
-	unidade: string
-	preco: number
-}
-
-const defaultPricedProduct: PricedProduct =
-{
-	id: '',
-	imagem: formatImage(undefined),
-	nome: '',
-	unidade: '',
-	preco: 0
-}
-
-interface RequestProductModalProps
+type RequestProductModalProps =
 {
 	isOpen: boolean
 	setIsOpen: (p: boolean) => void
 
 	selected: Selected
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	setSelected: Function
+	setSelected: (selected: Selected) => void
 
-	products: Product[]
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	setProducts: Function
+	products: RequestProduct[]
+	setProducts: (products: RequestProduct[]) => void
 }
 
 const RequestProductModal: React.FC<RequestProductModalProps> =
@@ -137,7 +91,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 		const productId = e.value
 		const tablePrice = 0
-		const tmpProduct: Product =
+		const tmpProduct: RequestProduct =
 		{
 			id: productId,
 			quantidade: 0,

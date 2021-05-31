@@ -1,4 +1,4 @@
-interface Request
+type Request =
 {
 	_id: string
 	cliente: string
@@ -13,6 +13,7 @@ interface Request
 	tipo: {venda: boolean, troca: boolean}
 	status: {concluido: boolean, enviado: boolean, faturado: boolean}
 }
+export default Request
 
 export const defaultRequest: Request =
 {
@@ -38,4 +39,62 @@ export type RequestProduct =
 	preco: number
 }
 
-export default Request
+export type Type =
+{
+	venda: boolean
+	troca: boolean
+}
+
+export type Status =
+{
+	concluido: boolean
+	enviado: boolean
+	faturado: boolean
+}
+
+export type RequestListed =
+{
+	id: string
+	data: string
+	cliente:
+	{
+		imagem: string
+		nome_fantasia: string
+		razao_social: string
+	}
+	vendedor:
+	{
+		imagem: string
+		nome: string
+	}
+	representada:
+	{
+		imagem: string
+		nome_fantasia: string
+		razao_social: string
+	}
+	tipo: Type
+	status: Status
+	valorTotal: number
+}
+
+export type Selected =
+{
+	clientId: string
+	companyId: string
+	product: RequestProduct
+	clientCompanyTableId: string
+}
+
+export const defaultSelected: Selected =
+{
+	clientId: '',
+	companyId: '',
+	product:
+	{
+		id: '',
+		quantidade: 0,
+		preco: 0
+	},
+	clientCompanyTableId: ''
+}

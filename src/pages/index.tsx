@@ -5,7 +5,6 @@ import {FiEdit3, FiTrash} from 'react-icons/fi'
 import {FaRegEye} from 'react-icons/fa'
 
 import Container from '../styles/pages/index'
-import {ListedRequest as Request} from '../components/forms/Request'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
 import api, {apiUrl} from '../services/api'
@@ -16,13 +15,14 @@ import successAlert from '../utils/alerts/success'
 import confirmAlert from '../utils/alerts/confirm'
 import { Image } from '../components/Image'
 import { requestController } from '../services/offline/controllers/request'
+import { RequestListed } from '../models/request'
 
 const Requests: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user, loading} = useAuth()
 	
-	const [requests, setRequests] = useState<Request[]>([])
+	const [requests, setRequests] = useState<RequestListed[]>([])
 
 	useEffect(() =>
 	{
@@ -43,7 +43,7 @@ const Requests: React.FC = () =>
 			})
 	}
 
-	function handleDeleteRequest(request: Request)
+	function handleDeleteRequest(request: RequestListed)
 	{
 		confirmAlert(
 			'Você tem certeza?',

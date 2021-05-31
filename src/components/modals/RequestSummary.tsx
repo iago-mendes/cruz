@@ -16,11 +16,10 @@ type RequestSummaryModalProps =
 	{
 		[companyId: string]: RawProduct[]
 	}
-	clientCompanyTableId: string
 }
 
 const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
-({companyId, products, rawProductsList, clientCompanyTableId}) =>
+({companyId, products, rawProductsList}) =>
 {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const ref = useClickOutside(() => setIsExpanded(false))
@@ -71,16 +70,6 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 		return total
 	}
 
-	function getTablePrice(product: RawProduct)
-	{
-		const table =	product.tabelas.find(({id}) => id === clientCompanyTableId)
-
-		if (table)
-			return table.preco
-		else
-			return 0
-	}
-
 	return (
 		<Container
 			isExpanded={isExpanded}
@@ -117,17 +106,13 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 						? rawProductsList[companyId].find(({_id}) => _id === product.id)
 						: defaultRawProduct
 
-					const tablePrice = product.id !== ''
-						? getTablePrice(rawProduct)
-						: 0
-
 					return (
 						<li key={index} >
 							<span className='title'>
 								{rawProduct.codigo} - {rawProduct.nome}
 							</span>
 							<span className='price'>
-								{formatPrice(tablePrice, true)}
+								{formatPrice(product.preco, true)}
 							</span>
 							<span className='quantity'>
 								Qtde.: {product.quantidade}

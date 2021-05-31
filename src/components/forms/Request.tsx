@@ -9,10 +9,10 @@ import Container from '../../styles/components/forms/global'
 import {selectStyles} from '../../styles/global'
 import useAuth from '../../hooks/useAuth'
 import RawProduct from '../../models/product'
-import SelectProductModal, {Product, Selected, defaultSelected} from '../modals/SelectProduct'
+import SelectProductsModal from '../modals/SelectProducts'
 import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
-import Request from '../../models/request'
+import Request, { defaultSelected, RequestProduct, Selected, Status, Type } from '../../models/request'
 import { CompanyCondition } from '../../models/company'
 import FormButtons from '../FormButtons'
 import SelectClientModal from '../modals/SelectClient'
@@ -24,51 +24,12 @@ import { clientController } from '../../services/offline/controllers/client'
 import { catchError } from '../../utils/catchError'
 import RequestSummaryModal from '../modals/RequestSummary'
 
-interface Type
-{
-	venda: boolean
-	troca: boolean
-}
-
-interface Status
-{
-	concluido: boolean
-	enviado: boolean
-	faturado: boolean
-}
-
-export interface ListedRequest
-{
-	id: string
-	data: string
-	cliente:
-	{
-		imagem: string
-		nome_fantasia: string
-		razao_social: string
-	}
-	vendedor:
-	{
-		imagem: string
-		nome: string
-	}
-	representada:
-	{
-		imagem: string
-		nome_fantasia: string
-		razao_social: string
-	}
-	tipo: Type
-	status: Status
-	valorTotal: number
-}
-
-interface RawProductsList
+type RawProductsList =
 {
 	[companyId: string]: RawProduct[]
 }
 
-interface RequestFormProps
+type RequestFormProps =
 {
 	method: string
 	
@@ -84,7 +45,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [cliente, setCliente] = useState('')
 	const [vendedor, setVendedor] = useState('')
 	const [representada, setRepresentada] = useState('')
-	const [produtos, setProdutos] = useState<Product[]>([])
+	const [produtos, setProdutos] = useState<RequestProduct[]>([])
 	const [data, setData] = useState(getDate(true))
 	const [condicao, setCondicao] = useState('')
 	const [frete, setFrete] = useState(freteOptions[0].value)
@@ -98,13 +59,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [conditionOptions, setConditionOptions] = useState<CompanyCondition[]>([])
 
 	const [rawProductsList, setRawProductsList] = useState<RawProductsList>({})
-	const [clientCompanyTableId, setClientCompanyTableId] = useState('')
+	const [selected, setSelected] = useState<Selected>(defaultSelected)
+	const [clientData, setClientData] = useState('')
 
 	const [isModalOpen, setIsModalOpen] = useState(false)
-	const [selected, setSelected] = useState<Selected>(defaultSelected)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
-
-	const [clientData, setClientData] = useState('')
 
 	const conditionSelectOptions = conditionOptions
 		// .filter(option => option.precoMin <= calcTotal())
@@ -162,11 +121,15 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		{
 			if (cliente !== '' && representada !== '')
 			{
+				let tmpSelected = {...selected}
 				const client = await clientController.rawOne(cliente)
 
 				const clientCompany = client.representadas.find(({id}) => id === representada)
 				if (clientCompany)
-					setClientCompanyTableId(clientCompany.tabela)
+				{
+					tmpSelected.clientCompanyTableId = clientCompany.tabela
+					setSelected(tmpSelected)
+				}
 			}
 		}
 		
@@ -315,7 +278,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	return (
 		<Container onSubmit={e => e.preventDefault()}>
-			<SelectProductModal
+			<SelectProductsModal
 				isOpen={isModalOpen}
 				setIsOpen={setIsModalOpen}
 
@@ -337,7 +300,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				companyId={representada}
 				products={produtos}
 				rawProductsList={rawProductsList}
-				clientCompanyTableId={clientCompanyTableId}
 			/>
 
 			{/* cliente */}
