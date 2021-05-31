@@ -8,7 +8,7 @@ type ContainerProps =
 const Container = styled.div<ContainerProps>`
 	position: fixed;
 	left: 0;
-	z-index: 1;
+	z-index: 2;
 
 	top: ${p => p.isExpanded ? '20vh' : '90vh'};
 	height: ${p => p.isExpanded ? '80vh' : '10vh'};

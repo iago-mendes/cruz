@@ -108,39 +108,40 @@ export default createGlobalStyle`
 export const selectStyles: Styles =
 {
 	option: (provided, state) => (
-	{
-		...provided,
-		cursor: 'pointer',
+		{
+			...provided,
+			cursor: 'pointer',
 
-		fontFamily: 'Roboto',
-		fontSize: '1.5rem',
+			fontFamily: 'Roboto',
+			fontSize: '1.5rem',
 
-		transition: '0.1s',
-		color: state.isSelected ? '#E2DADB' : state.isFocused ? '#313131' : '#7B7B7B',
-		backgroundColor: state.isSelected ? '#84130B' : '#E2DADB'
-	}),
+			transition: '0.1s',
+			color: state.isSelected ? '#E2DADB' : state.isFocused ? '#313131' : '#7B7B7B',
+			backgroundColor: state.isSelected ? '#84130B' : '#E2DADB'
+		}),
 
 	menu: (provided, state) => (
-	{
-		...provided,
-		fontFamily: 'Roboto',
-		backgroundColor: '#E2DADB'
-	}),
+		{
+			...provided,
+			fontFamily: 'Roboto',
+			backgroundColor: '#E2DADB',
+			zIndex: 1
+		}),
 
 	control: (provided, state) => (
-	{
-		...provided,
+		{
+			...provided,
 
-		cursor: 'pointer',
-		borderWidth: '2px',
+			cursor: 'pointer',
+			borderWidth: '2px',
 		
-		transition: '0.25s',
+			transition: '0.25s',
 
-		fontFamily: 'Roboto',
-		fontSize: '1.5rem',
+			fontFamily: 'Roboto',
+			fontSize: '1.5rem',
 
-		width: '100%'
-	})
+			width: '100%'
+		})
 }
 
 export const modalStyle: Modal.Styles =
