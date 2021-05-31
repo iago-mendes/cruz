@@ -62,7 +62,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [selected, setSelected] = useState<Selected>(defaultSelected)
 	const [clientData, setClientData] = useState('')
 
-	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [isSelectProductsModalOpen, setIsSelectProductsModalOpen] = useState(false)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
 
 	const conditionSelectOptions = conditionOptions
@@ -279,8 +279,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	return (
 		<Container onSubmit={e => e.preventDefault()}>
 			<SelectProductsModal
-				isOpen={isModalOpen}
-				setIsOpen={setIsModalOpen}
+				isOpen={isSelectProductsModalOpen}
+				setIsOpen={setIsSelectProductsModalOpen}
 
 				selected={selected}
 				setSelected={setSelected}
@@ -347,7 +347,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* produtos */}
 			<div className='field'>
 				<label htmlFor='produtos'>Produtos</label>
-				<button className='modal' onClick={() => {}} >
+				<button className='modal' onClick={() => setIsSelectProductsModalOpen(true)} >
 					Selecionar produtos
 				</button>
 			</div>

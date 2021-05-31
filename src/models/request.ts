@@ -39,6 +39,13 @@ export type RequestProduct =
 	preco: number
 }
 
+export const defaultRequestProduct: RequestProduct =
+{
+	id: '',
+	quantidade: 0,
+	preco: 0
+}
+
 export type Type =
 {
 	venda: boolean
