@@ -167,7 +167,6 @@ const Container = styled.main`
 			align-items: center;
 			justify-content: center;
 			
-			padding-left: 2rem;
 			gap: 1rem;
 			
 			width: 100%;
@@ -176,7 +175,8 @@ const Container = styled.main`
 			{
 				display: flex;
 				align-items: center;
-				gap: 2rem;
+				justify-content: space-between;
+				gap: 0.5rem;
 				
 				width: 100%;
 
