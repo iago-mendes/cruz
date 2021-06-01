@@ -1,11 +1,11 @@
 import Modal from 'react-modal'
-import { FiMinus, FiPlus, FiSearch, FiX } from 'react-icons/fi'
+import { FiEdit3, FiMinus, FiPlus, FiSearch, FiX } from 'react-icons/fi'
 import {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/modals/SelectProducts'
 import ModalContainer from './Container'
 import { companyController } from '../../services/offline/controllers/company'
-import { defaultRequestProduct, RequestProduct, Selected } from '../../models/request'
+import { RequestProduct, Selected } from '../../models/request'
 import Product, { PricedProduct } from '../../models/product'
 import formatPrice from '../../utils/formatPrice'
 
@@ -19,10 +19,11 @@ type RequestProductModalProps =
 	selected: Selected
 	products: RequestProduct[]
 	setProducts: (products: RequestProduct[]) => void
+	editProduct: (product: RequestProduct) => void
 }
 
 const RequestProductModal: React.FC<RequestProductModalProps> =
-({isOpen, setIsOpen, selected, products, setProducts}) =>
+({isOpen, setIsOpen, selected, products, setProducts, editProduct}) =>
 {
 	const [pricedProducts, setPricedProducts] = useState<PricedProduct[]>([])
 	const [rawProducts, setRawProducts] = useState<Product[]>([])
@@ -102,6 +103,12 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		return totalPrice
 	}
 
+	function handleEditProduct(product: RequestProduct)
+	{
+		setIsOpen(false)
+		editProduct(product)
+	}
+
 	return (
 		<ModalContainer
 			isOpen={isOpen}
@@ -133,7 +140,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 						const existingProduct = products.find(({id}) => id === pricedProduct.id)
 						const product = existingProduct
 							? existingProduct
-							: defaultRequestProduct
+							: {id: pricedProduct.id, preco: pricedProduct.preco, quantidade: 0}
 						
 						const removeQuantity = existingProduct ? existingProduct.quantidade - 1 : 0
 						const addQuantity = existingProduct ? existingProduct.quantidade + 1 : 1
@@ -163,6 +170,11 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 									</div>
 								</div>
 								<div className='panel'>
+									<div className='edit'>
+										<button onClick={() => handleEditProduct(product)} >
+											<FiEdit3 />
+										</button>
+									</div>
 									<div className='quantity'>
 										<h3>
 											{product.quantidade}

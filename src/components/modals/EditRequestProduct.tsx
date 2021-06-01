@@ -83,7 +83,17 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 			if (existingIndex >= 0)
 			{
 				let tmpProducts = [...products]
-				tmpProducts[existingIndex] = selected.product
+
+				if (selected.product.quantidade <= 0)
+					tmpProducts.splice(existingIndex, 1)
+				else
+					tmpProducts[existingIndex] = selected.product
+				setProducts(tmpProducts)
+			}
+			else if (selected.product.quantidade > 0)
+			{
+				let tmpProducts = [...products]
+				tmpProducts.push(selected.product)
 				setProducts(tmpProducts)
 			}
 		}

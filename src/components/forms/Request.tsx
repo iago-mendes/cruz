@@ -308,6 +308,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				selected={selected}
 				products={produtos}
 				setProducts={setProdutos}
+				editProduct={handleEditProduct}
 			/>
 
 			<EditRequestProductModal
