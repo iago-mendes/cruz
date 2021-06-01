@@ -23,6 +23,7 @@ import { companyController } from '../../services/offline/controllers/company'
 import { clientController } from '../../services/offline/controllers/client'
 import { catchError } from '../../utils/catchError'
 import RequestSummaryModal from '../modals/RequestSummary'
+import warningAlert from '../../utils/alerts/warning'
 
 type RawProductsList =
 {
@@ -234,6 +235,17 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setStatus(tmp)
 	}
 
+	function handleSelectProducts()
+	{
+		if (cliente === '' || representada === '')
+			return warningAlert(
+				'Detalhes faltando...',
+				'Você precisa selecionar um cliente e uma representada.'
+			)
+
+		setIsSelectProductsModalOpen(true)
+	}
+
 	function handleSubmit()
 	{
 		const apiData =
@@ -346,7 +358,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* produtos */}
 			<div className='field'>
 				<label htmlFor='produtos'>Produtos</label>
-				<button className='modal' onClick={() => setIsSelectProductsModalOpen(true)} >
+				<button className='modal' onClick={handleSelectProducts} >
 					Selecionar produtos
 				</button>
 			</div>
