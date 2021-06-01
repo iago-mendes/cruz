@@ -24,6 +24,7 @@ import { clientController } from '../../services/offline/controllers/client'
 import { catchError } from '../../utils/catchError'
 import RequestSummaryModal from '../modals/RequestSummary'
 import warningAlert from '../../utils/alerts/warning'
+import EditRequestProductModal from '../modals/EditRequestProduct'
 
 type RawProductsList =
 {
@@ -65,6 +66,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	const [isSelectProductsModalOpen, setIsSelectProductsModalOpen] = useState(false)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
+	const [isEditRequestProductModalOpen, setIsEditRequestProductModalOpen] = useState(false)
 
 	const conditionSelectOptions = conditionOptions
 		// .filter(option => option.precoMin <= calcTotal())
@@ -246,6 +248,15 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setIsSelectProductsModalOpen(true)
 	}
 
+	function handleEditProduct(product: RequestProduct)
+	{
+		let tmpSelected = {...selected}
+		tmpSelected.product = product
+		setSelected(tmpSelected)
+
+		setIsEditRequestProductModalOpen(true)
+	}
+
 	function handleSubmit()
 	{
 		const apiData =
@@ -299,6 +310,15 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				setProducts={setProdutos}
 			/>
 
+			<EditRequestProductModal
+				isOpen={isEditRequestProductModalOpen}
+				setIsOpen={setIsEditRequestProductModalOpen}
+
+				selected={selected}
+				products={produtos}
+				setProducts={setProdutos}
+			/>
+
 			<SelectClientModal
 				isOpen={isSelectClientModalOpen}
 				setIsOpen={setIsSelectClientModalOpen}
@@ -311,6 +331,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				products={produtos}
 				setProducts={setProdutos}
 				rawProductsList={rawProductsList}
+				editProduct={handleEditProduct}
 			/>
 
 			{/* cliente */}

@@ -17,10 +17,11 @@ type RequestSummaryModalProps =
 	{
 		[companyId: string]: RawProduct[]
 	}
+	editProduct: (product: RequestProduct) => void
 }
 
 const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
-({companyId, products, setProducts, rawProductsList}) =>
+({companyId, products, setProducts, rawProductsList, editProduct}) =>
 {
 	const [isExpanded, setIsExpanded] = useState(false)
 	const ref = useClickOutside(() => setIsExpanded(false))
@@ -133,7 +134,7 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 							<div className='actions'>
 								<button
 									title='Editar'
-									onClick={() => {}}>
+									onClick={() => editProduct(product)}>
 									<FiEdit3 />
 								</button>
 								<button title='Remover' onClick={() => handleRemoveProduct(product)} >
