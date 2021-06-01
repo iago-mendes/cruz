@@ -13,7 +13,7 @@ const Container = styled.div<ContainerProps>`
 	top: ${p => p.isExpanded ? '20vh' : '90vh'};
 	height: ${p => p.isExpanded ? '80vh' : '10vh'};
 	transition: top 0.25s, height 0.25s;
-	overflow-y: ${p => p.isExpanded ? 'auto' : 'hidden'};
+	overflow-y: hidden;
 
 	width: 100%;
 	background-color: #fff;
@@ -47,7 +47,7 @@ const Container = styled.div<ContainerProps>`
 		}
 	}
 
-	.totalPrice, .details, .products
+	.totalPrice, .products
 	{
 		margin-left: 1rem;
 		margin-right: 1rem;
@@ -60,13 +60,28 @@ const Container = styled.div<ContainerProps>`
 		flex-direction: column;
 
 		font-size: 1.5rem;
+		padding: 0 1rem;
+
+		::after
+		{
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+
+			margin-top: 1rem;
+			background-color: rgba(0,0,0,0.25);
+		}
 	}
 
 	ul.products
 	{
+		height: 70%;
+		overflow-y: auto;
+
 		li
 		{
-			border-top: rgba(0,0,0,0.25) 2px solid;
+			border-bottom: rgba(0,0,0,0.25) 2px solid;
 			padding: 0.5rem 1rem;
 
 			display: flex;
@@ -74,11 +89,6 @@ const Container = styled.div<ContainerProps>`
 			gap: 0.5rem;
 			
 			font-size: 1.25rem;
-
-			:last-of-type
-			{
-				border-bottom: rgba(0,0,0,0.25) 2px solid;
-			}
 
 			.detail
 			{

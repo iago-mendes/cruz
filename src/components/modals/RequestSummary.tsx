@@ -99,51 +99,56 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 				{formatPrice(calcTotalPrice(), true)}
 			</h1>
 
-			<ul className='details' >
-				<li>
+			{isExpanded && (
+				<>
+					<ul className='details' >
+						<li>
 					Quantidade total: {products.length}
-				</li>
-
-				<li>
-					Valor total em produtos: {formatPrice(calcTotalProductsPrice(), true)}
-				</li>
-
-				<li>
-					Valor total em impostos: {formatPrice(calcTotalPrice() - calcTotalProductsPrice(), true)}
-				</li>
-			</ul>
-
-			<ul className='products'>
-				{products.map((product, index) =>
-				{
-					const rawProduct: RawProduct = (product.id !== '' && companyId !== '' && rawProductsList[companyId])
-						? rawProductsList[companyId].find(({_id}) => _id === product.id)
-						: defaultRawProduct
-
-					return (
-						<li key={index} >
-							<span className='detail'>
-								{rawProduct.codigo} - {rawProduct.nome}
-							</span>
-							<span className='detail'>
-								{formatPrice(product.preco, true)}
-							</span>
-							<span>
-								Qtde.: {product.quantidade}
-							</span>
-							<div className='actions'>
-								<button
-									title='Editar'
-									onClick={() => editProduct(product)}>
-									<FiEdit3 />
-								</button>
-								<button title='Remover' onClick={() => handleRemoveProduct(product)} >
-									<FiTrash />
-								</button>
-							</div>
 						</li>
-					)})}
-			</ul>
+
+						<li>
+					Valor total em produtos: {formatPrice(calcTotalProductsPrice(), true)}
+						</li>
+
+						<li>
+					Valor total em impostos: {formatPrice(calcTotalPrice() - calcTotalProductsPrice(), true)}
+						</li>
+					</ul>
+
+					<ul className='products'>
+						{products.map((product, index) =>
+						{
+							const rawProduct: RawProduct = (product.id !== '' && companyId !== '' && rawProductsList[companyId])
+								? rawProductsList[companyId].find(({_id}) => _id === product.id)
+								: defaultRawProduct
+
+							return (
+								<li key={index} >
+									<span className='detail'>
+										{rawProduct.codigo} - {rawProduct.nome}
+									</span>
+									<span className='detail'>
+										{formatPrice(product.preco, true)}
+									</span>
+									<span>
+								Qtde.: {product.quantidade}
+									</span>
+									<div className='actions'>
+										<button
+											title='Editar'
+											onClick={() => editProduct(product)}>
+											<FiEdit3 />
+										</button>
+										<button title='Remover' onClick={() => handleRemoveProduct(product)} >
+											<FiTrash />
+										</button>
+									</div>
+								</li>
+							)})}
+					</ul>
+				</>
+			)}
+
 		</Container>
 	)
 }
