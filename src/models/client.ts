@@ -13,6 +13,8 @@ interface Client
 	endereco: Address
 	status: Status
 	condicoes: Conditions
+	telefone?: number
+	modificadoEm?: string
 }
 
 export const defaultClient: Client =

@@ -5,7 +5,7 @@ interface Product
 	_id: string
 	imagem: string
 	nome: string
-	codigo: number
+	codigo: string
 	unidade: string
 	peso: number
 	volume: number
@@ -20,7 +20,7 @@ export const defaultProduct: Product =
 	_id: '',
 	imagem: undefined,
 	nome: '',
-	codigo: 0,
+	codigo: '',
 	unidade: '',
 	peso: 0,
 	volume: 0,

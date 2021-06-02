@@ -28,7 +28,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	const {back} = useRouter()
     
 	const [imagem, setImagem] = useState<File>()
-	const [codigo, setCodigo] = useState(0)
+	const [codigo, setCodigo] = useState('')
 	const [unidade, setUnidade] = useState('')
 	const [peso, setPeso] = useState(0)
 	const [volume, setVolume] = useState(0)
@@ -146,7 +146,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 					name='codigo'
 					id='codigo'
 					value={codigo}
-					onChange={e => setCodigo(Number(e.target.value))}
+					onChange={e => setCodigo(e.target.value)}
 				/>
 			</div>
 			{/* unidade */}

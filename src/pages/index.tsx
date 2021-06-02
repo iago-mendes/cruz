@@ -7,7 +7,7 @@ import {FaRegEye} from 'react-icons/fa'
 import Container from '../styles/pages/index'
 import Header from '../components/Header'
 import Loading from '../components/Loading'
-import api, {apiUrl} from '../services/api'
+import api from '../services/api'
 import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
 import useAuth from '../hooks/useAuth'
@@ -16,6 +16,7 @@ import confirmAlert from '../utils/alerts/confirm'
 import { Image } from '../components/Image'
 import { requestController } from '../services/offline/controllers/request'
 import { RequestListed } from '../models/request'
+import { pdfController } from '../services/offline/controllers/pdf'
 
 const Requests: React.FC = () =>
 {
@@ -98,14 +99,12 @@ const Requests: React.FC = () =>
 								</span>
 							</div>
 							<div className='buttons'>
-								<a
+								<button
 									title='Ver pedido'
-									href={`${apiUrl}/pdf/requests/${request.id}`}
-									target='_blank'
-									rel="nonreferrer noreferrer"
+									onClick={() => pdfController.request(request.id)}
 								>
 									<FaRegEye />
-								</a>
+								</button>
 								{user.role === 'admin' && (
 									<>
 										<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
