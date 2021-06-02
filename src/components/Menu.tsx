@@ -12,7 +12,6 @@ import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
 import { sync } from '../services/offline/db/sync'
-import warningAlert from '../utils/alerts/warning'
 
 const Menu: React.FC = () =>
 {
@@ -21,25 +20,6 @@ const Menu: React.FC = () =>
 	
 	const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false)
 	const burguerMenuRef = useClickOutside(() => setIsBurgerMenuOpen(false))
-
-	useEffect(() =>
-	{
-		window.addEventListener('offline', () =>
-		{
-			warningAlert(
-				'Você está offline!', 
-				'Algumas funções podem não funcionar perfeitamente.'
-			)
-		})
-
-		if (navigator.onLine)
-			sync()
-		else
-			warningAlert(
-				'Você está offline!', 
-				'Algumas funções podem não funcionar perfeitamente.'
-			)
-	}, [])
 
 	useEffect(() =>
 	{
