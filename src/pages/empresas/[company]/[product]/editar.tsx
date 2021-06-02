@@ -4,8 +4,8 @@ import {useRouter} from 'next/router'
 
 import Header from '../../../../components/Header'
 import ProductForm from '../../../../components/forms/Product'
-import api from '../../../../services/api'
 import Product, {defaultProduct} from '../../../../models/product'
+import { productController } from '../../../../services/offline/controllers/product'
 
 const EditProduct: React.FC = () =>
 {
@@ -17,11 +17,8 @@ const EditProduct: React.FC = () =>
 	
 	useEffect(() =>
 	{
-		api.get(`companies/${companyId}/products/${productId}/raw`)
-			.then(({data}:{data: Product}) =>
-			{
-				setProduct(data)
-			})
+		productController.rawOne(String(companyId), String(productId))
+			.then(data => setProduct(data))
 	}, [companyId, productId])
 
 	return (

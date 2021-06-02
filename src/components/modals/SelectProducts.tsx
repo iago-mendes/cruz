@@ -8,6 +8,7 @@ import { companyController } from '../../services/offline/controllers/company'
 import { RequestProduct, Selected } from '../../models/request'
 import Product, { PricedProduct } from '../../models/product'
 import formatPrice from '../../utils/formatPrice'
+import { productController } from '../../services/offline/controllers/product'
 
 Modal.setAppElement('#__next')
 
@@ -41,7 +42,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	useEffect(() =>
 	{
 		if (selected.clientId !== '' && selected.companyId !== '')
-			companyController.listPricedProducts(selected.companyId, selected.clientId)
+			productController.listPriced(selected.companyId, selected.clientId)
 				.then(data => setPricedProducts(data))
 				.catch(error => console.log('<< error >>', error))
 	}, [selected])

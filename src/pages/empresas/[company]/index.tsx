@@ -17,6 +17,7 @@ import errorAlert from '../../../utils/alerts/error'
 import successAlert from '../../../utils/alerts/success'
 import TableUpdatesModal from '../../../components/modals/TableUpdates'
 import { companyController } from '../../../services/offline/controllers/company'
+import { productController } from '../../../services/offline/controllers/product'
 
 const Products: React.FC = () =>
 {
@@ -44,7 +45,7 @@ const Products: React.FC = () =>
 
 	async function updateProducts()
 	{
-		await companyController.rawProducts(String(companyId))
+		await productController.raw(String(companyId))
 			.then(data => setProducts(data))
 	}
 
