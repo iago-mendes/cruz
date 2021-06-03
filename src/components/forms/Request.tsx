@@ -437,7 +437,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<label htmlFor='tipo'>Tipo</label>
 				<div className='switchFields'>
 					<div className='switchField'>
-						<span>venda</span>
+						<span>Venda</span>
 						<Switch
 							name='venda'
 							id='venda'
@@ -448,7 +448,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					<div className='switchField'>
-						<span>troca</span>
+						<span>Troca</span>
 						<Switch
 							name='troca'
 							id='troca'
@@ -462,10 +462,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			</div>
 			{/* status */}
 			<div className='field'>
-				<label htmlFor='status'>status</label>
+				<label htmlFor='status'>Situação</label>
 				<div className='switchFields'>
 					<div className='switchField'>
-						<span>concluído</span>
+						<span>Concluído</span>
 						<Switch
 							name='concluido'
 							id='concluido'
@@ -476,7 +476,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					<div className='switchField'>
-						<span>enviado</span>
+						<span>Enviado</span>
 						<Switch
 							name='enviado'
 							id='enviado'
@@ -487,7 +487,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					<div className='switchField'>
-						<span>faturado</span>
+						<span>Faturado</span>
 						<Switch
 							name='faturado'
 							id='faturado'

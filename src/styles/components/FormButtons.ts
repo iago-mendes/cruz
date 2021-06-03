@@ -13,9 +13,9 @@ const Container = styled.div`
 		font-family: Ubuntu;
 		font-size: 1.75rem;
 		font-weight: 700;
-		background-color: ${p => p.theme.colors.background};
+		background-color: ${p => p.theme.colors.primaryDark};
 
-		color: ${p => p.theme.colors.text};
+		color: #fff;
 
 		display: flex;
 		align-items: center;
@@ -24,14 +24,13 @@ const Container = styled.div`
 		padding: 1rem 2rem;
 		
 		border: none;
-		border-radius: 2rem;
+		border-radius: 0.5rem;
 		
 		cursor: pointer;
 		transition: 0.25s;
 
 		:hover
 		{
-			transform: scale(1.1);
 			border-radius: 0;
 		}
 	}

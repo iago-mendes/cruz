@@ -4,7 +4,7 @@ const Container = styled.form`
 	background-color: #fff;
 	width: 90%;
 	max-width: 1100px;
-	border-radius: 2rem;
+	border-radius: 0.5rem;
 	padding: 2rem;
 
 	display: flex;
@@ -194,7 +194,7 @@ const Container = styled.form`
 
 			background: none;
 			border: ${p => p.theme.colors.primaryDark} 2px solid;
-			border-radius: 2rem;
+			border-radius: 0.5rem;
 
 			color: ${p => p.theme.colors.primaryDark};
 			font-family: Ubuntu;
@@ -295,6 +295,11 @@ const Container = styled.form`
 				font-size: 1.5rem;
 			}
 		}
+	}
+
+	@media (min-width: 1000px)
+	{
+		margin-bottom: 10rem;
 	}
 `
 
