@@ -154,19 +154,21 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			setTipo(request.tipo)
 			setStatus(request.status)
 
-			clientController.rawOne(request.cliente)
-				.then(client =>
-				{
-					const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
-					setClientData(tmpClientData)
-				})
+			if (request.cliente !== '')
+				clientController.rawOne(request.cliente)
+					.then(client =>
+					{
+						const tmpClientData = `${client.nome_fantasia} | ${client.razao_social}`
+						setClientData(tmpClientData)
+					})
 
-			companyController.rawOne(request.representada)
-				.then(company =>
-				{
-					if (company)
-						setConditionOptions(company.condicoes)
-				})
+			if (request.representada !== '')
+				companyController.rawOne(request.representada)
+					.then(company =>
+					{
+						if (company)
+							setConditionOptions(company.condicoes)
+					})
 		}
 	}, [request])
 
@@ -256,8 +258,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setIsEditRequestProductModalOpen(true)
 	}
 
-	function handleSubmit()
+	function handleGenerateRequest()
 	{
+		let tmpStatus = {...status}
+		tmpStatus.concluido = true
+
 		const apiData =
 		{
 			cliente,
@@ -270,8 +275,29 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			contato,
 			digitado_por,
 			tipo,
-			status
+			status: tmpStatus
 		}
+		handleSubmit(apiData)
+	}
+
+	function handleSubmit(apiDataAlt?: any)
+	{
+		const apiData = apiDataAlt ? apiDataAlt :
+			{
+				cliente,
+				vendedor,
+				representada,
+				produtos,
+				data,
+				condicao,
+				frete,
+				contato,
+				digitado_por,
+				tipo,
+				status
+			}
+
+		console.log('<< apiData >>', apiData)
 
 		if (method === 'post')
 		{
@@ -510,7 +536,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					Enviar e-mail
 				</button>
 				{(!request || !request.status.concluido) && (
-					<button type='button' >
+					<button type='button' onClick={handleGenerateRequest} >
 						Gerar pedido
 					</button>
 				)}
