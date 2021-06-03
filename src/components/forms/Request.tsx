@@ -14,7 +14,6 @@ import {SelectOption} from '../../utils/types'
 import getDate from '../../utils/getDate'
 import Request, { defaultSelected, RequestProduct, Selected, Status, Type } from '../../models/request'
 import { CompanyCondition } from '../../models/company'
-import FormButtons from '../FormButtons'
 import SelectClientModal from '../modals/SelectClient'
 import api from '../../services/api'
 import successAlert from '../../utils/alerts/success'
@@ -500,10 +499,22 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				</div>
 			</div>
 			
-			<FormButtons
-				handleCancel={back}
-				handleSubmit={handleSubmit}
-			/>
+			<div className='formButtons'>
+				<button type='button' onClick={back} >
+					Cancelar
+				</button>
+				<button type='submit' onClick={handleSubmit} >
+					Salvar
+				</button>
+				<button type='button' >
+					Enviar e-mail
+				</button>
+				{(!request || !request.status.concluido) && (
+					<button type='button' >
+						Gerar pedido
+					</button>
+				)}
+			</div>
 		</Container>
 	)
 }

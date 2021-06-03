@@ -242,6 +242,49 @@ const Container = styled.form`
 		}
 	}
 
+	.formButtons
+	{
+		margin-top: 2rem;
+		width: 100%;
+		max-width: 30rem;
+
+		margin-left: auto;
+		margin-right: auto;
+
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+		gap: 1rem;
+
+		button
+		{
+			font-family: Ubuntu;
+			font-size: 1.5rem;
+			font-weight: 700;
+			background-color: ${p => p.theme.colors.primaryDark};
+
+			color: #fff;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+
+			padding: 1rem 2rem;
+			
+			border: none;
+			border-radius: 0.5rem;
+			
+			cursor: pointer;
+			transition: 0.25s;
+
+			:hover
+			{
+				border-radius: 0;
+				background-color: ${p => p.theme.colors.primary};
+			}
+		}
+	}
+
 	@media (max-width: 1000px)
 	{
 		width: 100%;
