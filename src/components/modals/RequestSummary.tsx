@@ -72,6 +72,18 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 		return total
 	}
 
+	function calcTotalQuantity()
+	{
+		let totalQuantity = 0
+
+		products.forEach(product =>
+		{
+			totalQuantity += product.quantidade
+		})
+
+		return totalQuantity
+	}
+
 	function handleRemoveProduct(product: RequestProduct)
 	{
 		let tmpProducts = [...products]
@@ -103,15 +115,15 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
 				<>
 					<ul className='details' >
 						<li>
-					Quantidade total: {products.length}
+							Quantidade total: {calcTotalQuantity()}
 						</li>
 
 						<li>
-					Valor total em produtos: {formatPrice(calcTotalProductsPrice(), true)}
+							Valor total em produtos: {formatPrice(calcTotalProductsPrice(), true)}
 						</li>
 
 						<li>
-					Valor total em impostos: {formatPrice(calcTotalPrice() - calcTotalProductsPrice(), true)}
+							Valor total em impostos: {formatPrice(calcTotalPrice() - calcTotalProductsPrice(), true)}
 						</li>
 					</ul>
 

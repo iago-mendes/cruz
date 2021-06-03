@@ -169,6 +169,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						if (company)
 							setConditionOptions(company.condicoes)
 					})
+			
+			let tmpSelected = {...selected}
+			tmpSelected.clientId = request.cliente
+			tmpSelected.companyId = request.representada
+			setSelected(tmpSelected)
 		}
 	}, [request])
 
@@ -535,7 +540,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<button type='button' >
 					Enviar e-mail
 				</button>
-				{(!request || !request.status.concluido) && (
+				{!status.concluido && (
 					<button type='button' onClick={handleGenerateRequest} >
 						Gerar pedido
 					</button>
