@@ -24,6 +24,7 @@ import { catchError } from '../../utils/catchError'
 import RequestSummaryModal from '../modals/RequestSummary'
 import warningAlert from '../../utils/alerts/warning'
 import EditRequestProductModal from '../modals/EditRequestProduct'
+import SendRequestEmailModal from '../modals/SendRequestEmail'
 
 type RawProductsList =
 {
@@ -66,6 +67,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [isSelectProductsModalOpen, setIsSelectProductsModalOpen] = useState(false)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
 	const [isEditRequestProductModalOpen, setIsEditRequestProductModalOpen] = useState(false)
+	const [isSendRequestEmailModalOpen, setIsSendRequestEmailModalOpen] = useState(false)
 
 	const conditionSelectOptions = conditionOptions
 		// .filter(option => option.precoMin <= calcTotal())
@@ -302,8 +304,6 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				status
 			}
 
-		console.log('<< apiData >>', apiData)
-
 		if (method === 'post')
 		{
 			api.post('requests', apiData)
@@ -364,6 +364,12 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				setProducts={setProdutos}
 				rawProductsList={rawProductsList}
 				editProduct={handleEditProduct}
+			/>
+
+			<SendRequestEmailModal
+				isOpen={isSendRequestEmailModalOpen}
+				setIsOpen={setIsSendRequestEmailModalOpen}
+				request={request}
 			/>
 
 			{/* cliente */}
@@ -537,9 +543,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<button type='submit' onClick={handleSubmit} >
 					Salvar
 				</button>
-				<button type='button' >
-					Enviar e-mail
-				</button>
+				{(request && request._id !== '' && !request._id.includes('tmpId')) && (
+					<button type='button' onClick={() => setIsSendRequestEmailModalOpen(true)}>
+						Enviar e-mail
+					</button>
+				)}
 				{!status.concluido && (
 					<button type='button' onClick={handleGenerateRequest} >
 						Gerar pedido

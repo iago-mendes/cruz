@@ -61,7 +61,7 @@ const Container = styled.div`
 
 		main
 		{
-			min-height: calc(100vh - (3.5rem + 1rem + 1rem));
+			min-height: calc(100vh - (3.5rem + 1rem));
 		}
 	}
 `
