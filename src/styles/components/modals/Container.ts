@@ -15,8 +15,6 @@ const Container = styled.div`
 		padding: 0.5rem;
 		padding-left: 2rem;
 		padding-right: 2rem;
-		border-top-left-radius: 0.5rem;
-		border-top-right-radius: 0.5rem;
 		background-color: ${p => p.theme.colors.primary};
 		
 		.close
@@ -56,10 +54,10 @@ const Container = styled.div`
 		width: 100vw;
 		height: 100vh;
 
-		header
-		{
-			border-radius: 0;
-		}
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
 
 		main
 		{
