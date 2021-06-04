@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="550"
    height="550"
    id="svg66"
-   sodipodi:docname="Logo.svg"
-   inkscape:version="1.0 (6e3e5246a0, 2020-05-07)"
-   inkscape:export-filename="/home/iago/Pictures/Projects/Father's companies/Cruz Representações/Logo-cf.png"
-   inkscape:export-xdpi="142.65672"
-   inkscape:export-ydpi="142.65672">
+   sodipodi:docname="favicon.svg"
+   inkscape:version="1.1 (ce6663b3b7, 2021-05-25)"
+   inkscape:export-filename="/home/iago/Coding/cruz/cruz/public/favicon.png"
+   inkscape:export-xdpi="11.170909"
+   inkscape:export-ydpi="11.170909"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <metadata
      id="metadata72">
     <rdf:RDF>
@@ -25,7 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -145,12 +145,13 @@
      id="namedview68"
      showgrid="false"
      inkscape:zoom="0.87931627"
-     inkscape:cx="488.26039"
-     inkscape:cy="278.31748"
+     inkscape:cx="488.44769"
+     inkscape:cy="278.62557"
      inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg66" />
+     inkscape:current-layer="svg66"
+     inkscape:pagecheckerboard="0" />
   <g
      transform="translate(49.019793,129.82458)"
      id="g37">
