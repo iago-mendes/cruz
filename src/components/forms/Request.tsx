@@ -284,6 +284,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		let tmpStatus = {...status}
 		tmpStatus.concluido = true
 
+		const contact = isAddingNewContact
+			? {nome: newContactName, telefone: newContactPhone}
+			: contato
+
 		const apiData =
 		{
 			cliente,
@@ -293,7 +297,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			data,
 			condicao,
 			frete,
-			contato,
+			contato: contact,
 			digitado_por,
 			tipo,
 			status: tmpStatus
@@ -316,6 +320,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function handleSubmit(apiDataAlt?: any)
 	{
+		const contact = isAddingNewContact
+			? {nome: newContactName, telefone: newContactPhone}
+			: contato
+
 		const apiData = apiDataAlt ? apiDataAlt :
 			{
 				cliente,
@@ -325,12 +333,12 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				data,
 				condicao,
 				frete,
-				contato,
+				contato: contact,
 				digitado_por,
 				tipo,
 				status
 			}
-
+		
 		if (method === 'post')
 		{
 			api.post('requests', apiData)
@@ -350,6 +358,17 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					back()
 				})
 				.catch(catchError)
+		}
+
+		if (isAddingNewContact && isSavingNewContact)
+		{
+			const data =
+			{
+				nome: newContactName,
+				telefone: newContactPhone
+			}
+
+			api.post(`clients/${cliente}/contacts`, data)
 		}
 		
 		if (!navigator.onLine)
@@ -632,7 +651,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<button type='button' onClick={back} >
 					Cancelar
 				</button>
-				<button type='submit' onClick={handleSubmit} >
+				<button type='submit' onClick={() => handleSubmit()} >
 					Salvar
 				</button>
 				{(request && request._id !== '' && !request._id.includes('tmpId')) && (
