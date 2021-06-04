@@ -200,6 +200,11 @@ const Container = styled.form`
 			font-family: Ubuntu;
 			font-size: 1.75rem;
 
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 0.5rem;
+
 			transition: 0.25s;
 			
 			:hover
@@ -238,6 +243,26 @@ const Container = styled.form`
 			:focus, :hover
 			{
 				border-color: ${p => p.theme.colors.primary};
+			}
+		}
+	}
+
+	.contact
+	{
+		.newContactFields input
+		{
+			margin: 0.5rem;
+		}
+
+		.newContactSave
+		{
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+
+			span
+			{
+				font-size: 1.5rem;
 			}
 		}
 	}

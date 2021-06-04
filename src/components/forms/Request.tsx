@@ -501,7 +501,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 
 						<button
-							className='newContactButton'
+							className='modal'
 							onClick={() => setIsAddingNewContact(true)}
 						>
 							<FiPlus />
@@ -513,7 +513,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				{isAddingNewContact && (
 					<>
 						<button
-							className='newContactButton'
+							className='modal'
 							onClick={() => setIsAddingNewContact(false)}
 						>
 							<FiX />
