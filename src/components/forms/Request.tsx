@@ -25,6 +25,8 @@ import RequestSummaryModal from '../modals/RequestSummary'
 import warningAlert from '../../utils/alerts/warning'
 import EditRequestProductModal from '../modals/EditRequestProduct'
 import SendRequestEmailModal from '../modals/SendRequestEmail'
+import { ClientContact } from '../../models/client'
+import { FiPlus, FiX } from 'react-icons/fi'
 
 type RawProductsList =
 {
@@ -51,7 +53,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [data, setData] = useState(getDate(true))
 	const [condicao, setCondicao] = useState('')
 	const [frete, setFrete] = useState(freteOptions[0].value)
-	const [contato, setContato] = useState({nome: '', telefone: ''})
+	const [contato, setContato] = useState<ClientContact>({nome: '', telefone: ''})
 	const [digitado_por, setDigitadoPor] = useState('')
 	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
 	const [status, setStatus] = useState<Status>({concluido: false,	enviado: false,	faturado: false})
@@ -59,10 +61,16 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
 	const [conditionOptions, setConditionOptions] = useState<CompanyCondition[]>([])
+	const [contactOptions, setContactOptions] = useState<ClientContact[]>([])
 
 	const [rawProductsList, setRawProductsList] = useState<RawProductsList>({})
 	const [selected, setSelected] = useState<Selected>(defaultSelected)
 	const [clientData, setClientData] = useState('')
+
+	const [isAddingNewContact, setIsAddingNewContact] = useState(false)
+	const [newContactName, setNewContactName] = useState('')
+	const [newContactPhone, setNewContactPhone] = useState('')
+	const [isSavingNewContact, setIsSavingNewContact] = useState(true)
 
 	const [isSelectProductsModalOpen, setIsSelectProductsModalOpen] = useState(false)
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
@@ -73,6 +81,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		// .filter(option => option.precoMin <= calcTotal())
 		.sort((a,b) => a.precoMin < b.precoMin ? -1 : 1)
 		.map(option => ({label: option.nome, value: option.nome}))
+	
+	const contactSelectOptions = contactOptions
+		.map(option => ({label: `${option.nome} | ${option.telefone}`, value: `${option.nome}__${option.telefone}`}))
 	
 	useEffect(() =>
 	{
@@ -134,6 +145,9 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					tmpSelected.clientCompanyTableId = clientCompany.tabela
 					setSelected(tmpSelected)
 				}
+
+				const tmpContactOptions = client.contatos
+				setContactOptions(tmpContactOptions)
 			}
 		}
 		
@@ -287,6 +301,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		handleSubmit(apiData)
 	}
 
+	function handleSelectContact(e: SelectOption)
+	{
+		const [nome, telefone] = e.value.split('__')
+
+		const tmpContact =
+		{
+			nome,
+			telefone
+		}
+
+		setContato(tmpContact)
+	}
+
 	function handleSubmit(apiDataAlt?: any)
 	{
 		const apiData = apiDataAlt ? apiDataAlt :
@@ -399,6 +426,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					options={sellerOptions}
 					styles={selectStyles}
 					placeholder='Selecione o vendedor'
+					isSearchable={false}
 				/>
 			</div>
 			{/* representada */}
@@ -412,6 +440,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					options={companyOptions}
 					styles={selectStyles}
 					placeholder='Selecione a representada'
+					isSearchable={false}
 				/>
 			</div>
 			{/* produtos */}
@@ -456,6 +485,69 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					placeholder='Escolha uma opção de frete'
 					isSearchable={false}
 				/>
+			</div>
+			{/* contato */}
+			<div className='field contact'>
+				<label>Contato</label>
+				{!isAddingNewContact && (
+					<>
+						<Select
+							value={contactSelectOptions.find(option => option.value === `${contato.nome}__${contato.telefone}`)}
+							options={contactSelectOptions}
+							onChange={handleSelectContact}
+							styles={selectStyles}
+							placeholder='Contato'
+							isSearchable={false}
+						/>
+
+						<button
+							className='newContactButton'
+							onClick={() => setIsAddingNewContact(true)}
+						>
+							<FiPlus />
+							<span>Novo contato</span>
+						</button>
+					</>
+				)}
+
+				{isAddingNewContact && (
+					<>
+						<button
+							className='newContactButton'
+							onClick={() => setIsAddingNewContact(false)}
+						>
+							<FiX />
+							<span>Cancelar</span>
+						</button>
+
+						<div className='newContactFields'>
+							<input
+								type='text'
+								name='nome'
+								placeholder='Nome'
+								value={newContactName}
+								onChange={e => setNewContactName(e.target.value)}
+							/>
+							<input
+								type='text'
+								name='telefone'
+								placeholder='Telefone'
+								value={newContactPhone}
+								onChange={e => setNewContactPhone(e.target.value)}
+							/>
+						</div>
+
+						<div className='newContactSave'>
+							<Switch
+								checked={isSavingNewContact}
+								onChange={e => setIsSavingNewContact(e)}
+							/>
+							<span>
+								Salvar contato
+							</span>
+						</div>
+					</>
+				)}
 			</div>
 			{/* digitado_por */}
 			<div className='field'>

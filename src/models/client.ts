@@ -15,7 +15,9 @@ interface Client
 	condicoes: Conditions
 	telefone?: number
 	modificadoEm?: string
+	contatos: ClientContact[]
 }
+export default Client
 
 export const defaultClient: Client =
 {
@@ -31,17 +33,18 @@ export const defaultClient: Client =
 	representadas: [],
 	endereco: {},
 	status: {ativo: true, aberto: true, nome_sujo: false},
-	condicoes: {prazo: true, cheque: true, vista: true}
+	condicoes: {prazo: true, cheque: true, vista: true},
+	contatos: []
 }
 
-export interface ClientCompany
+export type ClientCompany =
 {
 	_id?: string
 	id: string
 	tabela: string
 }
 
-export interface Address
+export type Address =
 {
 	rua?: string
 	numero?: number
@@ -52,21 +55,21 @@ export interface Address
 	uf?: string
 }
 
-export interface Status
+export type Status =
 {
 	ativo: boolean
 	aberto: boolean
 	nome_sujo: boolean
 }
 
-export interface Conditions
+export type Conditions =
 {
 	prazo: boolean
 	cheque: boolean
 	vista: boolean
 }
 
-export interface ClientListed
+export type ClientListed =
 {
 	id: string
 	razao_social: string
@@ -80,4 +83,9 @@ export interface ClientListed
 	}
 }
 
-export default Client
+export type ClientContact =
+{
+	_id?: string
+	nome: string
+	telefone: string
+}
