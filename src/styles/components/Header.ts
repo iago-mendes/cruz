@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 const Container = styled.header`
 	width: 100%;
-	height: 10vh;
+	height: 6.5rem;
 	background: #fff;
 
 	padding: 0 5rem;
@@ -38,9 +38,9 @@ const Container = styled.header`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
+		gap: 0.5rem;
 
-		padding: 1rem;
+		padding: 0.5rem;
 
 		transition: 0.25s;
 
@@ -68,7 +68,7 @@ const Container = styled.header`
 			border: none;
 
 			font-family: Roboto;
-			font-size: 1.5rem;
+			font-size: 1.75rem;
 		}
 	}
 
