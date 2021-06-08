@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Login from '../pages/login'
 import useAuth from '../hooks/useAuth'
 import LoadingModal from './modals/Loading'
-import { SyncView } from '../styles/components/SessionHandler'
+import { Background } from '../styles/components/SessionHandler'
 import { sync } from '../services/offline/db/sync'
 import warningAlert from '../utils/alerts/warning'
 
@@ -12,7 +12,12 @@ const SessionHandler: React.FC = ({children}) =>
 	const {loading, isLogged} = useAuth()
 
 	if (loading)
-		return <LoadingModal isOpen={loading} />
+		return (
+			<>
+				<LoadingModal isOpen={loading} />
+				<Background />
+			</>
+		)
 
 	if (!isLogged)
 		return <Login />
@@ -51,7 +56,7 @@ const AuthenticatedSession: React.FC = ({children}) =>
 	}, [])
 
 	if (isSyncing)
-		return <SyncView />
+		return <Background />
 
 	return (
 		<>

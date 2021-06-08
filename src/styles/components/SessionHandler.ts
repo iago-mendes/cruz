@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const SyncView = styled.div`
+export const Background = styled.div`
 	background-color: ${p => p.theme.colors.primary};
 	width: 100vw;
 	height: 100vh;
