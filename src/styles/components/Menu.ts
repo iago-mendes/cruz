@@ -28,13 +28,14 @@ export const Sidebar = styled.nav`
 
 	main
 	{
-		height: 50%;
+		min-height: 30%;
+		height: fit-content;
 		width: 100%;
 	}
 	
 	footer
 	{
-		height: 25%;
+		height: 30%;
 		width: 100%;
 	}
 `
@@ -113,8 +114,7 @@ export const OptionsList = styled.ul`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-evenly;
-	gap: 2rem;
+	gap: 1rem;
 
 	list-style: none;
 

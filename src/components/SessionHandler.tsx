@@ -6,6 +6,7 @@ import LoadingModal from './modals/Loading'
 import { Background } from '../styles/components/SessionHandler'
 import { sync } from '../services/offline/db/sync'
 import warningAlert from '../utils/alerts/warning'
+import { useRouter } from 'next/router'
 
 const SessionHandler: React.FC = ({children}) =>
 {
@@ -32,6 +33,18 @@ const SessionHandler: React.FC = ({children}) =>
 const AuthenticatedSession: React.FC = ({children}) =>
 {
 	const [isSyncing, setIsSyncing] = useState(true)
+	const {user} = useAuth()
+
+	const {pathname, push} = useRouter()
+	const route = pathname.split('/')[1]
+
+	const adminRoutes =
+	[
+		'vendedores', 'indicadores'
+	]
+
+	const requiresAdminRole = adminRoutes.includes(route) || pathname.includes('editar') || pathname.includes('adicionar')
+	const isRouteForbidden = requiresAdminRole && user.role !== 'admin'
 
 	useEffect(() =>
 	{
@@ -55,7 +68,13 @@ const AuthenticatedSession: React.FC = ({children}) =>
 		}
 	}, [])
 
-	if (isSyncing)
+	useEffect(() =>
+	{
+		if (isRouteForbidden)
+			push('/')
+	}, [isRouteForbidden])
+
+	if (isSyncing || isRouteForbidden)
 		return <Background />
 
 	return (

@@ -102,12 +102,14 @@ const Products: React.FC = () =>
 
 			<main>
 				<div className='productsActions'>
-					<button
-						onClick={() => setIsTableUpdatesModalOpen(true)}
-					>
-						<MdUpdate />
-						<span>Atualizar tabelas</span>
-					</button>
+					{user.role === 'admin' && (
+						<button
+							onClick={() => setIsTableUpdatesModalOpen(true)}
+						>
+							<MdUpdate />
+							<span>Atualizar tabelas</span>
+						</button>
+					)}
 				</div>
 
 				<table>

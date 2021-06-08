@@ -99,42 +99,49 @@ function checkRoute(routes: string[])
 		return '#E2DADB'
 }
 
-const MainOptions: React.FC = () => (
-	<main>
-		<OptionsList>
-			<Link href='/' >
-				<a>
-					<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
-					<span>Pedidos</span>
-				</a>
-			</Link>
-			<Link href='/clientes' >
-				<a>
-					<FaStore size={25} color={checkRoute(['/clientes'])}/>
-					<span>Clientes</span>
-				</a>
-			</Link>
-			<Link href='/empresas' >
-				<a>
-					<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
-					<span>Empresas</span>
-				</a>
-			</Link>
-			<Link href='/vendedores' >
-				<a>
-					<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
-					<span>Vendedores</span>
-				</a>
-			</Link>
-			<Link href='/indicadores' >
-				<a>
-					<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
-					<span>Indicadores</span>
-				</a>
-			</Link>
-		</OptionsList>
-	</main>
-)
+const MainOptions: React.FC = () => {
+	const {user} = useAuth()
+
+	return (
+		<main>
+			<OptionsList>
+				<Link href='/' >
+					<a>
+						<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
+						<span>Pedidos</span>
+					</a>
+				</Link>
+				<Link href='/clientes' >
+					<a>
+						<FaStore size={25} color={checkRoute(['/clientes'])}/>
+						<span>Clientes</span>
+					</a>
+				</Link>
+				<Link href='/empresas' >
+					<a>
+						<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
+						<span>Empresas</span>
+					</a>
+				</Link>
+				{(user && user.role === 'admin') && (
+					<>
+						<Link href='/vendedores' >
+							<a>
+								<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
+								<span>Vendedores</span>
+							</a>
+						</Link>
+						<Link href='/indicadores' >
+							<a>
+								<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
+								<span>Indicadores</span>
+							</a>
+						</Link>
+					</>
+				)}
+			</OptionsList>
+		</main>
+	)}
 
 const FooterOptions: React.FC = () =>
 {
