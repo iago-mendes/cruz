@@ -8,18 +8,20 @@ import Header from '../../components/Header'
 import Container from '../../styles/pages/empresas/index'
 import Add from '../../components/Add'
 import useAuth from '../../hooks/useAuth'
-import {CompanyListed} from '../../models/company'
+import {CompanyListed, loadingCompany} from '../../models/company'
 import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
 import { Image } from '../../components/Image'
 import { companyController } from '../../services/offline/controllers/company'
+import { SkeletonLoading } from '../../utils/skeletonLoading'
 
 const Companies: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user} = useAuth()
 
-	const [companies, setCompanies] = useState<CompanyListed[]>([])
+	const defaultCompanies: CompanyListed[] = Array(5).fill(loadingCompany)
+	const [companies, setCompanies] = useState<CompanyListed[]>(defaultCompanies)
 
 	useEffect(() =>
 	{
@@ -61,41 +63,57 @@ const Companies: React.FC = () =>
 			<Add route='/empresas/adicionar' />
 
 			<main>
-				{companies.map(company => (
-					<div key={company.id} className='company'>
-						<Image src={company.imagem} alt={company.nome_fantasia}/>
-						<div className='companyText'>
-							<Link href={`/empresas/${company.id}`} >
-								<a className='name'>
-									{company.nome_fantasia}
-								</a>
-							</Link>
-							<span className='description' >
-								{company.descricao_curta}
-							</span>
-						</div>
-						{
-							user.role === 'admin' ?
-								<div className='actions'>
-									<button
-										title='Editar'
-										onClick={() => Router.push(`/empresas/${company.id}/editar`)}
-										className='edit'
-									>
-										<FiEdit3 />
-									</button>
-									<button
-										title='Deletar'
-										onClick={() => handleDeleteCompany(company)}
-										className='delete'
-									>
-										<FiTrash />
-									</button>
+				{companies.map((company, index) =>
+				{
+					if (company.id === 'loading')
+						return (
+							<div className='company' key={index} >
+								<SkeletonLoading height='7.5rem' width='7.5rem' />
+								<div className='companyText'>
+									<SkeletonLoading height='2.5rem' width='20rem' />
+									<SkeletonLoading height='2rem' width='15rem' />
 								</div>
-								: <div />
-						}
-					</div>
-				))}
+								
+								<SkeletonLoading height='4rem' width='10rem' />
+							</div>
+						)
+					else
+						return (
+							<div className='company' key={index} >
+								<Image src={company.imagem} alt={company.nome_fantasia}/>
+								<div className='companyText'>
+									<Link href={`/empresas/${company.id}`} >
+										<a className='name'>
+											{company.nome_fantasia}
+										</a>
+									</Link>
+									<span className='description' >
+										{company.descricao_curta}
+									</span>
+								</div>
+								{
+									user.role === 'admin' ?
+										<div className='actions'>
+											<button
+												title='Editar'
+												onClick={() => Router.push(`/empresas/${company.id}/editar`)}
+												className='edit'
+											>
+												<FiEdit3 />
+											</button>
+											<button
+												title='Deletar'
+												onClick={() => handleDeleteCompany(company)}
+												className='delete'
+											>
+												<FiTrash />
+											</button>
+										</div>
+										: <div />
+								}
+							</div>
+						)
+				})}
 			</main>
 		</Container>
 	)

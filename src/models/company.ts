@@ -63,3 +63,11 @@ export interface CompanyShowed
 }
 
 export default Company
+
+export const loadingCompany: CompanyListed =
+{
+	id: 'loading',
+	imagem: '',
+	nome_fantasia: '',
+	descricao_curta: ''
+}
