@@ -55,3 +55,18 @@ export const defaultPricedProduct: PricedProduct =
 }
 
 export default Product
+
+export const loadingProduct: Product =
+{
+	_id: 'loading',
+	imagem: '',
+	nome: '',
+	codigo: '',
+	unidade: '',
+	peso: 0,
+	volume: 0,
+	ipi: 0,
+	st: 0,
+	comissao: 0,
+	tabelas: [{id: 'loading', preco: 0}]
+}
