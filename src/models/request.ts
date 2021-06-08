@@ -105,3 +105,29 @@ export const defaultSelected: Selected =
 	},
 	clientCompanyTableId: ''
 }
+
+export const loadingRequest: RequestListed =
+{
+	id: 'loading',
+	data: '',
+	cliente:
+	{
+		imagem: '',
+		nome_fantasia: '',
+		razao_social: ''
+	},
+	vendedor:
+	{
+		imagem: '',
+		nome: ''
+	},
+	representada:
+	{
+		imagem: '',
+		nome_fantasia: '',
+		razao_social: ''
+	},
+	tipo: {venda: true, troca: false},
+	status: {concluido: false, enviado: false, faturado: false},
+	valorTotal: 0
+}

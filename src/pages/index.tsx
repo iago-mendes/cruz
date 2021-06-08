@@ -6,7 +6,6 @@ import {FaRegEye} from 'react-icons/fa'
 
 import Container from '../styles/pages/index'
 import Header from '../components/Header'
-import Loading from '../components/Loading'
 import api from '../services/api'
 import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
@@ -15,15 +14,17 @@ import successAlert from '../utils/alerts/success'
 import confirmAlert from '../utils/alerts/confirm'
 import { Image } from '../components/Image'
 import { requestController } from '../services/offline/controllers/request'
-import { RequestListed } from '../models/request'
+import { RequestListed, loadingRequest } from '../models/request'
 import { pdfController } from '../services/offline/controllers/pdf'
+import { SkeletonLoading } from '../utils/skeletonLoading'
 
 const Requests: React.FC = () =>
 {
 	const Router = useRouter()
-	const {user, loading} = useAuth()
+	const {user} = useAuth()
 	
-	const [requests, setRequests] = useState<RequestListed[]>([])
+	const defaultRequests = [loadingRequest, loadingRequest, loadingRequest]
+	const [requests, setRequests] = useState<RequestListed[]>(defaultRequests)
 
 	useEffect(() =>
 	{
@@ -58,11 +59,11 @@ const Requests: React.FC = () =>
 		)
 	}
 
-	if (loading)
-		return <Loading />
-
 	return (
-		<Container className='container' isAdmin={user.role === 'admin'} >
+		<Container
+			className='container'
+			isAdmin={user.role === 'admin'}
+		>
 			<Head>
 				<title>Pedidos | Cruz Representações</title>
 			</Head>
@@ -71,86 +72,131 @@ const Requests: React.FC = () =>
 			<Header display='Pedidos' />
 
 			<main className='main'>
-				{requests.map(request => (
-					<div className='request' key={request.id}>
-						<div className='header'>
-							<div className='typeDate'>
-								{request.tipo.venda && (
-									<span style={{backgroundColor: '#357435'}}>
+				{requests.map((request, index) =>
+				{
+					if (request.id === 'loading')
+						return (
+							<div className='request' key={index}>
+								<div className='header'>
+									<div className='typeDate'>
+										<SkeletonLoading height='2rem' width='15rem' />
+									</div>
+									<div className='status'>
+										<SkeletonLoading height='2rem' width='30rem' />
+									</div>
+									<div className='buttons'>
+										<SkeletonLoading height='2rem' width='10rem' />
+									</div>
+								</div>
+								<ul>
+									<li>
+										<div className='imgName'>
+											<SkeletonLoading height='5rem' width='5rem' />
+											<SkeletonLoading height='2.5rem' width='20rem' />
+										</div>
+										<div className='description'>
+											<SkeletonLoading height='2rem' width='20rem' />
+										</div>
+									</li>
+									<li>
+										<div className='imgName'>
+											<SkeletonLoading height='5rem' width='5rem' />
+											<SkeletonLoading height='2.5rem' width='20rem' />
+										</div>
+										<div className='description'>
+											<SkeletonLoading height='2rem' width='20rem' />
+										</div>
+									</li>
+									<li>
+										<div className='imgName'>
+											<SkeletonLoading height='5rem' width='5rem' />
+											<SkeletonLoading height='2.5rem' width='20rem' />
+										</div>
+									</li>
+								</ul>
+							</div>
+						)
+					else
+						return (
+							<div className='request' key={index}>
+								<div className='header'>
+									<div className='typeDate'>
+										{request.tipo.venda && (
+											<span style={{backgroundColor: '#357435'}}>
 										venda
-									</span>
-								)}
-								{request.tipo.troca && (
-									<span style={{backgroundColor: '#2b2b68'}}>
+											</span>
+										)}
+										{request.tipo.troca && (
+											<span style={{backgroundColor: '#2b2b68'}}>
 										troca
-									</span>
-								)}
-								<h2>{formatDate(request.data)}</h2>
-							</div>
-							<div className='status'>
-								<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
-									{request.status.concluido ? 'concluído' : 'em orçamento' }
-								</span>
-								<span style={{backgroundColor: request.status.enviado ? '#16881a' : '#881616'}} >
-									{request.status.enviado ? 'enviado' : 'não enviado' }
-								</span>
-								<span style={{backgroundColor: request.status.faturado ? '#16881a' : '#881616'}} >
-									{request.status.faturado ? 'faturado' : 'não faturado' }
-								</span>
-							</div>
-							<div className='buttons'>
-								<button
-									title='Ver pedido'
-									onClick={() => pdfController.request(request.id)}
-								>
-									<FaRegEye />
-								</button>
-								{user.role === 'admin' && (
-									<>
-										<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
-											<FiEdit3 />
-										</button>
+											</span>
+										)}
+										<h2>{formatDate(request.data)}</h2>
+									</div>
+									<div className='status'>
+										<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
+											{request.status.concluido ? 'concluído' : 'em orçamento' }
+										</span>
+										<span style={{backgroundColor: request.status.enviado ? '#16881a' : '#881616'}} >
+											{request.status.enviado ? 'enviado' : 'não enviado' }
+										</span>
+										<span style={{backgroundColor: request.status.faturado ? '#16881a' : '#881616'}} >
+											{request.status.faturado ? 'faturado' : 'não faturado' }
+										</span>
+									</div>
+									<div className='buttons'>
 										<button
-											title='Deletar'
-											onClick={() => handleDeleteRequest(request)}
-											className='delete'
+											title='Ver pedido'
+											onClick={() => pdfController.request(request.id)}
 										>
-											<FiTrash />
+											<FaRegEye />
 										</button>
-									</>
-								)}
+										{user.role === 'admin' && (
+											<>
+												<button title='Editar' onClick={() => Router.push(`/pedidos/${request.id}`)}>
+													<FiEdit3 />
+												</button>
+												<button
+													title='Deletar'
+													onClick={() => handleDeleteRequest(request)}
+													className='delete'
+												>
+													<FiTrash />
+												</button>
+											</>
+										)}
+									</div>
+								</div>
+								<ul>
+									<li>
+										<div className='imgName'>
+											<Image src={request.cliente.imagem} alt={request.cliente.nome_fantasia}/>
+											<h1>{request.cliente.nome_fantasia}</h1>
+										</div>
+										<div className='description'>
+											<h2>{request.cliente.razao_social}</h2>
+										</div>
+									</li>
+									<li>
+										<div className='imgName'>
+											<Image src={request.representada.imagem} alt={request.representada.nome_fantasia}/>
+											<h1>{request.representada.nome_fantasia}</h1>
+										</div>
+										<div className='description'>
+											<h2>{request.representada.razao_social}</h2>
+										</div>
+									</li>
+									<li>
+										<div className='imgName'>
+											<Image src={request.vendedor.imagem} alt={request.vendedor.nome}/>
+											<h1>{request.vendedor.nome}</h1>
+										</div>
+									</li>
+								</ul>
 							</div>
-						</div>
-						<ul>
-							<li>
-								<div className='imgName'>
-									<Image src={request.cliente.imagem} alt={request.cliente.nome_fantasia}/>
-									<h1>{request.cliente.nome_fantasia}</h1>
-								</div>
-								<div className='description'>
-									<h2>{request.cliente.razao_social}</h2>
-								</div>
-							</li>
-							<li>
-								<div className='imgName'>
-									<Image src={request.representada.imagem} alt={request.representada.nome_fantasia}/>
-									<h1>{request.representada.nome_fantasia}</h1>
-								</div>
-								<div className='description'>
-									<h2>{request.representada.razao_social}</h2>
-								</div>
-							</li>
-							<li>
-								<div className='imgName'>
-									<Image src={request.vendedor.imagem} alt={request.vendedor.nome}/>
-									<h1>{request.vendedor.nome}</h1>
-								</div>
-							</li>
-						</ul>
-					</div>
-				))}
+						)
+				})}
 			</main>
-
 		</Container>
 	)
 }
