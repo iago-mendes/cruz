@@ -23,7 +23,7 @@ const Requests: React.FC = () =>
 	const Router = useRouter()
 	const {user} = useAuth()
 	
-	const defaultRequests = [loadingRequest, loadingRequest, loadingRequest]
+	const defaultRequests: RequestListed[] = Array(3).fill(loadingRequest)
 	const [requests, setRequests] = useState<RequestListed[]>(defaultRequests)
 
 	useEffect(() =>

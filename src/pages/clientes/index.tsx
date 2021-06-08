@@ -3,7 +3,7 @@ import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {FiEdit3, FiTrash} from 'react-icons/fi'
 
-import {ClientListed as Client} from '../../models/client'
+import { ClientListed, loadingClient } from '../../models/client'
 import Header from '../../components/Header'
 import api from '../../services/api'
 import Add from '../../components/Add'
@@ -16,13 +16,15 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import { Image } from '../../components/Image'
 import { clientController } from '../../services/offline/controllers/client'
+import { SkeletonLoading } from '../../utils/skeletonLoading'
 
 const Clients: React.FC = () =>
 {
 	const Router = useRouter()
 	const {user} = useAuth()
 	
-	const [clients, setClients] = useState<Client[]>([])
+	const defaultClients: ClientListed[] = Array(10).fill(loadingClient)
+	const [clients, setClients] = useState<ClientListed[]>(defaultClients)
 	const [page, setPage]	= useState(1)
 	const [totalPages, setTotalPages] = useState(1)
 	const [loading, setLoading] = useState(false)
@@ -65,7 +67,7 @@ const Clients: React.FC = () =>
 		setLoading(false)
 	}
 
-	async function handleDeleteClient(client: Client)
+	async function handleDeleteClient(client: ClientListed)
 	{
 		confirmAlert(
 			'Você tem certeza?',
@@ -113,42 +115,60 @@ const Clients: React.FC = () =>
 				loading={loading}
 				noResults={clients.length === 0 && !loading}
 			>
-				{clients.map(client => (
-					<div className='client' key={client.id} >
-						<div className='imgNames'>
-							<Image src={client.imagem} alt={client.nome_fantasia} />
-							<div className='names'>
-								<h1>{client.nome_fantasia}</h1>
-								<h2>{client.razao_social}</h2>
+				{clients.map((client, index) => {
+					if (client.id === 'loading')
+						return (
+							<div className='client' key={index} >
+								<div className='imgNames'>
+									<SkeletonLoading height='6.5rem' width='6.5rem' />
+									<div className='names'>
+										<SkeletonLoading height='2rem' width='20rem' />
+										<SkeletonLoading height='2rem' width='20rem' />
+									</div>
+								</div>
+								<div className='statusActions'>
+									<SkeletonLoading height='3rem' width='25rem' />
+								</div>
 							</div>
-						</div>
-						<div className='statusActions'>
-							<div className='status'>
-								<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
-									{client.status.ativo ? 'ativo' : 'inativo' }
-								</span>
-								<span style={{backgroundColor: client.status.aberto ? '#16881a' : '#881616'}} >
-									{client.status.aberto ? 'aberto' : 'fechado' }
-								</span>
-								<span style={{backgroundColor: client.status.nome_sujo ? '#881616' : '#16881a'}} >
-									{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
-								</span>
+						)
+					else
+						return (
+							<div className='client' key={index} >
+								<div className='imgNames'>
+									<Image src={client.imagem} alt={client.nome_fantasia} />
+									<div className='names'>
+										<h1>{client.nome_fantasia}</h1>
+										<h2>{client.razao_social}</h2>
+									</div>
+								</div>
+								<div className='statusActions'>
+									<div className='status'>
+										<span style={{backgroundColor: client.status.ativo ? '#16881a' : '#881616'}} >
+											{client.status.ativo ? 'ativo' : 'inativo' }
+										</span>
+										<span style={{backgroundColor: client.status.aberto ? '#16881a' : '#881616'}} >
+											{client.status.aberto ? 'aberto' : 'fechado' }
+										</span>
+										<span style={{backgroundColor: client.status.nome_sujo ? '#881616' : '#16881a'}} >
+											{client.status.nome_sujo ? 'nome sujo' : 'nome limpo' }
+										</span>
+									</div>
+									<div className='buttons'>
+										{user.role === 'admin' && (
+											<>
+												<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
+													<FiEdit3 />
+												</button>
+												<button title='Deletar' onClick={() => handleDeleteClient(client)} >
+													<FiTrash />
+												</button>
+											</>
+										)}
+									</div>
+								</div>
 							</div>
-							<div className='buttons'>
-								{user.role === 'admin' && (
-									<>
-										<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
-											<FiEdit3 />
-										</button>
-										<button title='Deletar' onClick={() => handleDeleteClient(client)} >
-											<FiTrash />
-										</button>
-									</>
-								)}
-							</div>
-						</div>
-					</div>
-				))}
+						)
+				})}
 			</Paginate>
 		</Container>
 	)

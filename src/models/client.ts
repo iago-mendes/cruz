@@ -89,3 +89,12 @@ export type ClientContact =
 	nome: string
 	telefone: string
 }
+
+export const loadingClient: ClientListed =
+{
+	id: 'loading',
+	razao_social: '',
+	nome_fantasia: '',
+	imagem: '',
+	status: {ativo: true, aberto: true, nome_sujo: false}
+}
