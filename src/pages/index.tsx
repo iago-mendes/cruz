@@ -60,16 +60,18 @@ const Requests: React.FC = () =>
 	}
 
 	return (
-		<Container
-			className='container'
-			isAdmin={user.role === 'admin'}
-		>
+		<Container className='container' >
 			<Head>
 				<title>Pedidos | Cruz Representações</title>
 			</Head>
 
-			<Add route='/pedidos/novo' />
-			<Header display='Pedidos' />
+			<Add
+				route='/pedidos/novo'
+				hideFromSellers={false}
+			/>
+			<Header
+				display='Pedidos'
+			/>
 
 			<main className='main'>
 				{requests.map((request, index) =>

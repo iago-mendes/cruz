@@ -43,7 +43,7 @@ const AuthenticatedSession: React.FC = ({children}) =>
 		'vendedores', 'indicadores'
 	]
 
-	const requiresAdminRole = adminRoutes.includes(route) || pathname.includes('editar') || pathname.includes('adicionar')
+	const requiresAdminRole = adminRoutes.includes(route) || pathname.includes('editar')
 	const isRouteForbidden = requiresAdminRole && user.role !== 'admin'
 
 	useEffect(() =>

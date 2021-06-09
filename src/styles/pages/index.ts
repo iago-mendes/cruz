@@ -1,11 +1,6 @@
 import styled from 'styled-components'
 
-interface ContainerProps
-{
-	isAdmin: boolean
-}
-
-const Container = styled.div<ContainerProps>`
+const Container = styled.div`
 	main
 	{
 		flex-direction: column;

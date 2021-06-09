@@ -86,12 +86,16 @@ const Clients: React.FC = () =>
 	}
 
 	return (
-		<Container className='container'>
+		<Container className='container' >
 			<Head>
 				<title>Clientes | Cruz Representações</title>
 			</Head>
 
-			<Add route='/clientes/adicionar' />
+			<Add
+				route='/clientes/adicionar'
+				hideFromSellers={false}
+			/>
+
 			<Header
 				display='Clientes'
 

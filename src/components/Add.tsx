@@ -7,16 +7,17 @@ import Container from '../styles/components/Add'
 interface AddProps
 {
 	route: string
+	hideFromSellers?: boolean
 }
 
-const Add: React.FC<AddProps> = ({route}) =>
+const Add: React.FC<AddProps> = ({route, hideFromSellers = true}) =>
 {
 	const {user, loading} = useAuth()
 	const Router = useRouter()
 
 	if (loading)
 		return null
-	if (user.role !== 'admin')
+	if (hideFromSellers && user.role !== 'admin')
 		return null
 
 	return (
