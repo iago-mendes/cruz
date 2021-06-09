@@ -3,6 +3,11 @@ import styled from 'styled-components'
 const Container = styled.main`
 	padding: 0 !important;
 
+	> div
+	{
+		margin-bottom: 2rem;
+	}
+
 	.header
 	{
 		background-color: #fff;
@@ -218,11 +223,17 @@ const Container = styled.main`
 		}
 	}
 
+	.last
+	{
+		margin-bottom: 10rem;
+	}
+
 	.summary
 	{
 		position: fixed;
 		bottom: 0;
 		left: 0;
+		margin: 0;
 
 		width: 100%;
 		background-color: #fff;
@@ -238,6 +249,14 @@ const Container = styled.main`
 		span strong
 		{
 			color: ${p => p.theme.colors.primaryDark};
+		}
+	}
+
+	@media(min-width: 1000px)
+	{
+		.field ul
+		{
+			width: 50%;
 		}
 	}
 `

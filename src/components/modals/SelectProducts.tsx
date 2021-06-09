@@ -206,11 +206,11 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 				<div className='summary'>
 					<span>
-						{getTotalQuantity()} selecionados
+						{getTotalQuantity()} itens
 					</span>
 
 					<span>
-						Total: <strong>{formatPrice(getTotalPrice(), true)}</strong>
+						Total (s/ impostos): <strong>{formatPrice(getTotalPrice(), true)}</strong>
 					</span>
 				</div>
 			</Container>

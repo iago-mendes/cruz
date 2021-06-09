@@ -161,6 +161,12 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 		setSelected(tmpSelected)
 	}
 
+	function calcSubtotal()
+	{
+		const subtotal = selected.product.quantidade * selected.product.preco
+		return subtotal
+	}
+
 	return (
 		<ModalContainer
 			isOpen={isOpen}
@@ -254,7 +260,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 				</div>
 
 				{/* price */}
-				<div className='field'>
+				<div className='last field'>
 					<label htmlFor='price'>Preço líquido</label>
 					<NumberInput
 						value={selected.product.preco}
@@ -267,7 +273,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 
 				<div className='summary'>
 					<span>
-						Subtotal valor: <strong>{formatPrice(150, true)}</strong>
+						Valor subtotal (sem impostos): <strong>{formatPrice(calcSubtotal(), true)}</strong>
 					</span>
 				</div>
 			</Container>
