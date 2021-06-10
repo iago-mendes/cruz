@@ -20,9 +20,9 @@ interface PasswordModalProps
 	id?: string
 	setPwd?: (p: string) => void
 
-	sendCredentialsViaMail: boolean
-	setSendCredentialsViaMail: (p: boolean) => void
-	handleSendCredentialsViaMail: (pwd: string) => void
+	sendCredentialsViaMail?: boolean
+	setSendCredentialsViaMail?: (p: boolean) => void
+	handleSendCredentialsViaMail?: (pwd: string) => void
 }
 
 const PasswordModal: React.FC<PasswordModalProps> =
@@ -74,7 +74,9 @@ const PasswordModal: React.FC<PasswordModalProps> =
 			{
 				setIsOpen(false)
 				sucessAlert('Senha enviada com sucesso!')
-				handleSendCredentialsViaMail(newPwd)
+
+				if (handleSendCredentialsViaMail)
+					handleSendCredentialsViaMail(newPwd)
 			})
 			.catch(error =>
 			{
@@ -98,8 +100,8 @@ const PasswordModal: React.FC<PasswordModalProps> =
 						<span>
 							{
 								inputType === 'password'
-								? 'Mostrar senhas'
-								: 'Esconder senhas'
+									? 'Mostrar senhas'
+									: 'Esconder senhas'
 							}
 						</span>
 					</button>
@@ -136,17 +138,19 @@ const PasswordModal: React.FC<PasswordModalProps> =
 							onChange={e => setNewPwd2(e.target.value)}
 						/>
 					</div>
-					<div className='field'>
-						<label htmlFor='sendCredentials'>Enviar credenciais por e-mail</label>
-						<Switch
-							name='sendCredentials'
-							id='sendCredentials'
-							checked={sendCredentialsViaMail}
-							onChange={setSendCredentialsViaMail}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
-					</div>
+					{setSendCredentialsViaMail && (
+						<div className='field'>
+							<label htmlFor='sendCredentials'>Enviar credenciais por e-mail</label>
+							<Switch
+								name='sendCredentials'
+								id='sendCredentials'
+								checked={sendCredentialsViaMail}
+								onChange={setSendCredentialsViaMail}
+								onHandleColor='#d8d8d8'
+								offHandleColor='#d8d8d8'
+							/>
+						</div>
+					)}
 				</form>
 				
 				<button className='submit' onClick={handleSubmit} >

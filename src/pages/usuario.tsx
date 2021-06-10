@@ -7,6 +7,11 @@ import Dropzone from '../components/Dropzone'
 import useAuth from '../hooks/useAuth'
 import { SkeletonLoading } from '../utils/skeletonLoading'
 import { sellerController } from '../services/offline/controllers/seller'
+import PasswordModal from '../components/modals/Password'
+import api from '../services/api'
+import successAlert from '../utils/alerts/success'
+import { catchError } from '../utils/catchError'
+import LoadingModal from '../components/modals/Loading'
 
 const User: React.FC = () =>
 {
@@ -16,6 +21,9 @@ const User: React.FC = () =>
 	const [name, setName] = useState(user.data ? user.data.name : '')
 	const [title, setTitle] = useState('')
 	const [email, setEmail] = useState(user.data ? user.data.email : '')
+
+	const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() =>
 	{
@@ -29,11 +37,36 @@ const User: React.FC = () =>
 			})
 	}, [user.id])
 
+	async function updateImage(file: File)
+	{
+		const data = new FormData()
+		data.append('imagem', file)
+
+		setLoading(true)
+		await api.put(`sellers/${user.id}`, data)
+			.then(() => successAlert('Imagem atualizada com sucesso!'))
+			.catch(catchError)
+		
+		setLoading(false)
+	}
+
 	return (
 		<Container className='container' >
 			<Head>
 				<title>Usuário | Cruz Representações</title>
 			</Head>
+
+			<PasswordModal
+				isOpen={isPasswordModalOpen}
+				setIsOpen={setIsPasswordModalOpen}
+				
+				id={user.id}
+				role='seller'
+			/>
+
+			<LoadingModal
+				isOpen={loading}
+			/>
 
 			<Header
 				display='Usuário'
@@ -46,7 +79,7 @@ const User: React.FC = () =>
 							? <SkeletonLoading height='30rem' width='40rem'/>
 							: (
 								<Dropzone
-									onFileUploaded={() => {}}
+									onFileUploaded={updateImage}
 									shownFileUrl={imageUrl}
 								/>
 							)
@@ -84,7 +117,7 @@ const User: React.FC = () =>
 				</div>
 				<div className='info'>
 					<h3>Senha</h3>
-					<button className='password' onClick={() => {}} >
+					<button className='password' onClick={() => setIsPasswordModalOpen(true)} >
 						Atualizar senha
 					</button>
 				</div>
