@@ -1,6 +1,8 @@
 import {NextApiHandler} from 'next'
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
+
+import { defaultUser, User } from '../../../contexts/Auth'
 import api from '../../../services/api'
 
 const config =
@@ -13,25 +15,29 @@ const config =
 	providers:
 	[
 		Providers.Credentials(
-		{
-			name: 'e-mail e senha',
-			credentials:
 			{
-				email: {label: 'E-mail', type: 'text', placeholder: 'usuario@exemplo.com'},
-				password: {label: 'Senha', type: 'password'}
-			},
-			authorize: async credentials =>
-			{
-				const data = {email: credentials.email, password: credentials.password}
+				name: 'e-mail e senha',
+				credentials:
+				{
+					email: {label: 'E-mail', type: 'text', placeholder: 'usuario@exemplo.com'},
+					password: {label: 'Senha', type: 'password'}
+				},
+				authorize: async credentials =>
+				{
+					const data = {email: credentials.email, password: credentials.password}
 
-				const res = await api.post('login/seller', data)
+					let user: User = defaultUser
 
-				const {user} = res.data
+					await api.post('login/seller', data)
+						.then(({data}) => user = data.user)
+						.catch(error =>
+						{
+							user.errorMessage = error.response.data.message
+						})
 
-				if (user) return Promise.resolve(user)
-				else return Promise.resolve(null)
-			}
-		})
+					return Promise.resolve(user)
+				}
+			})
 	],
 	callbacks:
 	{

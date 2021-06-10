@@ -4,7 +4,7 @@ import cookies from 'js-cookie'
 
 import { sellerController } from '../services/offline/controllers/seller'
 
-type User =
+export type User =
 {
 	id: string
 	role: string
@@ -17,6 +17,12 @@ type User =
 	}
 	
 	errorMessage?: string
+}
+
+export const defaultUser: User =
+{
+	id: 'not-logged',
+	role: 'none'
 }
 
 type AuthContextData =
@@ -35,11 +41,6 @@ const AuthContextProvider: React.FC = ({children}) =>
 {
 	const [session, loading] = useSession()
 
-	const defaultUser: User =
-	{
-		id: 'not-logged',
-		role: 'none'
-	}
 	const [user, setUser] = useState<User>(defaultUser)
 
 	const isLogged = user.id !== 'not-logged'

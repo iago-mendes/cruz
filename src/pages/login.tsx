@@ -25,7 +25,7 @@ export default function Login()
 		if (user.errorMessage && !showedError)
 		{
 			setShowedError(true)
-			errorAlert(user.errorMessage)
+			errorAlert(user.errorMessage, 'Erro na autenticação...')
 		}
 
 		if (user.id !== 'not-logged' && router.pathname === '/login')
