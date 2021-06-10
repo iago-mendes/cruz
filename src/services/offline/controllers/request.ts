@@ -91,48 +91,67 @@ export const requestController =
 		await db.table('requests').delete(id)
 	},
 
-	list: async () =>
+	list: async (requestedPage?: number) =>
 	{
 		let rawRequests: RequestRaw[] = await db.table('requests').toArray()
 		rawRequests.sort((a, b) => a.data > b.data ? -1 : 1)
 
-		const requests = await Promise.all(rawRequests.map(async request =>
+		const requestsPerPage = 15
+		const totalPages = rawRequests.length > 0
+			? Math.ceil(rawRequests.length / requestsPerPage)
+			: 1
+		
+		let page = requestedPage ? Number(requestedPage) : 1
+		if (!(page > 0 && page <= totalPages) || Number.isNaN(page))
+			return undefined
+		
+		const sliceStart = (page-1) * requestsPerPage
+		const requests = await Promise.all(rawRequests
+			.slice(sliceStart, sliceStart + requestsPerPage)
+			.map(async request =>
+			{
+				const client: ClientRaw = await db.table('clients').get(request.cliente)
+				const company: CompanyRaw = await db.table('companies').get(request.representada)
+				const seller: SellerRaw = request.vendedor
+					? await db.table('sellers').get(request.vendedor)
+					: undefined
+
+				const {totalValue} = getPricedProducts(request, company, client)
+
+				return {
+					id: request._id,
+					data: request.data,
+					cliente:
+					{
+						imagem: client.imagem,
+						nome_fantasia: client.nome_fantasia,
+						razao_social: client.razao_social
+					},
+					vendedor:
+					{
+						imagem: seller ? seller.imagem : formatImage(undefined),
+						nome: seller ? seller.nome : 'E-Commerce'
+					},
+					representada:
+					{
+						imagem: company.imagem,
+						nome_fantasia: company.nome_fantasia,
+						razao_social: company.razao_social
+					},
+					tipo: request.tipo,
+					status: request.status,
+					valorTotal: totalValue
+				}
+			}))
+
+		const paginated =
 		{
-			const client: ClientRaw = await db.table('clients').get(request.cliente)
-			const company: CompanyRaw = await db.table('companies').get(request.representada)
-			const seller: SellerRaw = request.vendedor
-				? await db.table('sellers').get(request.vendedor)
-				: undefined
+			requests,
+			page,
+			totalPages
+		}
 
-			const {totalValue} = getPricedProducts(request, company, client)
-
-			return {
-				id: request._id,
-				data: request.data,
-				cliente:
-				{
-					imagem: client.imagem,
-					nome_fantasia: client.nome_fantasia,
-					razao_social: client.razao_social
-				},
-				vendedor:
-				{
-					imagem: seller ? seller.imagem : formatImage(undefined),
-					nome: seller ? seller.nome : 'E-Commerce'
-				},
-				representada:
-				{
-					imagem: company.imagem,
-					nome_fantasia: company.nome_fantasia,
-					razao_social: company.razao_social
-				},
-				tipo: request.tipo,
-				status: request.status,
-				valorTotal: totalValue
-			}
-		}))
-
-		return requests
+		return paginated
 	},
 
 	raw: async () =>

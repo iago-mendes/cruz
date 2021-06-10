@@ -17,6 +17,7 @@ import { requestController } from '../services/offline/controllers/request'
 import { RequestListed, loadingRequest } from '../models/request'
 import { pdfController } from '../services/offline/controllers/pdf'
 import { SkeletonLoading } from '../utils/skeletonLoading'
+import Paginate from '../components/Paginate'
 
 const Requests: React.FC = () =>
 {
@@ -26,23 +27,45 @@ const Requests: React.FC = () =>
 	const defaultRequests: RequestListed[] = Array(3).fill(loadingRequest)
 	const [requests, setRequests] = useState<RequestListed[]>(defaultRequests)
 
+	const [page, setPage]	= useState(1)
+	const [totalPages, setTotalPages] = useState(1)
+	const [loading, setLoading] = useState(false)
+
 	useEffect(() =>
 	{
 		updateRequests()
-	}, [])
+	}, [page])
 
 	async function updateRequests()
 	{
+		if (!(page === 1 && totalPages === 1))
+			setLoading(true)
+		
 		await requestController.list()
-			.then(data =>
+			.then(({requests, page, totalPages}) =>
 			{
-				setRequests(data)
+				setRequests(requests)
+
+				if (Number.isNaN(page))
+					setPage(1)
+				else
+					setPage(page)
+					
+				if (Number.isNaN(totalPages))
+					setTotalPages(1)
+				else
+					setTotalPages(totalPages)
 			})
 			.catch(error =>
 			{
 				console.log('<< error >>', error)
 				setRequests([])
+
+				setPage(1)
+				setTotalPages(1)
 			})
+		
+		setLoading(false)
 	}
 
 	function handleDeleteRequest(request: RequestListed)
@@ -73,7 +96,13 @@ const Requests: React.FC = () =>
 				display='Pedidos'
 			/>
 
-			<main className='main'>
+			<Paginate
+				page={page}
+				setPage={setPage}
+				totalPages={totalPages}
+				loading={loading}
+				noResults={requests.length === 0 && !loading}
+			>
 				{requests.map((request, index) =>
 				{
 					if (request.id === 'loading')
@@ -198,7 +227,7 @@ const Requests: React.FC = () =>
 							</div>
 						)
 				})}
-			</main>
+			</Paginate>
 		</Container>
 	)
 }
