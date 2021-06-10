@@ -37,7 +37,7 @@ const Container = styled.div`
 				max-width: 30%;
 				max-height: 100%;
 
-				border-radius: 100rem;
+				border-radius: 0.5rem;
 			}
 
 			.texts

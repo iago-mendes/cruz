@@ -13,8 +13,9 @@ import useAuth from '../../hooks/useAuth'
 import confirmAlert from '../../utils/alerts/confirm'
 import successAlert from '../../utils/alerts/success'
 import { Image } from '../../components/Image'
-import { SellerRaw } from '../../models/seller'
+import { loadingSeller, SellerRaw } from '../../models/seller'
 import { sellerController } from '../../services/offline/controllers/seller'
+import { SkeletonLoading } from '../../utils/skeletonLoading'
 
 interface SellersProps
 {
@@ -26,7 +27,8 @@ const Sellers: React.FC<SellersProps> = () =>
 	const {user, loading} = useAuth()
 	const Router = useRouter()
 
-	const [sellers, setSellers] = useState<SellerRaw[]>([])
+	const defaultSellers: SellerRaw[] = Array(9).fill(loadingSeller)
+	const [sellers, setSellers] = useState<SellerRaw[]>(defaultSellers)
 
 	useEffect(() =>
 	{
@@ -77,30 +79,45 @@ const Sellers: React.FC<SellersProps> = () =>
 			<Header display='Vendedores' />
 
 			<main>
-				{sellers.map(seller => (
-					<div key={seller._id} className={`seller ${seller.admin && 'admin'}`}>
-						{
-							user.role === 'admin' && (
-								<div className='buttons'>
-									<button title='Editar' onClick={() => Router.push(`/vendedores/${seller._id}`)} >
-										<FiEdit3 size={15} />
-									</button>
-									<button title='Deletar' onClick={() => handleDeleteSeller(seller)} >
-										<FiTrash size={15} />
-									</button>
+				{sellers.map((seller, index) =>
+				{
+					if (seller._id === 'loading')
+						return (
+							<div key={index} className='seller' >
+								<SkeletonLoading height='9rem' width='9rem' />
+								<div className='texts'>
+									<SkeletonLoading height='2.5rem' width='15rem' />
+									<SkeletonLoading height='2rem' width='15rem' />
+									<SkeletonLoading height='1.5rem' width='15rem' />
 								</div>
-							)
-						}
-						<Image src={seller.imagem} alt={seller.nome} />
-						<div className='texts'>
-							<h1>
-								{seller.nome}
-							</h1>
-							<h2>{seller.funcao}</h2>
-							<h3>{seller.email}</h3>
-						</div>
-					</div>
-				))}
+							</div>
+						)
+					else
+						return (
+							<div key={index} className={`seller ${seller.admin && 'admin'}`}>
+								{
+									user.role === 'admin' && (
+										<div className='buttons'>
+											<button title='Editar' onClick={() => Router.push(`/vendedores/${seller._id}`)} >
+												<FiEdit3 size={15} />
+											</button>
+											<button title='Deletar' onClick={() => handleDeleteSeller(seller)} >
+												<FiTrash size={15} />
+											</button>
+										</div>
+									)
+								}
+								<Image src={seller.imagem} alt={seller.nome} />
+								<div className='texts'>
+									<h1>
+										{seller.nome}
+									</h1>
+									<h2>{seller.funcao}</h2>
+									<h3>{seller.email}</h3>
+								</div>
+							</div>
+						)
+				})}
 			</main>
 		</Container>
 	)

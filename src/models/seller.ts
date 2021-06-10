@@ -36,3 +36,16 @@ export interface SellerRaw
 			comissao: number
 		}>
 }
+
+export const loadingSeller: SellerRaw =
+{
+	_id: 'loading',
+	nome: '',
+	imagem: '',
+	telefones: [],
+	email: '',
+	senha: '',
+	funcao: '',
+	admin: false,
+	representadas: []
+}
