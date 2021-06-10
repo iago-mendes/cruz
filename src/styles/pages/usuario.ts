@@ -7,6 +7,8 @@ const Container = styled.div`
 		flex-direction: column;
 		gap: 0.5rem;
 		width: 30rem;
+
+		padding-left: 2rem;
 		
 		h3
 		{
@@ -15,11 +17,12 @@ const Container = styled.div`
 			color: ${p => p.theme.colors.primaryDark};
 			border-left: ${p => p.theme.colors.primaryDark} 5px solid;
 			padding-left: 1rem;
+
+			margin-left: -2rem;
 		}
 		
 		span
 		{
-			margin-left: 2rem;
 			font-family: Roboto;
 			font-size: 1.75rem;
 		}
@@ -31,7 +34,6 @@ const Container = styled.div`
 			border-radius: 0.5rem;
 			width: 75%;
 			padding: 0.5rem;
-			margin-left: 2rem;
 			font-family: Ubuntu;
 			font-size: 1.75rem;
 			color: ${p => p.theme.colors.primaryDark};
@@ -52,7 +54,11 @@ const Container = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
-		padding: 2rem;
+
+		padding: 1rem;
+		margin: 1rem;
+		background-color: #fff;
+		border-radius: 0.5rem;
 		
 		.img
 		{
@@ -86,6 +92,11 @@ const Container = styled.div`
 		grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
 		grid-gap: 1rem;
 		align-items: center;
+
+		padding: 1rem;
+		margin: 1rem;
+		background-color: #fff;
+		border-radius: 0.5rem;
 	}
 	
 	@media(max-width: 850px)

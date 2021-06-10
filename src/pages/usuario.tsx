@@ -1,11 +1,34 @@
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import Container from '../styles/pages/usuario'
 import Header from '../components/Header'
 import Dropzone from '../components/Dropzone'
+import useAuth from '../hooks/useAuth'
+import { SkeletonLoading } from '../utils/skeletonLoading'
+import { sellerController } from '../services/offline/controllers/seller'
 
 const User: React.FC = () =>
 {
+	const {user} = useAuth()
+
+	const [imageUrl, setImageUrl] = useState(user.data ? user.data.image : '')
+	const [name, setName] = useState(user.data ? user.data.name : '')
+	const [title, setTitle] = useState('')
+	const [email, setEmail] = useState(user.data ? user.data.email : '')
+
+	useEffect(() =>
+	{
+		sellerController.rawOne(user.id)
+			.then(seller =>
+			{
+				setImageUrl(seller.imagem)
+				setName(seller.nome)
+				setTitle(seller.funcao)
+				setEmail(seller.email)
+			})
+	}, [user.id])
+
 	return (
 		<Container className='container' >
 			<Head>
@@ -18,20 +41,34 @@ const User: React.FC = () =>
 
 			<main>
 				<div className='img'>
-					<Dropzone
-						onFileUploaded={() => {}}
-						shownFileUrl={undefined}
-					/>
+					{
+						imageUrl === ''
+							? <SkeletonLoading height='30rem' width='40rem'/>
+							: (
+								<Dropzone
+									onFileUploaded={() => {}}
+									shownFileUrl={imageUrl}
+								/>
+							)
+					}
 				</div>
 
 				<div className='group'>
 					<div className='info'>
 						<h3>Nome</h3>
-						<span>Iago Mendes</span>
+						{
+							name === ''
+								? <SkeletonLoading height='2rem' width='15rem'/>
+								: <span>{name}</span>
+						}
 					</div>
 					<div className='info'>
 						<h3>Função</h3>
-						<span>Desenvolvedor</span>
+						{
+							title === ''
+								? <SkeletonLoading height='2rem' width='15rem'/>
+								: <span>{title}</span>
+						}
 					</div>
 				</div>
 			</main>
@@ -39,7 +76,11 @@ const User: React.FC = () =>
 			<div className='credentials'>
 				<div className='info'>
 					<h3>E-mail</h3>
-					<span>contato@iago-mendes.me</span>
+					{
+						email === ''
+							? <SkeletonLoading height='2rem' width='20rem'/>
+							: <span>{email}</span>
+					}
 				</div>
 				<div className='info'>
 					<h3>Senha</h3>
