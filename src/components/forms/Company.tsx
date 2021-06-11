@@ -221,6 +221,18 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	{
 		const data = new FormData()
 
+		const tables = tabelas.map(table =>
+		{
+			const _id = handleObjectId()
+			return {_id, ...table}
+		})
+
+		const conditions = condicoes.map(condition =>
+		{
+			const _id = handleObjectId()
+			return {_id, ...condition}
+		})
+
 		data.append('_id', handleObjectId())
 		if (imagem)
 			data.append('imagem', imagem)
@@ -233,8 +245,8 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		data.append('descricao_curta', descricaoCurta)
 		data.append('descricao', descricao)
 		data.append('site', site)
-		data.append('tabelas', JSON.stringify(tabelas))
-		data.append('condicoes', JSON.stringify(condicoes))
+		data.append('tabelas', JSON.stringify(tables))
+		data.append('condicoes', JSON.stringify(conditions))
 
 		if (method === 'post')
 		{
