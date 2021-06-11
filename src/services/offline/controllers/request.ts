@@ -1,4 +1,3 @@
-import { getRandomString } from '../../../utils/getRandomString'
 import db from '../db'
 import RequestRaw from '../../../models/request'
 import ClientRaw from '../../../models/client'
@@ -6,12 +5,14 @@ import { SellerRaw } from '../../../models/seller'
 import CompanyRaw from '../../../models/company'
 import getPricedProducts from '../../../utils/getPricedProducts'
 import formatImage from '../../../utils/formatImage'
+import { handleObjectId } from '../../../utils/handleObjectId'
 
 export const requestController =
 {
 	create: async (body: any) =>
 	{
 		const {
+			_id,
 			data,
 			condicao,
 			digitado_por,
@@ -25,7 +26,7 @@ export const requestController =
 			produtos,
 		} = body
 
-		const id = getRandomString('tmpId')
+		const id = handleObjectId(_id)
 		const addedRequest =
 		{
 			_id: id,

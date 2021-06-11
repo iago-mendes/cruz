@@ -1,13 +1,14 @@
-import { getRandomString } from '../../../utils/getRandomString'
 import db from '../db'
 import ClientRaw, { ClientListed } from '../../../models/client'
 import { isSubstring } from '../../../utils/isSubstring'
+import { handleObjectId } from '../../../utils/handleObjectId'
 
 export const clientController =
 {
 	create: async (body: any) =>
 	{
 		const {
+			_id,
 			razao_social,
 			nome_fantasia,
 			cnpj,
@@ -23,7 +24,7 @@ export const clientController =
 			representadas
 		} = body
 
-		const id = getRandomString('tmpId')
+		const id = handleObjectId(_id)
 		const addedClient =
 		{
 			_id: id,

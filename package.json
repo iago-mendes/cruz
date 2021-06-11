@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "bson-objectid": "^2.0.1",
     "dexie": "^3.0.3",
     "js-cookie": "^2.2.1",
     "next": "10.0.1",
