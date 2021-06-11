@@ -35,6 +35,30 @@ export const productController =
 		return products
 	},
 
+	listDefaultPriced: async (companyId?: string) =>
+	{
+		if (!companyId)
+			return undefined
+		
+		const rawCompany: CompanyRaw = await db.table('companies').get(companyId)
+		if (!rawCompany)
+			return undefined
+		
+		let products = rawCompany.produtos.map(product => (
+			{
+				id: product._id,
+				imagem: formatImage(product.imagem),
+				nome: product.nome,
+				unidade: product.unidade,
+				st: product.st,
+				ipi: product.ipi,
+				preco: product.tabelas[0].preco,
+			}))
+		products.sort((a, b) => a.nome < b.nome ? -1 : 1)
+
+		return products
+	},
+
 	raw: async (companyId?: string) =>
 	{
 		if (!companyId)

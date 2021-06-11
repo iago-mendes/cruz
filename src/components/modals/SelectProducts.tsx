@@ -43,9 +43,16 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 	{
 		if (selected.clientId !== '' && selected.companyId !== '')
 			productController.listPriced(selected.companyId, selected.clientId)
-				.then(data => setPricedProducts(data))
+				.then(data =>
+				{
+					if (data)
+						setPricedProducts(data)
+					else
+						productController.listDefaultPriced(selected.companyId)
+							.then(data => setPricedProducts(data))
+				})
 				.catch(error => console.log('<< error >>', error))
-	}, [selected])
+	}, [selected.companyId, selected.clientId])
 
 	useEffect(() =>
 	{
