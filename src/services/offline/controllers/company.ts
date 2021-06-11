@@ -1,8 +1,92 @@
 import CompanyRaw from '../../../models/company'
+import { handleObjectId } from '../../../utils/handleObjectId'
 import db from '../db'
 
 export const companyController =
 {
+	create: async (body: any) =>
+	{
+		const {
+			_id,
+			razao_social, 
+			nome_fantasia,
+			cnpj,
+			telefones,
+			email,
+			comissao,
+			descricao_curta,
+			descricao,
+			site,
+			tabelas,
+			condicoes
+		} = body
+
+		const id = handleObjectId(_id)
+		const addedCompany =
+		{
+			_id: id,
+			razao_social, 
+			nome_fantasia,
+			cnpj,
+			telefones,
+			email,
+			comissao,
+			descricao_curta,
+			descricao,
+			site,
+			tabelas,
+			condicoes,
+		}
+
+		await db.table('companies').add(addedCompany, id)
+	},
+
+	update: async (body: any, id?: string) =>
+	{
+		if (!id)
+			return
+		
+		const {
+			razao_social, 
+			nome_fantasia,
+			cnpj,
+			telefones,
+			email,
+			comissao,
+			descricao_curta,
+			descricao,
+			site,
+			tabelas,
+			condicoes
+		} = body
+
+		const updatedClient =
+		{
+			_id: id,
+			razao_social, 
+			nome_fantasia,
+			cnpj,
+			telefones,
+			email,
+			comissao,
+			descricao_curta,
+			descricao,
+			site,
+			tabelas,
+			condicoes
+		}
+
+		await db.table('companies').put(updatedClient, id)
+	},
+
+	remove: async (id?: string) =>
+	{
+		if (!id)
+			return
+		
+		await db.table('companies').delete(id)
+	},
+	
 	list: async () =>
 	{
 		const companies: CompanyRaw[] = await db.table('companies').toArray()

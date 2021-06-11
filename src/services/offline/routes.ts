@@ -1,5 +1,6 @@
 import { getRouteParam } from '../../utils/getRouteParam'
 import { clientController } from './controllers/client'
+import { companyController } from './controllers/company'
 import { requestController } from './controllers/request'
 
 export function offlineRoutes(method: string, route: string, body: unknown)
@@ -45,6 +46,24 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 	{
 		const id = getRouteParam('clients/:client/contacts', route, 'id')
 		clientController.addContact(body, id)
+		isRouteAvailableOffline = true
+	}
+
+	if (method === 'post' && compareRoutes('companies', route))
+	{
+		companyController.create(body)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'put' && compareRoutes('companies/:id', route))
+	{
+		const id = getRouteParam('companies/:id', route, 'id')
+		companyController.update(body, id)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'delete' && compareRoutes('companies/:id', route))
+	{
+		const id = getRouteParam('companies/:id', route, 'id')
+		companyController.remove(id)
 		isRouteAvailableOffline = true
 	}
 
