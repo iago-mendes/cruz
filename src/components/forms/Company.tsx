@@ -10,6 +10,7 @@ import successAlert from '../../utils/alerts/success'
 import FormButtons from '../FormButtons'
 import NumberInput from '../NumberInput'
 import { catchError } from '../../utils/catchError'
+import { handleObjectId } from '../../utils/handleObjectId'
 
 interface CompanyFormProps
 {
@@ -220,6 +221,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	{
 		const data = new FormData()
 
+		data.append('_id', handleObjectId())
 		if (imagem)
 			data.append('imagem', imagem)
 		data.append('razao_social', razaoSocial)

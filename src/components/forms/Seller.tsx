@@ -14,6 +14,7 @@ import NumberInput from '../NumberInput'
 import PasswordModal from '../modals/Password'
 import { companyController } from '../../services/offline/controllers/company'
 import { catchError } from '../../utils/catchError'
+import { handleObjectId } from '../../utils/handleObjectId'
 
 interface SellerNumber
 {
@@ -222,7 +223,9 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 	{
 		const data = new FormData()
 
-		if (imagem) data.append('imagem', imagem)
+		data.append('_id', handleObjectId())
+		if (imagem)
+			data.append('imagem', imagem)
 		data.append('nome', nome)
 		data.append('telefones', JSON.stringify(telefones))
 		data.append('email', email)

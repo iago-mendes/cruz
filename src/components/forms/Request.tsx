@@ -27,6 +27,7 @@ import EditRequestProductModal from '../modals/EditRequestProduct'
 import SendRequestEmailModal from '../modals/SendRequestEmail'
 import { ClientContact } from '../../models/client'
 import { FiPlus, FiX } from 'react-icons/fi'
+import { handleObjectId } from '../../utils/handleObjectId'
 
 type RawProductsList =
 {
@@ -281,28 +282,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function handleGenerateRequest()
 	{
-		let tmpStatus = {...status}
-		tmpStatus.concluido = true
+		let statusAlt = {...status}
+		statusAlt.concluido = true
 
-		const contact = isAddingNewContact
-			? {nome: newContactName, telefone: newContactPhone}
-			: contato
-
-		const apiData =
-		{
-			cliente,
-			vendedor,
-			representada,
-			produtos,
-			data,
-			condicao,
-			frete,
-			contato: contact,
-			digitado_por,
-			tipo,
-			status: tmpStatus
-		}
-		handleSubmit(apiData)
+		handleSubmit(statusAlt)
 	}
 
 	function handleSelectContact(e: SelectOption)
@@ -318,26 +301,27 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setContato(tmpContact)
 	}
 
-	function handleSubmit(apiDataAlt?: any)
+	function handleSubmit(statusAlt?: Status)
 	{
 		const contact = isAddingNewContact
 			? {nome: newContactName, telefone: newContactPhone}
 			: contato
 
-		const apiData = apiDataAlt ? apiDataAlt :
-			{
-				cliente,
-				vendedor,
-				representada,
-				produtos,
-				data,
-				condicao,
-				frete,
-				contato: contact,
-				digitado_por,
-				tipo,
-				status
-			}
+		const apiData =
+		{
+			_id: handleObjectId(),
+			cliente,
+			vendedor,
+			representada,
+			produtos,
+			data,
+			condicao,
+			frete,
+			contato: contact,
+			digitado_por,
+			tipo,
+			status: statusAlt ? statusAlt : status
+		}
 		
 		if (method === 'post')
 		{

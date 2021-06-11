@@ -10,6 +10,7 @@ import successAlert from '../../utils/alerts/success'
 import NumberInput from '../NumberInput'
 import FormButtons from '../FormButtons'
 import { catchError } from '../../utils/catchError'
+import { handleObjectId } from '../../utils/handleObjectId'
 
 interface ProductFormProps
 {
@@ -81,7 +82,9 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	{
 		const data = new FormData()
 
-		if (imagem) data.append('imagem', imagem)
+		data.append('_id', handleObjectId())
+		if (imagem)
+			data.append('imagem', imagem)
 		data.append('nome', nome)
 		data.append('codigo', String(codigo))
 		data.append('unidade', unidade)

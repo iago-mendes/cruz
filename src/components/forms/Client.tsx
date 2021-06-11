@@ -16,6 +16,7 @@ import { FiMinus, FiPlus } from 'react-icons/fi'
 import { companyController } from '../../services/offline/controllers/company'
 import { sellerController } from '../../services/offline/controllers/seller'
 import { catchError } from '../../utils/catchError'
+import { handleObjectId } from '../../utils/handleObjectId'
 
 interface ClientFormProps
 {
@@ -244,6 +245,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	{
 		const data = new FormData()
 
+		data.append('_id', handleObjectId())
 		if (imagem)
 			data.append('imagem', imagem)
 		data.append('razao_social', razao_social)
