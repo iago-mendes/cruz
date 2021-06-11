@@ -1,8 +1,72 @@
 import { SellerRaw } from '../../../models/seller'
+import { handleObjectId } from '../../../utils/handleObjectId'
 import db from '../db'
 
 export const sellerController =
 {
+	create: async (body: any) =>
+	{
+		const {
+			_id,
+			nome,
+			telefones,
+			email,
+			funcao,
+			admin,
+			representadas
+		} = body
+
+		const id = handleObjectId(_id)
+		const addedSeller =
+		{
+			_id: id,
+			nome,
+			telefones,
+			email,
+			funcao,
+			admin,
+			representadas
+		}
+
+		await db.table('sellers').add(addedSeller, id)
+	},
+
+	update: async (body: any, id?: string) =>
+	{
+		if (!id)
+			return
+		
+		const {
+			nome,
+			telefones,
+			email,
+			funcao,
+			admin,
+			representadas
+		} = body
+
+		const updatedSeller =
+		{
+			_id: id,
+			nome,
+			telefones,
+			email,
+			funcao,
+			admin,
+			representadas
+		}
+
+		await db.table('sellers').put(updatedSeller, id)
+	},
+
+	remove: async (id?: string) =>
+	{
+		if (!id)
+			return
+		
+		await db.table('sellers').delete(id)
+	},
+
 	list: async () =>
 	{
 		const sellers: SellerRaw[] = await db.table('sellers').toArray()

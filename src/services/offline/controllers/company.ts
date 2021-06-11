@@ -60,7 +60,7 @@ export const companyController =
 			condicoes
 		} = body
 
-		const updatedClient =
+		const updatedCompany =
 		{
 			_id: id,
 			razao_social, 
@@ -76,7 +76,7 @@ export const companyController =
 			condicoes
 		}
 
-		await db.table('companies').put(updatedClient, id)
+		await db.table('companies').put(updatedCompany, id)
 	},
 
 	remove: async (id?: string) =>
