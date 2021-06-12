@@ -1,0 +1,15 @@
+[{
+	"relation":
+	[
+		"delegate_permission/common.handle_all_urls"
+	],
+	"target":
+	{
+		"namespace": "android_app",
+		"package_name": "br.com.cruzrepresentacoes.sistema.twa",
+		"sha256_cert_fingerprints":
+		[
+			"D5:03:AE:DF:4D:B5:BA:45:13:97:B6:EE:84:EA:70:8C:E6:AD:6A:CD:6B:71:94:2E:66:77:D5:E0:AF:EF:A9:E5"
+		]
+	}
+}]
