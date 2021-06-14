@@ -45,7 +45,9 @@ const PasswordModal: React.FC<PasswordModalProps> =
 	const [newPwd, setNewPwd] = useState('')
 	const [newPwd2, setNewPwd2] = useState('')
 
-	const whatsappLink = 'https://wa.me/?text=' + getWhatsappText(newPwd)
+	const whatsappLink = getWhatsappText
+		? 'https://wa.me/?text=' + getWhatsappText(newPwd)
+		: ''
 
 	function toggleVisibility()
 	{
