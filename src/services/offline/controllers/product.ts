@@ -1,8 +1,8 @@
-import ClientRaw from '../../../../models/client'
-import CompanyRaw from '../../../../models/company'
-import formatImage from '../../../../utils/formatImage'
-import { handleObjectId } from '../../../../utils/handleObjectId'
-import db from '../../db'
+import ClientRaw from '../../../models/client'
+import CompanyRaw from '../../../models/company'
+import formatImage from '../../../utils/formatImage'
+import { handleObjectId } from '../../../utils/handleObjectId'
+import db from '../db'
 
 export const productController =
 {
