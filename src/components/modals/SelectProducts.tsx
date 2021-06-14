@@ -1,5 +1,4 @@
-import Modal from 'react-modal'
-import { FiEdit3, FiMinus, FiPlus, FiSearch, FiX } from 'react-icons/fi'
+import { FiMinus, FiPlus, FiSearch, FiX } from 'react-icons/fi'
 import {useEffect, useState} from 'react'
 
 import Container from '../../styles/components/modals/SelectProducts'
@@ -9,8 +8,6 @@ import { RequestProduct, Selected } from '../../models/request'
 import Product, { PricedProduct } from '../../models/product'
 import formatPrice from '../../utils/formatPrice'
 import { productController } from '../../services/offline/controllers/product'
-
-Modal.setAppElement('#__next')
 
 type RequestProductModalProps =
 {
@@ -157,7 +154,10 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 						return (
 							<div className='product' key={index} >
-								<div className='info'>
+								<div className='info'
+									onClick={() => handleEditProduct(product)}
+									title='Editar produto'
+								>
 									<div className='data'>
 										<div className='img'>
 											<img src={pricedProduct.imagem} alt={pricedProduct.nome} />
@@ -178,11 +178,6 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 									</div>
 								</div>
 								<div className='panel'>
-									<div className='edit'>
-										<button onClick={() => handleEditProduct(product)} >
-											<FiEdit3 />
-										</button>
-									</div>
 									<div className='quantity'>
 										<h3>
 											{product.quantidade}

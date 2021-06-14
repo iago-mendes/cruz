@@ -104,6 +104,14 @@ const Container = styled.main`
 				flex-direction: column;
 				justify-content: space-between;
 
+				cursor: pointer;
+				transition: background-color 0.25s;
+
+				:hover
+				{
+					background-color: rgba(0,0,0,0.2);
+				}
+
 				.data
 				{
 					padding: 1rem;
@@ -160,36 +168,8 @@ const Container = styled.main`
 
 				display: flex;
 				flex-direction: column;
-				justify-content: space-between;
-
-				.edit
-				{
-					display: flex;
-					justify-content: flex-end;
-
-					padding-top: 0.5rem;
-					padding-right: 0.5rem;
-
-					button
-					{
-						background: none;
-						border: none;
-						border-radius: 1rem;
-
-						font-size: 1.75rem;
-
-						display: flex;
-						align-items: center;
-						justify-content: center;
-
-						transition: background-color 0.25s;
-
-						:hover
-						{
-							background-color: rgba(0,0,0,0.25);
-						}
-					}
-				}
+				justify-content: flex-end;
+				gap: 1rem;
 
 				.quantity
 				{
