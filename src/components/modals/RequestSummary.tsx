@@ -1,6 +1,5 @@
 import { FiEdit3, FiTrash } from 'react-icons/fi'
 import { IoIosArrowUp } from 'react-icons/io'
-import { useState } from 'react'
 
 import Container from '../../styles/components/modals/RequestSummary'
 import RawProduct, {defaultProduct as defaultRawProduct} from '../../models/product'
@@ -10,6 +9,9 @@ import useClickOutside from '../../hooks/useClickOutside'
 
 type RequestSummaryModalProps =
 {
+	isExpanded: boolean
+	setIsExpanded: (isExpanded: boolean) => void
+
 	companyId: string
 	products: RequestProduct[]
 	setProducts: (products: RequestProduct[]) => void
@@ -21,9 +23,8 @@ type RequestSummaryModalProps =
 }
 
 const RequestSummaryModal: React.FC<RequestSummaryModalProps> =
-({companyId, products, setProducts, rawProductsList, editProduct}) =>
+({isExpanded, setIsExpanded, companyId, products, setProducts, rawProductsList, editProduct}) =>
 {
-	const [isExpanded, setIsExpanded] = useState(false)
 	const ref = useClickOutside(() => setIsExpanded(false))
 
 	function calcSubtotal(quantity: number, price: number, st: number, ipi: number)

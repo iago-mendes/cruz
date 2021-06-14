@@ -77,6 +77,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [isSelectClientModalOpen, setIsSelectClientModalOpen] = useState(false)
 	const [isEditRequestProductModalOpen, setIsEditRequestProductModalOpen] = useState(false)
 	const [isSendRequestEmailModalOpen, setIsSendRequestEmailModalOpen] = useState(false)
+	const [isRequestSummaryExpanded, setIsRequestSummaryExpanded] = useState(false)
 
 	const conditionSelectOptions = conditionOptions
 		// .filter(option => option.precoMin <= calcTotal())
@@ -389,6 +390,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			/>
 
 			<RequestSummaryModal
+				isExpanded={isRequestSummaryExpanded}
+				setIsExpanded={setIsRequestSummaryExpanded}
 				companyId={representada}
 				products={produtos}
 				setProducts={setProdutos}
@@ -452,7 +455,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<button className='action strong' onClick={handleSelectProducts} >
 					Selecionar produtos
 				</button>
-				<button className='action detail' onClick={() => {}} >
+				<button className='action detail' onClick={() => setIsRequestSummaryExpanded(true)} >
 					Ver itens selecionados
 				</button>
 			</div>
