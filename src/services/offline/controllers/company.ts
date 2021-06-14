@@ -116,5 +116,60 @@ export const companyController =
 		
 		const rawCompany: CompanyRaw = await db.table('companies').get(id)
 		return rawCompany
+	},
+
+	updateTables: async (body: any, id?: string) =>
+	{
+		if (!id)
+			return
+		
+		const {targetTable, relatedTables}:
+		{
+			targetTable:
+			{
+				id: string
+				change: number // 1 => no change
+			}
+			relatedTables: Array<
+			{
+				id: string
+				relation: number // 1 => equal
+			}>
+		} = body
+
+		if (!id)
+			return undefined
+		
+		let company: CompanyRaw = await db.table('companies').get(id)
+		if (!company)
+			return undefined
+
+		company.produtos = company.produtos.map(product =>
+		{
+			const target = product.tabelas.find(({id}) => String(id) == String(targetTable.id))
+			if (!target)
+				return product
+			
+			const newTargetPrice = target.preco * targetTable.change
+
+			let tmpProduct = product
+			tmpProduct.tabelas = product.tabelas.map(table =>
+			{
+				let tmpTable = table
+
+				const relatedTable = relatedTables.find(({id}) => String(id) == String(table.id))
+
+				if (String(table.id) == String(targetTable.id))
+					tmpTable.preco = newTargetPrice
+				else if (relatedTable)
+					tmpTable.preco = newTargetPrice * relatedTable.relation
+
+				return tmpTable
+			})
+
+			return tmpProduct
+		})
+
+		await db.table('companies').put(company, id)
 	}
 }

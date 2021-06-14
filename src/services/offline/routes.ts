@@ -68,6 +68,12 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 		companyController.remove(id)
 		isRouteAvailableOffline = true
 	}
+	if (method === 'put' && compareRoutes('/companies/:id/tables', route))
+	{
+		const id = getRouteParam('companies/:id', route, 'id')
+		companyController.updateTables(body, id)
+		isRouteAvailableOffline = true
+	}
 
 	if (method === 'post' && compareRoutes('sellers', route))
 	{
