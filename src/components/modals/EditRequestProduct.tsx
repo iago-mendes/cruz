@@ -56,7 +56,11 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 
 					const clientCompanyTable = tmpRawProduct.tabelas
 						.find(table => table.id === selected.clientCompanyTableId)
-					setProductTable({id: clientCompanyTable.id, price: clientCompanyTable.preco})
+					
+					const tmpProductTable = clientCompanyTable
+						? clientCompanyTable
+						: tmpRawProduct.tabelas[0]
+					setProductTable({id: tmpProductTable.id, price: tmpProductTable.preco})
 				})
 				.catch(error => console.log('<< error >>', error))
 	}, [selected.companyId, selected.product.id])
@@ -79,7 +83,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 		if (selected.product.id !== '')
 		{
 			const existingIndex = products.findIndex(({id}) => id === selected.product.id)
-			
+
 			if (existingIndex >= 0)
 			{
 				let tmpProducts = [...products]
@@ -97,7 +101,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 				setProducts(tmpProducts)
 			}
 		}
-	}, [selected.product])
+	}, [selected.product.id, selected.product.quantidade, selected.product.preco])
 
 	function handleAddDiscount()
 	{
@@ -136,7 +140,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 		tmpSelected.product.quantidade = newQuantity
 		setSelected(tmpSelected)
 	}
-		
+	
 	function handleDecrementQuantity()
 	{
 		const oldQuantity = selected.product.quantidade

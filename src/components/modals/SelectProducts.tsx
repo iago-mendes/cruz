@@ -173,7 +173,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 									</div>
 									<div className='price'>
 										<span>
-											{formatPrice(pricedProduct.preco, true)}
+											{formatPrice(product.preco, true)}
 										</span>
 									</div>
 								</div>
