@@ -35,15 +35,12 @@ export async function getPricedProducts(request: RequestRaw, company: CompanyRaw
 			return
 
 		const clientCompany = client.representadas.find(tmpCompany => String(tmpCompany.id) == String(company._id))
-		if (!clientCompany)
-			return
+		const tableId = clientCompany ? clientCompany.tabela : undefined
 
-		const tableId = clientCompany.tabela
+		const table = tableId
+			? product.tabelas.find(tmpTable => String(tmpTable.id) == String(tableId))
+			: product.tabelas[0]
 
-		const table = product.tabelas.find(tmpTable => String(tmpTable.id) == String(tableId))
-		if (!table)
-			return
-		
 		const tablePrice = table.preco
 		
 		const subtotal = productSold.quantidade*productSold.preco

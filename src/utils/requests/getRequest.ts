@@ -4,8 +4,7 @@ import ClientRaw from '../../models/client'
 import { SellerRaw } from '../../models/seller'
 import formatImage from '../formatImage'
 import db from '../../services/offline/db'
-import getPricedProducts from '../getPricedProducts'
-import { Product } from './getPricedProducts'
+import { getPricedProducts, Product } from './getPricedProducts'
 
 export interface RequestFormated
 {
@@ -97,7 +96,7 @@ export async function getRequest(id: string)
 		totalQuantity,
 		weight,
 		volume
-	} = getPricedProducts(rawRequest, company, client)
+	} = await getPricedProducts(rawRequest, company, client)
 
 	const request: RequestFormated =
 	{

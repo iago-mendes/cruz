@@ -18,6 +18,8 @@ import { RequestListed, loadingRequest } from '../models/request'
 import { pdfController } from '../services/offline/controllers/pdf'
 import { SkeletonLoading } from '../utils/skeletonLoading'
 import Paginate from '../components/Paginate'
+import LoadingModal from '../components/modals/Loading'
+import { catchError } from '../utils/catchError'
 
 const Requests: React.FC = () =>
 {
@@ -30,6 +32,8 @@ const Requests: React.FC = () =>
 	const [page, setPage]	= useState(1)
 	const [totalPages, setTotalPages] = useState(1)
 	const [loading, setLoading] = useState(false)
+
+	const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false)
 
 	useEffect(() =>
 	{
@@ -82,11 +86,26 @@ const Requests: React.FC = () =>
 		)
 	}
 
+	async function handleSeeRequest(id: string)
+	{
+		setIsLoadingModalOpen(true)
+
+		await pdfController.request(id)
+			.then(() => {})
+			.catch(catchError)
+
+		setIsLoadingModalOpen(false)
+	}
+
 	return (
 		<Container className='container' >
 			<Head>
 				<title>Pedidos | Cruz Representações</title>
 			</Head>
+
+			<LoadingModal
+				isOpen={isLoadingModalOpen}
+			/>
 
 			<Add
 				route='/pedidos/novo'
@@ -178,7 +197,7 @@ const Requests: React.FC = () =>
 									<div className='buttons'>
 										<button
 											title='Ver pedido'
-											onClick={() => pdfController.request(request.id)}
+											onClick={() => handleSeeRequest(request.id)}
 										>
 											<FaRegEye />
 										</button>

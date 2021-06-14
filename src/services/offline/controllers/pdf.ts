@@ -284,6 +284,7 @@ export const pdfController =
 			return undefined
 		
 		const request = await getRequest(requestId)
+		console.log('<< request >>', request)
 		await createRequestPdf(request)
 	},
 

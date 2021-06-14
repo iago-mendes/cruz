@@ -3,7 +3,7 @@ import RequestRaw from '../../../models/request'
 import ClientRaw from '../../../models/client'
 import { SellerRaw } from '../../../models/seller'
 import CompanyRaw from '../../../models/company'
-import getPricedProducts from '../../../utils/getPricedProducts'
+import {getPricedProducts} from '../../../utils/requests/getPricedProducts'
 import formatImage from '../../../utils/formatImage'
 import { handleObjectId } from '../../../utils/handleObjectId'
 
@@ -117,7 +117,7 @@ export const requestController =
 					? await db.table('sellers').get(request.vendedor)
 					: undefined
 
-				const {totalValue} = getPricedProducts(request, company, client)
+				const {totalValue} = await getPricedProducts(request, company, client)
 
 				return {
 					id: request._id,

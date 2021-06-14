@@ -4,10 +4,12 @@ const {publicRuntimeConfig: env} = getConfig()
 
 export default function formatImage(filename: string | undefined)
 {
-	if (filename)
-		return `${env.apiUrl}/uploads/${filename}`
-	else
+	if (!filename)
 		return `${env.apiUrl}/assets/no-image.png`
+	else if (filename.includes('http'))
+		return filename
+	else
+		return `${env.apiUrl}/uploads/${filename}`
 }
 
 export async function formatImageToDataUrl(url: string)
