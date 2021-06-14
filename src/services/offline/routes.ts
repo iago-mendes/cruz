@@ -1,6 +1,7 @@
 import { getRouteParam } from '../../utils/getRouteParam'
 import { clientController } from './controllers/client'
 import { companyController } from './controllers/company'
+import { productController } from './controllers/product'
 import { requestController } from './controllers/request'
 import { sellerController } from './controllers/seller'
 
@@ -83,6 +84,27 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 	{
 		const id = getRouteParam('sellers/:id', route, 'id')
 		sellerController.remove(id)
+		isRouteAvailableOffline = true
+	}
+
+	if (method === 'post' && compareRoutes('/companies/:companyId/products', route))
+	{
+		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
+		productController.create(body, companyId)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'put' && compareRoutes('/companies/:companyId/products/:productId', route))
+	{
+		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
+		const productId = getRouteParam('/companies/:companyId/products/:productId', route, 'productId')
+		productController.update(body, companyId, productId)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'delete' && compareRoutes('/companies/:companyId/products/:productId', route))
+	{
+		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
+		const productId = getRouteParam('/companies/:companyId/products/:productId', route, 'productId')
+		productController.remove(companyId, productId)
 		isRouteAvailableOffline = true
 	}
 

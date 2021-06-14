@@ -1,10 +1,113 @@
 import ClientRaw from '../../../../models/client'
 import CompanyRaw from '../../../../models/company'
 import formatImage from '../../../../utils/formatImage'
+import { handleObjectId } from '../../../../utils/handleObjectId'
 import db from '../../db'
 
 export const productController =
 {
+	create: async (body: any, companyId?: string) =>
+	{
+		const {
+			_id,
+			nome,
+			unidade,
+			ipi,
+			st,
+			tabelas,
+			codigo,
+			comissao,
+			peso,
+			volume
+		} = body
+
+		if (!companyId)
+			return undefined
+		
+		let company: CompanyRaw = await db.table('companies').get(companyId)
+		if (!company)
+			return undefined
+
+		company.produtos.push(
+			{
+				_id: handleObjectId(_id),
+				imagem: undefined,
+				nome,
+				unidade,
+				ipi,
+				st,
+				tabelas: JSON.parse(tabelas),
+				codigo,
+				comissao,
+				peso,
+				volume
+			})
+
+		await db.table('companies').put(company, companyId)
+	},
+
+	update: async (body: any, companyId?: string, productId?: string) =>
+	{
+		const {
+			nome,
+			unidade,
+			ipi,
+			st,
+			tabelas,
+			codigo,
+			comissao,
+			peso,
+			volume
+		} = body
+
+		if (!companyId || !productId)
+			return undefined
+		
+		let company: CompanyRaw = await db.table('companies').get(companyId)
+		if (!company)
+			return undefined
+
+		const existingIndex = company.produtos.findIndex(product => String(product._id) == String(productId))
+		if (existingIndex < 0)
+			return undefined
+		const previous = company.produtos[existingIndex]
+
+		company.produtos[existingIndex] =
+		{
+			_id: previous._id,
+			imagem: previous.imagem,
+			codigo: codigo ? codigo : previous.codigo,
+			nome: nome ? nome : previous.nome,
+			ipi: ipi ? ipi : previous.ipi,
+			st: st ? st : previous.st,
+			peso: peso ? peso : previous.peso,
+			volume: volume ? volume : previous.volume,
+			unidade: unidade ? unidade : previous.unidade,
+			comissao: comissao ? comissao : previous.comissao,
+			tabelas: tabelas ? JSON.parse(tabelas) : previous.tabelas
+		}
+
+		await db.table('companies').put(company, companyId)
+	},
+
+	remove: async (companyId?: string, productId?: string) =>
+	{
+		if (!companyId || !productId)
+			return undefined
+	
+		let company: CompanyRaw = await db.table('companies').get(companyId)
+		if (!company)
+			return undefined
+		
+		const existingIndex = company.produtos.findIndex(product => String(product._id) == String(productId))
+		if (existingIndex < 0)
+			return undefined
+
+		company.produtos.splice(existingIndex, 1)
+
+		await db.table('companies').put(company, companyId)
+	},
+
 	listPriced: async (companyId?: string, clientId?: string) =>
 	{
 		if (!companyId || !clientId)
