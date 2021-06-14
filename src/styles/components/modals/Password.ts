@@ -7,17 +7,18 @@ const Container = styled.main`
 	justify-content: center;
 	gap: 2rem;
 	
-	button
+	button, a
 	{
 		display: flex;
 		align-items: center;
 		gap: 1rem;
 
 		padding: 0.5rem 1rem;
+		width: fit-content;
 
 		background: none;
 		border: ${p => p.theme.colors.primaryDark} 2px solid;
-		border-radius: 2rem;
+		border-radius: 0.5rem;
 
 		color: ${p => p.theme.colors.primaryDark};
 		font-family: Ubuntu;
@@ -28,6 +29,9 @@ const Container = styled.main`
 		:hover
 		{
 			border-radius: 0;
+
+			background-color: ${p => p.theme.colors. primaryDark};
+			color: ${p => p.theme.colors.background};
 		}
 	}
 	
@@ -40,20 +44,12 @@ const Container = styled.main`
 		align-items: center;
 		justify-content: flex-end;
 		gap: 2rem;
-
-		button:hover
-		{
-			background-color: ${p => p.theme.colors. primaryDark};
-			color: ${p => p.theme.colors.background};
-		}
 	}
 	
 	.submit:hover
 	{
 		background-color: ${p => p.theme.colors.buttonGreen};
 		border-color: ${p => p.theme.colors.buttonGreen};
-
-		transform: scale(1.1);
 	}
 	
 	form
@@ -70,6 +66,8 @@ const Container = styled.main`
 			flex-direction: column;
 			gap: 1rem;
 			width: 100%;
+
+			padding-left: 2rem;
 			
 			label
 			{
@@ -78,6 +76,9 @@ const Container = styled.main`
 				font-size: 2rem;
 				border-left: ${p => p.theme.colors.primaryDark} 5px solid;
 				padding-left: 1rem;
+
+				margin-left: -2rem;
+				color: ${p => p.theme.colors.primaryDark};
 			}
 			
 			input
@@ -85,7 +86,7 @@ const Container = styled.main`
 				background-color: #fff;
 				border: none;
 				height: 2.75rem;
-				margin-left: 2rem;
+				
 				padding-left: 1rem;
 				padding-right: 1rem;
 				font-family: Roboto;
@@ -99,6 +100,11 @@ const Container = styled.main`
 					border-color: ${p => p.theme.colors.primaryDark};
 				}
 			}
+
+			/* a
+			{
+				background-color: ${p => p.theme.colors.primaryDark};
+			} */
 		}
 	}
 	

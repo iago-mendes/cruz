@@ -167,9 +167,14 @@ const PasswordModal: React.FC<PasswordModalProps> =
 					)}
 					{getWhatsappText && (
 						<div className='field'>
-							<a href={whatsappLink} target='_blank' rel='noreferrer' >
+							<label>Enviar credenciais por WhatsApp</label>
+							<a
+								href={whatsappLink}
+								target='_blank'
+								rel='noreferrer'
+							>
 								<FaWhatsapp />
-								<span>Enviar credenciais por WhatsApp</span>
+								<span>Enviar</span>
 							</a>
 						</div>
 					)}
