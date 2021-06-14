@@ -187,18 +187,19 @@ const Container = styled.form`
 			}
 		}
 
-		button.modal
+		button.action
 		{
 			width: fit-content;
 			padding: 0.5rem 1rem;
 
 			background: none;
-			border: ${p => p.theme.colors.primaryDark} 2px solid;
+			border: ${p => p.theme.colors.primaryDark} 3px solid;
 			border-radius: 0.5rem;
 
 			color: ${p => p.theme.colors.primaryDark};
 			font-family: Ubuntu;
 			font-size: 1.75rem;
+			font-weight: 700;
 
 			display: flex;
 			align-items: center;
@@ -213,6 +214,29 @@ const Container = styled.form`
 				color: #fff;
 
 				border-radius: 0;
+			}
+		}
+
+		button.strong
+		{
+			background-color: ${p => p.theme.colors.primaryDark};
+			color: #fff;
+
+			:hover
+			{
+				background-color: ${p => p.theme.colors.primary};
+				border-color: ${p => p.theme.colors.primary};
+			}
+		}
+
+		button.detail
+		{
+			background-color: ${p => p.theme.colors.primaryDark};
+			background-color: #66d9ff;
+
+			:hover
+			{
+				border-color: ${p => p.theme.colors.primaryDark};
 			}
 		}
 

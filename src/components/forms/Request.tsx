@@ -408,7 +408,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<span className='modalResult' >
 					{clientData}
 				</span>
-				<button className='modal' onClick={() => setIsSelectClientModalOpen(true)} >
+				<button className='action' onClick={() => setIsSelectClientModalOpen(true)} >
 					{method === 'post' && (
 						'Selecionar cliente'
 					)}
@@ -449,8 +449,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* produtos */}
 			<div className='field'>
 				<label htmlFor='produtos'>Produtos</label>
-				<button className='modal' onClick={handleSelectProducts} >
+				<button className='action strong' onClick={handleSelectProducts} >
 					Selecionar produtos
+				</button>
+				<button className='action detail' onClick={() => {}} >
+					Ver itens selecionados
 				</button>
 			</div>
 
@@ -504,7 +507,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 
 						<button
-							className='modal'
+							className='action'
 							onClick={() => setIsAddingNewContact(true)}
 						>
 							<FiPlus />
@@ -516,7 +519,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				{isAddingNewContact && (
 					<>
 						<button
-							className='modal'
+							className='action'
 							onClick={() => setIsAddingNewContact(false)}
 						>
 							<FiX />

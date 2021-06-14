@@ -394,7 +394,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 			{/* senha */}
 			<div className='field'>
 				<label htmlFor='senha'>Senha</label>
-				<button type='button' className='modal' onClick={() => setIsPasswordModalOpen(true)} >
+				<button type='button' className='action' onClick={() => setIsPasswordModalOpen(true)} >
 					{method === 'post' && 'Criar senha'}
 					{method === 'put' && 'Mudar senha'}
 				</button>
