@@ -39,18 +39,18 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({isOpen, setIsOpen,
 	
 	const targetTableOptions: SelectOption[] = companyTables
 		.map(table => (
-		{
-			label: table.nome,
-			value: table.id
-		}))
+			{
+				label: table.nome,
+				value: table.id
+			}))
 	
 	const relatedTableOptions: SelectOption[] = companyTables
 		.filter(table => table.id !== targetTable.id)
 		.map(table => (
-		{
-			label: table.nome,
-			value: table.id
-		}))
+			{
+				label: table.nome,
+				value: table.id
+			}))
 	
 	const changeOptions: SelectOption[] =
 	[

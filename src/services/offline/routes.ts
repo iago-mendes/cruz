@@ -70,7 +70,7 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 	}
 	if (method === 'put' && compareRoutes('companies/:id/tables', route))
 	{
-		const id = getRouteParam('companies/:id', route, 'id')
+		const id = getRouteParam('companies/:id/tables', route, 'id')
 		companyController.updateTables(body, id)
 		isRouteAvailableOffline = true
 	}
