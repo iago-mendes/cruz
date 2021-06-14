@@ -2,6 +2,7 @@ import { getRouteParam } from '../../utils/getRouteParam'
 import { clientController } from './controllers/client'
 import { companyController } from './controllers/company'
 import { productController } from './controllers/product'
+import { productSheetController } from './controllers/productSheet'
 import { requestController } from './controllers/request'
 import { sellerController } from './controllers/seller'
 
@@ -111,6 +112,13 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 		const companyId = getRouteParam('companies/:companyId/products/:productId', route, 'companyId')
 		const productId = getRouteParam('companies/:companyId/products/:productId', route, 'productId')
 		productController.remove(companyId, productId)
+		isRouteAvailableOffline = true
+	}
+
+	if (method === 'post' && compareRoutes('sheet/companies/:companyId/products', route))
+	{
+		const companyId = getRouteParam('sheet/companies/:companyId/products', route, 'companyId')
+		productSheetController.setProducts(body, companyId)
 		isRouteAvailableOffline = true
 	}
 
