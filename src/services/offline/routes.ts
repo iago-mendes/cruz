@@ -68,7 +68,7 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 		companyController.remove(id)
 		isRouteAvailableOffline = true
 	}
-	if (method === 'put' && compareRoutes('/companies/:id/tables', route))
+	if (method === 'put' && compareRoutes('companies/:id/tables', route))
 	{
 		const id = getRouteParam('companies/:id', route, 'id')
 		companyController.updateTables(body, id)
@@ -93,23 +93,23 @@ export function offlineRoutes(method: string, route: string, body: unknown)
 		isRouteAvailableOffline = true
 	}
 
-	if (method === 'post' && compareRoutes('/companies/:companyId/products', route))
+	if (method === 'post' && compareRoutes('companies/:companyId/products', route))
 	{
-		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
+		const companyId = getRouteParam('companies/:companyId/products/:productId', route, 'companyId')
 		productController.create(body, companyId)
 		isRouteAvailableOffline = true
 	}
-	if (method === 'put' && compareRoutes('/companies/:companyId/products/:productId', route))
+	if (method === 'put' && compareRoutes('companies/:companyId/products/:productId', route))
 	{
-		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
-		const productId = getRouteParam('/companies/:companyId/products/:productId', route, 'productId')
+		const companyId = getRouteParam('companies/:companyId/products/:productId', route, 'companyId')
+		const productId = getRouteParam('companies/:companyId/products/:productId', route, 'productId')
 		productController.update(body, companyId, productId)
 		isRouteAvailableOffline = true
 	}
-	if (method === 'delete' && compareRoutes('/companies/:companyId/products/:productId', route))
+	if (method === 'delete' && compareRoutes('companies/:companyId/products/:productId', route))
 	{
-		const companyId = getRouteParam('/companies/:companyId/products/:productId', route, 'companyId')
-		const productId = getRouteParam('/companies/:companyId/products/:productId', route, 'productId')
+		const companyId = getRouteParam('companies/:companyId/products/:productId', route, 'companyId')
+		const productId = getRouteParam('companies/:companyId/products/:productId', route, 'productId')
 		productController.remove(companyId, productId)
 		isRouteAvailableOffline = true
 	}

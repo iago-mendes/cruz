@@ -56,7 +56,11 @@ const Products: React.FC = () =>
 		if (!n)
 			return '0,00'
 
-		return n.toFixed(2).replace('.', ',')
+		const parsedNumber = parseFloat(String(n))
+		if (Number.isNaN(parseFloat))
+			return '0,00'
+
+		return parsedNumber.toFixed(2).replace('.', ',')
 	}
 
 	async function handleDeleteProduct(product: Product)
