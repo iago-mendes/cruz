@@ -46,5 +46,8 @@
 			"sizes": "1280x720",
 			"type": "image/jpeg"
 		}
+	],
+	"categories": [
+		"business"
 	]
 }
