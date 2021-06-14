@@ -19,5 +19,32 @@
       "type": "image/png",
 			"purpose": "any maskable"
     }
-  ]
+  ],
+	"screenshots": [
+		{
+			"src": "/screenshots/new_request.jpg",
+			"sizes": "1280x720",
+			"type": "image/jpeg"
+		},
+		{
+			"src": "/screenshots/catalog.jpg",
+			"sizes": "1280x720",
+			"type": "image/jpeg"
+		},
+		{
+			"src": "/screenshots/sellers.jpg",
+			"sizes": "1280x720",
+			"type": "image/jpeg"
+		},
+		{
+			"src": "/screenshots/requests.jpg",
+			"sizes": "1280x720",
+			"type": "image/jpeg"
+		},
+		{
+			"src": "/screenshots/clients.jpg",
+			"sizes": "1280x720",
+			"type": "image/jpeg"
+		}
+	]
 }
