@@ -241,6 +241,29 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		await api.post('/mail', data)
 	}
 
+	function getWhatsappText(pwd: string)
+	{
+		const whatsappText =
+			'Suas credenciais no e-commerce da *Cruz Representações* foram atualizadas!'
+			+ '%0D%0A'
+			+ 'A partir de agora, você pode fazer seu login em cruzrepresentacoes.com.br usando as seguintes informações:'
+			+ '%0D%0A'
+			+ '%0D%0A'
+			+ `*E-mail:* ${email}`
+			+ '%0D%0A'
+			+ `*Senha:* ${pwd}`
+			+ '%0D%0A'
+			+ '%0D%0A'
+			+ 'Mantenha sempre suas credenciais seguras!'
+			+ '%0D%0A'
+			+ '%0D%0A'
+			+ 'Cruz Representações'
+			+ '%0D%0A'
+			+ 'Excelência em Representação Comercial!'
+		
+		return whatsappText
+	}
+
 	function handleSubmit()
 	{
 		const data = new FormData()
@@ -299,6 +322,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				sendCredentialsViaMail={sendCredentialsViaMail}
 				setSendCredentialsViaMail={setSendCredentialsViaMail}
 				handleSendCredentialsViaMail={handleSendCredentialsViaMail}
+
+				getWhatsappText={getWhatsappText}
 			/>
 
 			{/* imagem */}

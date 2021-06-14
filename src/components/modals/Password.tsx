@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {FiEye, FiEyeOff, FiSend} from 'react-icons/fi'
-import {FaRandom} from 'react-icons/fa'
+import {FaRandom, FaWhatsapp} from 'react-icons/fa'
 import Switch from 'react-switch'
 
 import Container from '../../styles/components/modals/Password'
@@ -19,19 +19,33 @@ interface PasswordModalProps
 	role: string
 	id?: string
 	setPwd?: (p: string) => void
-
+	
 	sendCredentialsViaMail?: boolean
 	setSendCredentialsViaMail?: (p: boolean) => void
 	handleSendCredentialsViaMail?: (pwd: string) => void
+	
+	getWhatsappText?: (pwd: string) => string
 }
 
 const PasswordModal: React.FC<PasswordModalProps> =
-({isOpen, setIsOpen, role, id, setPwd, sendCredentialsViaMail, setSendCredentialsViaMail, handleSendCredentialsViaMail}) =>
+({
+	isOpen,
+	setIsOpen,
+	role,
+	id,
+	setPwd,
+	sendCredentialsViaMail,
+	setSendCredentialsViaMail,
+	handleSendCredentialsViaMail,
+	getWhatsappText
+}) =>
 {
 	const [inputType, setInputType] = useState('password')
 
 	const [newPwd, setNewPwd] = useState('')
 	const [newPwd2, setNewPwd2] = useState('')
+
+	const whatsappLink = 'https://wa.me/?text=' + getWhatsappText(newPwd)
 
 	function toggleVisibility()
 	{
@@ -149,6 +163,14 @@ const PasswordModal: React.FC<PasswordModalProps> =
 								onHandleColor='#d8d8d8'
 								offHandleColor='#d8d8d8'
 							/>
+						</div>
+					)}
+					{getWhatsappText && (
+						<div className='field'>
+							<a href={whatsappLink} target='_blank' rel='noreferrer' >
+								<FaWhatsapp />
+								<span>Enviar credenciais por WhatsApp</span>
+							</a>
 						</div>
 					)}
 				</form>
