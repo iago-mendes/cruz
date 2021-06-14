@@ -45,12 +45,6 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		api.get(`companies/${companyId}/raw`).then(({data}:{data: {tabelas: Table[]}}) =>
 		{
 			setTableNames(data.tabelas)
-
-			if (tabelas.length === 0)
-			{
-				const tmpTables = data.tabelas.map(table => ({id: table._id, preco: 0}))
-				setTabelas(tmpTables)
-			}
 		})
 	}, [])
 
@@ -70,12 +64,11 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		}
 	}, [product])
 
-	function handleTablePriceChange(price: number | undefined, index: number)
+	function handleTablePriceChange(price: number, index: number)
 	{
-		let tmp = [...tabelas]
-		if (price)
-			tmp[index].preco = price
-		setTabelas(tmp)
+		let tmpTables = [...tabelas]
+		tmpTables[index].preco = price
+		setTabelas(tmpTables)
 	}
 
 	function handleSubmit()
@@ -218,16 +211,22 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 			<div className='field'>
 				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
-					{tableNames.map(({nome}, index) => (
-						<li key={index}>
-							<span className='label' >Tabela {nome}: R$</span>
-							<NumberInput
-								value={tabelas[index] ? tabelas[index].preco : 0}
-								setValue={n => handleTablePriceChange(n, index)}
-								name='tabela'
-							/>
-						</li>
-					))}
+					{tabelas.map(({id, preco}, index) =>
+					{
+						const table = tableNames.find(({_id}) => String(_id) == String(id))
+						const name = table ? table.nome : 'Sem Nome'
+
+						return (
+							<li key={index}>
+								<span className='label' >Tabela {name}: R$</span>
+								<NumberInput
+									value={preco}
+									setValue={n => handleTablePriceChange(n, index)}
+									name='tabela'
+								/>
+							</li>
+						)
+					})}
 				</ul>
 			</div>
 			

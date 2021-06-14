@@ -23,22 +23,10 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 		setValue(number)
 	}
 
-  function formatNumber(number: number)
-	{
-    const formatter = new Intl.NumberFormat('pt-BR',
-		{
-      style: 'decimal'
-    })
-
-		if (number === 0)
-			return undefined
-    return formatter.format(number)
-  }
-	
 	function toggleEditing()
 	{
-    setIsEditing(!isEditing)
-  }
+		setIsEditing(!isEditing)
+	}
 
 	function decrease()
 	{
@@ -49,6 +37,26 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 	function increase()
 	{
 		setValue(value + 1)
+	}
+
+	function getNumberInputValue()
+	{
+		if (value === 0)
+			return undefined
+
+		return Math.round(value * 100) / 100
+	}
+
+	function getTextInputValue()
+	{
+		const formatter = new Intl.NumberFormat('pt-BR',
+			{
+				style: 'decimal'
+			})
+
+		if (value === 0)
+			return ''
+		return formatter.format(value)
 	}
 
 	return (
@@ -62,25 +70,25 @@ const NumberInput: React.FC<NumberInputProps> = ({value, setValue, name, label, 
 
 				{
 					isEditing
-					? (
-						<input
-							type='number'
-							name={name}
-							value={Math.round(value * 100) / 100}
-							placeholder={placeholder}
-							onChange={e => handleChange(e.target.value)}
-							onBlur={toggleEditing}
-						/>
-					) : (
-						<input
-							type='text'
-							name={name}
-							placeholder={placeholder}
-							value={formatNumber(value)}
-							onFocus={toggleEditing}
-							readOnly
-						/>
-					)}
+						? (
+							<input
+								type='number'
+								name={name}
+								value={getNumberInputValue()}
+								placeholder={placeholder}
+								onChange={e => handleChange(e.target.value)}
+								onBlur={toggleEditing}
+							/>
+						) : (
+							<input
+								type='text'
+								name={name}
+								placeholder={placeholder}
+								value={getTextInputValue()}
+								onFocus={toggleEditing}
+								readOnly
+							/>
+						)}
 			</div>
 
 			<div className='controllers'>
