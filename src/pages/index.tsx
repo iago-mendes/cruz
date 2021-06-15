@@ -184,7 +184,7 @@ const Requests: React.FC = () =>
 										<h2>{formatDate(request.data)}</h2>
 									</div>
 									<div className='status'>
-										<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#881616'}} >
+										<span style={{backgroundColor: request.status.concluido ? '#16881a' : '#ff9933'}} >
 											{request.status.concluido ? 'concluído' : 'em orçamento' }
 										</span>
 										<span style={{backgroundColor: request.status.enviado ? '#16881a' : '#881616'}} >
