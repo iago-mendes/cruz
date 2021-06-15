@@ -341,8 +341,12 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 	function setModalState(state: boolean, step?: string)
 	{
+		const base = method === 'put'
+			? `/pedidos/${id}`
+			: '/pedidos/novo'
+		
 		if (state === true && step)
-			push(`/pedidos/novo?step=${step}`)
+			push(`${base}?step=${step}`)
 		else
 			back()
 	}
