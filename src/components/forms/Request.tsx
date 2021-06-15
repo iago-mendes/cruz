@@ -5,6 +5,7 @@ import Switch from 'react-switch'
 import { FiPlus, FiX } from 'react-icons/fi'
 
 import freteOptions from '../../../db/options/frete.json'
+import typeOptions from '../../../db/options/type.json'
 
 import Container from '../../styles/components/forms/global'
 import {selectStyles} from '../../styles/global'
@@ -259,22 +260,28 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		setConditionOptions(company.condicoes)
 	}
 
-	function handleTypeChange(e: boolean, field: string)
+	function handleTypeChange(e: SelectOption)
 	{
-		let tmp = {...tipo}
-
-		if (field === 'venda')
+		let tmpType =
 		{
-			tmp.venda = e
-			tmp.troca = !e
-		}
-		else if (field === 'troca')
-		{
-			tmp.troca = e
-			tmp.venda = !e
+			venda: e.value === 'venda',
+			troca: e.value === 'troca'
 		}
 
-		setTipo(tmp)
+		setTipo(tmpType)
+	}
+
+	function getTypeValue()
+	{
+		let typeAlt = ''
+
+		if (tipo.venda)
+			typeAlt = 'venda'
+		else if (tipo.troca)
+			typeAlt = 'troca'
+
+		const value = typeOptions.find(option => option.value === typeAlt)
+		return value
 	}
 
 	function handleStatusChange(e: boolean, field: string)
@@ -610,30 +617,13 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			{/* tipo */}
 			<div className='field'>
 				<label htmlFor='tipo'>Tipo</label>
-				<div className='switchFields'>
-					<div className='switchField'>
-						<span>Venda</span>
-						<Switch
-							name='venda'
-							id='venda'
-							checked={tipo.venda}
-							onChange={e => handleTypeChange(e, 'venda')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
-					</div>
-					<div className='switchField'>
-						<span>Troca</span>
-						<Switch
-							name='troca'
-							id='troca'
-							checked={tipo.troca}
-							onChange={e => handleTypeChange(e, 'troca')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
-					</div>
-				</div>
+				<Select
+					value={getTypeValue()}
+					options={typeOptions}
+					onChange={handleTypeChange}
+					styles={selectStyles}
+					isSearchable={false}
+				/>
 			</div>
 			{/* status */}
 			<div className='field'>
