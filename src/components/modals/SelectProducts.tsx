@@ -110,7 +110,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 
 	function handleEditProduct(product: RequestProduct)
 	{
-		setIsOpen(false)
+		// setIsOpen(false)
 		editProduct(product)
 	}
 

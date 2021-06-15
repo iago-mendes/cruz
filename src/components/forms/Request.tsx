@@ -2,6 +2,7 @@ import {useRouter} from 'next/router'
 import Select from 'react-select'
 import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
+import { FiPlus, FiX } from 'react-icons/fi'
 
 import freteOptions from '../../../db/options/frete.json'
 
@@ -26,7 +27,6 @@ import warningAlert from '../../utils/alerts/warning'
 import EditRequestProductModal from '../modals/EditRequestProduct'
 import SendRequestEmailModal from '../modals/SendRequestEmail'
 import { ClientContact } from '../../models/client'
-import { FiPlus, FiX } from 'react-icons/fi'
 import { handleObjectId } from '../../utils/handleObjectId'
 
 type RawProductsList =
@@ -44,7 +44,7 @@ type RequestFormProps =
 
 const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => 
 {
-	const {back} = useRouter()
+	const {back, push, query} = useRouter()
 	const {user, loading} = useAuth()
 
 	const [cliente, setCliente] = useState('')
@@ -195,6 +195,36 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 	}, [request])
 
+	useEffect(() =>
+	{
+		const step = String(query.step)
+
+		if (step === 'cliente')
+		{
+			setIsSelectClientModalOpen(true)
+			setIsSelectProductsModalOpen(false)
+			setIsEditRequestProductModalOpen(false)
+		}
+		else if (step === 'produtos')
+		{
+			setIsSelectProductsModalOpen(true)
+			setIsSelectClientModalOpen(false)
+			setIsEditRequestProductModalOpen(false)
+		}
+		else if (step === 'produto')
+		{
+			setIsEditRequestProductModalOpen(true)
+			setIsSelectClientModalOpen(false)
+			setIsSelectProductsModalOpen(false)
+		}
+		else
+		{
+			setIsSelectClientModalOpen(false)
+			setIsSelectProductsModalOpen(false)
+			setIsEditRequestProductModalOpen(false)
+		}
+	}, [query.step])
+
 	async function handleSelectClient(id: string)
 	{
 		setCliente(id)
@@ -268,8 +298,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				'Detalhes faltando...',
 				'Você precisa selecionar um cliente e uma representada.'
 			)
-
-		setIsSelectProductsModalOpen(true)
+		
+		setModalState(true, 'produtos')
 	}
 
 	function handleEditProduct(product: RequestProduct)
@@ -278,7 +308,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		tmpSelected.product = product
 		setSelected(tmpSelected)
 
-		setIsEditRequestProductModalOpen(true)
+		setModalState(true, 'produto')
 	}
 
 	function handleGenerateRequest()
@@ -300,6 +330,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		}
 
 		setContato(tmpContact)
+	}
+
+	function setModalState(state: boolean, step?: string)
+	{
+		if (state === true && step)
+			push(`/pedidos/novo?step=${step}`)
+		else
+			back()
 	}
 
 	function handleSubmit(statusAlt?: Status)
@@ -364,7 +402,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		<Container onSubmit={e => e.preventDefault()}>
 			<SelectProductsModal
 				isOpen={isSelectProductsModalOpen}
-				setIsOpen={setIsSelectProductsModalOpen}
+				setIsOpen={isOpen => setModalState(isOpen, 'produtos')}
 
 				selected={selected}
 				products={produtos}
@@ -374,7 +412,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 			<EditRequestProductModal
 				isOpen={isEditRequestProductModalOpen}
-				setIsOpen={setIsEditRequestProductModalOpen}
+				setIsOpen={isOpen => setModalState(isOpen, 'produto')}
 
 				selected={selected}
 				setSelected={setSelected}
@@ -384,7 +422,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 
 			<SelectClientModal
 				isOpen={isSelectClientModalOpen}
-				setIsOpen={setIsSelectClientModalOpen}
+				setIsOpen={isOpen => setModalState(isOpen, 'cliente')}
 
 				setClient={handleSelectClient}
 			/>
@@ -411,7 +449,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				<span className='modalResult' >
 					{clientData}
 				</span>
-				<button className='action' onClick={() => setIsSelectClientModalOpen(true)} >
+				<button className='action' onClick={() => setModalState(true, 'cliente')} >
 					{method === 'post' && (
 						'Selecionar cliente'
 					)}
