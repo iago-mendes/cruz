@@ -120,7 +120,7 @@ export const selectStyles: Styles =
 			backgroundColor: state.isSelected ? '#84130B' : '#E2DADB'
 		}),
 
-	menu: (provided, state) => (
+	menu: (provided) => (
 		{
 			...provided,
 			fontFamily: 'Roboto',
@@ -128,7 +128,7 @@ export const selectStyles: Styles =
 			zIndex: 1
 		}),
 
-	control: (provided, state) => (
+	control: (provided) => (
 		{
 			...provided,
 

@@ -11,6 +11,7 @@ const Container = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+
 		width: 100%;
 		padding: 0.5rem;
 		padding-left: 2rem;
@@ -21,13 +22,18 @@ const Container = styled.div`
 		{
 			width: 3.5rem;
 			height: 3.5rem;
+
 			border-radius: 100rem;
 			background: none;
 			border: none;
+
+			font-size: 2.5rem;
 			color: ${p => p.theme.colors.secondary};
+
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
 			cursor: pointer;
 			transition: 0.25s;
 			
@@ -35,7 +41,6 @@ const Container = styled.div`
 			{
 				background-color: ${p => p.theme.colors.secondary};
 				color: ${p => p.theme.colors.primary};
-				transform: scale(1.1);
 			}
 		}
 	}
@@ -58,6 +63,11 @@ const Container = styled.div`
 		left: 0;
 		bottom: 0;
 		right: 0;
+
+		header
+		{
+			justify-content: flex-start;
+		}
 
 		main
 		{

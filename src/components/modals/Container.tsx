@@ -1,8 +1,10 @@
 import {FiX} from 'react-icons/fi'
 import Modal from 'react-modal'
+import { BiArrowBack } from 'react-icons/bi'
 
 import Container from '../../styles/components/modals/Container'
 import {modalStyle} from '../../styles/global'
+import useDimensions from '../../hooks/useDimensions'
 
 Modal.setAppElement('#__next')
 
@@ -14,6 +16,8 @@ interface ModalContainerProps
 
 const ModalContainer: React.FC<ModalContainerProps> = ({isOpen, setIsOpen, children}) =>
 {
+	const {inMobile} = useDimensions()
+
 	return (
 		<Modal
 			isOpen={isOpen}
@@ -22,7 +26,11 @@ const ModalContainer: React.FC<ModalContainerProps> = ({isOpen, setIsOpen, child
 			<Container>
 				<header>
 					<button className='close' onClick={() => setIsOpen(false)} >
-						<FiX size={25} />
+						{
+							inMobile
+								? <BiArrowBack />
+								: <FiX />
+						}
 					</button>
 				</header>
 				
