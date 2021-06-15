@@ -31,6 +31,8 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
 	const [emailList, setEmailList] = useState<string[]>(defaultEmailList)
 	const [to, setTo] = useState<string[]>([])
 	const [text, setText] = useState('')
+	const [otherEmail, setOtherEmail] = useState('')
+	const [sendToOtherEmail, setSendToOtherEmail] = useState(false)
 
 	useEffect(() =>
 	{
@@ -66,6 +68,16 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
 		setTo(tmpTo)
 	}
 
+	function handleChangeOtherEmail(email: string)
+	{
+		if (otherEmail === '' && email !== '')
+			setSendToOtherEmail(true)
+		else if (otherEmail !== '' && email === '')
+			setSendToOtherEmail(false)
+
+		setOtherEmail(email)
+	}
+
 	async function handleSubmit()
 	{
 		if (!request || request._id === '' || request._id.includes('tmpId'))
@@ -74,9 +86,13 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
 				'E-mail não enviado!'
 			)
 		
+		const tmpTo = sendToOtherEmail
+			? [...to, otherEmail]
+			: [...to]
+		
 		const data =
 		{
-			to,
+			to: tmpTo,
 			text
 		}
 
@@ -109,6 +125,21 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
 							</label>
 						</li>
 					))}
+					<li>
+						<input
+							type='checkbox'
+							name={otherEmail}
+							checked={sendToOtherEmail}
+							onChange={() => setSendToOtherEmail(!sendToOtherEmail)}
+							disabled={otherEmail === ''}
+						/>
+						<input
+							type='text'
+							value={otherEmail}
+							onChange={e => handleChangeOtherEmail(e.target.value)}
+							placeholder='Outro'
+						/>
+					</li>
 				</ul>
 
 				<div className='field'>
