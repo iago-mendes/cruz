@@ -76,6 +76,7 @@ const Container = styled.main`
 	.products
 	{
 		padding: 1rem;
+		margin-bottom: 5rem;
 
 		display: grid;
 		grid-auto-rows: 10rem;
