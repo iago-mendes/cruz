@@ -451,11 +451,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				</span>
 				<button className='action' onClick={() => setModalState(true, 'cliente')} >
 					{method === 'post' && (
-						'Selecionar cliente'
+						'SELECIONAR CLIENTE'
 					)}
 
 					{method === 'put' && (
-						'Mudar cliente'
+						'MUDAR CLIENTE'
 					)}
 				</button>
 			</div>
@@ -491,10 +491,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			<div className='field'>
 				<label htmlFor='produtos'>Produtos</label>
 				<button className='action strong' onClick={handleSelectProducts} >
-					Selecionar produtos
+					SELECIONAR PRODUTOS
 				</button>
 				<button className='action detail' onClick={() => setIsRequestSummaryExpanded(true)} >
-					Ver itens selecionados
+					VER ITENS SELECIONADOS
 				</button>
 			</div>
 

@@ -233,6 +233,7 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> =
 						onChange={handleSelectTable}
 						name='table'
 						styles={selectStyles}
+						isSearchable={false}
 					/>
 				</div>
 

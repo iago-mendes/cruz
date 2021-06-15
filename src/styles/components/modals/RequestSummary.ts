@@ -18,8 +18,8 @@ const Container = styled.div<ContainerProps>`
 	width: 100%;
 	background-color: #fff;
 	box-shadow: 0px -5px 10px rgba(0,0,0,0.75);
-	border-top-left-radius: 1rem;
-	border-top-right-radius: 1rem;
+	border-top-left-radius: 0.5rem;
+	border-top-right-radius: 0.5rem;
 
 	.controller
 	{
@@ -52,6 +52,11 @@ const Container = styled.div<ContainerProps>`
 		margin-left: 1rem;
 		margin-right: 1rem;
 		margin-bottom: 2rem;
+	}
+
+	ul
+	{
+		list-style: none;
 	}
 
 	ul.details
