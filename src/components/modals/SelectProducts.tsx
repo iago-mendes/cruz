@@ -108,12 +108,6 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 		return totalPrice
 	}
 
-	function handleEditProduct(product: RequestProduct)
-	{
-		// setIsOpen(false)
-		editProduct(product)
-	}
-
 	return (
 		<ModalContainer
 			isOpen={isOpen}
@@ -155,7 +149,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 						return (
 							<div className='product' key={index} >
 								<div className='info'
-									onClick={() => handleEditProduct(product)}
+									onClick={() => editProduct(product)}
 									title='Editar produto'
 								>
 									<div className='data'>
@@ -167,7 +161,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 												{pricedProduct.nome}
 											</h3>
 											<span>
-												{rawProduct.codigo}
+												{rawProduct ? rawProduct.codigo : -1}
 											</span>
 										</div>
 									</div>
@@ -183,7 +177,7 @@ const RequestProductModal: React.FC<RequestProductModalProps> =
 											{product.quantidade}
 										</h3>
 										<span>
-											{rawProduct.unidade}
+											{rawProduct ? rawProduct.unidade : '??'}
 										</span>
 									</div>
 									<div className='controller'>
