@@ -23,10 +23,11 @@ type SendRequestEmailModalProps =
 	setIsOpen: (p: boolean) => void
 
 	request: RequestRaw
+	callback?: () => void
 }
 
 const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
-({isOpen, setIsOpen, request}) =>
+({isOpen, setIsOpen, request, callback}) =>
 {
 	const [emailList, setEmailList] = useState<string[]>(defaultEmailList)
 	const [to, setTo] = useState<string[]>([])
@@ -101,6 +102,9 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> =
 			{
 				successAlert('E-mail enviado com sucesso!')
 				setIsOpen(false)
+
+				if (callback)
+					callback()
 			})
 			.catch(catchError)
 	}

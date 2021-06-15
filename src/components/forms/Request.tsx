@@ -326,6 +326,14 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		handleSubmit(statusAlt)
 	}
 
+	function handleSendRequest()
+	{
+		let statusAlt = {...status}
+		statusAlt.enviado = true
+
+		handleSubmit(statusAlt, false)
+	}
+
 	function handleSelectContact(e: SelectOption)
 	{
 		const [nome, telefone] = e.value.split('__')
@@ -351,7 +359,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			back()
 	}
 
-	function handleSubmit(statusAlt?: Status)
+	function handleSubmit(statusAlt?: Status, showSuccessAlert = true)
 	{
 		const contact = isAddingNewContact
 			? {nome: newContactName, telefone: newContactPhone}
@@ -378,7 +386,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			api.post('requests', apiData)
 				.then(() =>
 				{
-					successAlert('Pedido criado com sucesso!')
+					if (showSuccessAlert)
+						successAlert('Pedido criado com sucesso!')
 					back()
 				})
 				.catch(catchError)
@@ -388,7 +397,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			api.put(`requests/${id}`, apiData)
 				.then(() =>
 				{
-					successAlert('Pedido atualizado com sucesso!')
+					if (showSuccessAlert)
+						successAlert('Pedido atualizado com sucesso!')
 					back()
 				})
 				.catch(catchError)
@@ -452,6 +462,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				isOpen={isSendRequestEmailModalOpen}
 				setIsOpen={setIsSendRequestEmailModalOpen}
 				request={request}
+				callback={handleSendRequest}
 			/>
 
 			{/* cliente */}
