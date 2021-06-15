@@ -91,6 +91,8 @@ const Container = styled.div`
 		justify-content: center;
 		width: 100%;
 		height: calc(100vh - 5rem - 30rem - 10rem);
+
+		padding: 2rem;
 		
 		h1
 		{
@@ -102,6 +104,8 @@ const Container = styled.div`
 
 	@media (max-width: 1000px)
 	{
+		min-height: calc(100vh - 11rem);
+
 		.paginate
 		{
 			gap: 1rem;

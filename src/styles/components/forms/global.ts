@@ -231,12 +231,12 @@ const Container = styled.form`
 
 		button.detail
 		{
-			background-color: ${p => p.theme.colors.primaryDark};
-			background-color: #66d9ff;
+			color: #0086b3;
+			border-color: #0086b3;
 
 			:hover
 			{
-				border-color: ${p => p.theme.colors.primaryDark};
+				background-color: #0086b3;
 			}
 		}
 
