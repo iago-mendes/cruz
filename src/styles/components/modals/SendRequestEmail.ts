@@ -19,6 +19,24 @@ const Container = styled.main`
 			{
 				font-size: 1.5rem;
 			}
+
+			input[type=text]
+			{
+				font-size: 1.5rem;
+				width: 75%;
+				max-width: 40rem;
+
+				border: ${p => p.theme.colors.text}40 2px solid;
+				border-radius: 0.5rem;
+				padding: 0.5rem;
+
+				transition: border-color 0.25s;
+
+				:focus, :hover
+				{
+					border-color: ${p => p.theme.colors.primary};
+				}
+			}
 		}
 	}
 
@@ -45,6 +63,7 @@ const Container = styled.main`
 		textarea
 		{
 			width: 100%;
+			max-width: 70rem;
 			resize: vertical;
 			
 			border: ${p => p.theme.colors.text}40 2px solid;
