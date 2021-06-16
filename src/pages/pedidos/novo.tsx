@@ -1,6 +1,5 @@
 import Head from 'next/head'
 
-import Header from '../../components/Header'
 import RequestForm from '../../components/forms/Request'
 
 const AddRequest: React.FC = () =>
@@ -11,13 +10,9 @@ const AddRequest: React.FC = () =>
 				<title>Novo pedido | Cruz Representações</title>
 			</Head>
 
-			<Header display='Novo pedido' />
-
-			<main className='main'>
-				<RequestForm
-					method='post'
-				/>
-			</main>
+			<RequestForm
+				method='post'
+			/>
 		</div>
 	)
 }

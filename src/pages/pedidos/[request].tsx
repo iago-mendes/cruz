@@ -2,7 +2,6 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 
-import Header from '../../components/Header'
 import RequestForm from '../../components/forms/Request'
 import api from '../../services/api'
 import Request, { defaultRequest } from '../../models/request'
@@ -31,15 +30,11 @@ const EditRequest: React.FC = () =>
 				<title>Editar pedido | Cruz Representações</title>
 			</Head>
 
-			<Header display='Pedidos > Editar' />
-
-			<main className='main'>
-				<RequestForm
-					method='put'
-					id={String(id)}
-					request={request}
-				/>
-			</main>
+			<RequestForm
+				method='put'
+				id={String(id)}
+				request={request}
+			/>
 		</div>
 	)
 }

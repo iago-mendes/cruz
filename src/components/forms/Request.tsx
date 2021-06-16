@@ -29,6 +29,7 @@ import EditRequestProductModal from '../modals/EditRequestProduct'
 import SendRequestEmailModal from '../modals/SendRequestEmail'
 import { ClientContact } from '../../models/client'
 import { handleObjectId } from '../../utils/handleObjectId'
+import Header from '../Header'
 
 type RawProductsList =
 {
@@ -420,285 +421,293 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	}
 
 	return (
-		<Container onSubmit={e => e.preventDefault()}>
-			<SelectProductsModal
-				isOpen={isSelectProductsModalOpen}
-				setIsOpen={isOpen => setModalState(isOpen, 'produtos')}
-
-				selected={selected}
-				products={produtos}
-				setProducts={setProdutos}
-				editProduct={handleEditProduct}
+		<>
+			<Header
+				display={method === 'post' ? 'Novo pedido' : 'Pedidos > Editar'}
 			/>
 
-			<EditRequestProductModal
-				isOpen={isEditRequestProductModalOpen}
-				setIsOpen={isOpen => setModalState(isOpen, 'produto')}
+			<main className='main'>
+				<Container onSubmit={e => e.preventDefault()}>
+					<SelectProductsModal
+						isOpen={isSelectProductsModalOpen}
+						setIsOpen={isOpen => setModalState(isOpen, 'produtos')}
 
-				selected={selected}
-				setSelected={setSelected}
-				products={produtos}
-				setProducts={setProdutos}
-			/>
+						selected={selected}
+						products={produtos}
+						setProducts={setProdutos}
+						editProduct={handleEditProduct}
+					/>
 
-			<SelectClientModal
-				isOpen={isSelectClientModalOpen}
-				setIsOpen={isOpen => setModalState(isOpen, 'cliente')}
+					<EditRequestProductModal
+						isOpen={isEditRequestProductModalOpen}
+						setIsOpen={isOpen => setModalState(isOpen, 'produto')}
 
-				setClient={handleSelectClient}
-			/>
+						selected={selected}
+						setSelected={setSelected}
+						products={produtos}
+						setProducts={setProdutos}
+					/>
 
-			<RequestSummaryModal
-				isExpanded={isRequestSummaryExpanded}
-				setIsExpanded={setIsRequestSummaryExpanded}
-				companyId={representada}
-				products={produtos}
-				setProducts={setProdutos}
-				rawProductsList={rawProductsList}
-				editProduct={handleEditProduct}
-			/>
+					<SelectClientModal
+						isOpen={isSelectClientModalOpen}
+						setIsOpen={isOpen => setModalState(isOpen, 'cliente')}
 
-			<SendRequestEmailModal
-				isOpen={isSendRequestEmailModalOpen}
-				setIsOpen={setIsSendRequestEmailModalOpen}
-				request={request}
-				callback={handleSendRequest}
-			/>
+						setClient={handleSelectClient}
+					/>
 
-			{/* cliente */}
-			<div className='field'>
-				<label htmlFor='cliente'>Cliente</label>
-				<span className='modalResult' >
-					{clientData}
-				</span>
-				<button className='action' onClick={() => setModalState(true, 'cliente')} >
-					{method === 'post' && (
-						'SELECIONAR CLIENTE'
-					)}
+					<RequestSummaryModal
+						isExpanded={isRequestSummaryExpanded}
+						setIsExpanded={setIsRequestSummaryExpanded}
+						companyId={representada}
+						products={produtos}
+						setProducts={setProdutos}
+						rawProductsList={rawProductsList}
+						editProduct={handleEditProduct}
+					/>
 
-					{method === 'put' && (
-						'MUDAR CLIENTE'
-					)}
-				</button>
-			</div>
-			{/* vendedor */}
-			<div className='field'>
-				<label htmlFor='vendedor'>Vendedor</label>
-				<Select
-					name='vendedor'
-					id='vendedor'
-					value={sellerOptions.find(option => option.value === vendedor)}
-					onChange={handleSelectSeller}
-					options={sellerOptions}
-					styles={selectStyles}
-					placeholder='Selecione o vendedor'
-					isSearchable={false}
-				/>
-			</div>
-			{/* representada */}
-			<div className='field'>
-				<label htmlFor='representada'>Representada</label>
-				<Select
-					name='representada'
-					id='representada'
-					value={companyOptions.find(option => option.value === representada)}
-					onChange={handleSelectCompany}
-					options={companyOptions}
-					styles={selectStyles}
-					placeholder='Selecione a representada'
-					isSearchable={false}
-				/>
-			</div>
-			{/* produtos */}
-			<div className='field'>
-				<label htmlFor='produtos'>Produtos</label>
-				<button className='action strong' onClick={handleSelectProducts} >
-					SELECIONAR PRODUTOS
-				</button>
-				<button className='action detail' onClick={() => setIsRequestSummaryExpanded(true)} >
-					VER ITENS SELECIONADOS
-				</button>
-			</div>
+					<SendRequestEmailModal
+						isOpen={isSendRequestEmailModalOpen}
+						setIsOpen={setIsSendRequestEmailModalOpen}
+						request={request}
+						callback={handleSendRequest}
+					/>
 
-			{/* data */}
-			<div className='field'>
-				<label htmlFor='data'>Data</label>
-				<input
-					type='date'
-					name='data'
-					id='data'
-					value={data}
-					onChange={e => setData(e.target.value)}
-				/>
-			</div>
-			{/* condicao */}
-			<div className='field'>
-				<label htmlFor='condicao'>Condição</label>
-				<Select
-					value={conditionSelectOptions.find(option => option.label === condicao)}
-					options={conditionSelectOptions}
-					onChange={e => setCondicao(e.value)}
-					styles={selectStyles}
-					placeholder='Condição de pagamento'
-					isSearchable={false}
-				/>
-			</div>
-			{/* frete */}
-			<div className='field'>
-				<label htmlFor='frete'>Frete</label>
-				<Select
-					value={freteOptions.find(option => option.label === frete)}
-					options={freteOptions}
-					onChange={e => setFrete(e.value)}
-					styles={selectStyles}
-					placeholder='Escolha uma opção de frete'
-					isSearchable={false}
-				/>
-			</div>
-			{/* contato */}
-			<div className='field contact'>
-				<label>Contato</label>
-				{!isAddingNewContact && (
-					<>
+					{/* cliente */}
+					<div className='field'>
+						<label htmlFor='cliente'>Cliente</label>
+						<span className='modalResult' >
+							{clientData}
+						</span>
+						<button className='action' onClick={() => setModalState(true, 'cliente')} >
+							{method === 'post' && (
+								'SELECIONAR CLIENTE'
+							)}
+
+							{method === 'put' && (
+								'MUDAR CLIENTE'
+							)}
+						</button>
+					</div>
+					{/* vendedor */}
+					<div className='field'>
+						<label htmlFor='vendedor'>Vendedor</label>
 						<Select
-							value={contactSelectOptions.find(option => option.value === `${contato.nome}__${contato.telefone}`)}
-							options={contactSelectOptions}
-							onChange={handleSelectContact}
+							name='vendedor'
+							id='vendedor'
+							value={sellerOptions.find(option => option.value === vendedor)}
+							onChange={handleSelectSeller}
+							options={sellerOptions}
 							styles={selectStyles}
-							placeholder='Contato'
+							placeholder='Selecione o vendedor'
 							isSearchable={false}
 						/>
-
-						<button
-							className='action'
-							onClick={() => setIsAddingNewContact(true)}
-						>
-							<FiPlus />
-							<span>Novo contato</span>
+					</div>
+					{/* representada */}
+					<div className='field'>
+						<label htmlFor='representada'>Representada</label>
+						<Select
+							name='representada'
+							id='representada'
+							value={companyOptions.find(option => option.value === representada)}
+							onChange={handleSelectCompany}
+							options={companyOptions}
+							styles={selectStyles}
+							placeholder='Selecione a representada'
+							isSearchable={false}
+						/>
+					</div>
+					{/* produtos */}
+					<div className='field'>
+						<label htmlFor='produtos'>Produtos</label>
+						<button className='action strong' onClick={handleSelectProducts} >
+						SELECIONAR PRODUTOS
 						</button>
-					</>
-				)}
-
-				{isAddingNewContact && (
-					<>
-						<button
-							className='action'
-							onClick={() => setIsAddingNewContact(false)}
-						>
-							<FiX />
-							<span>Cancelar</span>
+						<button className='action detail' onClick={() => setIsRequestSummaryExpanded(true)} >
+						VER ITENS SELECIONADOS
 						</button>
+					</div>
 
-						<div className='newContactFields'>
-							<input
-								type='text'
-								name='nome'
-								placeholder='Nome'
-								value={newContactName}
-								onChange={e => setNewContactName(e.target.value)}
-							/>
-							<input
-								type='text'
-								name='telefone'
-								placeholder='Telefone'
-								value={newContactPhone}
-								onChange={e => setNewContactPhone(e.target.value)}
-							/>
-						</div>
+					{/* data */}
+					<div className='field'>
+						<label htmlFor='data'>Data</label>
+						<input
+							type='date'
+							name='data'
+							id='data'
+							value={data}
+							onChange={e => setData(e.target.value)}
+						/>
+					</div>
+					{/* condicao */}
+					<div className='field'>
+						<label htmlFor='condicao'>Condição</label>
+						<Select
+							value={conditionSelectOptions.find(option => option.label === condicao)}
+							options={conditionSelectOptions}
+							onChange={e => setCondicao(e.value)}
+							styles={selectStyles}
+							placeholder='Condição de pagamento'
+							isSearchable={false}
+						/>
+					</div>
+					{/* frete */}
+					<div className='field'>
+						<label htmlFor='frete'>Frete</label>
+						<Select
+							value={freteOptions.find(option => option.label === frete)}
+							options={freteOptions}
+							onChange={e => setFrete(e.value)}
+							styles={selectStyles}
+							placeholder='Escolha uma opção de frete'
+							isSearchable={false}
+						/>
+					</div>
+					{/* contato */}
+					<div className='field contact'>
+						<label>Contato</label>
+						{!isAddingNewContact && (
+							<>
+								<Select
+									value={contactSelectOptions.find(option => option.value === `${contato.nome}__${contato.telefone}`)}
+									options={contactSelectOptions}
+									onChange={handleSelectContact}
+									styles={selectStyles}
+									placeholder='Contato'
+									isSearchable={false}
+								/>
 
-						<div className='newContactSave'>
-							<Switch
-								checked={isSavingNewContact}
-								onChange={e => setIsSavingNewContact(e)}
-							/>
-							<span>
-								Salvar contato
-							</span>
+								<button
+									className='action'
+									onClick={() => setIsAddingNewContact(true)}
+								>
+									<FiPlus />
+									<span>Novo contato</span>
+								</button>
+							</>
+						)}
+
+						{isAddingNewContact && (
+							<>
+								<button
+									className='action'
+									onClick={() => setIsAddingNewContact(false)}
+								>
+									<FiX />
+									<span>Cancelar</span>
+								</button>
+
+								<div className='newContactFields'>
+									<input
+										type='text'
+										name='nome'
+										placeholder='Nome'
+										value={newContactName}
+										onChange={e => setNewContactName(e.target.value)}
+									/>
+									<input
+										type='text'
+										name='telefone'
+										placeholder='Telefone'
+										value={newContactPhone}
+										onChange={e => setNewContactPhone(e.target.value)}
+									/>
+								</div>
+
+								<div className='newContactSave'>
+									<Switch
+										checked={isSavingNewContact}
+										onChange={e => setIsSavingNewContact(e)}
+									/>
+									<span>
+									Salvar contato
+									</span>
+								</div>
+							</>
+						)}
+					</div>
+					{/* digitado_por */}
+					<div className='field'>
+						<label htmlFor='digitado_por'>Digitado por</label>
+						<input
+							type='text'
+							name='digitado_por'
+							id='digitado_por'
+							value={digitado_por}
+							onChange={e => setDigitadoPor(e.target.value)}
+						/>
+					</div>
+					{/* tipo */}
+					<div className='field'>
+						<label htmlFor='tipo'>Tipo</label>
+						<Select
+							value={getTypeValue()}
+							options={typeOptions}
+							onChange={handleTypeChange}
+							styles={selectStyles}
+							isSearchable={false}
+						/>
+					</div>
+					{/* status */}
+					<div className='field'>
+						<label htmlFor='status'>Situação</label>
+						<div className='switchFields'>
+							<div className='switchField'>
+								<span>Concluído</span>
+								<Switch
+									name='concluido'
+									id='concluido'
+									checked={status.concluido}
+									onChange={e => handleStatusChange(e, 'concluido')}
+									onHandleColor='#d8d8d8'
+									offHandleColor='#d8d8d8'
+								/>
+							</div>
+							<div className='switchField'>
+								<span>Enviado</span>
+								<Switch
+									name='enviado'
+									id='enviado'
+									checked={status.enviado}
+									onChange={e => handleStatusChange(e, 'enviado')}
+									onHandleColor='#d8d8d8'
+									offHandleColor='#d8d8d8'
+								/>
+							</div>
+							<div className='switchField'>
+								<span>Faturado</span>
+								<Switch
+									name='faturado'
+									id='faturado'
+									checked={status.faturado}
+									onChange={e => handleStatusChange(e, 'faturado')}
+									onHandleColor='#d8d8d8'
+									offHandleColor='#d8d8d8'
+								/>
+							</div>
 						</div>
-					</>
-				)}
-			</div>
-			{/* digitado_por */}
-			<div className='field'>
-				<label htmlFor='digitado_por'>Digitado por</label>
-				<input
-					type='text'
-					name='digitado_por'
-					id='digitado_por'
-					value={digitado_por}
-					onChange={e => setDigitadoPor(e.target.value)}
-				/>
-			</div>
-			{/* tipo */}
-			<div className='field'>
-				<label htmlFor='tipo'>Tipo</label>
-				<Select
-					value={getTypeValue()}
-					options={typeOptions}
-					onChange={handleTypeChange}
-					styles={selectStyles}
-					isSearchable={false}
-				/>
-			</div>
-			{/* status */}
-			<div className='field'>
-				<label htmlFor='status'>Situação</label>
-				<div className='switchFields'>
-					<div className='switchField'>
-						<span>Concluído</span>
-						<Switch
-							name='concluido'
-							id='concluido'
-							checked={status.concluido}
-							onChange={e => handleStatusChange(e, 'concluido')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
 					</div>
-					<div className='switchField'>
-						<span>Enviado</span>
-						<Switch
-							name='enviado'
-							id='enviado'
-							checked={status.enviado}
-							onChange={e => handleStatusChange(e, 'enviado')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
+				
+					<div className='formButtons'>
+						<button type='button' onClick={back} >
+						Cancelar
+						</button>
+						<button type='submit' onClick={() => handleSubmit()} >
+						Salvar
+						</button>
+						{(request && request._id !== '' && !request._id.includes('tmpId')) && (
+							<button type='button' onClick={() => setIsSendRequestEmailModalOpen(true)}>
+							Enviar e-mail
+							</button>
+						)}
+						{!status.concluido && (
+							<button type='button' onClick={handleGenerateRequest} >
+							Gerar pedido
+							</button>
+						)}
 					</div>
-					<div className='switchField'>
-						<span>Faturado</span>
-						<Switch
-							name='faturado'
-							id='faturado'
-							checked={status.faturado}
-							onChange={e => handleStatusChange(e, 'faturado')}
-							onHandleColor='#d8d8d8'
-							offHandleColor='#d8d8d8'
-						/>
-					</div>
-				</div>
-			</div>
-			
-			<div className='formButtons'>
-				<button type='button' onClick={back} >
-					Cancelar
-				</button>
-				<button type='submit' onClick={() => handleSubmit()} >
-					Salvar
-				</button>
-				{(request && request._id !== '' && !request._id.includes('tmpId')) && (
-					<button type='button' onClick={() => setIsSendRequestEmailModalOpen(true)}>
-						Enviar e-mail
-					</button>
-				)}
-				{!status.concluido && (
-					<button type='button' onClick={handleGenerateRequest} >
-						Gerar pedido
-					</button>
-				)}
-			</div>
-		</Container>
+				</Container>
+			</main>
+		</>
 	)
 }
 
