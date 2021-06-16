@@ -6,20 +6,17 @@ import {FaRegEye} from 'react-icons/fa'
 
 import Container from '../styles/pages/index'
 import Header from '../components/Header'
-import api from '../services/api'
 import Add from '../components/Add'
 import formatDate from '../utils/formatDate'
 import useAuth from '../hooks/useAuth'
-import successAlert from '../utils/alerts/success'
-import confirmAlert from '../utils/alerts/confirm'
 import { Image } from '../components/Image'
 import { requestController } from '../services/offline/controllers/request'
 import { RequestListed, loadingRequest } from '../models/request'
-import { pdfController } from '../services/offline/controllers/pdf'
 import { SkeletonLoading } from '../utils/skeletonLoading'
 import Paginate from '../components/Paginate'
 import LoadingModal from '../components/modals/Loading'
-import { catchError } from '../utils/catchError'
+import { handleDeleteRequest } from '../utils/requests/handleDeleteRequest'
+import { handleSeeRequestPDF } from '../utils/requests/handleSeeRequestPDF'
 
 const Requests: React.FC = () =>
 {
@@ -70,31 +67,6 @@ const Requests: React.FC = () =>
 			})
 		
 		setLoading(false)
-	}
-
-	function handleDeleteRequest(request: RequestListed)
-	{
-		confirmAlert(
-			'Você tem certeza?',
-			`Se você continuar, o pedido feito em ${formatDate(request.data)} será deletado!`,
-			() => api.delete(`requests/${request.id}`)
-				.then(() =>
-				{
-					updateRequests()
-					successAlert('Pedido deletado com sucesso!')
-				})
-		)
-	}
-
-	async function handleSeeRequest(id: string)
-	{
-		setIsLoadingModalOpen(true)
-
-		await pdfController.request(id)
-			.then(() => {})
-			.catch(catchError)
-
-		setIsLoadingModalOpen(false)
 	}
 
 	return (
@@ -197,7 +169,7 @@ const Requests: React.FC = () =>
 									<div className='buttons'>
 										<button
 											title='Ver pedido'
-											onClick={() => handleSeeRequest(request.id)}
+											onClick={() => handleSeeRequestPDF(request.id, setIsLoadingModalOpen)}
 										>
 											<FaRegEye />
 										</button>
@@ -208,7 +180,7 @@ const Requests: React.FC = () =>
 												</button>
 												<button
 													title='Deletar'
-													onClick={() => handleDeleteRequest(request)}
+													onClick={() => handleDeleteRequest(request.id, request.data, updateRequests)}
 													className='delete'
 												>
 													<FiTrash />

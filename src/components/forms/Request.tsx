@@ -30,6 +30,9 @@ import SendRequestEmailModal from '../modals/SendRequestEmail'
 import { ClientContact } from '../../models/client'
 import { handleObjectId } from '../../utils/handleObjectId'
 import Header from '../Header'
+import LoadingModal from '../../components/modals/Loading'
+import { handleDeleteRequest } from '../../utils/requests/handleDeleteRequest'
+import { handleSeeRequestPDF } from '../../utils/requests/handleSeeRequestPDF'
 
 type RawProductsList =
 {
@@ -80,6 +83,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 	const [isEditRequestProductModalOpen, setIsEditRequestProductModalOpen] = useState(false)
 	const [isSendRequestEmailModalOpen, setIsSendRequestEmailModalOpen] = useState(false)
 	const [isRequestSummaryExpanded, setIsRequestSummaryExpanded] = useState(false)
+
+	const [isLoadingModalOpen, setIsLoadingModalOpen] = useState(false)
 
 	const conditionSelectOptions = conditionOptions
 		// .filter(option => option.precoMin <= calcTotal())
@@ -360,6 +365,40 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 			back()
 	}
 
+	function getOptions()
+	{
+		let options: Array<
+		{
+			display: string
+			action: () => void
+			color?: string
+		}> = []
+
+		options.push({display: 'Salvar', action: () => handleSubmit()})
+
+		if (!status.concluido)
+			options.push({display: 'Gerar pedido', action: handleGenerateRequest})
+		
+		if ((request && request._id !== '' && !request._id.includes('tmpId')))
+			options.push({display: 'Enviar por e-mail', action: () => setIsSendRequestEmailModalOpen(true)})
+		
+		if (request && request._id !== '')
+			options.push({display: 'Ver em PDF', action: () => handleSeeRequestPDF(request._id, setIsLoadingModalOpen)})
+		
+		if (method === 'post')
+			options.push({display: 'Cancelar orçamento', action: back, color: '#f00'})
+		else if (method === 'put')
+			options.push(
+				{
+					display: 'Deletar pedido',
+					action: () => handleDeleteRequest(request._id, request.data, back),
+					color: '#f00'
+				}
+			)
+		
+		return options
+	}
+
 	function handleSubmit(statusAlt?: Status, showSuccessAlert = true)
 	{
 		const contact = isAddingNewContact
@@ -424,6 +463,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		<>
 			<Header
 				display={method === 'post' ? 'Novo pedido' : 'Pedidos > Editar'}
+				options={getOptions()}
 			/>
 
 			<main className='main'>
@@ -470,6 +510,10 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						setIsOpen={setIsSendRequestEmailModalOpen}
 						request={request}
 						callback={handleSendRequest}
+					/>
+
+					<LoadingModal
+						isOpen={isLoadingModalOpen}
 					/>
 
 					{/* cliente */}
@@ -689,19 +733,19 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 				
 					<div className='formButtons'>
 						<button type='button' onClick={back} >
-						Cancelar
+							Cancelar
 						</button>
 						<button type='submit' onClick={() => handleSubmit()} >
-						Salvar
+							Salvar
 						</button>
 						{(request && request._id !== '' && !request._id.includes('tmpId')) && (
 							<button type='button' onClick={() => setIsSendRequestEmailModalOpen(true)}>
-							Enviar e-mail
+								Enviar e-mail
 							</button>
 						)}
 						{!status.concluido && (
 							<button type='button' onClick={handleGenerateRequest} >
-							Gerar pedido
+								Gerar pedido
 							</button>
 						)}
 					</div>
