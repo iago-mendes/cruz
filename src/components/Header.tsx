@@ -1,10 +1,11 @@
 import {useRouter} from 'next/router'
-import {BiBuildings, BiSearch, BiLineChart, BiSpreadsheet} from 'react-icons/bi'
+import {BiBuildings, BiSearch, BiLineChart, BiSpreadsheet, BiDotsVerticalRounded} from 'react-icons/bi'
 import {FiUsers} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
 import {useEffect, useState} from 'react'
 
-import Container from '../styles/components/Header'
+import Container, {Options} from '../styles/components/Header'
+import useClickOutside from '../hooks/useClickOutside'
 
 interface HeaderProps
 {
@@ -12,13 +13,23 @@ interface HeaderProps
 
 	showSearch?: boolean
 	search?: string
-	setSearch?: Function
+	setSearch?: (search: string) => void
+
+	options?: Array<
+	{
+		display: string
+		action: () => void
+		color?: string
+	}>
 }
 
-const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = '', setSearch}) =>
+const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = '', setSearch, options = []}) =>
 {
 	const Router = useRouter()
 	const [page, setPage] = useState('')
+
+	const [isOptionsExpanded, setIsOptionsExpanded] = useState(false)
+	const optionsRef = useClickOutside(() => setIsOptionsExpanded(false))
 
 	useEffect(() =>
 	{
@@ -40,12 +51,13 @@ const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = ''
 			return <BiLineChart size={30} />
 	}
 
-  return (
+	return (
 		<Container>
 			<div className='display'>
 				{getIcon()}
 				<h1>{display}</h1>
 			</div>
+
 			{showSearch && (
 				<div className='inputField'>
 					<BiSearch size={25} />
@@ -57,8 +69,38 @@ const Header: React.FC<HeaderProps> = ({display, showSearch = false, search = ''
 					/>
 				</div>
 			)}
+
+			{options.length > 0 && (
+				<Options
+					isExpanded={isOptionsExpanded}
+					length={options.length}
+					ref={optionsRef}
+				>
+					<button
+						className='controller'
+						onClick={() => setIsOptionsExpanded(!isOptionsExpanded)}
+					>
+						<BiDotsVerticalRounded />
+					</button>
+
+					<ul>
+						{options.map((option, index) => (
+							<li
+								key={index}
+								onClick={option.action}
+							>
+								<span
+									style={option.color ? {color: option.color} : {}}
+								>
+									{option.display}
+								</span>
+							</li>
+						))}
+					</ul>
+				</Options>
+			)}
 		</Container>
-  )
+	)
 }
 
 export default Header

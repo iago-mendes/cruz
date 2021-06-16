@@ -85,4 +85,85 @@ const Container = styled.header`
 	}
 `
 
+type OptionsProps =
+{
+	isExpanded: boolean
+	length: number
+}
+
+export const Options = styled.div<OptionsProps>`
+	position: relative;
+
+	button.controller
+	{
+		width: 3.5rem;
+		height: 3.5rem;
+
+		font-size: 2rem;
+		border-radius: 100rem;
+		border: none;
+		background: none;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		transition: background-color 0.25s;
+
+		:hover
+		{
+			background-color: rgba(0,0,0,0.2);
+		}
+	}
+
+	ul
+	{
+		position: absolute;
+		right: 0;
+		top: 3.5rem;
+
+		direction: rtl;
+		overflow: hidden;
+
+		width: ${p => p.isExpanded ? '20rem' : 0};
+		height: ${p => p.isExpanded ? `calc(4rem * ${p.length})` : 0};
+		opacity: ${p => p.isExpanded ? 1 : 0};
+
+		background-color: #fff;
+		box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+		list-style: none;
+
+		transition: height 0.25s, width 0.25s, opacity 0.25s;
+
+		*
+		{
+			direction: ltr;
+		}
+
+		li
+		{
+			width: 20rem;
+			height: 4rem;
+			padding: 0 1rem;
+
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+
+			cursor: pointer;
+			transition: background-color 0.25s;
+
+			:hover
+			{
+				background-color: rgba(0,0,0,0.2);
+			}
+
+			span
+			{
+				font-size: 1.5rem;
+			}
+		}
+	}
+`
+
 export default Container
