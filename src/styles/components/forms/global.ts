@@ -262,6 +262,11 @@ const Container = styled.form`
 		}
 	}
 
+	.long.field
+	{
+		width: 100%;
+	}
+
 	.textareaField
 	{
 		width: 100%;

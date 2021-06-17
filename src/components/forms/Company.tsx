@@ -465,7 +465,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				</ul>
 			</div>
 			{/* condicoes */}
-			<div className='required field' >
+			<div className='long required field' >
 				<label htmlFor='condicao'>Condições de pagamento</label>
 				<ul>
 					{condicoes.map((condicao, index) => (
