@@ -11,6 +11,7 @@ import FormButtons from '../FormButtons'
 import NumberInput from '../NumberInput'
 import { catchError } from '../../utils/catchError'
 import { handleObjectId } from '../../utils/handleObjectId'
+import warningAlert from '../../utils/alerts/warning'
 
 interface CompanyFormProps
 {
@@ -27,15 +28,12 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 {
 	const {back} = useRouter()
     
-	const [shownNumbers, setShownNumbers] = useState<string[]>([])
-	const [shownCnpj, setShownCnpj] = useState('')
-
 	const [imagem, setImagem] = useState<File>()
 	const [razaoSocial, setRazaoSocial] = useState('')
-	const [cnpj, setCnpj] = useState(0)
+	const [cnpj, setCnpj] = useState('')
 	const [telefones, setTelefones] = useState([])
 	const [email, setEmail] = useState('')
-	const [comissao, setComissao] = useState({porcentagem: 0.00, obs: []})
+	const [comissao, setComissao] = useState({porcentagem: 0, obs: []})
 	const [descricaoCurta, setDescricaoCurta] = useState('')
 	const [descricao, setDescricao] = useState('')
 	const [site, setSite] = useState('')
@@ -46,56 +44,47 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 	{
 		if (company)
 		{
-			setRazaoSocial(company.razao_social)
-			setNomeFantasia(company.nome_fantasia)
-			setTelefones(company.telefones)
-			setEmail(company.email)
-			setComissao(company.comissao)
-			setDescricaoCurta(company.descricao_curta)
-			setDescricao(company.descricao)
-			setSite(company.site)
-			setTabelas(company.tabelas)
-			setCondicoes(company.condicoes)
-			
-			setTelefones(company.telefones)
-			setShownNumbers(company.telefones.map(tel => formatNumber(tel)))
-
-			setCnpj(Number(company.cnpj))
-			setShownCnpj(formatCnpj(company.cnpj))
+			if (company.razao_social)
+				setRazaoSocial(company.razao_social)
+			if (company.nome_fantasia)
+				setNomeFantasia(company.nome_fantasia)
+			if (company.cnpj)
+				setCnpj(company.cnpj)
+			if (company.telefones)
+				setTelefones(company.telefones)
+			if (company.email)
+				setEmail(company.email)
+			if (company.comissao)
+				setComissao(company.comissao)
+			if (company.descricao_curta)
+				setDescricaoCurta(company.descricao_curta)
+			if (company.descricao)
+				setDescricao(company.descricao)
+			if (company.site)
+				setSite(company.site)
+			if (company.tabelas)
+				setTabelas(company.tabelas)
+			if (company.condicoes)
+				setCondicoes(company.condicoes)
 		}
 	}, [company])
 
-	function formatNumber(number: number | string)
-	{
-		const n = String(number)
-		if (n.length === 10)
-			return `(${n.substr(0, 2)}) ${n.substr(2, 4)}-${n.substr(6, 4)}`
-		else
-			return `(${n.substr(0, 2)}) ${n.substr(2, 5)}-${n.substr(7, 4)}`
-	}
-
-	function formatCnpj(number: number | string)
-	{
-		const n = String(number).replace(/\D/g,'')
-		if (n.length === 14)
-			return `${n.substr(0,2)}.${n.substr(2,3)}.${n.substr(5,3)}/${n.substr(8,4)}-${n.substr(12,2)}`
-		else return n
-	}
-
 	function handleInputChange(e: ChangeEvent<HTMLInputElement>)
 	{
-		if (e.target.name === 'imagem') setImagem(e.target.files[0])
-		if (e.target.name === 'razao_social') setRazaoSocial(e.target.value)
-		if (e.target.name === 'nome_fantasia') setNomeFantasia(e.target.value)
-		if (e.target.name === 'email') setEmail(e.target.value)
-		if (e.target.name === 'descricao_curta') setDescricaoCurta(e.target.value)
-		if (e.target.name === 'site') setSite(e.target.value)
-
+		if (e.target.name === 'imagem')
+			setImagem(e.target.files[0])
+		if (e.target.name === 'razao_social')
+			setRazaoSocial(e.target.value)
+		if (e.target.name === 'nome_fantasia')
+			setNomeFantasia(e.target.value)
 		if (e.target.name === 'cnpj')
-		{
-			setCnpj(Number(e.target.value))
-			setShownCnpj(formatCnpj(e.target.value))
-		}
+			setCnpj(e.target.value)
+		if (e.target.name === 'email')
+			setEmail(e.target.value)
+		if (e.target.name === 'descricao_curta')
+			setDescricaoCurta(e.target.value)
+		if (e.target.name === 'site')
+			setSite(e.target.value)
 	}
 
 	function handleTextareaChange(e: ChangeEvent<HTMLTextAreaElement>)
@@ -103,18 +92,11 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		if (e.target.name === 'descricao') setDescricao(e.target.value)
 	}
 
-	function handleNumberChange(e: ChangeEvent<HTMLInputElement>, index: number)
+	function handlePhoneChange(phone: string, index: number)
 	{
-		let numbers = [...telefones]
-		let formatedNumbers = [...shownNumbers]
-
-		const number = e.target.value.replace(/\D/g,'')
-		numbers[index] = Number(number)
-		setTelefones(numbers)
-
-		const formatedNumber = formatNumber(number)
-		formatedNumbers[index] = formatedNumber
-		setShownNumbers(formatedNumbers)
+		let tmpPhones = [...telefones]
+		tmpPhones[index] = phone
+		setTelefones(tmpPhones)
 	}
 
 	function handleComissaoChange(value: number | string, field: string, index = 0)
@@ -132,21 +114,17 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		}
 	}
 
-	function handleAddNumber()
+	function handleAddPhone()
 	{
-		setTelefones([...telefones, 0])
-		setShownNumbers([...shownNumbers, ''])
+		const tmpPhones = [...telefones, '']
+		setTelefones(tmpPhones)
 	}
 
-	function handleRemoveNumber(index: number)
+	function handleRemovePhone(index: number)
 	{
-		let numbers = [...telefones]
-		numbers.splice(index, 1)
-		setTelefones(numbers)
-
-		let shown = [...shownNumbers]
-		shown.splice(index, 1)
-		setShownNumbers(shown)
+		let tmpPhones = [...telefones]
+		tmpPhones.splice(index, 1)
+		setTelefones(tmpPhones)
 	}
     
 	function handleAddComissaoObs()
@@ -217,8 +195,35 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 		setCondicoes(tmpConditions)
 	}
 
+	function validateFields()
+	{
+		if (razaoSocial === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar a razão social.'}
+		
+		if (nomeFantasia === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o nome fantasia.'}
+		
+		if (cnpj === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o CNPJ.'}
+		
+		if (comissao.porcentagem === 0)
+			return {areFieldsValid: false, warning: 'Você precisa informar a porcentagem de comissão.'}
+		
+		if (tabelas.length === 0)
+			return {areFieldsValid: false, warning: 'Você precisa informar pelo menos uma tabela.'}
+		
+		if (condicoes.length === 0)
+			return {areFieldsValid: false, warning: 'Você precisa informar pelo menos uma condição de pagamento.'}
+		
+		return {areFieldsValid: true, warning: ''}
+	}
+
 	function handleSubmit()
 	{
+		const {areFieldsValid, warning} = validateFields()
+		if(!areFieldsValid)
+			return warningAlert('Dados inválidos!', warning)
+
 		const data = new FormData()
 
 		const tables = tabelas.map(table =>
@@ -314,7 +319,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 					type='text'
 					name='cnpj'
 					id='cnpj'
-					value={shownCnpj}
+					value={cnpj}
 					onChange={handleInputChange}
 					maxLength={18}
 				/>
@@ -323,16 +328,16 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			<div className='field' >
 				<label htmlFor='telefone'>Telefones</label>
 				<ul>
-					{shownNumbers.map((number, index) => (
+					{telefones.map((phone, index) => (
 						<li key={index} className='phone'>
 							<input
 								type='text'
 								name='telefone'
 								id='telefone'
-								value={number}
-								onChange={(e) => handleNumberChange(e, index)}
+								value={phone}
+								onChange={e => handlePhoneChange(e.target.value, index)}
 							/>
-							<button type='button' onClick={() => handleRemoveNumber(index)}>
+							<button type='button' onClick={() => handleRemovePhone(index)}>
 								<FiMinus />
 								<span>
 									Remover telefone
@@ -340,7 +345,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddNumber}>
+					<button type='button' onClick={handleAddPhone}>
 						<FiPlus />
 						<span>
 							Adicionar telefone
@@ -461,7 +466,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			</div>
 			{/* condicoes */}
 			<div className='required field' >
-				<label htmlFor='condicao'>Condições de prazo</label>
+				<label htmlFor='condicao'>Condições de pagamento</label>
 				<ul>
 					{condicoes.map((condicao, index) => (
 						<li key={index} >

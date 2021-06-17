@@ -7,7 +7,7 @@ interface Company // raw
 	razao_social: string
 	nome_fantasia: string
 	cnpj: string
-	telefones: Array<string>
+	telefones: string[]
 	email: string
 	descricao_curta?: string
 	descricao?: string
