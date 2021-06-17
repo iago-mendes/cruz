@@ -246,6 +246,22 @@ const Container = styled.form`
 		}
 	}
 
+	.required.field label
+	{
+		position: relative;
+		width: fit-content;
+
+		::after
+		{
+			content: '*';
+			color: #f00;
+
+			position: absolute;
+			top: 0;
+			right: -1.5rem;
+		}
+	}
+
 	.textareaField
 	{
 		width: 100%;

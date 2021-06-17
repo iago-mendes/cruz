@@ -517,7 +517,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					/>
 
 					{/* cliente */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='cliente'>Cliente</label>
 						<span className='modalResult' >
 							{clientData}
@@ -547,7 +547,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					{/* representada */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='representada'>Representada</label>
 						<Select
 							name='representada'
@@ -561,7 +561,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					{/* produtos */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='produtos'>Produtos</label>
 						<button className='action strong' onClick={handleSelectProducts} >
 						SELECIONAR PRODUTOS
@@ -572,7 +572,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 					</div>
 
 					{/* data */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='data'>Data</label>
 						<input
 							type='date'
@@ -583,7 +583,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					{/* condicao */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='condicao'>Condição</label>
 						<Select
 							value={conditionSelectOptions.find(option => option.label === condicao)}
@@ -681,7 +681,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 						/>
 					</div>
 					{/* tipo */}
-					<div className='field'>
+					<div className='required field'>
 						<label htmlFor='tipo'>Tipo</label>
 						<Select
 							value={getTypeValue()}
