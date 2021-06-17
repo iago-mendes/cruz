@@ -1,16 +1,20 @@
 import Head from 'next/head'
 
-const Indicadores: React.FC = () =>
+import Header from '../components/Header'
+
+const Indicators: React.FC = () =>
 {
 	return (
-		<div>
+		<div className='container' >
 			<Head>
 				<title>Indicadores | Cruz Representações</title>
 			</Head>
 
-			<h1>Indicadores</h1>
+			<Header
+				display='Indicadores'
+			/>
 		</div>
 	)
 }
 
-export default Indicadores
+export default Indicators
