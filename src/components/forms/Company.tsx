@@ -286,7 +286,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				/>
 			</div>
 			{/* razao_social */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='razao_social'>Razão social</label>
 				<input
 					type='text'
@@ -297,7 +297,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				/>
 			</div>
 			{/* nome_fantasia */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='nome_fantasia'>Nome fantasia</label>
 				<input
 					type='text'
@@ -308,7 +308,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				/>
 			</div>
 			{/* cnpj */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='cnpj'>CNPJ</label>
 				<input
 					type='text'
@@ -360,7 +360,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				/>
 			</div>
 			{/* comissao */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='comissao_porcentagem'>Comissão - Porcentagem</label>
 				<NumberInput
 					value={comissao.porcentagem}
@@ -431,7 +431,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				/>
 			</div>
 			{/* tabelas */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
 					{tabelas.map((tabela, index) => (
@@ -460,7 +460,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 				</ul>
 			</div>
 			{/* condicoes */}
-			<div className='field' >
+			<div className='required field' >
 				<label htmlFor='condicao'>Condições de prazo</label>
 				<ul>
 					{condicoes.map((condicao, index) => (
