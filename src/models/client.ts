@@ -13,7 +13,7 @@ interface Client
 	endereco: Address
 	status: Status
 	condicoes: Conditions
-	telefone?: number
+	telefone?: string
 	modificadoEm?: string
 	contatos: ClientContact[]
 }
@@ -31,6 +31,7 @@ export const defaultClient: Client =
 	senha: '',
 	vendedores: [],
 	representadas: [],
+	telefone: '',
 	endereco: {},
 	status: {ativo: true, aberto: true, nome_sujo: false},
 	condicoes: {prazo: true, cheque: true, vista: true},
@@ -47,7 +48,7 @@ export type ClientCompany =
 export type Address =
 {
 	rua?: string
-	numero?: number
+	numero?: string
 	complemento?: string
 	bairro?: string
 	cep?: string

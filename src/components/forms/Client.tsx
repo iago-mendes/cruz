@@ -7,7 +7,7 @@ import api from '../../services/api'
 import Container from '../../styles/components/forms/global'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
-import Client, {ClientCompany, Address, Status, Conditions} from '../../models/client'
+import Client, {ClientCompany, Address, Status, Conditions, ClientContact} from '../../models/client'
 import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
 import PasswordModal from '../modals/Password'
@@ -42,16 +42,9 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 	const [senha, setSenha] = useState('')
 	const [vendedores, setVendedores] = useState<string[]>([])
 	const [representadas, setRepresentadas] = useState<ClientCompany[]>([])
-	const [endereco, setEndereco] = useState<Address>(
-		{
-			rua: '',
-			numero: 0,
-			complemento: '',
-			bairro: '',
-			cep: '',
-			cidade: '',
-			uf: ''
-		})
+	const [telefone, setTelefone] = useState('')
+	const [contatos, setContatos] = useState<ClientContact[]>([])
+	const [endereco, setEndereco] = useState<Address>({})
 	const [status, setStatus] = useState<Status>({ativo: true, aberto: true, nome_sujo: false})
 	const [condicoes, setCondicoes] = useState<Conditions>({prazo: true, vista: true, cheque: true})
 
@@ -121,6 +114,10 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				setVendedores(client.vendedores)
 			if (client.representadas)
 				setRepresentadas(client.representadas)
+			if (client.telefone)
+				setTelefone(client.telefone)
+			if (client.contatos)
+				setContatos(client.contatos)
 			if (client.endereco)
 				setEndereco(client.endereco)
 			if (client.status)
@@ -172,7 +169,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		if (field === 'rua')
 			tmp.rua = e.target.value
 		if (field === 'numero')
-			tmp.numero = Number(e.target.value)
+			tmp.numero = e.target.value
 		if (field === 'complemento')
 			tmp.complemento = e.target.value
 		if (field === 'bairro')
@@ -201,18 +198,43 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		setStatus(tmp)
 	}
 
-	function handleConditionsChange(e: boolean, field: string)
+	// function handleConditionsChange(e: boolean, field: string)
+	// {
+	// 	let tmpConditions = {...condicoes}
+
+	// 	if (field === 'prazo')
+	// 		tmpConditions.prazo = e
+	// 	if (field === 'vista')
+	// 		tmpConditions.vista = e
+	// 	if (field === 'cheque')
+	// 		tmpConditions.cheque = e
+
+	// 	setCondicoes(tmpConditions)
+	// }
+
+	function handleAddContact()
 	{
-		let tmpConditions = {...condicoes}
+		const tmpContacts = [...contatos, {nome: '', telefone: ''}]
+		setContatos(tmpContacts)
+	}
 
-		if (field === 'prazo')
-			tmpConditions.prazo = e
-		if (field === 'vista')
-			tmpConditions.vista = e
-		if (field === 'cheque')
-			tmpConditions.cheque = e
+	function handleRemoveContact(index: number)
+	{
+		let tmpContacts = [...contatos]
+		tmpContacts.splice(index, 1)
+		setContatos(tmpContacts)
+	}
 
-		setCondicoes(tmpConditions)
+	function handleContactChange(value: string, index: number, field: string)
+	{
+		let tmpContacts = [...contatos]
+
+		if (field === 'nome')
+			tmpContacts[index].nome = value
+		else if (field === 'telefone')
+			tmpContacts[index].telefone = value
+
+		setContatos(tmpContacts)
 	}
 
 	async function handleSendCredentialsViaMail(pwd: string)
@@ -307,6 +329,8 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		data.append('senha', senha)
 		data.append('vendedores', JSON.stringify(vendedores))
 		data.append('representadas', JSON.stringify(representadas))
+		data.append('telefone', telefone)
+		data.append('contatos', JSON.stringify(contatos))
 		data.append('endereco', JSON.stringify(endereco))
 		data.append('status', JSON.stringify(status))
 		data.append('condicoes', JSON.stringify(condicoes))
@@ -489,6 +513,53 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 					</button>
 				</ul>
 			</div>
+			{/* telefone */}
+			<div className='field'>
+				<label htmlFor='telefone'>Telefone</label>
+				<input
+					type='text'
+					name='telefone'
+					id='telefone'
+					value={telefone}
+					onChange={e => setTelefone(e.target.value)}
+				/>
+			</div>
+			{/* contatos */}
+			<div className='field'>
+				<label>Contatos</label>
+				<ul>
+					{contatos.map((contato, index) => (
+						<li key={index} >
+							<input
+								type='text'
+								name='contato - nome'
+								value={contato.nome}
+								onChange={e => handleContactChange(e.target.value, index, 'nome')}
+								placeholder='Nome'
+							/>
+							<input
+								type='text'
+								name='contato - telefone'
+								value={contato.telefone}
+								onChange={e => handleContactChange(e.target.value, index, 'telefone')}
+								placeholder='Telefone'
+							/>
+							<button type='button' onClick={() => handleRemoveContact(index)}>
+								<FiMinus />
+								<span>
+									Remover contato
+								</span>
+							</button>
+						</li>
+					))}
+					<button type='button' onClick={handleAddContact}>
+						<FiPlus />
+						<span>
+							Adicionar contato
+						</span>
+					</button>
+				</ul>
+			</div>
 			{/* endereco */}
 			<div className='field'>
 				<label>Endereço</label>
@@ -505,7 +576,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				<div className='addressField'>
 					<label htmlFor='numero'>Número</label>
 					<input
-						type='number'
+						type='text'
 						name='numero'
 						id='numero'
 						value={endereco.numero}
@@ -597,7 +668,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				</div>
 			</div>
 			{/* condicoes */}
-			<div className='field'>
+			{/* <div className='field'>
 				<label htmlFor='condicoes'>Condições de compra</label>
 				<div className='switchFields'>
 					<div className='switchField'>
@@ -628,7 +699,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 						/>
 					</div>
 				</div>
-			</div>
+			</div> */}
 
 			<FormButtons
 				handleCancel={back}
