@@ -11,6 +11,7 @@ import NumberInput from '../NumberInput'
 import FormButtons from '../FormButtons'
 import { catchError } from '../../utils/catchError'
 import { handleObjectId } from '../../utils/handleObjectId'
+import warningAlert from '../../utils/alerts/warning'
 
 interface ProductFormProps
 {
@@ -38,13 +39,13 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	const [comissao, setComissao] = useState(0)
 	const [tabelas, setTabelas] = useState<ProductTable[]>([])
 
-	const [tableNames, setTableNames] = useState<Table[]>([])
+	const [companyTables, setCompanyTables] = useState<Table[]>([])
 
 	useEffect(() =>
 	{
 		api.get(`companies/${companyId}/raw`).then(({data}:{data: {tabelas: Table[]}}) =>
 		{
-			setTableNames(data.tabelas)
+			setCompanyTables(data.tabelas)
 		})
 	}, [])
 
@@ -52,17 +53,60 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 	{
 		if (product)
 		{
-			setNome(product.nome)
-			setCodigo(product.codigo)
-			setUnidade(product.unidade)
-			setPeso(product.peso)
-			setVolume(product.volume)
-			setIpi(product.ipi)
-			setSt(product.st)
-			setComissao(product.comissao)
-			setTabelas(product.tabelas)
+			if (product.nome)
+				setNome(product.nome)
+			if (product.codigo)
+				setCodigo(product.codigo)
+			if (product.unidade)
+				setUnidade(product.unidade)
+			if (product.peso)
+				setPeso(product.peso)
+			if (product.volume)
+				setVolume(product.volume)
+			if (product.ipi)
+				setIpi(product.ipi)
+			if (product.st)
+				setSt(product.st)
+			if (product.comissao)
+				setComissao(product.comissao)
 		}
 	}, [product])
+
+	useEffect(() =>
+	{
+		if (companyTables.length > 0)
+		{
+			if (product && product.tabelas)
+			{
+				if (product.tabelas.length === companyTables.length)
+					setTabelas(product.tabelas)
+				else
+				{
+					const tmpTables: ProductTable[] = companyTables.map(companyTable =>
+					{
+						const productTable = product.tabelas.find(({id}) => id === companyTable._id)
+
+						if (productTable)
+							return productTable
+						else
+							return {id: companyTable._id, preco: 0}
+					})
+
+					setTabelas(tmpTables)
+				}
+			}
+			else
+			{
+				const tmpTables: ProductTable[] = companyTables.map(companyTable => (
+					{
+						id: companyTable._id,
+						preco: 0
+					}))
+
+				setTabelas(tmpTables)
+			}
+		}
+	}, [product, companyTables])
 
 	function handleTablePriceChange(price: number, index: number)
 	{
@@ -71,8 +115,26 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 		setTabelas(tmpTables)
 	}
 
+	function validateFields()
+	{
+		if (nome === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o nome.'}
+		
+		if (codigo === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o código.'}
+		
+		if (unidade === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar a unidade.'}
+		
+		return {areFieldsValid: true, warning: ''}
+	}
+
 	function handleSubmit()
 	{
+		const {areFieldsValid, warning} = validateFields()
+		if(!areFieldsValid)
+			return warningAlert('Dados inválidos!', warning)
+
 		const data = new FormData()
 
 		data.append('_id', handleObjectId())
@@ -124,7 +186,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* nome */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='nome'>Nome</label>
 				<input
 					type='text'
@@ -135,7 +197,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* codigo */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='codigo'>Código</label>
 				<input
 					type='number'
@@ -146,7 +208,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* unidade */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='unidade'>Unidade</label>
 				<input
 					type='text'
@@ -175,45 +237,39 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 				/>
 			</div>
 			{/* ipi */}
-			<div className='field'>
-				<label htmlFor='ipi'>Ipi</label>
-				<input
-					type='number'
+			<div className='required field'>
+				<label htmlFor='ipi'>Ipi (%)</label>
+				<NumberInput
 					name='ipi'
-					id='ipi'
 					value={ipi}
-					onChange={e => setIpi(Number(e.target.value))}
+					setValue={setIpi}
 				/>
 			</div>
 			{/* st */}
-			<div className='field'>
-				<label htmlFor='st'>St</label>
-				<input
-					type='number'
-					name='st'
-					id='st'
+			<div className='required field'>
+				<label htmlFor='st'>St (%)</label>
+				<NumberInput
 					value={st}
-					onChange={e => setSt(Number(e.target.value))}
+					setValue={setSt}
+					name='st'
 				/>
 			</div>
 			{/* comissao */}
 			<div className='field'>
-				<label htmlFor='comissao'>Comissão</label>
-				<input
-					type='number'
+				<label htmlFor='comissao'>Comissão (%)</label>
+				<NumberInput
 					name='comissao'
-					id='comissao'
 					value={comissao}
-					onChange={e => setComissao(Number(e.target.value))}
+					setValue={setComissao}
 				/>
 			</div>
 			{/* tabelas */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='tabela'>Tabelas</label>
 				<ul>
 					{tabelas.map(({id, preco}, index) =>
 					{
-						const table = tableNames.find(({_id}) => String(_id) == String(id))
+						const table = companyTables.find(({_id}) => String(_id) == String(id))
 						const name = table ? table.nome : 'Sem Nome'
 
 						return (
