@@ -399,8 +399,35 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) =>
 		return options
 	}
 
+	function validateFields()
+	{
+		if (cliente === '')
+			return {areFieldsValid: false, warning: 'Você precisa selecionar um cliente.'}
+		
+		if (representada === '')
+			return {areFieldsValid: false, warning: 'Você precisa selecionar uma representada.'}
+		
+		if (produtos.length === 0)
+			return {areFieldsValid: false, warning: 'Você precisa selecionar pelo menos um produto.'}
+		
+		if (data === '')
+			return {areFieldsValid: false, warning: 'Você precisa selecionar uma data.'}
+		
+		if (condicao === '')
+			return {areFieldsValid: false, warning: 'Você precisa selecionar uma condição de pagamento.'}
+		
+		if (tipo === {venda: false, troca: false})
+			return {areFieldsValid: false, warning: 'Você precisa selecionar um tipo de pedido.'}
+
+		return {areFieldsValid: true, warning: ''}
+	}
+
 	function handleSubmit(statusAlt?: Status, showSuccessAlert = true)
 	{
+		const {areFieldsValid, warning} = validateFields()
+		if(!areFieldsValid)
+			return warningAlert('Dados inválidos!', warning)
+
 		const contact = isAddingNewContact
 			? {nome: newContactName, telefone: newContactPhone}
 			: contato
