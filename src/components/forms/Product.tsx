@@ -243,6 +243,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 					name='ipi'
 					value={ipi}
 					setValue={setIpi}
+					placeholder='0.00'
 				/>
 			</div>
 			{/* st */}
@@ -252,6 +253,7 @@ const ProductForm: React.FC<ProductFormProps> = ({method, companyId, nome, setNo
 					value={st}
 					setValue={setSt}
 					name='st'
+					placeholder='0.00'
 				/>
 			</div>
 			{/* comissao */}
