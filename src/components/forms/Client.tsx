@@ -17,6 +17,7 @@ import { companyController } from '../../services/offline/controllers/company'
 import { sellerController } from '../../services/offline/controllers/seller'
 import { catchError } from '../../utils/catchError'
 import { handleObjectId } from '../../utils/handleObjectId'
+import warningAlert from '../../utils/alerts/warning'
 
 interface ClientFormProps
 {
@@ -264,8 +265,35 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 		return whatsappText
 	}
 
+	function validateFields()
+	{
+		if (razao_social === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar a razão social.'}
+		
+		if (nome_fantasia === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o nome fantasia.'}
+		
+		if (cnpj === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o CNPJ.'}
+		
+		if (insc_estadual === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar a inscrição estadual.'}
+		
+		if (email === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o e-mail.'}
+		
+		if (senha === '')
+			return {areFieldsValid: false, warning: 'Você precisa criar uma senha.'}
+		
+		return {areFieldsValid: true, warning: ''}
+	}
+
 	function handleSubmit()
 	{
+		const {areFieldsValid, warning} = validateFields()
+		if(!areFieldsValid)
+			return warningAlert('Dados inválidos!', warning)
+
 		const data = new FormData()
 
 		data.append('_id', handleObjectId())
@@ -337,7 +365,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* razao_social */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='razao_social'>Razão social</label>
 				<input
 					type='text'
@@ -348,7 +376,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* nome_fantasia */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='nome_fantasia'>Nome fantasia</label>
 				<input
 					type='text'
@@ -359,7 +387,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* cnpj */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='cnpj'>CNPJ</label>
 				<input
 					type='text'
@@ -370,7 +398,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* insc_estadual */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='insc_estadual'>Inscrição estadual</label>
 				<input
 					type='text'
@@ -381,7 +409,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* email */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='email'>E-mail</label>
 				<input
 					type='text'
@@ -392,7 +420,7 @@ const ClientForm: React.FC<ClientFormProps> = ({method, nome_fantasia, setNomeFa
 				/>
 			</div>
 			{/* senha */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='senha'>Senha</label>
 				<button type='button' className='action' onClick={() => setIsPasswordModalOpen(true)} >
 					{method === 'post' && 'Criar senha'}
