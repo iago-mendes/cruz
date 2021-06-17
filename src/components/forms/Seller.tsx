@@ -3,6 +3,7 @@ import {ChangeEvent, useEffect, useState} from 'react'
 import {FaWhatsapp} from 'react-icons/fa'
 import Select from 'react-select'
 import Switch from 'react-switch'
+import { FiPlus, FiMinus } from 'react-icons/fi'
 
 import Container from '../../styles/components/forms/global'
 import api from '../../services/api'
@@ -15,6 +16,7 @@ import PasswordModal from '../modals/Password'
 import { companyController } from '../../services/offline/controllers/company'
 import { catchError } from '../../utils/catchError'
 import { handleObjectId } from '../../utils/handleObjectId'
+import warningAlert from '../../utils/alerts/warning'
 
 interface SellerNumber
 {
@@ -242,8 +244,26 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 		return whatsappText
 	}
 
+	function validateFields()
+	{
+		if (nome === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o nome.'}
+		
+		if (email === '')
+			return {areFieldsValid: false, warning: 'Você precisa informar o e-mail.'}
+		
+		if (senha === '')
+			return {areFieldsValid: false, warning: 'Você precisa criar uma senha.'}
+		
+		return {areFieldsValid: true, warning: ''}
+	}
+
 	function handleSubmit()
 	{
+		const {areFieldsValid, warning} = validateFields()
+		if(!areFieldsValid)
+			return warningAlert('Dados inválidos!', warning)
+
 		const data = new FormData()
 
 		data.append('_id', handleObjectId())
@@ -313,7 +333,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				/>
 			</div>
 			{/* nome */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='nome'>Nome</label>
 				<input
 					type='text'
@@ -356,7 +376,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				</ul>
 			</div>
 			{/* email */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='email'>E-mail</label>
 				<input
 					type='email'
@@ -367,7 +387,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				/>
 			</div>
 			{/* senha */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='senha'>Senha</label>
 				<button className='action' onClick={() => setIsPasswordModalOpen(true)} >
 					{method === 'post' && 'Criar senha'}
@@ -375,7 +395,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				</button>
 			</div>
 			{/* representadas */}
-			<div className='field'>
+			<div className='long field'>
 				<label htmlFor='representadas'>Representadas</label>
 				<ul>
 					{representadas.map((company, index) => (
@@ -396,13 +416,19 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 									setValue={n => handleComissaoChange(n, index)}
 
 									name='comissao'
-									placeholder='Porcentagem'
+									placeholder='Ex.: 5.5%'
 								/>
 							</div>
-							<button type='button' onClick={() => handleRemoveCompany(index)}>-</button>
+							<button type='button' onClick={() => handleRemoveCompany(index)}>
+								<FiMinus />
+								<span>Remover</span>
+							</button>
 						</li>
 					))}
-					<button type='button' onClick={handleAddCompany}>+</button>
+					<button type='button' onClick={handleAddCompany}>
+						<FiPlus />
+						<span>Adicionar</span>
+					</button>
 				</ul>
 			</div>
 			{/* funcao */}
@@ -417,7 +443,7 @@ const SellerForm: React.FC<SellerFormProps> = ({method, nome, setNome, id, selle
 				/>
 			</div>
 			{/* admin */}
-			<div className='field'>
+			<div className='required field'>
 				<label htmlFor='admin'>Administrador</label>
 				<Switch
 					name='admin'
