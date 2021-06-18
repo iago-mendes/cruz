@@ -20,7 +20,7 @@ import { SkeletonLoading } from '../../utils/skeletonLoading'
 
 const Clients: React.FC = () =>
 {
-	const Router = useRouter()
+	const {push, query} = useRouter()
 	const {user} = useAuth()
 	
 	const defaultClients: ClientListed[] = Array(10).fill(loadingClient)
@@ -37,6 +37,21 @@ const Clients: React.FC = () =>
 
 		updateClients()
 	}, [page, search])
+
+	useEffect(() =>
+	{
+		const {search, page} = query
+
+		if (search)
+			setSearch(String(search))
+		else
+			setSearch('')
+		
+		if (page && !Number.isNaN(Number(page)))
+			setPage(Number(page))
+		else
+			setPage(1)
+	}, [query])
 
 	async function updateClients()
 	{
@@ -101,7 +116,7 @@ const Clients: React.FC = () =>
 
 				showSearch
 				search={search}
-				setSearch={setSearch}
+				setSearch={search => push(`/clientes?search=${search}&page=${page}`)}
 			/>
 
 			<SheetModal
@@ -114,7 +129,7 @@ const Clients: React.FC = () =>
 
 			<Paginate
 				page={page}
-				setPage={setPage}
+				setPage={page => push(`/clientes?search=${search}&page=${page}`)}
 				totalPages={totalPages}
 				loading={loading}
 				noResults={clients.length === 0 && !loading}
@@ -160,7 +175,7 @@ const Clients: React.FC = () =>
 									<div className='buttons'>
 										{user.role === 'admin' && (
 											<>
-												<button title='Editar' onClick={() => Router.push(`/clientes/${client.id}`)}>
+												<button title='Editar' onClick={() => push(`/clientes/${client.id}`)}>
 													<FiEdit3 />
 												</button>
 												<button title='Deletar' onClick={() => handleDeleteClient(client)} >
