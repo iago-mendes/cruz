@@ -36,6 +36,10 @@ export const sellerController =
 		if (!id)
 			return
 		
+		const previousSeller = await db.table('sellers').get(id)
+		if (!previousSeller)
+			return
+		
 		const {
 			nome,
 			telefones,
@@ -48,12 +52,13 @@ export const sellerController =
 		const updatedSeller =
 		{
 			_id: id,
-			nome,
-			telefones,
-			email,
-			funcao,
-			admin,
-			representadas
+			imagem: previousSeller.imagem,
+			nome: nome ? nome : previousSeller.nome,
+			telefones: telefones ? telefones : previousSeller.telefones,
+			email: email ? email : previousSeller.email,
+			funcao: funcao ? funcao : previousSeller.funcao,
+			admin: admin ? admin : previousSeller.admin,
+			representadas: representadas ? representadas : previousSeller.representadas
 		}
 
 		await db.table('sellers').put(updatedSeller, id)

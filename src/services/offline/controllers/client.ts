@@ -49,6 +49,10 @@ export const clientController =
 		if (!id)
 			return
 		
+		const previousClient: ClientRaw = await db.table('clients').get(id)
+		if (!previousClient)
+			return
+		
 		const {
 			razao_social,
 			nome_fantasia,
@@ -67,18 +71,19 @@ export const clientController =
 		const updatedClient =
 		{
 			_id: id,
-			razao_social,
-			nome_fantasia,
-			cnpj,
-			insc_estadual,
-			telefone,
-			email,
-			vendedores,
-			endereco,
-			status,
-			condicoes,
-			contatos,
-			representadas
+			imagem: previousClient.imagem,
+			razao_social: razao_social ? razao_social : previousClient.razao_social,
+			nome_fantasia: nome_fantasia ? nome_fantasia : previousClient.nome_fantasia,
+			cnpj: cnpj ? cnpj : previousClient.cnpj,
+			insc_estadual: insc_estadual ? insc_estadual : previousClient.insc_estadual,
+			telefone: telefone ? telefone : previousClient.telefone,
+			email: email ? email : previousClient.email,
+			vendedores: vendedores ? vendedores : previousClient.vendedores,
+			endereco: endereco ? endereco : previousClient.endereco,
+			status: status ? status : previousClient.status,
+			condicoes: condicoes ? condicoes : previousClient.condicoes,
+			contatos: contatos ? contatos : previousClient.contatos,
+			representadas: representadas ? representadas : previousClient.representadas
 		}
 
 		await db.table('clients').put(updatedClient, id)

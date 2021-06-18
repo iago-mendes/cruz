@@ -46,6 +46,10 @@ export const companyController =
 		if (!id)
 			return
 		
+		const previousCompany = await db.table('companies').get(id)
+		if (!previousCompany)
+			return
+		
 		const {
 			razao_social, 
 			nome_fantasia,
@@ -63,17 +67,18 @@ export const companyController =
 		const updatedCompany =
 		{
 			_id: id,
-			razao_social, 
-			nome_fantasia,
-			cnpj,
-			telefones,
-			email,
-			comissao,
-			descricao_curta,
-			descricao,
-			site,
-			tabelas,
-			condicoes
+			imagem: previousCompany.imagem,
+			razao_social: razao_social ? razao_social : previousCompany.razao_social, 
+			nome_fantasia: nome_fantasia ? nome_fantasia : previousCompany.nome_fantasia,
+			cnpj: cnpj ? cnpj : previousCompany.cnpj,
+			telefones: telefones ? telefones : previousCompany.telefones,
+			email: email ? email : previousCompany.email,
+			comissao: comissao ? comissao : previousCompany.comissao,
+			descricao_curta: descricao_curta ? descricao_curta : previousCompany.descricao_curta,
+			descricao: descricao ? descricao : previousCompany.descricao,
+			site: site ? site : previousCompany.site,
+			tabelas: tabelas ? tabelas : previousCompany.tabelas,
+			condicoes: condicoes ? condicoes : previousCompany.condicoes
 		}
 
 		await db.table('companies').put(updatedCompany, id)

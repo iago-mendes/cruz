@@ -51,6 +51,10 @@ export const requestController =
 		if (!id)
 			return
 		
+		const previousRequest = await db.table('requests').get(id)
+		if (!previousRequest)
+			return
+		
 		const {
 			data,
 			condicao,
@@ -68,17 +72,17 @@ export const requestController =
 		const updatedRequest =
 		{
 			_id: id,
-			data,
-			condicao,
-			digitado_por,
-			cliente,
-			vendedor,
-			representada,
-			contato,
-			frete,
-			tipo,
-			status,
-			produtos
+			data: data ? data : previousRequest.data,
+			condicao: condicao ? condicao : previousRequest.condicao,
+			digitado_por: digitado_por ? digitado_por : previousRequest.digitado_por,
+			cliente: cliente ? cliente : previousRequest.cliente,
+			vendedor: vendedor ? vendedor : previousRequest.vendedor,
+			representada: representada ? representada : previousRequest.representada,
+			contato: contato ? contato : previousRequest.contato,
+			frete: frete ? frete : previousRequest.frete,
+			tipo: tipo ? tipo : previousRequest.tipo,
+			status: status ? status : previousRequest.status,
+			produtos: produtos ? produtos : previousRequest.produtos
 		}
 
 		await db.table('requests').put(updatedRequest, id)
