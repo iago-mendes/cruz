@@ -1,4 +1,5 @@
 import offline from '../assets/offline.svg'
+import formatImage from '../utils/formatImage'
 
 type ImageProps =
 {
@@ -14,6 +15,6 @@ export const Image: React.FC<ImageProps> = ({src, alt}) =>
 		)
 
 	return (
-		<img src={src} alt={alt} />
+		<img src={formatImage(src)} alt={alt} />
 	)
 }

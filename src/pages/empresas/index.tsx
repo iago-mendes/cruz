@@ -14,6 +14,8 @@ import confirmAlert from '../../utils/alerts/confirm'
 import { Image } from '../../components/Image'
 import { companyController } from '../../services/offline/controllers/company'
 import { SkeletonLoading } from '../../utils/skeletonLoading'
+import successAlert from '../../utils/alerts/success'
+import { catchError } from '../../utils/catchError'
 
 const Companies: React.FC = () =>
 {
@@ -48,8 +50,9 @@ const Companies: React.FC = () =>
 				.then(() =>
 				{
 					updateCompanies()
-					alert(`Empresa ${company.nome_fantasia} deletada com sucesso!`)
+					successAlert(`Empresa ${company.nome_fantasia} deletada com sucesso!`)
 				})
+				.catch(catchError)
 		)
 	}
 
