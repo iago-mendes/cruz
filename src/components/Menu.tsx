@@ -160,7 +160,7 @@ const FooterOptions: React.FC = () =>
 					<FiLogOut size={25} color='#E2DADB'/>
 					<span>Sair</span>
 				</a>
-				<button className='sync' onClick={sync} >
+				<button className='sync' onClick={() => sync()} >
 					<FaSync />
 					<span>Sincronizar</span>
 				</button>
