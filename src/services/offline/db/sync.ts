@@ -18,7 +18,11 @@ type SyncId =
 	modifiedAt: string
 }
 
-export async function sync()
+export async function sync(
+	inSyncPage = false,
+	setLoadingMessage?: (loadingMessage: string) => void,
+	setProgressBar?: (progressBar: number) => void
+)
 {
 	if (!navigator.onLine)
 		return warningAlert(
@@ -26,18 +30,30 @@ export async function sync()
 			'Sincronização de dados só é possível com acesso à internet.'
 		)
 
-	MySwal.fire(
-		{
-			title: 'Sincronizando dados...',
-			allowOutsideClick: false,
-			showConfirmButton: false,
-			willOpen: () => {
-				MySwal.showLoading()
-			}
-		})
+	if (inSyncPage)
+	{
+		setLoadingMessage('Enviando ações offline...')
+		setProgressBar(5)
+	}
+	else
+		MySwal.fire(
+			{
+				title: 'Sincronizando dados...',
+				allowOutsideClick: false,
+				showConfirmButton: false,
+				willOpen: () => {
+					MySwal.showLoading()
+				}
+			})
 
 	await sendApiCalls()
-	await getData()
+	await getData(inSyncPage, setLoadingMessage, setProgressBar)
+
+	if (inSyncPage)
+	{
+		setLoadingMessage('Finalizando sincronização...')
+		setProgressBar(100)
+	}
 
 	const today = getDate()
 	localStorage.setItem('last-sync', today)
@@ -46,7 +62,11 @@ export async function sync()
 	successAlert('Sincronização concluída com sucesso!')
 }
 
-async function getData()
+async function getData(
+	inSyncPage = false,
+	setLoadingMessage?: (loadingMessage: string) => void,
+	setProgressBar?: (progressBar: number) => void
+)
 {
 	const {data: syncIds}:
 	{
@@ -60,18 +80,48 @@ async function getData()
 		}
 	} = await api.get('sync')
 
+	if (inSyncPage)
+	{
+		setLoadingMessage('Deletando itens...')
+		setProgressBar(25)
+	}
 	await handleDeletedItems(syncIds.clients, 'clients')
 	await handleDeletedItems(syncIds.companies, 'companies')
 	await handleDeletedItems(syncIds.requests, 'requests')
 	await handleDeletedItems(syncIds.sellers, 'sellers')
 
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando dados...')
+		setProgressBar(50)
+	}
 	const lastSync = localStorage.getItem('last-sync')
 	if (lastSync && lastSync > syncIds.lastModifiedAt)
 		return
 	
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando clientes...')
+		setProgressBar(60)
+	}
 	await handleAsyncCalls(syncIds.clients, 'clients')
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando representadas...')
+		setProgressBar(70)
+	}
 	await handleAsyncCalls(syncIds.companies, 'companies')
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando pedidos...')
+		setProgressBar(80)
+	}
 	await handleAsyncCalls(syncIds.requests, 'requests')
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando vendedores...')
+		setProgressBar(90)
+	}
 	await handleAsyncCalls(syncIds.sellers, 'sellers')
 }
 
