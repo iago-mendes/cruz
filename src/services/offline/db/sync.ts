@@ -51,15 +51,18 @@ export async function sync(
 
 	if (inSyncPage)
 	{
-		setLoadingMessage('Finalizando sincronização...')
+		setLoadingMessage('Sincronização concluída com sucesso!')
 		setProgressBar(100)
 	}
 
 	const today = getDate()
 	localStorage.setItem('last-sync', today)
 
-	MySwal.close()
-	successAlert('Sincronização concluída com sucesso!')
+	if (!inSyncPage)
+	{
+		MySwal.close()
+		successAlert('Sincronização concluída com sucesso!')
+	}
 }
 
 async function getData(
