@@ -23,10 +23,10 @@ import { Image } from '../../../components/Image'
 
 const Products: React.FC = () =>
 {
+	const {user} = useAuth()
 	const {query, push} = useRouter()
 	const {company: companyId} = query
 	
-	const {user} = useAuth()
 	const defaultProducts: Product[] = Array(20).fill(loadingProduct)
 	const [products, setProducts] = useState<Product[]>(defaultProducts)
 	const [companyName, setCompanyName] = useState('')
@@ -49,7 +49,12 @@ const Products: React.FC = () =>
 	async function updateProducts()
 	{
 		await productController.raw(String(companyId))
-			.then(data => setProducts(data))
+			.then(data =>
+			{
+				let tmpProducts = data
+				tmpProducts.sort((a,b) => a.nome < b.nome ? -1 : 1)
+				setProducts(tmpProducts)
+			})
 	}
 
 	function formatNumber(n: number | undefined)
