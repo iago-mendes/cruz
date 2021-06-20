@@ -243,7 +243,7 @@ const CompanyForm: React.FC<CompanyFormProps> = ({method, nomeFantasia, setNomeF
 			data.append('imagem', imagem)
 		data.append('razao_social', razaoSocial)
 		data.append('nome_fantasia', nomeFantasia)
-		data.append('cnpj', JSON.stringify(cnpj))
+		data.append('cnpj', cnpj)
 		data.append('telefones', JSON.stringify(telefones))
 		data.append('email', email)
 		data.append('comissao', JSON.stringify(comissao))
