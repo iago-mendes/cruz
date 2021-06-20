@@ -19,6 +19,7 @@ import TableUpdatesModal from '../../../components/modals/TableUpdates'
 import { companyController } from '../../../services/offline/controllers/company'
 import { productController } from '../../../services/offline/controllers/product'
 import { SkeletonLoading } from '../../../utils/skeletonLoading'
+import { Image } from '../../../components/Image'
 
 const Products: React.FC = () =>
 {
@@ -123,11 +124,11 @@ const Products: React.FC = () =>
 						<tr>
 							{user.role === 'admin' && <th>Ações</th>}
 							<th>Imagem</th>
+							<th>Código</th>
 							<th>Nome</th>
 							<th>Unidade</th>
-							<th>Código</th>
-							<th>St</th>
 							<th>Ipi</th>
+							<th>St</th>
 							<th>Comissão</th>
 							{tables.map(({_id, nome}, index) =>
 							{
@@ -207,13 +208,13 @@ const Products: React.FC = () =>
 											</td>
 										)}
 										<td className='img' >
-											<img src={product.imagem} alt={product.nome} />
+											<Image src={product.imagem} alt={product.nome} />
 										</td>
+										<td>{product.codigo}</td>
 										<td>{product.nome}</td>
 										<td>{product.unidade}</td>
-										<td>{product.codigo}</td>
-										<td>{formatNumber(product.st)} %</td>
 										<td>{formatNumber(product.ipi)} %</td>
+										<td>{formatNumber(product.st)} %</td>
 										<td>{formatNumber(product.comissao)} %</td>
 										{product.tabelas.map(({id, preco}) => (
 											<td key={id}>
