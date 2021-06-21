@@ -14,7 +14,7 @@ export type GoalRaw =
 	modifiedAt?: string
 }
 
-type GoalSeller =
+export type GoalSeller =
 {
 	id: string
 	name: string
@@ -22,7 +22,7 @@ type GoalSeller =
 	sold: number
 }
 
-type GoalCompany =
+export type GoalCompany =
 {
 	id: string
 	name: string
