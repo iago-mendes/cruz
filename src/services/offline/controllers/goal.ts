@@ -64,11 +64,12 @@ export const goalController =
 	show: async (month?: string) =>
 	{
 		if (!month)
-			return
+			throw new Error('Nenhum mês informado!')
+			
 
 		const goal: GoalRaw = await db.table('goals').get(month)
 		if (!goal)
-			return
+			throw new Error('Meta não encontrada!')
 		
 		let totalGoal = 0
 		let totalSold = 0

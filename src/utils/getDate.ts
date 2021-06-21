@@ -11,3 +11,12 @@ export default function getDate(showOnlyDate = false)
 
 	return formatedDate
 }
+
+export function getMonth()
+{
+	const date = getDate(true)
+	const [year, month] = date.split('-')
+
+	const formatedMonth = year + '-' + month
+	return formatedMonth
+}

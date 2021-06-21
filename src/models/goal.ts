@@ -47,3 +47,14 @@ export type GoalShowed =
 	}>
 	remainingBusinessDays: number
 }
+
+export const loadingGoal: GoalShowed =
+{
+	month: 'loading',
+	companies: [],
+	sellers: [],
+	goal: 0,
+	sold: 0,
+	days: [],
+	remainingBusinessDays: 0
+}

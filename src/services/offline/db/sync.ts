@@ -151,13 +151,13 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 		else
 			return
 
-		const apiRoute = table === 'companies'
+		const apiRoute = ['companies', 'goals'].includes(table)
 			? `${table}/${key}/raw`
 			: `${table}-raw/${key}`
 
 		async function promise()
 		{
-			const existing = await db.table(table).get(id)
+			const existing = await db.table(table).get(key)
 	
 			if (!existing)
 			{
