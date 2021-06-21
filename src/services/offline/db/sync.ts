@@ -14,7 +14,8 @@ const MySwal = withReactContent(Swal)
 
 type SyncId =
 {
-	id: string
+	id?: string
+	month?: string
 	modifiedAt: string
 }
 
@@ -80,6 +81,7 @@ async function getData(
 			companies: SyncId[]
 			requests: SyncId[]
 			sellers: SyncId[]
+			goals: SyncId[]
 		}
 	} = await api.get('sync')
 
@@ -92,6 +94,7 @@ async function getData(
 	await handleDeletedItems(syncIds.companies, 'companies')
 	await handleDeletedItems(syncIds.requests, 'requests')
 	await handleDeletedItems(syncIds.sellers, 'sellers')
+	await handleDeletedItems(syncIds.goals, 'goals')
 
 	if (inSyncPage)
 	{
@@ -126,17 +129,31 @@ async function getData(
 		setProgressBar(90)
 	}
 	await handleAsyncCalls(syncIds.sellers, 'sellers')
+	if (inSyncPage)
+	{
+		setLoadingMessage('Coletando metas...')
+		setProgressBar(95)
+	}
+	await handleAsyncCalls(syncIds.goals, 'goals')
 }
 
 async function handleAsyncCalls(ids: SyncId[], table: string)
 {
 	const lastSync = localStorage.getItem('last-sync')
 	
-	await Promise.all(ids.map(({id, modifiedAt}) =>
+	await Promise.all(ids.map(({id, month, modifiedAt}) =>
 	{
+		let key = ''
+		if (id)
+			key = id
+		else if (month)
+			key = month
+		else
+			return
+
 		const apiRoute = table === 'companies'
-			? `${table}/${id}/raw`
-			: `${table}-raw/${id}`
+			? `${table}/${key}/raw`
+			: `${table}-raw/${key}`
 
 		async function promise()
 		{
@@ -160,16 +177,22 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 
 async function handleDeletedItems(ids: SyncId[], table: string)
 {
-	const savedIds = await db.table(table).toCollection().primaryKeys()
-	await Promise.all(savedIds.map(savedId =>
+	const savedKeys = await db.table(table).toCollection().primaryKeys()
+	await Promise.all(savedKeys.map(savedKey =>
 	{
-		const id = String(savedId.valueOf())
+		const key = String(savedKey.valueOf())
 
 		async function promise()
 		{
-			const wasDeleted = ids.findIndex(({id: apiId}) => apiId === id) < 0
+			const wasDeleted = ids.findIndex(({id, month}) =>
+			{
+				if (id)
+					return id === key
+				if (month)
+					return month === key
+			}) < 0
 			if (wasDeleted)
-				await db.table(table).delete(id)
+				await db.table(table).delete(key)
 		}
 
 		return limit(promise)
