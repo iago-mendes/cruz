@@ -53,6 +53,10 @@ const Container = styled.div`
 		{
 			background: ${p => p.theme.colors.background}40;
 			padding: 1rem;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
 		}
 
 		.summary

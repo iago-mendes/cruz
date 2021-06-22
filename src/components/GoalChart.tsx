@@ -8,6 +8,7 @@ import { formatNumber } from '../utils/formatNumber'
 import formatPrice from '../utils/formatPrice'
 import getDate from '../utils/getDate'
 import useDimensions from '../hooks/useDimensions'
+import { SkeletonLoading } from '../utils/skeletonLoading'
 
 type GoalChartProps =
 {
@@ -70,23 +71,29 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 
 			<div className='content'>
 				<div className='chart'>
-					<LineChart
-						data={dataPoints}
-						width={inMobile ? 300 : 750}
-						height={inMobile ? 200 : 300}
-						margin={{top: 0, right: 0, bottom: 0, left: 0}}
-					>
-						<Line type='monotone' dataKey='monthSold' stroke='#84130B' strokeWidth={2} />
-						<Line type='monotone' dataKey='daySold' stroke='#CC9749' strokeWidth={2} />
-						<ReferenceLine y={goal.goal} ifOverflow='extendDomain' stroke='#260503'>
-							<Label value='Meta do mês' position='insideTopRight' color='#260503' />
-						</ReferenceLine>
+					{
+						goal.month === 'loading'
+							? <SkeletonLoading width={inMobile ? '300px' : '750px'} height={inMobile ? '200px' : '300px'} />
+							: (
+								<LineChart
+									data={dataPoints}
+									width={inMobile ? 300 : 750}
+									height={inMobile ? 200 : 300}
+									margin={{top: 0, right: 0, bottom: 0, left: 0}}
+								>
+									<Line type='monotone' dataKey='monthSold' stroke='#84130B' strokeWidth={2} />
+									<Line type='monotone' dataKey='daySold' stroke='#CC9749' strokeWidth={2} />
+									<ReferenceLine y={goal.goal} ifOverflow='extendDomain' stroke='#260503'>
+										<Label value='Meta do mês' position='insideTopRight' color='#260503' />
+									</ReferenceLine>
 
-						<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
-						<XAxis type='number' dataKey='dayNumber' stroke='#260503' domain={[1, lastDay]} />
-						<YAxis stroke='#260503' />
-						<Tooltip content={<CustomTooltip />} />
-					</LineChart>
+									<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
+									<XAxis type='number' dataKey='dayNumber' stroke='#260503' domain={[1, lastDay]} />
+									<YAxis stroke='#260503' />
+									<Tooltip content={<CustomTooltip />} />
+								</LineChart>
+							)
+					}
 				</div>
 				<div className='summary'>
 					<div className='info'>
@@ -94,15 +101,23 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 							Vendido no mês
 						</span>
 						<span className='value'>
-							{formatPrice(goal.sold)}
+							{
+								goal.month === 'loading'
+									? <SkeletonLoading height='2rem' width='10rem' />
+									: formatPrice(goal.sold)
+							}
 						</span>
 						<span className='obs'>
-							Hoje {formatPrice(soldToday)}
+							{
+								goal.month === 'loading'
+									? <SkeletonLoading height='1rem' width='7.5rem' />
+									: 'Hoje ' + formatPrice(soldToday)
+							}
 						</span>
 					</div>
 
 					{
-						goalProgress < 100
+						goal.month === 'loading'
 							? (
 								<>
 									<div className='info'>
@@ -110,10 +125,10 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 											Objetivo do mês
 										</span>
 										<span className='value'>
-											{formatPrice(goal.goal)}
+											<SkeletonLoading height='2rem' width='10rem' />
 										</span>
 										<span className='obs'>
-											{formatNumber(goalProgress)}% realizado
+											<SkeletonLoading height='1rem' width='7.5rem' />
 										</span>
 									</div>
 
@@ -122,29 +137,65 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 											Necessário vender
 										</span>
 										<span className='value'>
-											{formatPrice(needToSellPerBusinessDay)} por dia útil
+											<SkeletonLoading height='2rem' width='10rem' />
 										</span>
 										<span className='obs'>
-											Equivalente a {formatPrice(needToSell)}
+											<SkeletonLoading height='1rem' width='7.5rem' />
 										</span>
 									</div>
 								</>
 							)
-							: (
-								<>
-									<div className='info'>
-										<span className='name'>
+							: goalProgress < 100
+								? (
+									<>
+										<div className='info'>
+											<span className='name'>
 											Objetivo do mês
-										</span>
-										<span className='value'>
-											{formatPrice(goal.goal)}
-										</span>
-										<span className='obs'>
+											</span>
+											<span className='value'>
+												{
+													goal.month === 'loading'
+														? <SkeletonLoading height='2rem' width='10rem' />
+														: formatPrice(goal.goal)
+												}
+											</span>
+											<span className='obs'>
+												{
+													goal.month === 'loading'
+														? <SkeletonLoading height='1rem' width='7.5rem' />
+														: formatNumber(goalProgress) + '% realizado'
+												}
+											</span>
+										</div>
+
+										<div className='info'>
+											<span className='name'>
+											Necessário vender
+											</span>
+											<span className='value'>
+												{formatPrice(needToSellPerBusinessDay)} por dia útil
+											</span>
+											<span className='obs'>
+											Equivalente a {formatPrice(needToSell)}
+											</span>
+										</div>
+									</>
+								)
+								: (
+									<>
+										<div className='info'>
+											<span className='name'>
+											Objetivo do mês
+											</span>
+											<span className='value'>
+												{formatPrice(goal.goal)}
+											</span>
+											<span className='obs'>
 											Realizado!
-										</span>
-									</div>
-								</>
-							)
+											</span>
+										</div>
+									</>
+								)
 					}
 				</div>
 			</div>
