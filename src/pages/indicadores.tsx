@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import GoalChart from '../components/GoalChart'
 
 import Header from '../components/Header'
-import { loadingGoal } from '../models/goal'
+import { loadingGoal, notFoundGoal } from '../models/goal'
 import { goalController } from '../services/offline/controllers/goal'
 import { getMonth } from '../utils/getDate'
 
@@ -14,10 +14,12 @@ const Indicators: React.FC = () =>
 
 	useEffect(() =>
 	{
+		setGoal(loadingGoal)
+		
 		goalController.show(month)
 			.then(data => setGoal(data))
-			.catch(() => {})
-	}, [])
+			.catch(() => setGoal(notFoundGoal))
+	}, [month])
 
 	return (
 		<div className='container' >
@@ -32,6 +34,7 @@ const Indicators: React.FC = () =>
 			<main className='main' >
 				<GoalChart
 					month={month}
+					setMonth={setMonth}
 					goal={goal}
 				/>
 			</main>

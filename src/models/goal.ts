@@ -58,3 +58,14 @@ export const loadingGoal: GoalShowed =
 	days: [],
 	remainingBusinessDays: 0
 }
+
+export const notFoundGoal: GoalShowed =
+{
+	month: 'not found',
+	companies: [],
+	sellers: [],
+	goal: 0,
+	sold: 0,
+	days: [],
+	remainingBusinessDays: 0
+}

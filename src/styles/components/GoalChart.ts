@@ -95,6 +95,21 @@ const Container = styled.div`
 		}
 	}
 
+	.notFound
+	{
+		height: 30rem;
+		padding: 1rem;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		p
+		{
+			font-size: 2rem;
+		}
+	}
+
 	#custom-tooltip
 	{
 		background: #fff;
