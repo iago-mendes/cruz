@@ -1,6 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/client'
 import { createContext, useEffect, useState } from 'react'
-import cookies from 'js-cookie'
 
 import { sellerController } from '../services/offline/controllers/seller'
 
@@ -74,18 +73,34 @@ const AuthContextProvider: React.FC = ({children}) =>
 				})
 	}, [user.id])
 
+	function getSavedUser()
+	{
+		const savedUser = localStorage.getItem('auth-user')
+		if (!savedUser)
+			return defaultUser
+		
+		const parsedUser: User = JSON.parse(savedUser)
+		return parsedUser
+	}
+
+	function saveUser(user: User)
+	{
+		localStorage.setItem('auth-user', JSON.stringify(user))
+	}
+
+	function removeSavedUser()
+	{
+		localStorage.removeItem('auth-user')
+	}
+
 	function updateSession()
 	{
 		const isOffline = !navigator.onLine
 
 		if (isOffline)
 		{
-			const savedUser = cookies.get('auth-user')
-			const tmpUser = savedUser == undefined
-				? defaultUser
-				: JSON.parse(savedUser)
-
-			setUser(tmpUser)
+			const savedUser = getSavedUser()
+			setUser(savedUser)
 			return
 		}
 
@@ -97,20 +112,20 @@ const AuthContextProvider: React.FC = ({children}) =>
 			if (tmpUser && user.id !== tmpUser.id)
 			{
 				setUser(tmpUser)
-				cookies.set('auth-user', JSON.stringify(tmpUser))
+				saveUser(tmpUser)
 			}
 			else if (tmpUser.errorMessage)
 			{
 				let tmp = {...user}
 				tmp.errorMessage = tmpUser.errorMessage
 				setUser(tmp)
-				cookies.set('auth-user', JSON.stringify(defaultUser))
+				saveUser(defaultUser)
 			}
 		}
 		else if (!session)
 		{
 			setUser(defaultUser)
-			cookies.set('auth-user', JSON.stringify(defaultUser))
+			saveUser(defaultUser)
 		}
 	}
 
@@ -121,7 +136,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 	async function logOut()
 	{
-		cookies.remove('auth-user')
+		removeSavedUser()
 		setUser(defaultUser)
 
 		await signOut({callbackUrl: '/login'})
