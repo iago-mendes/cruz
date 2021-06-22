@@ -35,16 +35,31 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 	const needToSell = goal.goal - goal.sold
 	const needToSellPerBusinessDay = needToSell / goal.remainingBusinessDays
 
+	function getFormatedMonth()
+	{
+		const [year, monthNumber] = month.split('-').map(part => Number(part))
+
+		const monthNames =
+		[
+			'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+		]
+		const monthName = monthNames[monthNumber-1]
+
+		const formatedMonth = monthName + ' ' + year
+		return formatedMonth
+	}
+
 	return (
 		<Container>
 			<header>
+				<h2>Evolução de venda</h2>
 				<div className='controller'>
 					<button>
 						<BsChevronLeft />
 					</button>
 
 					<span>
-						{month}
+						{getFormatedMonth()}
 					</span>
 
 					<button>
@@ -57,7 +72,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 				<div className='chart'>
 					<LineChart
 						data={dataPoints}
-						width={inMobile ? 300 : 600}
+						width={inMobile ? 300 : 750}
 						height={inMobile ? 200 : 300}
 						margin={{top: 0, right: 0, bottom: 0, left: 0}}
 					>
@@ -87,8 +102,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 					</div>
 
 					{
-						// goalProgress < 100
-						goalProgress >= 100
+						goalProgress < 100
 							? (
 								<>
 									<div className='info'>
@@ -120,10 +134,13 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 								<>
 									<div className='info'>
 										<span className='name'>
-											Objetivo do mês atingido!
+											Objetivo do mês
 										</span>
 										<span className='value'>
 											{formatPrice(goal.goal)}
+										</span>
+										<span className='obs'>
+											Realizado!
 										</span>
 									</div>
 								</>

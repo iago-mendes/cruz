@@ -29,7 +29,7 @@ const Indicators: React.FC = () =>
 				display='Indicadores'
 			/>
 
-			<main>
+			<main className='main' >
 				<GoalChart
 					month={month}
 					goal={goal}
