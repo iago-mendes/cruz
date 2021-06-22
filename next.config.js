@@ -11,6 +11,7 @@ module.exports = withImages(withPWA(
 	},
 	pwa:
 	{
-		dest: 'public'
+		dest: 'public',
+		disable: process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'debug-pwa'
 	}
 }))
