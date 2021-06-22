@@ -1,3 +1,4 @@
+import { lastDayOfMonth } from 'date-fns'
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs'
 import { CartesianGrid, Label, Line, LineChart, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts'
 
@@ -16,12 +17,14 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 	let monthSold = 0
 	const dataPoints = goal.days.map(({day, sold}) =>
 	{
-		const [,,dayNumber] = day.split('-')
+		const [,,dayNumber] = day.split('-').map(day => Number(day))
 		const daySold = Math.round(sold * 100) / 100
 		monthSold += daySold
 
 		return {dayNumber, daySold, monthSold}
 	})
+
+	const lastDay = lastDayOfMonth(new Date(month)).getDate()
 
 	return (
 		<Container>
@@ -54,7 +57,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, goal}) =>
 					</ReferenceLine>
 
 					<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
-					<XAxis dataKey='dayNumber' stroke='#260503' />
+					<XAxis type='number' dataKey='dayNumber' stroke='#260503' domain={[1, lastDay]} />
 					<YAxis stroke='#260503' />
 					<Tooltip content={<CustomTooltip />} />
 				</LineChart>
