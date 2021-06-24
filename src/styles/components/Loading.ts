@@ -6,11 +6,10 @@ const Container = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	
-	svg
-	{
+
+	svg {
 		animation: rotate 2s linear infinite;
-		
+
 		width: 50px;
 		height: 50px;
 		& circle {
@@ -18,15 +17,13 @@ const Container = styled.div`
 			stroke-linecap: round;
 			animation: dash 1.5s ease-in-out infinite;
 		}
-		
-		@keyframes rotate
-		{
+
+		@keyframes rotate {
 			100% {
 				transform: rotate(360deg);
 			}
 		}
-		@keyframes dash
-		{
+		@keyframes dash {
 			0% {
 				stroke-dasharray: 1, 150;
 				stroke-dashoffset: 0;

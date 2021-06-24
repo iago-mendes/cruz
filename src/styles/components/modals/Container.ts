@@ -5,9 +5,8 @@ const Container = styled.div`
 	height: 85vh;
 	display: flex;
 	flex-direction: column;
-	
-	header
-	{
+
+	header {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
@@ -17,9 +16,8 @@ const Container = styled.div`
 		padding-left: 2rem;
 		padding-right: 2rem;
 		background-color: ${p => p.theme.colors.primary};
-		
-		.close
-		{
+
+		.close {
 			width: 3.5rem;
 			height: 3.5rem;
 
@@ -36,26 +34,23 @@ const Container = styled.div`
 
 			cursor: pointer;
 			transition: 0.25s;
-			
-			:hover
-			{
+
+			:hover {
 				background-color: ${p => p.theme.colors.secondary};
 				color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
-	
-	main
-	{
+
+	main {
 		padding-top: 1rem;
 		background-color: ${p => p.theme.colors.background};
 		width: 100%;
 		min-height: calc(85vh - (3.5rem + 1rem + 1rem));
 		overflow-y: auto;
 	}
-	
-	@media(max-width: 1000px)
-	{
+
+	@media (max-width: 1000px) {
 		width: 100vw;
 		height: 100vh;
 
@@ -64,13 +59,11 @@ const Container = styled.div`
 		bottom: 0;
 		right: 0;
 
-		header
-		{
+		header {
 			justify-content: flex-start;
 		}
 
-		main
-		{
+		main {
 			min-height: calc(100vh - (3.5rem + 1rem));
 		}
 	}

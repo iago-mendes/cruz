@@ -6,9 +6,9 @@ const Container = styled.main`
 	align-items: center;
 	justify-content: center;
 	gap: 2rem;
-	
-	button, a
-	{
+
+	button,
+	a {
 		display: flex;
 		align-items: center;
 		gap: 1rem;
@@ -25,18 +25,16 @@ const Container = styled.main`
 		font-size: 2rem;
 
 		transition: 0.25s;
-		
-		:hover
-		{
+
+		:hover {
 			border-radius: 0;
 
-			background-color: ${p => p.theme.colors. primaryDark};
+			background-color: ${p => p.theme.colors.primaryDark};
 			color: ${p => p.theme.colors.background};
 		}
 	}
-	
-	.options
-	{
+
+	.options {
 		width: 100%;
 		padding-right: 2rem;
 
@@ -45,32 +43,28 @@ const Container = styled.main`
 		justify-content: flex-end;
 		gap: 2rem;
 	}
-	
-	.submit:hover
-	{
+
+	.submit:hover {
 		background-color: ${p => p.theme.colors.buttonGreen};
 		border-color: ${p => p.theme.colors.buttonGreen};
 	}
-	
-	form
-	{
+
+	form {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		width: 100%;
 		padding: 1rem;
-		
-		.field
-		{
+
+		.field {
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
 			width: 100%;
 
 			padding-left: 2rem;
-			
-			label
-			{
+
+			label {
 				font-family: Ubuntu;
 				font-weight: 700;
 				font-size: 2rem;
@@ -80,23 +74,22 @@ const Container = styled.main`
 				margin-left: -2rem;
 				color: ${p => p.theme.colors.primaryDark};
 			}
-			
-			input
-			{
+
+			input {
 				background-color: #fff;
 				border: none;
 				height: 2.75rem;
-				
+
 				padding-left: 1rem;
 				padding-right: 1rem;
 				font-family: Roboto;
 				font-size: 1.75rem;
-				
+
 				border-bottom: ${p => p.theme.colors.primaryDark}40 2px solid;
 				transition: 0.25s;
-				
-				:hover, :focus
-				{
+
+				:hover,
+				:focus {
 					border-color: ${p => p.theme.colors.primaryDark};
 				}
 			}
@@ -107,17 +100,13 @@ const Container = styled.main`
 			} */
 		}
 	}
-	
-	@media(min-width: 600px)
-	{
-		
-		.showPwd
-		{
+
+	@media (min-width: 600px) {
+		.showPwd {
 			margin-left: 50%;
 		}
-		
-		form .field
-		{
+
+		form .field {
 			width: 75%;
 		}
 	}

@@ -1,31 +1,27 @@
-import { signIn, signOut, useSession } from 'next-auth/client'
-import { createContext, useEffect, useState } from 'react'
+import {signIn, signOut, useSession} from 'next-auth/client'
+import {createContext, useEffect, useState} from 'react'
 
-import { sellerController } from '../services/offline/controllers/seller'
+import {sellerController} from '../services/offline/controllers/seller'
 
-export type User =
-{
+export type User = {
 	id: string
 	role: string
 
-	data?:
-	{
+	data?: {
 		name: string
 		image: string
 		email: string
 	}
-	
+
 	errorMessage?: string
 }
 
-export const defaultUser: User =
-{
+export const defaultUser: User = {
 	id: 'not-logged',
 	role: 'none'
 }
 
-type AuthContextData =
-{
+type AuthContextData = {
 	user: User
 	isLogged: boolean
 	loading: boolean
@@ -36,105 +32,86 @@ type AuthContextData =
 
 export const AuthContext = createContext({} as AuthContextData)
 
-const AuthContextProvider: React.FC = ({children}) =>
-{
+const AuthContextProvider: React.FC = ({children}) => {
 	const [session, loading] = useSession()
 
 	const [user, setUser] = useState<User>(defaultUser)
 
 	const isLogged = user.id !== 'not-logged'
 
-	useEffect(() =>
-	{
+	useEffect(() => {
 		updateSession()
 	}, [loading])
 
-	useEffect(() =>
-	{
+	useEffect(() => {
 		if (user.id && isLogged)
-			sellerController.rawOne(user.id)
-				.then(data =>
-				{
-					let tmpUser = {...user}
+			sellerController
+				.rawOne(user.id)
+				.then(data => {
+					const tmpUser = {...user}
 
-					tmpUser.data =
-					{
+					tmpUser.data = {
 						name: data.nome,
 						image: data.imagem,
-						email: data.email,
+						email: data.email
 					}
 
 					setUser(tmpUser)
 				})
-				.catch(error =>
-				{
+				.catch(error => {
 					console.log('<< error >>', error)
 				})
 	}, [user.id])
 
-	function getSavedUser()
-	{
+	function getSavedUser() {
 		const savedUser = localStorage.getItem('auth-user')
-		if (!savedUser)
-			return defaultUser
-		
+		if (!savedUser) return defaultUser
+
 		const parsedUser: User = JSON.parse(savedUser)
 		return parsedUser
 	}
 
-	function saveUser(user: User)
-	{
+	function saveUser(user: User) {
 		localStorage.setItem('auth-user', JSON.stringify(user))
 	}
 
-	function removeSavedUser()
-	{
+	function removeSavedUser() {
 		localStorage.removeItem('auth-user')
 	}
 
-	function updateSession()
-	{
+	function updateSession() {
 		const isOffline = !navigator.onLine
 
-		if (isOffline)
-		{
+		if (isOffline) {
 			const savedUser = getSavedUser()
 			setUser(savedUser)
 			return
 		}
 
-		if (!loading && session)
-		{
+		if (!loading && session) {
 			const {user: sessionUser} = session
 			const tmpUser = sessionUser as User
 
-			if (tmpUser && user.id !== tmpUser.id)
-			{
+			if (tmpUser && user.id !== tmpUser.id) {
 				setUser(tmpUser)
 				saveUser(tmpUser)
-			}
-			else if (tmpUser.errorMessage)
-			{
-				let tmp = {...user}
+			} else if (tmpUser.errorMessage) {
+				const tmp = {...user}
 				tmp.errorMessage = tmpUser.errorMessage
 				setUser(tmp)
 				saveUser(defaultUser)
 			}
-		}
-		else if (!session)
-		{
+		} else if (!session) {
 			setUser(defaultUser)
 			saveUser(defaultUser)
 		}
 	}
 
-	async function logIn(email: string, password: string)
-	{
+	async function logIn(email: string, password: string) {
 		await signIn('credentials', {email, password, callbackUrl: '/'})
 	}
 
-	async function logOut()
-	{
+	async function logOut() {
 		removeSavedUser()
 		setUser(defaultUser)
 
@@ -143,15 +120,14 @@ const AuthContextProvider: React.FC = ({children}) =>
 
 	return (
 		<AuthContext.Provider
-			value =
-				{{
-					user,
-					isLogged,
-					loading,
-					updateSession,
-					logIn,
-					logOut
-				}}
+			value={{
+				user,
+				isLogged,
+				loading,
+				updateSession,
+				logIn,
+				logOut
+			}}
 		>
 			{children}
 		</AuthContext.Provider>

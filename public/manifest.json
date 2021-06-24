@@ -1,25 +1,25 @@
 {
-  "short_name": "Cruz",
-  "name": "Cruz Representações | Sistema Administrativo",
-  "display": "standalone",
-  "orientation": "portrait",
-  "theme_color": "#84130B",
-  "background_color": "#84130B",
-  "start_url": "/",
-  "icons": [
-    {
-      "src": "/icon_192px.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
+	"short_name": "Cruz",
+	"name": "Cruz Representações | Sistema Administrativo",
+	"display": "standalone",
+	"orientation": "portrait",
+	"theme_color": "#84130B",
+	"background_color": "#84130B",
+	"start_url": "/",
+	"icons": [
 		{
-      "src": "/icon_512px.png",
-      "sizes": "512x512",
-      "type": "image/png",
+			"src": "/icon_192px.png",
+			"sizes": "192x192",
+			"type": "image/png",
 			"purpose": "any maskable"
-    }
-  ],
+		},
+		{
+			"src": "/icon_512px.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "any maskable"
+		}
+	],
 	"screenshots": [
 		{
 			"src": "/screenshots/new_request.jpg",
@@ -47,7 +47,5 @@
 			"type": "image/jpeg"
 		}
 	],
-	"categories": [
-		"business"
-	]
+	"categories": ["business"]
 }

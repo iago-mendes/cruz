@@ -11,30 +11,26 @@ const Container = styled.div`
 	justify-content: center;
 	gap: 5rem;
 
-	.logo
-	{
+	.logo {
 		width: 40%;
 
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		
-		img
-		{
+
+		img {
 			width: 40rem;
 		}
-	
-		h1
-		{
+
+		h1 {
 			font-family: Ubuntu;
 			color: ${p => p.theme.colors.secondary};
 			font-size: 3rem;
 		}
 	}
 
-	form
-	{
+	form {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-end;
@@ -44,77 +40,71 @@ const Container = styled.div`
 		padding-left: 10rem;
 		height: fit-content;
 		width: 40%;
-		
-		.fieldInput
-		{
+
+		.fieldInput {
 			display: flex;
 			flex-direction: column;
 			align-items: flex-start;
 			gap: 1rem;
-	
+
 			width: 100%;
-			
-			label
-			{
+
+			label {
 				font-family: Ubuntu;
 				color: ${p => p.theme.colors.secondary};
 				font-size: 2rem;
 				font-weight: 700;
 			}
-		
-			input
-			{
+
+			input {
 				width: 100%;
 				background-color: ${p => p.theme.colors.primaryDark};
 				border: none;
-		
+
 				height: 5rem;
 				border-radius: 1rem;
-		
+
 				padding: 1rem;
 				color: ${p => p.theme.colors.primaryLight};
 				font-family: Ubuntu;
-		
+
 				transition: 0.5s;
-				
-				:hover, :focus
-				{
+
+				:hover,
+				:focus {
 					border-radius: 0;
 				}
 			}
 		}
-		
-		button
-		{
+
+		button {
 			width: 10rem;
 			height: 4rem;
 			border-radius: 1.5rem;
-	
+
 			border: none;
 			background-color: ${p => p.theme.colors.primaryLight};
-			
+
 			color: ${p => p.theme.colors.primaryDark};
 			font-family: Ubuntu;
 			font-size: 2rem;
 			font-weight: 700;
-	
+
 			display: flex;
 			align-items: center;
 			justify-content: center;
-	
+
 			cursor: pointer;
 			transition: 0.25s;
-			
-			:hover
-			{
+
+			:hover {
 				transform: scale(1.1);
 				border-radius: 0;
 			}
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
+	@media (max-width: 1000px) {
 		flex-direction: column;
 
 		overflow-y: auto;
@@ -122,24 +112,20 @@ const Container = styled.div`
 		min-height: 100vh;
 		padding-top: 1rem;
 
-		.logo
-		{
+		.logo {
 			width: 100%;
 			gap: 1rem;
 
-			img
-			{
+			img {
 				width: 50vw;
 			}
 
-			h1
-			{
+			h1 {
 				font-size: 2rem;
 			}
 		}
 
-		form
-		{
+		form {
 			width: 100%;
 			padding: 2rem;
 		}

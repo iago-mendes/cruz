@@ -6,7 +6,8 @@
 	"extends": [
 		"eslint:recommended",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
@@ -16,35 +17,24 @@
 		"ecmaVersion": 12,
 		"sourceType": "module"
 	},
-	"plugins": [
-		"react",
-		"@typescript-eslint"
-	],
+	"plugins": ["react", "@typescript-eslint", "prettier"],
 	"rules": {
-		"indent": [
+		"linebreak-style": ["error", "unix"],
+		"quotes": ["error", "single"],
+		"semi": ["error", "never"],
+		"prettier/prettier": [
 			"error",
-			"tab"
+			{},
+			{
+				"usePrettierrc": true
+			}
 		],
-		"linebreak-style": [
-			"error",
-			"unix"
-		],
-		"quotes": [
-			"error",
-			"single"
-		],
-		"semi": [
-			"error",
-			"never"
-		],
-		"react/prop-types": [
-			0
-		],
+		"space-before-function-paren": "off",
+		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 		"@typescript-eslint/no-empty-function": "off",
 		"react/no-unescaped-entities": "off",
 		"@typescript-eslint/explicit-module-boundary-types": "off",
-		"@typescript-eslint/no-explicit-any": "off",
-		"prefer-const": "off"
+		"@typescript-eslint/no-explicit-any": "off"
 	}
 }

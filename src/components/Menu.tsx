@@ -1,47 +1,51 @@
 import Link from 'next/link'
 import {useRouter} from 'next/router'
-import {BiBuildings, BiLineChart, BiSpreadsheet, BiUserCircle} from 'react-icons/bi'
+import {
+	BiBuildings,
+	BiLineChart,
+	BiSpreadsheet,
+	BiUserCircle
+} from 'react-icons/bi'
 import {FiUsers, FiLogOut, FiMenu, FiX} from 'react-icons/fi'
 import {FaStore, FaSync} from 'react-icons/fa'
 import {RiWifiOffLine} from 'react-icons/ri'
 import {useEffect, useState} from 'react'
 
 import Logo from '../assets/logo.svg'
-import {Sidebar, MobileMenu, BurgerMenu, OptionsList, OfflineIndicatorContainer} from '../styles/components/Menu'
+import {
+	Sidebar,
+	MobileMenu,
+	BurgerMenu,
+	OptionsList,
+	OfflineIndicatorContainer
+} from '../styles/components/Menu'
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
 import useAuth from '../hooks/useAuth'
-import { sync } from '../services/offline/db/sync'
+import {sync} from '../services/offline/db/sync'
 
-const Menu: React.FC = () =>
-{
+const Menu: React.FC = () => {
 	const {pathname} = useRouter()
 	const {inDesktop} = useDimensions()
-	
+
 	const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false)
 	const burguerMenuRef = useClickOutside(() => setIsBurgerMenuOpen(false))
 
-	useEffect(() =>
-	{
+	useEffect(() => {
 		setIsBurgerMenuOpen(false)
 	}, [pathname])
 
-	if (pathname === '/login')
-		return null
+	if (pathname === '/login') return null
 
 	if (inDesktop)
 		return (
 			<Sidebar>
 				<header>
-					{
-						navigator.onLine
-							? (
-								<img src={Logo} alt='Cruz Representações' />
-							)
-							: (
-								<OfflineIndicator />
-							)
-					}
+					{navigator.onLine ? (
+						<img src={Logo} alt="Cruz Representações" />
+					) : (
+						<OfflineIndicator />
+					)}
 				</header>
 
 				<MainOptions />
@@ -49,32 +53,22 @@ const Menu: React.FC = () =>
 				<FooterOptions />
 			</Sidebar>
 		)
-	
+
 	return (
 		<MobileMenu>
-			<button
-				className='controller'
-				onClick={() => setIsBurgerMenuOpen(true)}
-			>
+			<button className="controller" onClick={() => setIsBurgerMenuOpen(true)}>
 				<FiMenu />
 			</button>
 
-			{
-				navigator.onLine
-					? (
-						<img src={Logo} alt='Cruz Representações' />
-					)
-					: (
-						<OfflineIndicator />
-					)
-			}
+			{navigator.onLine ? (
+				<img src={Logo} alt="Cruz Representações" />
+			) : (
+				<OfflineIndicator />
+			)}
 
-			<BurgerMenu
-				isOpen={isBurgerMenuOpen}
-				ref={burguerMenuRef}
-			>
+			<BurgerMenu isOpen={isBurgerMenuOpen} ref={burguerMenuRef}>
 				<button
-					className='controller'
+					className="controller"
 					onClick={() => setIsBurgerMenuOpen(false)}
 				>
 					<FiX />
@@ -88,15 +82,12 @@ const Menu: React.FC = () =>
 	)
 }
 
-function checkRoute(routes: string[])
-{
+function checkRoute(routes: string[]) {
 	const {pathname} = useRouter()
 
 	const current = pathname.split('/')
-	if (routes.includes(`/${current[1]}`))
-		return '#CC9749'
-	else
-		return '#E2DADB'
+	if (routes.includes(`/${current[1]}`)) return '#CC9749'
+	else return '#E2DADB'
 }
 
 const MainOptions: React.FC = () => {
@@ -105,35 +96,35 @@ const MainOptions: React.FC = () => {
 	return (
 		<main>
 			<OptionsList>
-				<Link href='/' >
+				<Link href="/">
 					<a>
-						<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])}/>
+						<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])} />
 						<span>Pedidos</span>
 					</a>
 				</Link>
-				<Link href='/clientes' >
+				<Link href="/clientes">
 					<a>
-						<FaStore size={25} color={checkRoute(['/clientes'])}/>
+						<FaStore size={25} color={checkRoute(['/clientes'])} />
 						<span>Clientes</span>
 					</a>
 				</Link>
-				<Link href='/empresas' >
+				<Link href="/empresas">
 					<a>
-						<BiBuildings size={25} color={checkRoute(['/empresas'])}/>
+						<BiBuildings size={25} color={checkRoute(['/empresas'])} />
 						<span>Empresas</span>
 					</a>
 				</Link>
-				{(user && user.role === 'admin') && (
+				{user && user.role === 'admin' && (
 					<>
-						<Link href='/vendedores' >
+						<Link href="/vendedores">
 							<a>
-								<FiUsers size={25} color={checkRoute(['/vendedores'])}/>
+								<FiUsers size={25} color={checkRoute(['/vendedores'])} />
 								<span>Vendedores</span>
 							</a>
 						</Link>
-						<Link href='/indicadores' >
+						<Link href="/indicadores">
 							<a>
-								<BiLineChart size={25} color={checkRoute(['/indicadores'])}/>
+								<BiLineChart size={25} color={checkRoute(['/indicadores'])} />
 								<span>Indicadores</span>
 							</a>
 						</Link>
@@ -141,26 +132,26 @@ const MainOptions: React.FC = () => {
 				)}
 			</OptionsList>
 		</main>
-	)}
+	)
+}
 
-const FooterOptions: React.FC = () =>
-{
+const FooterOptions: React.FC = () => {
 	const {logOut} = useAuth()
 
 	return (
 		<footer>
 			<OptionsList>
-				<Link href='/usuario' >
+				<Link href="/usuario">
 					<a>
-						<BiUserCircle size={25} color={checkRoute(['/usuario'])}/>
+						<BiUserCircle size={25} color={checkRoute(['/usuario'])} />
 						<span>Usuário</span>
 					</a>
 				</Link>
-				<a onClick={logOut} >
-					<FiLogOut size={25} color='#E2DADB'/>
+				<a onClick={logOut}>
+					<FiLogOut size={25} color="#E2DADB" />
 					<span>Sair</span>
 				</a>
-				<button className='sync' onClick={() => sync()} >
+				<button className="sync" onClick={() => sync()}>
 					<FaSync />
 					<span>Sincronizar</span>
 				</button>
@@ -169,8 +160,7 @@ const FooterOptions: React.FC = () =>
 	)
 }
 
-const OfflineIndicator: React.FC = () =>
-{
+const OfflineIndicator: React.FC = () => {
 	return (
 		<OfflineIndicatorContainer>
 			<RiWifiOffLine />

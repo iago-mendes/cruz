@@ -6,8 +6,7 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: space-between;
 
-	.center
-	{
+	.center {
 		width: 50%;
 		height: 90vh;
 

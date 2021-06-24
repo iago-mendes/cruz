@@ -1,12 +1,12 @@
-function priceToString(p: number)
-{
+function priceToString(p: number) {
 	return p.toFixed(2).replace('.', ',')
 }
 
-function priceToNumber(p: string)
-{
+function priceToNumber(p: string) {
 	// eslint-disable-next-line no-useless-escape
-	const [integers, decimals] = p.split(',').map(str => Number(str.replace('/\D/g', '')))
+	const [integers, decimals] = p
+		.split(',')
+		.map(str => Number(str.replace('/D/g', '')))
 
 	const price = decimals ? Number(integers + '.' + decimals) : integers
 	const res = !Number.isNaN(price) ? price : 0
@@ -14,16 +14,11 @@ function priceToNumber(p: string)
 	return res
 }
 
-function formatPrice(price: number | string, showSymbol = true)
-{
-	if (typeof price === 'string')
-		return priceToNumber(price)
-	else if (typeof price === 'number')
-	{
-		if (showSymbol)
-			return 'R$ ' + priceToString(price)
-		else
-			return priceToString(price)
+function formatPrice(price: number | string, showSymbol = true) {
+	if (typeof price === 'string') return priceToNumber(price)
+	else if (typeof price === 'number') {
+		if (showSymbol) return 'R$ ' + priceToString(price)
+		else return priceToString(price)
 	}
 }
 

@@ -18,8 +18,7 @@ export const SyncView = styled.div<{progressBar: number}>`
 	width: 100vw;
 	height: 100vh;
 
-	header
-	{
+	header {
 		margin-bottom: 5rem;
 
 		display: flex;
@@ -27,13 +26,11 @@ export const SyncView = styled.div<{progressBar: number}>`
 		align-items: center;
 		gap: 1rem;
 
-		h1
-		{
+		h1 {
 			font-size: 2.5rem;
 		}
 
-		svg
-		{
+		svg {
 			& circle {
 				stroke: #fff;
 				stroke-linecap: round;
@@ -42,8 +39,7 @@ export const SyncView = styled.div<{progressBar: number}>`
 		}
 	}
 
-	#progress-bar-container
-	{
+	#progress-bar-container {
 		width: 25rem;
 		height: 1rem;
 		border-radius: 100rem;
@@ -51,15 +47,12 @@ export const SyncView = styled.div<{progressBar: number}>`
 
 		background-color: ${p => p.theme.colors.background};
 
-		#progress-bar
-		{
+		#progress-bar {
 			height: 100%;
 			width: ${p => p.progressBar}%;
 			background-color: ${p => p.theme.colors.secondary};
 
 			transition: width 0.1s;
-
 		}
 	}
-
 `

@@ -1,17 +1,15 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	.info
-	{
+	.info {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
 		width: 30rem;
 
 		padding-left: 2rem;
-		
-		h3
-		{
+
+		h3 {
 			font-family: Ubuntu;
 			font-size: 2rem;
 			color: ${p => p.theme.colors.primaryDark};
@@ -20,15 +18,13 @@ const Container = styled.div`
 
 			margin-left: -2rem;
 		}
-		
-		span
-		{
+
+		span {
 			font-family: Roboto;
 			font-size: 1.75rem;
 		}
-		
-		.password
-		{
+
+		.password {
 			background: none;
 			border: ${p => p.theme.colors.primaryDark} 2px solid;
 			border-radius: 0.5rem;
@@ -39,18 +35,16 @@ const Container = styled.div`
 			color: ${p => p.theme.colors.primaryDark};
 			cursor: pointer;
 			transition: 0.25s;
-			
-			:hover
-			{
+
+			:hover {
 				background-color: ${p => p.theme.colors.primaryDark};
 				color: ${p => p.theme.colors.background};
 				border-radius: 0;
 			}
 		}
 	}
-	
-	main
-	{
+
+	main {
 		display: flex;
 		align-items: center;
 		justify-content: space-around;
@@ -59,33 +53,28 @@ const Container = styled.div`
 		margin: 1rem;
 		background-color: #fff;
 		border-radius: 0.5rem;
-		
-		.img
-		{
+
+		.img {
 			width: 40%;
 		}
-		
-		.group
-		{
+
+		.group {
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
 			width: 40%;
-			
-			.info
-			{
+
+			.info {
 				width: 100%;
-				
-				span
-				{
+
+				span {
 					font-size: 2rem;
 				}
 			}
 		}
 	}
-	
-	.credentials
-	{
+
+	.credentials {
 		padding: 2rem;
 		display: grid;
 		grid-auto-rows: 7.5rem;
@@ -98,17 +87,14 @@ const Container = styled.div`
 		background-color: #fff;
 		border-radius: 0.5rem;
 	}
-	
-	@media(max-width: 850px)
-	{
-		
-		main
-		{
+
+	@media (max-width: 850px) {
+		main {
 			flex-direction: column;
 			gap: 2rem;
-			
-			.img, .group
-			{
+
+			.img,
+			.group {
 				width: 100%;
 			}
 		}

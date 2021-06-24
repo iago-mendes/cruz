@@ -7,27 +7,24 @@ import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 
-const AddClient: React.FC = () =>
-{
+const AddClient: React.FC = () => {
 	const {user, loading} = useAuth()
 	const [nomeFantasia, setNomeFantasia] = useState('')
-	
-	if (loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+
+	if (loading) return <Loading />
+	if (user.role !== 'admin') return <NotAllowed />
 
 	return (
-		<div className='container'>
+		<div className="container">
 			<Head>
 				<title>{nomeFantasia} | Cruz Representações</title>
 			</Head>
 
 			<Header display={nomeFantasia} />
 
-			<main className='main'>
+			<main className="main">
 				<Client
-					method='post'
+					method="post"
 					nome_fantasia={nomeFantasia}
 					setNomeFantasia={setNomeFantasia}
 				/>

@@ -1,10 +1,8 @@
-export interface SelectOption
-{
+export interface SelectOption {
 	value: string
 	label: string
 }
 
-export interface SelectOptionsList
-{
+export interface SelectOptionsList {
 	[key: string]: SelectOption[]
 }

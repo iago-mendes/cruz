@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 
 import logo from '../assets/logo.svg'
 import Container from '../styles/pages/login'
@@ -9,8 +9,7 @@ import errorAlert from '../utils/alerts/error'
 import useAuth from '../hooks/useAuth'
 import warningAlert from '../utils/alerts/warning'
 
-export default function Login()
-{
+export default function Login() {
 	const {user, logIn} = useAuth()
 	const router = useRouter()
 
@@ -20,28 +19,21 @@ export default function Login()
 	const [showedError, setShowedError] = useState(false)
 	const [loading, setLoading] = useState(false)
 
-	useEffect(() =>
-	{
-		if (user.errorMessage && !showedError)
-		{
+	useEffect(() => {
+		if (user.errorMessage && !showedError) {
 			setShowedError(true)
 			errorAlert(user.errorMessage, 'Erro na autenticação...')
 		}
 
-		if (user.id !== 'not-logged' && router.pathname === '/login')
-			router.back()
+		if (user.id !== 'not-logged' && router.pathname === '/login') router.back()
 	}, [user])
-	
-	function handleChange(e: ChangeEvent<HTMLInputElement>)
-	{
-		if (e.target.name === 'email') 
-			setEmail(e.target.value)
-		if (e.target.name === 'password') 
-			setPassword(e.target.value)
+
+	function handleChange(e: ChangeEvent<HTMLInputElement>) {
+		if (e.target.name === 'email') setEmail(e.target.value)
+		if (e.target.name === 'password') setPassword(e.target.value)
 	}
-	
-	async function handleSubmit(e: FormEvent)
-	{
+
+	async function handleSubmit(e: FormEvent) {
 		e.preventDefault()
 
 		if (!navigator.onLine)
@@ -50,46 +42,44 @@ export default function Login()
 		setLoading(true)
 		logIn(email, password)
 	}
-	
+
 	return (
 		<Container>
 			<Head>
 				<title>Entrar | Cruz Representações</title>
 			</Head>
 
-			<LoadingModal
-				isOpen={loading}
-			/>
+			<LoadingModal isOpen={loading} />
 
-			<div className='logo'>
-				<img src={logo} alt='Cruz representações'/>
+			<div className="logo">
+				<img src={logo} alt="Cruz representações" />
 				<h1>Cruz Representações</h1>
 			</div>
 
 			<form onSubmit={handleSubmit}>
-				<div className='fieldInput'>
-					<label htmlFor='email'>E-mail</label>
+				<div className="fieldInput">
+					<label htmlFor="email">E-mail</label>
 					<input
 						value={email}
 						onChange={handleChange}
-						type='text'
-						name='email'
-						id='email'
-						placeholder='Digite seu e-mail'
+						type="text"
+						name="email"
+						id="email"
+						placeholder="Digite seu e-mail"
 					/>
 				</div>
-				<div className='fieldInput'>
-					<label htmlFor='password'>Senha</label>
+				<div className="fieldInput">
+					<label htmlFor="password">Senha</label>
 					<input
 						value={password}
 						onChange={handleChange}
-						type='password'
-						name='password'
-						id='password'
-						placeholder='Digite sua senha'
+						type="password"
+						name="password"
+						id="password"
+						placeholder="Digite sua senha"
 					/>
 				</div>
-				<button type='submit'>Entrar</button>
+				<button type="submit">Entrar</button>
 			</form>
 		</Container>
 	)

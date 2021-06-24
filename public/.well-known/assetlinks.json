@@ -1,18 +1,15 @@
-[{
-	"relation":
-	[
-		"delegate_permission/common.handle_all_urls"
-	],
-	"target":
+[
 	{
-		"namespace": "android_app",
-		"package_name": "br.com.cruzrepresentacoes.sistema.twa",
-		"sha256_cert_fingerprints":
-		[
-			"D5:03:AE:DF:4D:B5:BA:45:13:97:B6:EE:84:EA:70:8C:E6:AD:6A:CD:6B:71:94:2E:66:77:D5:E0:AF:EF:A9:E5",
-			"7A:AA:52:5B:C6:D0:94:A8:0A:47:04:56:00:D6:B7:8C:C0:F3:4C:76:F1:79:28:51:09:05:DF:F9:C3:EC:CB:F8",
-			"48:3F:F1:18:3C:BD:EF:1E:C0:48:E7:4C:7C:A9:DB:EB:06:91:19:C7:9F:80:2E:66:CC:61:30:1D:D6:1B:93:19",
-			"D0:97:1E:25:63:73:E5:7F:84:75:5D:F6:B2:67:EE:3E:D2:63:A3:4D:FD:4C:04:D6:DF:C3:25:8C:38:3F:18:7D"
-		]
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "br.com.cruzrepresentacoes.sistema.twa",
+			"sha256_cert_fingerprints": [
+				"D5:03:AE:DF:4D:B5:BA:45:13:97:B6:EE:84:EA:70:8C:E6:AD:6A:CD:6B:71:94:2E:66:77:D5:E0:AF:EF:A9:E5",
+				"7A:AA:52:5B:C6:D0:94:A8:0A:47:04:56:00:D6:B7:8C:C0:F3:4C:76:F1:79:28:51:09:05:DF:F9:C3:EC:CB:F8",
+				"48:3F:F1:18:3C:BD:EF:1E:C0:48:E7:4C:7C:A9:DB:EB:06:91:19:C7:9F:80:2E:66:CC:61:30:1D:D6:1B:93:19",
+				"D0:97:1E:25:63:73:E5:7F:84:75:5D:F6:B2:67:EE:3E:D2:63:A3:4D:FD:4C:04:D6:DF:C3:25:8C:38:3F:18:7D"
+			]
+		}
 	}
-}]
+]

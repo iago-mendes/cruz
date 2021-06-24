@@ -1,22 +1,25 @@
-type Request =
-{
+type Request = {
 	_id: string
 	cliente: string
 	vendedor?: string
 	representada: string
-	produtos: Array<{id: string, quantidade: number, preco: number, linhaId: string}>
+	produtos: Array<{
+		id: string
+		quantidade: number
+		preco: number
+		linhaId: string
+	}>
 	data: string
 	condicao: string
 	frete: string
-	contato: {nome: string, telefone: string}
+	contato: {nome: string; telefone: string}
 	digitado_por?: string
-	tipo: {venda: boolean, troca: boolean}
-	status: {concluido: boolean, enviado: boolean, faturado: boolean}
+	tipo: {venda: boolean; troca: boolean}
+	status: {concluido: boolean; enviado: boolean; faturado: boolean}
 }
 export default Request
 
-export const defaultRequest: Request =
-{
+export const defaultRequest: Request = {
 	_id: '',
 	cliente: '',
 	vendedor: '',
@@ -31,51 +34,43 @@ export const defaultRequest: Request =
 	status: {concluido: false, enviado: false, faturado: false}
 }
 
-export type RequestProduct =
-{
+export type RequestProduct = {
 	_id?: string
 	id: string
 	quantidade: number
 	preco: number
 }
 
-export const defaultRequestProduct: RequestProduct =
-{
+export const defaultRequestProduct: RequestProduct = {
 	id: '',
 	quantidade: 0,
 	preco: 0
 }
 
-export type Type =
-{
+export type Type = {
 	venda: boolean
 	troca: boolean
 }
 
-export type Status =
-{
+export type Status = {
 	concluido: boolean
 	enviado: boolean
 	faturado: boolean
 }
 
-export type RequestListed =
-{
+export type RequestListed = {
 	id: string
 	data: string
-	cliente:
-	{
+	cliente: {
 		imagem: string
 		nome_fantasia: string
 		razao_social: string
 	}
-	vendedor:
-	{
+	vendedor: {
 		imagem: string
 		nome: string
 	}
-	representada:
-	{
+	representada: {
 		imagem: string
 		nome_fantasia: string
 		razao_social: string
@@ -85,20 +80,17 @@ export type RequestListed =
 	valorTotal: number
 }
 
-export type Selected =
-{
+export type Selected = {
 	clientId: string
 	companyId: string
 	product: RequestProduct
 	clientCompanyTableId: string
 }
 
-export const defaultSelected: Selected =
-{
+export const defaultSelected: Selected = {
 	clientId: '',
 	companyId: '',
-	product:
-	{
+	product: {
 		id: '',
 		quantidade: 0,
 		preco: 0
@@ -106,23 +98,19 @@ export const defaultSelected: Selected =
 	clientCompanyTableId: ''
 }
 
-export const loadingRequest: RequestListed =
-{
+export const loadingRequest: RequestListed = {
 	id: 'loading',
 	data: '',
-	cliente:
-	{
+	cliente: {
 		imagem: '',
 		nome_fantasia: '',
 		razao_social: ''
 	},
-	vendedor:
-	{
+	vendedor: {
 		imagem: '',
 		nome: ''
 	},
-	representada:
-	{
+	representada: {
 		imagem: '',
 		nome_fantasia: '',
 		razao_social: ''

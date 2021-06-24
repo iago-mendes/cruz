@@ -5,18 +5,13 @@ import Loading from '../Loading'
 
 Modal.setAppElement('#__next')
 
-interface ModalContainerProps
-{
+interface ModalContainerProps {
 	isOpen: boolean
 }
 
-const LoadingModal: React.FC<ModalContainerProps> = ({isOpen}) =>
-{
+const LoadingModal: React.FC<ModalContainerProps> = ({isOpen}) => {
 	return (
-		<Modal
-			isOpen={isOpen}
-			style={modalStyle}
-		>
+		<Modal isOpen={isOpen} style={modalStyle}>
 			<Loading />
 		</Modal>
 	)

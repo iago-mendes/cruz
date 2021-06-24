@@ -3,8 +3,7 @@ import styled from 'styled-components'
 const Container = styled.div`
 	overflow-y: auto;
 
-	main
-	{
+	main {
 		width: 100%;
 		height: fit-content;
 		padding: 2rem;
@@ -14,29 +13,26 @@ const Container = styled.div`
 		align-items: center;
 		justify-content: center;
 		gap: 1rem;
-		
-		.company
-		{
+
+		.company {
 			width: 80%;
 			height: 10rem;
-	
+
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			gap: 1rem;
-	
+
 			background: #fff;
 			border-radius: 2rem;
 			padding: 1rem;
-	
-			img
-			{
+
+			img {
 				width: 10rem;
 				padding: 0.5rem;
 			}
-	
-			.companyText
-			{
+
+			.companyText {
 				height: 100%;
 				width: 80%;
 
@@ -44,38 +40,33 @@ const Container = styled.div`
 				flex-direction: column;
 				align-items: flex-start;
 				justify-content: center;
-	
-				.name
-				{
+
+				.name {
 					font-family: Ubuntu;
 					font-weight: 700;
 					font-size: 2.5rem;
 
 					text-decoration: underline;
-	
+
 					color: ${p => p.theme.colors.primaryDark};
 					transition: 0.25s;
-	
-					:hover
-					{
+
+					:hover {
 						color: ${p => p.theme.colors.primaryLight};
 					}
 				}
-	
-				.description
-				{
+
+				.description {
 					font-weight: 700;
 					font-size: 1.5rem;
 				}
 			}
 
-			.actions
-			{
+			.actions {
 				display: flex;
 				gap: 1rem;
 
-				button
-				{
+				button {
 					width: 5rem;
 					height: 5rem;
 					border-radius: 2.5rem;
@@ -83,52 +74,44 @@ const Container = styled.div`
 					display: flex;
 					align-items: center;
 					justify-content: center;
-		
+
 					border: none;
 					background: none;
 					font-size: 2.5rem;
-		
+
 					transition: background-color 0.25s;
 				}
 
-				.delete:hover
-				{
+				.delete:hover {
 					background-color: ${p => p.theme.colors.buttonRed};
 				}
-	
-				.edit:hover
-				{
+
+				.edit:hover {
 					background-color: ${p => p.theme.colors.secondary};
 				}
 			}
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		main .company
-		{
+	@media (max-width: 1000px) {
+		main .company {
 			width: 100%;
 			height: fit-content;
 			flex-direction: column;
 
-			img
-			{
+			img {
 				max-height: 7.5rem;
 				max-width: 100%;
 			}
 
-			.companyText .name
-			{
+			.companyText .name {
 				font-size: 2rem;
 			}
 
-			.actions
-			{
+			.actions {
 				margin-right: auto;
 
-				button
-				{
+				button {
 					font-size: 2rem;
 
 					width: 4rem;

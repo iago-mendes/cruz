@@ -1,7 +1,7 @@
 import Product from './product'
 
-interface Company // raw
-{
+interface Company {
+	// raw
 	_id: string
 	imagem?: string
 	razao_social: string
@@ -12,14 +12,13 @@ interface Company // raw
 	descricao_curta?: string
 	descricao?: string
 	site?: string
-	comissao: {porcentagem: number, obs: string[]}
+	comissao: {porcentagem: number; obs: string[]}
 	tabelas: CompanyTable[]
 	condicoes: CompanyCondition[]
 	produtos: Product[]
 }
 
-export const defaultCompany: Company =
-{
+export const defaultCompany: Company = {
 	_id: '',
 	razao_social: '',
 	nome_fantasia: '',
@@ -32,40 +31,35 @@ export const defaultCompany: Company =
 	produtos: []
 }
 
-export interface CompanyTable
-{
+export interface CompanyTable {
 	_id?: string
 	nome: string
 }
 
-export interface CompanyCondition
-{
+export interface CompanyCondition {
 	_id?: string
 	nome: string
 	precoMin: number
 }
 
-export interface CompanyListed
-{
+export interface CompanyListed {
 	id: string
 	imagem: string
 	nome_fantasia: string
 	descricao_curta: string
 }
 
-export interface CompanyShowed
-{
-  id: string
-  imagem: string
-  nome_fantasia: string
-  descricao: string
-  site: string
+export interface CompanyShowed {
+	id: string
+	imagem: string
+	nome_fantasia: string
+	descricao: string
+	site: string
 }
 
 export default Company
 
-export const loadingCompany: CompanyListed =
-{
+export const loadingCompany: CompanyListed = {
 	id: 'loading',
 	imagem: '',
 	nome_fantasia: '',

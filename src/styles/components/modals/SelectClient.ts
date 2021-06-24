@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 const Container = styled.main`
-	.search
-	{
+	.search {
 		background-color: #fff;
 		width: fit-content;
 
@@ -15,16 +14,14 @@ const Container = styled.main`
 
 		font-size: 2rem;
 
-		input
-		{
+		input {
 			border: none;
 			background: none;
 
 			font-size: 1.75rem;
 		}
 
-		.clear
-		{
+		.clear {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -36,8 +33,7 @@ const Container = styled.main`
 		}
 	}
 
-	.results
-	{
+	.results {
 		width: 100%;
 
 		display: grid;
@@ -47,8 +43,7 @@ const Container = styled.main`
 		align-items: center;
 		justify-items: center;
 
-		.client
-		{
+		.client {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
@@ -62,13 +57,11 @@ const Container = styled.main`
 			cursor: pointer;
 			transition: 0.25s;
 
-			:hover
-			{
+			:hover {
 				background-color: ${p => p.theme.colors.primary}40;
 			}
 
-			.img
-			{
+			.img {
 				width: 20%;
 				height: 100%;
 
@@ -76,28 +69,24 @@ const Container = styled.main`
 				align-items: center;
 				justify-content: center;
 
-				img
-				{
+				img {
 					max-width: 100%;
 					max-height: 100%;
 				}
 			}
 
-			.info
-			{
+			.info {
 				width: 75%;
 
 				display: flex;
 				flex-direction: column;
 				gap: 0.25rem;
 
-				span
-				{
+				span {
 					font-size: 1.25rem;
 				}
 
-				.highlight
-				{
+				.highlight {
 					color: ${p => p.theme.colors.primary};
 					font-weight: 700;
 				}
@@ -105,22 +94,18 @@ const Container = styled.main`
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		.search
-		{
+	@media (max-width: 1000px) {
+		.search {
 			margin-left: auto;
 			margin-right: auto;
 
 			font-size: 1.5rem;
 
-			input
-			{
+			input {
 				font-size: 1.5rem;
 			}
 
-			.clear
-			{
+			.clear {
 				font-size: 1.5rem;
 			}
 		}

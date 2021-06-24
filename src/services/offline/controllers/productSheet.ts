@@ -3,60 +3,50 @@ import CompanyRaw from '../../../models/company'
 
 import productHeader from '../../../../db/sheets/productHeader.json'
 
-export const productSheetController =
-{
-	setProducts: async (body: any, companyId?: string) =>
-	{
-		const {header, data: sheetProducts}:
-		{
+export const productSheetController = {
+	setProducts: async (body: any, companyId?: string) => {
+		const {
+			header,
+			data: sheetProducts
+		}: {
 			header: string[]
-			data: Array<
-			{
+			data: Array<{
 				[fieldName: string]: string | number
 			}>
 		} = body
 
-		if (!companyId)
-			return undefined
-		
-		let company: CompanyRaw = await db.table('companies').get(companyId)
-		if (!company)
-			return undefined
-		
-		const fullHeader = getFullHeader(company)
-		if (header.length !== fullHeader.length)
-			return undefined
-			
-		let isValid = true
-		fullHeader.map(({name}, index) =>
-		{
-			if (header[index] !== name)
-				isValid = false
-		})
-		if (!isValid)
-			return undefined
+		if (!companyId) return undefined
 
-		sheetProducts.map(sheetProduct =>
-		{
-			let tables: Array<{id: string, preco: number}> = []
+		const company: CompanyRaw = await db.table('companies').get(companyId)
+		if (!company) return undefined
+
+		const fullHeader = getFullHeader(company)
+		if (header.length !== fullHeader.length) return undefined
+
+		let isValid = true
+		fullHeader.map(({name}, index) => {
+			if (header[index] !== name) isValid = false
+		})
+		if (!isValid) return undefined
+
+		sheetProducts.map(sheetProduct => {
+			const tables: Array<{id: string; preco: number}> = []
 			const code = String(sheetProduct[getFieldName('codigo')])
-					
-			fullHeader.map(({name: fieldName, field}) =>
-			{
+
+			fullHeader.map(({name: fieldName, field}) => {
 				if (fieldName.split(' ')[0] === 'Tabela')
-					tables.push(
-						{
-							id: field,
-							preco: Number(sheetProduct[fieldName])
-						})
+					tables.push({
+						id: field,
+						preco: Number(sheetProduct[fieldName])
+					})
 			})
-		
-			const previousIndex = company.produtos.findIndex(({codigo}) => String(codigo) === String(code))
-			if (previousIndex < 0)
-				return
-			
-			company.produtos[previousIndex] =
-			{
+
+			const previousIndex = company.produtos.findIndex(
+				({codigo}) => String(codigo) === String(code)
+			)
+			if (previousIndex < 0) return
+
+			company.produtos[previousIndex] = {
 				_id: company.produtos[previousIndex]._id,
 				imagem: company.produtos[previousIndex].imagem,
 				codigo: code,
@@ -75,28 +65,23 @@ export const productSheetController =
 	}
 }
 
-function getFullHeader(company: CompanyRaw)
-{
+function getFullHeader(company: CompanyRaw) {
 	const tables = company.tabelas
-	let fullHeader = [...productHeader]
+	const fullHeader = [...productHeader]
 
-	tables.map(table =>
-	{
-		fullHeader.push(
-			{
-				name: `Tabela ${table.nome}`,
-				field: String(table._id)
-			})
+	tables.map(table => {
+		fullHeader.push({
+			name: `Tabela ${table.nome}`,
+			field: String(table._id)
+		})
 	})
 
 	return fullHeader
 }
 
-function getFieldName(field: string)
-{
+function getFieldName(field: string) {
 	const column = productHeader.find(column => column.field === field)
-	if (!column)
-		return ''
-	
+	if (!column) return ''
+
 	return column.name
 }

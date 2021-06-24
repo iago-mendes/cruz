@@ -13,17 +13,15 @@ const Container = styled.form`
 	flex-direction: column;
 	gap: 3rem;
 
-	.field
-	{
+	.field {
 		width: 80%;
 		padding: 0 2rem;
-		
+
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 
-		label
-		{
+		label {
 			font-family: Ubuntu;
 			font-weight: 700;
 			font-size: 2rem;
@@ -33,8 +31,7 @@ const Container = styled.form`
 			margin-left: -2rem;
 		}
 
-		input
-		{
+		input {
 			border: none;
 			border-bottom: ${p => `${p.theme.colors.text}40`} 2px solid;
 			height: 2.5rem;
@@ -45,50 +42,44 @@ const Container = styled.form`
 			padding: 0 1rem;
 			transition: 0.25s;
 
-			:focus, :hover
-			{
+			:focus,
+			:hover {
 				border-bottom-color: ${p => p.theme.colors.primary};
 			}
 		}
 
-		ul
-		{
+		ul {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			
+
 			padding-left: 2rem;
 			gap: 1rem;
-			
+
 			width: 100%;
 
-			li
-			{
+			li {
 				display: flex;
 				align-items: center;
 				gap: 2rem;
-				
+
 				width: 100%;
 
-				input
-				{
+				input {
 					width: 40%;
 				}
 
-				.select
-				{
+				.select {
 					width: 40%;
 				}
 
-				.group
-				{
+				.group {
 					display: flex;
 					align-items: center;
 					gap: 5rem;
 
-					.whatsapp
-					{
+					.whatsapp {
 						color: green;
 
 						display: flex;
@@ -97,98 +88,85 @@ const Container = styled.form`
 					}
 				}
 
-				button:hover
-				{
+				button:hover {
 					background-color: rgb(201, 64, 64);
 				}
 
-				.comissao
-				{
+				.comissao {
 					width: fit-content;
 
 					display: flex;
 					align-items: center;
 
-					span
-					{
+					span {
 						font-size: 1.75rem;
 						color: ${p => p.theme.colors.text};
 					}
 
-					input
-					{
+					input {
 						width: 10rem;
 					}
 				}
 
-				span.label
-				{
+				span.label {
 					font-size: 1.75rem;
 				}
 			}
 
-			button
-			{
+			button {
 				display: flex;
 				align-items: center;
-				font-size:1.5rem;
+				font-size: 1.5rem;
 				gap: 1rem;
-				
+
 				padding: 0.5rem 1rem;
 				border-radius: 2rem;
 				border: none;
 				background-color: ${p => p.theme.colors.background};
-				
+
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				
+
 				cursor: pointer;
 				transition: 0.25s;
-				
-				:hover
-				{
+
+				:hover {
 					background-color: rgb(89, 211, 89);
 				}
 
-				span
-				{
+				span {
 					white-space: nowrap;
 				}
 			}
 		}
 
-		.addressField
-		{
+		.addressField {
 			padding-left: 2rem;
 
 			display: flex;
-			flex-direction: column;	
+			flex-direction: column;
 		}
 
-		.switchFields
-		{
+		.switchFields {
 			display: flex;
 			align-items: center;
 			justify-content: space-around;
 
-			.switchField
-			{
+			.switchField {
 				display: flex;
 				flex-direction: column;
 				align-items: center;
 				gap: 0.5rem;
 
-				span
-				{
+				span {
 					font-family: Ubuntu;
 					font-size: 1.5rem;
 				}
 			}
 		}
 
-		button.action
-		{
+		button.action {
 			width: fit-content;
 			padding: 0.5rem 1rem;
 
@@ -207,9 +185,8 @@ const Container = styled.form`
 			gap: 0.5rem;
 
 			transition: 0.25s;
-			
-			:hover
-			{
+
+			:hover {
 				background-color: ${p => p.theme.colors.primaryDark};
 				color: #fff;
 
@@ -217,42 +194,35 @@ const Container = styled.form`
 			}
 		}
 
-		button.strong
-		{
+		button.strong {
 			background-color: ${p => p.theme.colors.primaryDark};
 			color: #fff;
 
-			:hover
-			{
+			:hover {
 				background-color: ${p => p.theme.colors.primary};
 				border-color: ${p => p.theme.colors.primary};
 			}
 		}
 
-		button.detail
-		{
+		button.detail {
 			color: #0086b3;
 			border-color: #0086b3;
 
-			:hover
-			{
+			:hover {
 				background-color: #0086b3;
 			}
 		}
 
-		span.modalResult
-		{
+		span.modalResult {
 			font-size: 1.75rem;
 		}
 	}
 
-	.required.field label
-	{
+	.required.field label {
 		position: relative;
 		width: fit-content;
 
-		::after
-		{
+		::after {
 			content: '*';
 			color: #f00;
 
@@ -262,58 +232,50 @@ const Container = styled.form`
 		}
 	}
 
-	.long.field
-	{
+	.long.field {
 		width: 100%;
 	}
 
-	.textareaField
-	{
+	.textareaField {
 		width: 100%;
 
-		textarea
-		{
+		textarea {
 			width: 100%;
 			resize: vertical;
-			
+
 			border: ${p => p.theme.colors.text}40 2px solid;
 			border-radius: 1rem;
 			padding: 0.5rem;
-			
+
 			font-size: 1.5rem;
 			font-family: Roboto;
 
 			transition: border 0.25s;
 
-			:focus, :hover
-			{
+			:focus,
+			:hover {
 				border-color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
 
-	.contact
-	{
-		.newContactFields input
-		{
+	.contact {
+		.newContactFields input {
 			margin: 0.5rem;
 		}
 
-		.newContactSave
-		{
+		.newContactSave {
 			display: flex;
 			align-items: center;
 			gap: 1rem;
 
-			span
-			{
+			span {
 				font-size: 1.5rem;
 			}
 		}
 	}
 
-	.formButtons
-	{
+	.formButtons {
 		margin-top: 2rem;
 		width: 100%;
 		max-width: 30rem;
@@ -325,8 +287,7 @@ const Container = styled.form`
 		grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
 		gap: 1rem;
 
-		button
-		{
+		button {
 			font-family: Ubuntu;
 			font-size: 1.5rem;
 			font-weight: 700;
@@ -340,78 +301,65 @@ const Container = styled.form`
 			gap: 1rem;
 
 			padding: 1rem 2rem;
-			
+
 			border: none;
 			border-radius: 0.5rem;
-			
+
 			cursor: pointer;
 			transition: 0.25s;
 
-			:hover
-			{
+			:hover {
 				border-radius: 0;
 				background-color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
+	@media (max-width: 1000px) {
 		width: 100%;
 		border-radius: 0.5rem;
 
-		.field
-		{
+		.field {
 			width: 100%;
 
-			label
-			{
+			label {
 				font-size: 1.75rem;
 			}
 
-			input
-			{
+			input {
 				font-size: 1.5rem;
 			}
 
-			ul
-			{
-				li
-				{
+			ul {
+				li {
 					flex-direction: column;
 
-					input
-					{
+					input {
 						width: 100%;
 					}
 
-					.select
-					{
+					.select {
 						width: 100%;
 					}
 
-					.group
-					{
+					.group {
 						flex-direction: column;
 						gap: 1rem;
 					}
 				}
 			}
 
-			button.modal
-			{
+			button.modal {
 				font-size: 1.5rem;
 			}
 
-			span.modalResult
-			{
+			span.modalResult {
 				font-size: 1.5rem;
 			}
 		}
 	}
 
-	@media (min-width: 1000px)
-	{
+	@media (min-width: 1000px) {
 		margin-bottom: 10rem;
 	}
 `

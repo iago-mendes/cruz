@@ -5,23 +5,20 @@ const Container = styled.div`
 	border-radius: 0.5rem;
 	width: 100%;
 
-	header
-	{
+	header {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 
 		padding: 0.5rem 1rem;
-		border-bottom: rgba(0,0,0,0.25) 2px solid;
+		border-bottom: rgba(0, 0, 0, 0.25) 2px solid;
 
-		.controller
-		{
+		.controller {
 			display: flex;
 			align-items: center;
 			gap: 0.5rem;
 
-			button
-			{
+			button {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -34,23 +31,19 @@ const Container = styled.div`
 
 				transition: background 0.25s;
 
-				:hover
-				{
-					background: rgba(0,0,0,0.25);
+				:hover {
+					background: rgba(0, 0, 0, 0.25);
 				}
 			}
 
-			span
-			{
+			span {
 				font-size: 1.5rem;
 			}
 		}
 	}
 
-	.content
-	{
-		.chart
-		{
+	.content {
+		.chart {
 			background: ${p => p.theme.colors.background}40;
 			padding: 1rem;
 
@@ -59,44 +52,38 @@ const Container = styled.div`
 			justify-content: center;
 		}
 
-		.summary
-		{
-			border-top: rgba(0,0,0,0.25) 2px solid;
+		.summary {
+			border-top: rgba(0, 0, 0, 0.25) 2px solid;
 			padding: 1rem 2rem;
 
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
 
-			.info
-			{
+			.info {
 				display: flex;
 				flex-direction: column;
 				gap: 0.5rem;
 
-				.name
-				{
+				.name {
 					font-size: 1.25rem;
 					font-weight: 700;
 					color: ${p => p.theme.colors.text}bf;
 				}
 
-				.value
-				{
+				.value {
 					font-size: 1.75rem;
 					font-weight: 700;
 				}
 
-				.obs
-				{
+				.obs {
 					color: ${p => p.theme.colors.text}bf;
 				}
 			}
 		}
 	}
 
-	.notFound
-	{
+	.notFound {
 		height: 30rem;
 		padding: 1rem;
 
@@ -104,16 +91,14 @@ const Container = styled.div`
 		align-items: center;
 		justify-content: center;
 
-		p
-		{
+		p {
 			font-size: 2rem;
 		}
 	}
 
-	#custom-tooltip
-	{
+	#custom-tooltip {
 		background: #fff;
-		box-shadow: 0px 0px 5px rgba(0,0,0,0.5);
+		box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 		padding: 1rem;
 
 		display: flex;
@@ -121,43 +106,34 @@ const Container = styled.div`
 		gap: 0.5rem;
 
 		font-size: 1.25rem;
-		
-		.month
-		{
+
+		.month {
 			color: ${p => p.theme.colors.primary};
 		}
 
-		.day
-		{
+		.day {
 			color: ${p => p.theme.colors.secondary};
 		}
 	}
 
-	@media (min-width: 1001px)
-	{
-		.content
-		{
+	@media (min-width: 1001px) {
+		.content {
 			display: flex;
 
-			.summary
-			{
+			.summary {
 				border-top: none;
-				border-left: rgba(0,0,0,0.25) 2px solid;
+				border-left: rgba(0, 0, 0, 0.25) 2px solid;
 
-				.info
-				{
-					.name
-					{
+				.info {
+					.name {
 						font-size: 1.5rem;
 					}
 
-					.value
-					{
+					.value {
 						font-size: 2rem;
 					}
 
-					.obs
-					{
+					.obs {
 						font-size: 1.25rem;
 					}
 				}

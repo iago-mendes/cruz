@@ -1,13 +1,11 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	main
-	{
+	main {
 		flex-direction: column;
 		gap: 1rem;
 
-		.client
-		{
+		.client {
 			background-color: #fff;
 			width: 90%;
 			height: 7.5rem;
@@ -19,8 +17,7 @@ const Container = styled.div`
 			align-items: center;
 			justify-content: space-between;
 
-			.imgNames
-			{
+			.imgNames {
 				display: flex;
 				align-items: center;
 				justify-content: flex-start;
@@ -29,33 +26,27 @@ const Container = styled.div`
 				height: 100%;
 				width: 50%;
 
-				img
-				{
+				img {
 					max-height: 100%;
 					border-radius: 0.5rem;
 				}
 
-				.names
-				{
-
-					h1
-					{
+				.names {
+					h1 {
 						font-family: Ubuntu;
 						font-size: 1.75rem;
-						
+
 						color: ${p => p.theme.colors.primary};
 					}
 
-					h2
-					{
+					h2 {
 						font-family: Roboto;
 						font-size: 1.5rem;
 					}
 				}
 			}
 
-			.statusActions
-			{
+			.statusActions {
 				display: flex;
 				align-items: center;
 				justify-content: flex-end;
@@ -63,14 +54,12 @@ const Container = styled.div`
 
 				height: 100%;
 				width: 50%;
-			
-				.status
-				{
+
+				.status {
 					display: flex;
 					gap: 2rem;
 
-					span
-					{
+					span {
 						padding: 0.5rem 1rem;
 
 						color: #fff;
@@ -81,17 +70,15 @@ const Container = styled.div`
 					}
 				}
 
-				.buttons
-				{
+				.buttons {
 					display: flex;
 					gap: 1rem;
 
-					button
-					{
+					button {
 						width: 5rem;
 						height: 5rem;
 						border-radius: 10rem;
-			
+
 						border: none;
 						background: none;
 						font-size: 2.5rem;
@@ -99,17 +86,15 @@ const Container = styled.div`
 						display: flex;
 						align-items: center;
 						justify-content: center;
-			
+
 						cursor: pointer;
 						transition: 0.25s;
-						
-						:hover
-						{
+
+						:hover {
 							background-color: ${p => p.theme.colors.delete};
 						}
-			
-						:first-of-type:hover
-						{
+
+						:first-of-type:hover {
 							background-color: ${p => p.theme.colors.secondary};
 						}
 					}
@@ -118,56 +103,45 @@ const Container = styled.div`
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		main .client
-		{
+	@media (max-width: 1000px) {
+		main .client {
 			height: fit-content;
 			flex-direction: column;
 			gap: 1rem;
 
 			width: 100%;
 
-			.imgNames
-			{
+			.imgNames {
 				width: 100%;
 
-				img
-				{
+				img {
 					max-height: 5rem;
 				}
 
-				.names
-				{
-					h1
-					{
+				.names {
+					h1 {
 						font-size: 1.5rem;
 					}
 
-					h2
-					{
+					h2 {
 						font-size: 1.25rem;
 					}
 				}
 			}
 
-			.statusActions
-			{
+			.statusActions {
 				width: 100%;
 				flex-direction: column;
 				gap: 1rem;
 
-				.status span
-				{
+				.status span {
 					font-size: 1.25rem;
 				}
 
-				.buttons
-				{
+				.buttons {
 					margin-right: auto;
 
-					button
-					{
+					button {
 						width: 4rem;
 						height: 4rem;
 

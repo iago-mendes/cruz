@@ -8,15 +8,12 @@ import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import useAuth from '../../hooks/useAuth'
 
-const AddCompany: React.FC = () =>
-{
+const AddCompany: React.FC = () => {
 	const {user, loading} = useAuth()
 	const [nomeFantasia, setNomeFantasia] = useState('')
-	
-	if (loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+
+	if (loading) return <Loading />
+	if (user.role !== 'admin') return <NotAllowed />
 
 	return (
 		<Container className="container">
@@ -28,7 +25,7 @@ const AddCompany: React.FC = () =>
 
 			<main>
 				<CompanyForm
-					method='post'
+					method="post"
 					nomeFantasia={nomeFantasia}
 					setNomeFantasia={setNomeFantasia}
 				/>

@@ -1,5 +1,4 @@
-interface Client
-{
+interface Client {
 	_id: string
 	razao_social: string
 	nome_fantasia: string
@@ -19,8 +18,7 @@ interface Client
 }
 export default Client
 
-export const defaultClient: Client =
-{
+export const defaultClient: Client = {
 	_id: '',
 	razao_social: '',
 	nome_fantasia: '',
@@ -38,15 +36,13 @@ export const defaultClient: Client =
 	contatos: []
 }
 
-export type ClientCompany =
-{
+export type ClientCompany = {
 	_id?: string
 	id: string
 	tabela: string
 }
 
-export type Address =
-{
+export type Address = {
 	rua?: string
 	numero?: string
 	complemento?: string
@@ -56,43 +52,37 @@ export type Address =
 	uf?: string
 }
 
-export type Status =
-{
+export type Status = {
 	ativo: boolean
 	aberto: boolean
 	nome_sujo: boolean
 }
 
-export type Conditions =
-{
+export type Conditions = {
 	prazo: boolean
 	cheque: boolean
 	vista: boolean
 }
 
-export type ClientListed =
-{
+export type ClientListed = {
 	id: string
 	razao_social: string
 	nome_fantasia: string
 	imagem: string
-	status:
-	{
+	status: {
 		ativo: boolean
 		aberto: boolean
 		nome_sujo: boolean
 	}
 }
 
-export type ClientContact =
-{
+export type ClientContact = {
 	_id?: string
 	nome: string
 	telefone: string
 }
 
-export const loadingClient: ClientListed =
-{
+export const loadingClient: ClientListed = {
 	id: 'loading',
 	razao_social: '',
 	nome_fantasia: '',

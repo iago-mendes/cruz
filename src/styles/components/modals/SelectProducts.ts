@@ -3,10 +3,9 @@ import styled from 'styled-components'
 const Container = styled.main`
 	padding: 0 !important;
 
-	.header
-	{
+	.header {
 		background-color: #fff;
-		box-shadow: 0px 2.5px 10px rgba(0,0,0,0.25);
+		box-shadow: 0px 2.5px 10px rgba(0, 0, 0, 0.25);
 		padding: 1rem;
 
 		display: flex;
@@ -14,8 +13,7 @@ const Container = styled.main`
 		align-items: center;
 		gap: 1rem;
 
-		.display
-		{
+		.display {
 			width: 100%;
 
 			display: flex;
@@ -24,8 +22,7 @@ const Container = styled.main`
 
 			color: ${p => p.theme.colors.primaryDark};
 
-			button
-			{
+			button {
 				width: fit-content;
 				padding: 0.25rem 0.75rem;
 
@@ -39,9 +36,8 @@ const Container = styled.main`
 				font-weight: 700;
 
 				transition: 0.25s;
-				
-				:hover
-				{
+
+				:hover {
 					background-color: ${p => p.theme.colors.primaryDark};
 					color: #fff;
 
@@ -50,21 +46,19 @@ const Container = styled.main`
 			}
 		}
 
-		.search
-		{
+		.search {
 			font-size: 1.5rem;
 			padding: 0.5rem 1rem;
 			width: 90%;
 
-			background-color: rgba(0,0,0,0.1);
+			background-color: rgba(0, 0, 0, 0.1);
 			border-radius: 0.25rem;
 
 			display: flex;
 			align-items: center;
 			gap: 1rem;
-			
-			input
-			{
+
+			input {
 				width: 100%;
 
 				background: none;
@@ -73,8 +67,7 @@ const Container = styled.main`
 		}
 	}
 
-	.products
-	{
+	.products {
 		padding: 1rem;
 		margin-bottom: 5rem;
 
@@ -85,21 +78,19 @@ const Container = styled.main`
 		align-items: center;
 		justify-items: center;
 
-		.product
-		{
+		.product {
 			width: 100%;
 			height: 10rem;
 			background-color: #fff;
-			box-shadow: 0px 0px 5px rgba(0,0,0,0.25);
+			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
 
 			display: flex;
 			justify-content: space-between;
 
-			.info
-			{
+			.info {
 				height: 100%;
 				width: 70%;
-				border-right: rgba(0,0,0,0.1) 2px solid;
+				border-right: rgba(0, 0, 0, 0.1) 2px solid;
 
 				display: flex;
 				flex-direction: column;
@@ -108,20 +99,17 @@ const Container = styled.main`
 				cursor: pointer;
 				transition: background-color 0.25s;
 
-				:hover
-				{
-					background-color: rgba(0,0,0,0.2);
+				:hover {
+					background-color: rgba(0, 0, 0, 0.2);
 				}
 
-				.data
-				{
+				.data {
 					padding: 1rem;
 
 					display: flex;
 					gap: 1rem;
 
-					.img
-					{
+					.img {
 						width: 5rem;
 						height: 5rem;
 
@@ -129,15 +117,13 @@ const Container = styled.main`
 						align-items: center;
 						justify-content: center;
 
-						img
-						{
+						img {
 							max-width: 100%;
 							max-height: 100%;
 						}
 					}
 
-					.texts
-					{
+					.texts {
 						max-width: calc(100% - 5rem - 1rem);
 						max-height: 5rem;
 
@@ -145,9 +131,8 @@ const Container = styled.main`
 					}
 				}
 
-				.price
-				{
-					background-color: rgba(0,0,0,0.1);
+				.price {
+					background-color: rgba(0, 0, 0, 0.1);
 					padding: 0 0.5rem;
 					height: 3rem;
 
@@ -155,16 +140,14 @@ const Container = styled.main`
 					justify-content: flex-end;
 					align-items: center;
 
-					span
-					{
+					span {
 						font-weight: 700;
 						font-size: 1.5rem;
 					}
 				}
 			}
 
-			.panel
-			{
+			.panel {
 				width: 30%;
 
 				display: flex;
@@ -172,29 +155,25 @@ const Container = styled.main`
 				justify-content: flex-end;
 				gap: 1rem;
 
-				.quantity
-				{
+				.quantity {
 					display: flex;
 					align-items: flex-end;
 					gap: 1rem;
 
 					margin-left: 1rem;
 
-					h3
-					{
+					h3 {
 						font-size: 2rem;
 					}
 				}
 
-				.controller
-				{
+				.controller {
 					width: 100%;
 
 					display: flex;
 					gap: 0.25rem;
 
-					button
-					{
+					button {
 						width: 100%;
 						height: 3rem;
 
@@ -209,13 +188,11 @@ const Container = styled.main`
 						justify-content: center;
 					}
 
-					.more
-					{
+					.more {
 						background-color: ${p => p.theme.colors.primaryDark};
 					}
 
-					.less
-					{
+					.less {
 						background-color: ${p => p.theme.colors.primary};
 					}
 				}
@@ -223,15 +200,14 @@ const Container = styled.main`
 		}
 	}
 
-	.summary
-	{
+	.summary {
 		position: fixed;
 		bottom: 0;
 		left: 0;
 
 		width: 100%;
 		background-color: #fff;
-		box-shadow: 0px -5px 10px rgba(0,0,0,0.5);
+		box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.5);
 		padding: 1rem;
 
 		display: flex;
@@ -240,8 +216,7 @@ const Container = styled.main`
 
 		font-size: 1.5rem;
 
-		span strong
-		{
+		span strong {
 			color: ${p => p.theme.colors.primaryDark};
 		}
 	}

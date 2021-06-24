@@ -12,20 +12,17 @@ const Container = styled.div`
 	cursor: pointer;
 	transition: 0.25s;
 
-	:hover
-	{
+	:hover {
 		transform: scale(1.01);
 	}
 
-	img
-	{
+	img {
 		max-width: 100%;
-		max-height: 100%; 
+		max-height: 100%;
 		object-fit: cover;
 	}
 
-	p
-	{
+	p {
 		width: calc(100% - 6rem);
 		height: calc(100% - 6rem);
 
@@ -45,19 +42,16 @@ const Container = styled.div`
 
 		text-align: center;
 		padding: 1rem;
-		
-		svg
-		{
+
+		svg {
 			width: 2.5rem;
 			height: 2.5rem;
 			color: ${p => p.theme.colors.primary};
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		p
-		{
+	@media (max-width: 1000px) {
+		p {
 			font-size: 1.5rem;
 		}
 	}

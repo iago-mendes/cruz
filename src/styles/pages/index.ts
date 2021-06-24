@@ -1,19 +1,16 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	main
-	{
+	main {
 		flex-direction: column;
 		gap: 2rem;
 
-		.request
-		{
+		.request {
 			width: 75%;
 			background-color: #fff;
 			border-radius: 2rem;
 
-			.header
-			{
+			.header {
 				height: 5rem;
 				width: 100%;
 
@@ -24,18 +21,16 @@ const Container = styled.div`
 				padding-left: 2rem;
 				padding-right: 2rem;
 
-				.typeDate
-				{
+				.typeDate {
 					display: flex;
 					align-items: center;
 					gap: 1rem;
 
-					span
-					{
+					span {
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						
+
 						padding: 0.5rem;
 						padding-left: 1rem;
 						padding-right: 1rem;
@@ -47,25 +42,22 @@ const Container = styled.div`
 						font-size: 1.5rem;
 					}
 
-					h2
-					{
+					h2 {
 						font-family: Roboto;
 						color: ${p => p.theme.colors.text};
 					}
 				}
 
-				.status
-				{
+				.status {
 					display: flex;
 					align-items: center;
 					gap: 1rem;
 
-					span
-					{
+					span {
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						
+
 						padding: 0.5rem;
 						padding-left: 1rem;
 						padding-right: 1rem;
@@ -78,51 +70,46 @@ const Container = styled.div`
 					}
 				}
 
-				.buttons
-				{
+				.buttons {
 					display: flex;
 					gap: 1rem;
 
-					a, button
-					{
+					a,
+					button {
 						width: 4rem;
 						height: 4rem;
 						font-size: 2rem;
 						border-radius: 10rem;
-			
+
 						border: none;
 						background: none;
 
 						display: flex;
 						align-items: center;
 						justify-content: center;
-			
+
 						cursor: pointer;
 						transition: 0.25s;
-			
-						:hover
-						{
+
+						:hover {
 							background-color: ${p => p.theme.colors.secondary};
 						}
 					}
 
-					.delete:hover
-					{
+					.delete:hover {
 						background-color: ${p => p.theme.colors.buttonRed};
 					}
 				}
 			}
 
-			ul
-			{
+			ul {
 				background-color: ${p => `${p.theme.colors.background}80`};
 				border-bottom-left-radius: 2rem;
 				border-bottom-right-radius: 2rem;
 
 				padding: 2rem;
 
-				li
-				{
+				li {
 					list-style: none;
 					border-top: ${p => `${p.theme.colors.text}40`} 1px solid;
 
@@ -134,37 +121,31 @@ const Container = styled.div`
 					padding: 0.5rem;
 					height: 6rem;
 
-					:first-of-type
-					{
+					:first-of-type {
 						border: none;
 					}
 
-					.imgName
-					{
+					.imgName {
 						display: flex;
 						align-items: center;
 						gap: 1rem;
 
-						img
-						{
+						img {
 							max-width: 5rem;
 							max-height: 5rem;
 
 							border-radius: 0.5rem;
 						}
 
-						h1
-						{
+						h1 {
 							font-family: Roboto;
 							color: ${p => p.theme.colors.text};
 							font-size: 2rem;
 						}
 					}
 
-					.description
-					{
-						h2
-						{
+					.description {
+						h2 {
 							font-family: Roboto;
 							color: ${p => p.theme.colors.text};
 							font-size: 1.5rem;
@@ -175,14 +156,11 @@ const Container = styled.div`
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		main .request
-		{
+	@media (max-width: 1000px) {
+		main .request {
 			width: 100%;
 
-			.header
-			{
+			.header {
 				height: fit-content;
 				flex-direction: column;
 				align-items: flex-start;
@@ -190,41 +168,35 @@ const Container = styled.div`
 				padding: 1rem;
 				gap: 1rem;
 
-				.status span
-				{
+				.status span {
 					font-size: 1rem;
 				}
 
-				.buttons a, .buttons button
-				{
+				.buttons a,
+				.buttons button {
 					width: 3rem;
 					height: 3rem;
 					font-size: 1.75rem;
 				}
 			}
 
-			ul li
-			{
+			ul li {
 				height: fit-content;
 				flex-direction: column;
 				align-items: flex-start;
 
-				.imgName
-				{
-					img
-					{
+				.imgName {
+					img {
 						max-width: 4rem;
 						max-height: 4rem;
 					}
 
-					h1
-					{
+					h1 {
 						font-size: 1.75rem;
 					}
 				}
 
-				.description h2
-				{
+				.description h2 {
 					font-size: 1.25rem;
 				}
 			}

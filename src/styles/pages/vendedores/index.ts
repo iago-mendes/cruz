@@ -3,8 +3,7 @@ import styled from 'styled-components'
 const Container = styled.div`
 	position: relative;
 
-	main
-	{
+	main {
 		display: grid;
 		grid-auto-rows: 15rem;
 		grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
@@ -17,8 +16,7 @@ const Container = styled.div`
 		min-height: 90vh;
 		padding: 5rem;
 
-		.seller
-		{
+		.seller {
 			background-color: #fff;
 			width: 100%;
 			height: 100%;
@@ -32,40 +30,34 @@ const Container = styled.div`
 
 			position: relative;
 
-			img
-			{
+			img {
 				max-width: 30%;
 				max-height: 100%;
 
 				border-radius: 0.5rem;
 			}
 
-			.texts
-			{
+			.texts {
 				width: 65%;
 
-				h1
-				{
+				h1 {
 					font-family: Ubuntu;
 					font-size: 2.25rem;
 					color: ${p => p.theme.colors.primaryDark};
 				}
 
-				h2
-				{
+				h2 {
 					font-size: 1.5rem;
 					font-family: Roboto;
 				}
 
-				h3
-				{
+				h3 {
 					font-size: 1rem;
 					font-family: Roboto;
 				}
 			}
 
-			.buttons
-			{
+			.buttons {
 				position: absolute;
 				bottom: 0.5rem;
 				right: 0.5rem;
@@ -74,26 +66,23 @@ const Container = styled.div`
 				align-items: center;
 				gap: 1rem;
 
-				button
-				{				
+				button {
 					width: 3rem;
 					height: 3rem;
 					padding: 0.5rem;
 					border-radius: 100rem;
-			
+
 					border: none;
 					background: none;
-			
+
 					cursor: pointer;
 					transition: 0.25s;
-					
-					:hover
-					{
+
+					:hover {
 						background-color: rgb(201, 64, 64);
 					}
-		
-					:first-of-type:hover
-					{
+
+					:first-of-type:hover {
 						background-color: ${p => p.theme.colors.background};
 					}
 				}
@@ -101,18 +90,14 @@ const Container = styled.div`
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
-		main
-		{
+	@media (max-width: 1000px) {
+		main {
 			padding: 1rem;
 
-			.seller
-			{
+			.seller {
 				padding-bottom: 5rem;
 
-				.buttons
-				{
+				.buttons {
 					left: 0.5rem;
 				}
 			}

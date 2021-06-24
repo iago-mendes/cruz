@@ -1,31 +1,26 @@
 import styled from 'styled-components'
 
 const Container = styled.div`
-	main
-	{
+	main {
 		width: 100%;
 
 		overflow: auto;
 
-		table
-		{
+		table {
 			width: fit-content;
 			height: fit-content;
 			margin: 2rem;
 
 			border-collapse: collapse;
 
-			thead
-			{
+			thead {
 				background-color: ${p => p.theme.colors.primary};
 				color: ${p => p.theme.colors.secondary};
 
-				tr
-				{
+				tr {
 					height: 5rem;
 
-					th
-					{
+					th {
 						font-family: Ubuntu;
 						font-size: 1.25rem;
 
@@ -35,32 +30,26 @@ const Container = styled.div`
 				}
 			}
 
-			tbody
-			{
-				tr
-				{
+			tbody {
+				tr {
 					height: 5rem;
 
-					:nth-child(odd)
-					{
+					:nth-child(odd) {
 						background-color: #ccc;
 					}
 
-					:nth-child(even)
-					{
+					:nth-child(even) {
 						background-color: #fff;
 					}
 
-					td
-					{
+					td {
 						font-family: Roboto;
 						padding-left: 0.5rem;
 						padding-right: 0.5rem;
 
 						min-width: 7rem;
 
-						.actions
-						{
+						.actions {
 							display: flex;
 							align-items: center;
 							justify-content: space-around;
@@ -68,8 +57,7 @@ const Container = styled.div`
 							height: 100%;
 							gap: 1rem;
 
-							button
-							{				
+							button {
 								padding: 0.5rem;
 								border-radius: 100rem;
 								font-size: 1.5rem;
@@ -77,28 +65,25 @@ const Container = styled.div`
 								display: flex;
 								align-items: center;
 								justify-content: center;
-						
+
 								border: none;
 								background: none;
-						
+
 								cursor: pointer;
 								transition: 0.25s;
-								
-								:hover
-								{
+
+								:hover {
 									background-color: rgb(201, 64, 64);
 								}
-					
-								:first-of-type:hover
-								{
+
+								:first-of-type:hover {
 									background-color: ${p => p.theme.colors.secondary};
 								}
 							}
 						}
 					}
 
-					.img
-					{
+					.img {
 						width: 5rem;
 						height: 5rem;
 						padding: 0.25rem;
@@ -107,8 +92,7 @@ const Container = styled.div`
 						align-items: center;
 						justify-content: center;
 
-						img
-						{
+						img {
 							max-width: 100%;
 							max-height: 100%;
 						}
@@ -117,13 +101,12 @@ const Container = styled.div`
 			}
 		}
 
-		th, td
-		{
-			border: 1px solid rgba(0,0,0,0.25);
+		th,
+		td {
+			border: 1px solid rgba(0, 0, 0, 0.25);
 		}
 
-		.productsActions
-		{
+		.productsActions {
 			width: 100%;
 			padding: 1rem 2rem;
 
@@ -132,8 +115,7 @@ const Container = styled.div`
 			justify-content: flex-end;
 			gap: 2rem;
 
-			button
-			{
+			button {
 				display: flex;
 				align-items: center;
 				gap: 1rem;
@@ -148,8 +130,7 @@ const Container = styled.div`
 
 				transition: 0.25s;
 
-				:hover
-				{
+				:hover {
 					border-radius: 0;
 					filter: brightness(0.9);
 				}

@@ -7,30 +7,23 @@ import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'
 import useAuth from '../../hooks/useAuth'
 
-const AddCompany: React.FC = () =>
-{
+const AddCompany: React.FC = () => {
 	const {user, loading} = useAuth()
 	const [nome, setNome] = useState('')
-	
-	if (loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+
+	if (loading) return <Loading />
+	if (user.role !== 'admin') return <NotAllowed />
 
 	return (
-		<div className='container'>
+		<div className="container">
 			<Head>
 				<title>{nome} | Cruz Representações</title>
 			</Head>
 
 			<Header display={nome} />
 
-			<main className='main'>
-				<SellerForm
-					method='post'
-					nome={nome}
-					setNome={setNome}
-				/>
+			<main className="main">
+				<SellerForm method="post" nome={nome} setNome={setNome} />
 			</main>
 		</div>
 	)

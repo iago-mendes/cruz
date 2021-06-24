@@ -3,25 +3,21 @@ import styled from 'styled-components'
 const Container = styled.main`
 	padding: 1rem;
 
-	ul.emails
-	{
+	ul.emails {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 
-		li
-		{
+		li {
 			display: flex;
 			align-items: center;
 			gap: 0.5rem;
 
-			label
-			{
+			label {
 				font-size: 1.5rem;
 			}
 
-			input[type=text]
-			{
+			input[type='text'] {
 				font-size: 1.5rem;
 				width: 75%;
 				max-width: 40rem;
@@ -32,16 +28,15 @@ const Container = styled.main`
 
 				transition: border-color 0.25s;
 
-				:focus, :hover
-				{
+				:focus,
+				:hover {
 					border-color: ${p => p.theme.colors.primary};
 				}
 			}
 		}
 	}
 
-	.field
-	{
+	.field {
 		margin: 2rem 0;
 		padding-left: 2rem;
 
@@ -49,8 +44,7 @@ const Container = styled.main`
 		flex-direction: column;
 		gap: 0.5rem;
 
-		label
-		{
+		label {
 			font-family: Ubuntu;
 			font-weight: 700;
 			font-size: 1.5rem;
@@ -60,23 +54,22 @@ const Container = styled.main`
 			margin-left: -2rem;
 		}
 
-		textarea
-		{
+		textarea {
 			width: 100%;
 			max-width: 70rem;
 			resize: vertical;
-			
+
 			border: ${p => p.theme.colors.text}40 2px solid;
 			border-radius: 0.5rem;
 			padding: 0.5rem;
-			
+
 			font-size: 1.5rem;
 			font-family: Roboto;
 
 			transition: border 0.25s;
 
-			:focus, :hover
-			{
+			:focus,
+			:hover {
 				border-color: ${p => p.theme.colors.primary};
 			}
 		}

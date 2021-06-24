@@ -2,17 +2,14 @@ import Head from 'next/head'
 
 import RequestForm from '../../components/forms/Request'
 
-const AddRequest: React.FC = () =>
-{
+const AddRequest: React.FC = () => {
 	return (
-		<div className='container'>
+		<div className="container">
 			<Head>
 				<title>Novo pedido | Cruz Representações</title>
 			</Head>
 
-			<RequestForm
-				method='post'
-			/>
+			<RequestForm method="post" />
 		</div>
 	)
 }

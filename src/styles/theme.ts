@@ -1,7 +1,5 @@
-const theme =
-{
-	colors:
-	{
+const theme = {
+	colors: {
 		primary: '#84130B',
 		primaryDark: '#260503',
 		primaryLight: '#ED271D',

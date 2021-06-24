@@ -105,10 +105,9 @@ export default createGlobalStyle`
 	}
 `
 
-export const selectStyles: StylesConfig<{label: string, value: string}, false> =
-{
-	option: (provided, state) => (
-		{
+export const selectStyles: StylesConfig<{label: string; value: string}, false> =
+	{
+		option: (provided, state) => ({
 			...provided,
 			cursor: 'pointer',
 
@@ -116,25 +115,27 @@ export const selectStyles: StylesConfig<{label: string, value: string}, false> =
 			fontSize: '1.5rem',
 
 			transition: '0.1s',
-			color: state.isSelected ? '#E2DADB' : state.isFocused ? '#313131' : '#7B7B7B',
+			color: state.isSelected
+				? '#E2DADB'
+				: state.isFocused
+				? '#313131'
+				: '#7B7B7B',
 			backgroundColor: state.isSelected ? '#84130B' : '#E2DADB'
 		}),
 
-	menu: (provided) => (
-		{
+		menu: provided => ({
 			...provided,
 			fontFamily: 'Roboto',
 			backgroundColor: '#E2DADB',
 			zIndex: 1
 		}),
 
-	control: (provided) => (
-		{
+		control: provided => ({
 			...provided,
 
 			cursor: 'pointer',
 			borderWidth: '2px',
-		
+
 			transition: '0.25s',
 
 			fontFamily: 'Roboto',
@@ -142,18 +143,15 @@ export const selectStyles: StylesConfig<{label: string, value: string}, false> =
 
 			width: '100%'
 		})
-}
+	}
 
-export const modalStyle: Modal.Styles =
-{
-	overlay:
-	{
+export const modalStyle: Modal.Styles = {
+	overlay: {
 		backgroundColor: 'rgba(0, 0, 0, 0.6)',
 		zIndex: 2
 	},
 
-	content:
-	{
+	content: {
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -165,6 +163,6 @@ export const modalStyle: Modal.Styles =
 		left: 0,
 		top: 0,
 		right: 0,
-		bottom: 0,
+		bottom: 0
 	}
 }

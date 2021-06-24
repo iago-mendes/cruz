@@ -1,10 +1,14 @@
-import {BsChevronBarLeft, BsChevronLeft, BsChevronRight, BsChevronBarRight} from 'react-icons/bs'
+import {
+	BsChevronBarLeft,
+	BsChevronLeft,
+	BsChevronRight,
+	BsChevronBarRight
+} from 'react-icons/bs'
 
 import Container from '../styles/components/Paginate'
 import Loading from './Loading'
 
-interface PaginateProps
-{
+interface PaginateProps {
 	page: number
 	setPage: (p: number) => void
 
@@ -14,49 +18,42 @@ interface PaginateProps
 	noResults: boolean
 }
 
-const Paginate: React.FC<PaginateProps> =
-({page, setPage, totalPages, loading, noResults, children}) =>
-{
-	function goBack()
-	{
-		if (page > 1)
-			setPage(page - 1)
+const Paginate: React.FC<PaginateProps> = ({
+	page,
+	setPage,
+	totalPages,
+	loading,
+	noResults,
+	children
+}) => {
+	function goBack() {
+		if (page > 1) setPage(page - 1)
 	}
 
-	function goNext()
-	{
-		if (page < totalPages)
-			setPage(page + 1)
+	function goNext() {
+		if (page < totalPages) setPage(page + 1)
 	}
 
-	function handlePageChange(value: string)
-	{
+	function handlePageChange(value: string) {
 		const tmpPage = Number(value)
 
-		if (tmpPage >= 1 && tmpPage <= totalPages)
-			setPage(tmpPage)
+		if (tmpPage >= 1 && tmpPage <= totalPages) setPage(tmpPage)
 	}
 
 	return (
 		<Container>
-			{
-				loading
-					? <Loading style={{marginTop: '40vh'}} />
-					: noResults
-						? (
-							<div className='noResults'>
-								<h1>Nenhum resultado foi encontrado!</h1>
-							</div>
-						)
-						: (
-							<main className='main' >
-								{children}
-							</main>
-						)
-			}
+			{loading ? (
+				<Loading style={{marginTop: '40vh'}} />
+			) : noResults ? (
+				<div className="noResults">
+					<h1>Nenhum resultado foi encontrado!</h1>
+				</div>
+			) : (
+				<main className="main">{children}</main>
+			)}
 
-			<div className='paginate'>
-				<div className='buttons'>
+			<div className="paginate">
+				<div className="buttons">
 					<button onClick={() => setPage(1)}>
 						<BsChevronBarLeft size={30} />
 					</button>
@@ -64,9 +61,9 @@ const Paginate: React.FC<PaginateProps> =
 						<BsChevronLeft size={30} />
 					</button>
 				</div>
-				<div className='controller'>
+				<div className="controller">
 					<input
-						type='number'
+						type="number"
 						value={page}
 						onChange={e => handlePageChange(e.target.value)}
 						min={1}
@@ -74,12 +71,12 @@ const Paginate: React.FC<PaginateProps> =
 					/>
 					<span> / {totalPages}</span>
 				</div>
-				<div className='buttons'>
+				<div className="buttons">
 					<button onClick={goNext}>
 						<BsChevronRight size={30} />
 					</button>
 					<button>
-						<BsChevronBarRight size={30} onClick={() => setPage(totalPages)}/>
+						<BsChevronBarRight size={30} onClick={() => setPage(totalPages)} />
 					</button>
 				</div>
 			</div>

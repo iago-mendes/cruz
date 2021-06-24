@@ -1,47 +1,43 @@
 import styled from 'styled-components'
 
 export const Sidebar = styled.nav`
-  background-color: ${props => props.theme.colors.primary};
-  height: 100vh;
-  width: 20rem;
+	background-color: ${props => props.theme.colors.primary};
+	height: 100vh;
+	width: 20rem;
 
 	overflow-y: auto;
 
-	box-shadow: 5px 0px 10px rgba(0,0,0,0.25);
-	
+	box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.25);
+
 	transition: 0.25s;
 
-	header
-	{
+	header {
 		height: 25%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
 
-		img
-		{
+		img {
 			width: 80%;
 			transition: 0.25s;
 		}
 	}
 
-	main
-	{
+	main {
 		min-height: 30%;
 		height: fit-content;
 		width: 100%;
 	}
-	
-	footer
-	{
+
+	footer {
 		height: 30%;
 		width: 100%;
 	}
 `
 
 export const MobileMenu = styled.nav`
-  background-color: ${props => props.theme.colors.primary};
+	background-color: ${props => props.theme.colors.primary};
 	width: 100%;
 	padding: 0.5rem 1rem;
 
@@ -51,8 +47,7 @@ export const MobileMenu = styled.nav`
 
 	position: relative;
 
-	button.controller
-	{
+	button.controller {
 		font-size: 3rem;
 		color: ${p => p.theme.colors.secondary};
 
@@ -67,42 +62,38 @@ export const MobileMenu = styled.nav`
 
 		transition: background-color 0.25s;
 
-		:hover
-		{
+		:hover {
 			background-color: ${p => p.theme.colors.primaryDark}80;
 		}
 	}
 
-	img
-	{
+	img {
 		max-width: 5rem;
 		max-height: 5rem;
 	}
 `
 
-interface BurgerMenuProps
-{
+interface BurgerMenuProps {
 	isOpen: boolean
 }
 
 export const BurgerMenu = styled.div<BurgerMenuProps>`
 	position: fixed;
-	left: ${p => p.isOpen ? 0 : '-100vw'};
+	left: ${p => (p.isOpen ? 0 : '-100vw')};
 	top: 0;
 	z-index: 3;
 
 	width: 75vw;
 	height: 100vh;
 	background-color: ${p => p.theme.colors.primary};
-	box-shadow: 5px 0px 5px rgba(0,0, 0, 0.5);
+	box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.5);
 
 	overflow-y: auto;
 	padding: 1rem;
 
 	transition: left 0.25s;
 
-	button.controller
-	{
+	button.controller {
 		margin-left: auto;
 	}
 `
@@ -120,8 +111,7 @@ export const OptionsList = styled.ul`
 
 	padding: 2.5rem 0;
 
-	a
-	{
+	a {
 		color: ${p => p.theme.colors.background};
 		text-decoration: none;
 		display: flex;
@@ -134,13 +124,11 @@ export const OptionsList = styled.ul`
 
 		transition: background-color 0.25s;
 
-		:hover
-		{
+		:hover {
 			background-color: ${p => p.theme.colors.primaryDark}80;
 		}
 
-		span
-		{
+		span {
 			font-size: 1.5rem;
 			margin-left: 1rem;
 			transition: 0.25s;
@@ -148,8 +136,7 @@ export const OptionsList = styled.ul`
 		}
 	}
 
-	button.sync
-	{
+	button.sync {
 		background: none;
 		padding: 0.5rem 1rem;
 		border: ${p => p.theme.colors.background} 2px solid;
@@ -166,8 +153,7 @@ export const OptionsList = styled.ul`
 
 		transition: background-color 0.25s;
 
-		:hover
-		{
+		:hover {
 			background-color: ${p => p.theme.colors.primaryDark}80;
 		}
 	}
@@ -182,19 +168,16 @@ export const OfflineIndicatorContainer = styled.div`
 	color: ${p => p.theme.colors.secondary};
 	font-size: 2.5rem;
 
-	svg
-	{
+	svg {
 		font-size: 5rem;
 	}
 
-	@media (max-width: 1000px)
-	{
+	@media (max-width: 1000px) {
 		flex-direction: row-reverse;
 
 		font-size: 2rem;
 
-		svg
-		{
+		svg {
 			font-size: 2.5rem;
 		}
 	}

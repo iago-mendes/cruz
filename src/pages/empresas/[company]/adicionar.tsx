@@ -9,21 +9,18 @@ import Loading from '../../../components/Loading'
 import NotAllowed from '../../../components/NotAllowed'
 import useAuth from '../../../hooks/useAuth'
 
-const AddCompany: React.FC = () =>
-{
+const AddCompany: React.FC = () => {
 	const Router = useRouter()
 	const {company} = Router.query
 
 	const {user, loading} = useAuth()
 	const [nome, setNome] = useState('')
-	
-	if (loading)
-		return <Loading />
-	if (user.role !== 'admin')
-		return <NotAllowed />
+
+	if (loading) return <Loading />
+	if (user.role !== 'admin') return <NotAllowed />
 
 	return (
-		<Container className='container'>
+		<Container className="container">
 			<Head>
 				<title>{nome} | Cruz Representações</title>
 			</Head>
@@ -32,7 +29,7 @@ const AddCompany: React.FC = () =>
 
 			<main>
 				<ProductForm
-					method='post'
+					method="post"
 					companyId={String(company)}
 					nome={nome}
 					setNome={setNome}

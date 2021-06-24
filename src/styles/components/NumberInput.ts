@@ -5,17 +5,14 @@ const Container = styled.div`
 	align-items: center;
 	gap: 1rem;
 
-	.numberInput
-	{
+	.numberInput {
 		width: fit-content;
 
-		span
-		{
+		span {
 			font-size: 1.75rem;
 		}
 
-		input
-		{
+		input {
 			width: 15rem !important;
 
 			border: none;
@@ -28,20 +25,18 @@ const Container = styled.div`
 			padding: 0 1rem;
 			transition: 0.25s;
 
-			:focus, :hover
-			{
+			:focus,
+			:hover {
 				border-bottom-color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
 
-	.controllers
-	{
+	.controllers {
 		display: flex;
 		flex-direction: column;
 
-		button
-		{
+		button {
 			width: 2.5rem !important;
 			height: 2.5rem !important;
 			padding: 0 !important;
@@ -58,8 +53,7 @@ const Container = styled.div`
 
 			transition: 0.25s;
 
-			:hover
-			{
+			:hover {
 				background-color: ${p => p.theme.colors.primaryDark} !important;
 				color: #fff;
 			}

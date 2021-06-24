@@ -1,11 +1,8 @@
-export type GoalRaw =
-{
+export type GoalRaw = {
 	month: string // unique
-	companies: Array<
-	{
+	companies: Array<{
 		id: string
-		sellers: Array<
-		{
+		sellers: Array<{
 			id: string
 			goal: number
 		}>
@@ -14,16 +11,14 @@ export type GoalRaw =
 	modifiedAt?: string
 }
 
-export type GoalSeller =
-{
+export type GoalSeller = {
 	id: string
 	name: string
 	goal: number
 	sold: number
 }
 
-export type GoalCompany =
-{
+export type GoalCompany = {
 	id: string
 	name: string
 	goal: number
@@ -33,23 +28,20 @@ export type GoalCompany =
 	eCommerceSold: number
 }
 
-export type GoalShowed =
-{
+export type GoalShowed = {
 	month: string
 	companies: GoalCompany[]
 	sellers: GoalSeller[]
 	goal: number
 	sold: number
-	days: Array<
-	{
+	days: Array<{
 		day: string
 		sold: number
 	}>
 	remainingBusinessDays: number
 }
 
-export const loadingGoal: GoalShowed =
-{
+export const loadingGoal: GoalShowed = {
 	month: 'loading',
 	companies: [],
 	sellers: [],
@@ -59,8 +51,7 @@ export const loadingGoal: GoalShowed =
 	remainingBusinessDays: 0
 }
 
-export const notFoundGoal: GoalShowed =
-{
+export const notFoundGoal: GoalShowed = {
 	month: 'not found',
 	companies: [],
 	sellers: [],

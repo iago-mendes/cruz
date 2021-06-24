@@ -3,15 +3,13 @@ import styled from 'styled-components'
 const Container = styled.main`
 	padding: 0 !important;
 
-	> div
-	{
+	> div {
 		margin-bottom: 2rem;
 	}
 
-	.header
-	{
+	.header {
 		background-color: #fff;
-		box-shadow: 0px 2.5px 10px rgba(0,0,0,0.25);
+		box-shadow: 0px 2.5px 10px rgba(0, 0, 0, 0.25);
 		padding: 1rem;
 
 		display: flex;
@@ -22,8 +20,7 @@ const Container = styled.main`
 		width: 100%;
 		color: ${p => p.theme.colors.primaryDark};
 
-		button
-		{
+		button {
 			width: fit-content;
 			padding: 0.25rem 0.75rem;
 
@@ -37,9 +34,8 @@ const Container = styled.main`
 			font-weight: 700;
 
 			transition: 0.25s;
-			
-			:hover
-			{
+
+			:hover {
 				background-color: ${p => p.theme.colors.primaryDark};
 				color: #fff;
 
@@ -48,18 +44,16 @@ const Container = styled.main`
 		}
 	}
 
-	.info
-	{
+	.info {
 		width: 100%;
 		padding: 1rem;
-		border-bottom: rgba(0,0,0,0.1) 2px solid;
+		border-bottom: rgba(0, 0, 0, 0.1) 2px solid;
 
 		display: flex;
 		justify-content: space-between;
 		gap: 1rem;
 
-		.img
-		{
+		.img {
 			width: 7.5rem;
 			height: 7.5rem;
 
@@ -67,15 +61,13 @@ const Container = styled.main`
 			align-items: center;
 			justify-content: center;
 
-			img
-			{
+			img {
 				max-width: 100%;
 				max-height: 100%;
 			}
 		}
 
-		.texts
-		{
+		.texts {
 			max-width: calc(100% - 7.5rem - 1rem);
 			max-height: 7.5rem;
 
@@ -84,8 +76,7 @@ const Container = styled.main`
 		}
 	}
 
-	.panel
-	{
+	.panel {
 		width: calc(100% - 2rem);
 		background-color: #fff;
 		padding: 1rem;
@@ -95,29 +86,25 @@ const Container = styled.main`
 		justify-content: space-between;
 		gap: 1rem;
 
-		.quantity
-		{
+		.quantity {
 			display: flex;
 			align-items: flex-end;
 			gap: 1rem;
 
 			margin-left: 1rem;
 
-			h3
-			{
+			h3 {
 				font-size: 2rem;
 			}
 		}
 
-		.controller
-		{
+		.controller {
 			width: 50%;
 
 			display: flex;
 			gap: 0.25rem;
 
-			button
-			{
+			button {
 				width: 100%;
 				height: 3rem;
 
@@ -132,30 +119,26 @@ const Container = styled.main`
 				justify-content: center;
 			}
 
-			.more
-			{
+			.more {
 				background-color: ${p => p.theme.colors.primaryDark};
 			}
 
-			.less
-			{
+			.less {
 				background-color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
 
-	.field
-	{
+	.field {
 		padding: 0 2rem;
 		margin-left: 1rem;
 		width: calc(100% - 1rem);
-		
+
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 
-		label
-		{
+		label {
 			font-family: Ubuntu;
 			font-weight: 700;
 			font-size: 2rem;
@@ -165,71 +148,63 @@ const Container = styled.main`
 			margin-left: -2rem;
 		}
 
-		ul
-		{
+		ul {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			
+
 			gap: 1rem;
-			
+
 			width: 100%;
 
-			li
-			{
+			li {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
 				gap: 0.5rem;
-				
+
 				width: 100%;
 
-				button:hover
-				{
+				button:hover {
 					background-color: ${p => p.theme.colors.buttonRed};
 				}
 			}
 
-			button
-			{
+			button {
 				display: flex;
 				align-items: center;
-				font-size:1.5rem;
+				font-size: 1.5rem;
 				gap: 1rem;
-				
+
 				padding: 0.5rem 1rem;
 				border-radius: 2rem;
 				border: none;
 				background-color: #fff;
-				
+
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				
+
 				cursor: pointer;
 				transition: 0.25s;
-				
-				:hover
-				{
+
+				:hover {
 					background-color: ${p => p.theme.colors.buttonGreen};
 				}
 
-				span
-				{
+				span {
 					white-space: nowrap;
 				}
 			}
 		}
 	}
 
-	.last
-	{
+	.last {
 		margin-bottom: 10rem;
 	}
 
-	.summary
-	{
+	.summary {
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -237,7 +212,7 @@ const Container = styled.main`
 
 		width: 100%;
 		background-color: #fff;
-		box-shadow: 0px -5px 10px rgba(0,0,0,0.5);
+		box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.5);
 		padding: 1rem;
 
 		display: flex;
@@ -246,16 +221,13 @@ const Container = styled.main`
 
 		font-size: 1.5rem;
 
-		span strong
-		{
+		span strong {
 			color: ${p => p.theme.colors.primaryDark};
 		}
 	}
 
-	@media(min-width: 1000px)
-	{
-		.field ul
-		{
+	@media (min-width: 1000px) {
+		.field ul {
 			width: 50%;
 		}
 	}

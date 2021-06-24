@@ -2,28 +2,25 @@ import styled from 'styled-components'
 
 const Container = styled.div`
 	min-height: 90vh;
-	
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	
-	.paginate
-	{
+
+	.paginate {
 		width: 100%;
 		padding: 1rem;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		gap: 3rem;
-		
-		.buttons
-		{
+
+		.buttons {
 			display: flex;
 			gap: 1rem;
-			
-			button
-			{
+
+			button {
 				background: none;
 				border: none;
 				padding: 0.5rem;
@@ -34,19 +31,16 @@ const Container = styled.div`
 				justify-content: center;
 				cursor: pointer;
 				transition: 0.25s;
-				
-				:hover
-				{
+
+				:hover {
 					color: ${p => p.theme.colors.background};
 					background-color: ${p => p.theme.colors.primary};
 				}
 			}
 		}
-		
-		.controller
-		{
-			input
-			{
+
+		.controller {
+			input {
 				background: none;
 				border: none;
 				border-bottom: ${p => p.theme.colors.primary}40 2px solid;
@@ -57,35 +51,32 @@ const Container = styled.div`
 				padding-right: 0.5rem;
 				width: 5rem;
 				transition: 0.25s;
-				
-				:focus, :hover
-				{
+
+				:focus,
+				:hover {
 					border-bottom-color: ${p => p.theme.colors.primary};
 				}
-				
-				::-webkit-outer-spin-button, ::-webkit-inner-spin-button
-				{
+
+				::-webkit-outer-spin-button,
+				::-webkit-inner-spin-button {
 					-webkit-appearance: none;
 					margin: 0;
 				}
-				
-				[type=number]
-				{
+
+				[type='number'] {
 					-moz-appearance: textfield;
 				}
 			}
-			
-			span
-			{
+
+			span {
 				font-family: Roboto;
 				font-size: 1.5rem;
 				color: ${p => p.theme.colors.primary};
 			}
 		}
 	}
-	
-	.noResults
-	{
+
+	.noResults {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -93,21 +84,18 @@ const Container = styled.div`
 		height: calc(100vh - 5rem - 30rem - 10rem);
 
 		padding: 2rem;
-		
-		h1
-		{
+
+		h1 {
 			font-family: Ubuntu;
 			font-size: 2.5rem;
 			color: ${p => p.theme.colors.primary};
 		}
 	}
 
-	@media (max-width: 1000px)
-	{
+	@media (max-width: 1000px) {
 		min-height: calc(100vh - 11rem);
 
-		.paginate
-		{
+		.paginate {
 			gap: 1rem;
 		}
 	}
