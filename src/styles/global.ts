@@ -1,5 +1,5 @@
 import {createGlobalStyle} from 'styled-components'
-import {Styles} from 'react-select'
+import {StylesConfig} from 'react-select'
 import Modal from 'react-modal'
 
 export default createGlobalStyle`
@@ -105,7 +105,7 @@ export default createGlobalStyle`
 	}
 `
 
-export const selectStyles: Styles =
+export const selectStyles: StylesConfig<{label: string, value: string}, false> =
 {
 	option: (provided, state) => (
 		{

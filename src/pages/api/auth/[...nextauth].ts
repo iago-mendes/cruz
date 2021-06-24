@@ -1,11 +1,11 @@
-import {NextApiHandler} from 'next'
-import NextAuth from 'next-auth'
+import { NextApiHandler } from 'next'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import Providers from 'next-auth/providers'
 
 import { defaultUser, User } from '../../../contexts/Auth'
 import api from '../../../services/api'
 
-const config =
+const config: NextAuthOptions =
 {
 	secret: process.env.AUTH_SECRET,
 	pages:
@@ -24,7 +24,7 @@ const config =
 				},
 				authorize: async credentials =>
 				{
-					const data = {email: credentials.email, password: credentials.password}
+					const data = {email: credentials['email'], password: credentials['password']}
 
 					let user: User = defaultUser
 
