@@ -163,11 +163,13 @@ async function handleAsyncCalls(ids: SyncId[], table: string)
 			{
 				const {data} = await api.get(apiRoute)
 				await db.table(table).add(data)
+					.catch(error => console.log('<< error >>', error))
 			}
 			else if (lastSync && lastSync <= modifiedAt)
 			{
 				const {data} = await api.get(apiRoute)
 				await db.table(table).put(data)
+					.catch(error => console.log('<< error >>', error))
 			}
 		}
 

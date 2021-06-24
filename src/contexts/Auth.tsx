@@ -68,8 +68,7 @@ const AuthContextProvider: React.FC = ({children}) =>
 				})
 				.catch(error =>
 				{
-					console.log('<< error >>', error.response.data.message)
-					console.log('<< user.id >>', user.id)
+					console.log('<< error >>', error)
 				})
 	}, [user.id])
 
