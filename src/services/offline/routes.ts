@@ -1,6 +1,7 @@
 import {getRouteParam} from '../../utils/getRouteParam'
 import {clientController} from './controllers/client'
 import {companyController} from './controllers/company'
+import {goalController} from './controllers/goal'
 import {productController} from './controllers/product'
 import {productSheetController} from './controllers/productSheet'
 import {requestController} from './controllers/request'
@@ -136,6 +137,21 @@ export function offlineRoutes(method: string, route: string, body: unknown) {
 			'companyId'
 		)
 		productSheetController.setProducts(body, companyId)
+		isRouteAvailableOffline = true
+	}
+
+	if (method === 'post' && compareRoutes('goals', route)) {
+		goalController.create(body)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'put' && compareRoutes('goals/:month', route)) {
+		const month = getRouteParam('goals/:month', route, 'month')
+		goalController.update(body, month)
+		isRouteAvailableOffline = true
+	}
+	if (method === 'delete' && compareRoutes('goals/:month', route)) {
+		const month = getRouteParam('goals/:month', route, 'month')
+		goalController.remove(month)
 		isRouteAvailableOffline = true
 	}
 
