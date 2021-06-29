@@ -292,6 +292,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
 	function handleSubmit() {
 		const {areFieldsValid, warning} = validateFields()
 		if (!areFieldsValid) return warningAlert('Dados inválidos!', warning)
+		console.log('<< status >>', status)
 
 		const data = new FormData()
 

@@ -75,15 +75,18 @@ export const clientController = {
 				: previousClient.insc_estadual,
 			telefone: telefone ? telefone : previousClient.telefone,
 			email: email ? email : previousClient.email,
-			vendedores: vendedores ? vendedores : previousClient.vendedores,
-			endereco: endereco ? endereco : previousClient.endereco,
-			status: status ? status : previousClient.status,
-			condicoes: condicoes ? condicoes : previousClient.condicoes,
-			contatos: contatos ? contatos : previousClient.contatos,
+			vendedores: vendedores
+				? JSON.parse(vendedores)
+				: previousClient.vendedores,
+			endereco: endereco ? JSON.parse(endereco) : previousClient.endereco,
+			status: status ? JSON.parse(status) : previousClient.status,
+			condicoes: condicoes ? JSON.parse(condicoes) : previousClient.condicoes,
+			contatos: contatos ? JSON.parse(contatos) : previousClient.contatos,
 			representadas: representadas
-				? representadas
+				? JSON.parse(representadas)
 				: previousClient.representadas
 		}
+		console.log('<< updatedClient >>', updatedClient)
 
 		await db.table('clients').put(updatedClient, id)
 	},
