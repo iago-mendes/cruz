@@ -20,11 +20,12 @@ import {companyController} from '../../../services/offline/controllers/company'
 import {productController} from '../../../services/offline/controllers/product'
 import {SkeletonLoading} from '../../../utils/skeletonLoading'
 import {Image} from '../../../components/Image'
+import {useMemo} from 'react'
 
 const Products: React.FC = () => {
 	const {user} = useAuth()
 	const {query, push} = useRouter()
-	const {company: companyId} = query
+	const {company: companyId, search: querySearch} = query
 
 	const defaultProducts: Product[] = Array(20).fill(loadingProduct)
 	const [products, setProducts] = useState<Product[]>(defaultProducts)
@@ -35,6 +36,22 @@ const Products: React.FC = () => {
 
 	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
 
+	const [search, setSearch] = useState('')
+	const searchedProducts = useMemo(
+		() =>
+			products.filter(product => {
+				const codeResult = product.codigo
+					.toLowerCase()
+					.includes(search.toLowerCase())
+				const nameResult = product.nome
+					.toLowerCase()
+					.includes(search.toLowerCase())
+
+				return codeResult || nameResult
+			}),
+		[products, search]
+	)
+
 	useEffect(() => {
 		companyController.rawOne(String(companyId)).then(data => {
 			setCompanyName(data.nome_fantasia)
@@ -43,6 +60,10 @@ const Products: React.FC = () => {
 
 		updateProducts()
 	}, [])
+
+	useEffect(() => {
+		if (querySearch != undefined) setSearch(String(querySearch))
+	}, [querySearch])
 
 	async function updateProducts() {
 		await productController.raw(String(companyId)).then(data => {
@@ -100,7 +121,12 @@ const Products: React.FC = () => {
 				callback={updateProducts}
 			/>
 
-			<Header display={`${companyName} > Produtos`} />
+			<Header
+				display={`${companyName} > Produtos`}
+				showSearch
+				search={search}
+				setSearch={search => push(`/empresas/${companyId}?search=${search}`)}
+			/>
 			<Add route={`/empresas/${companyId}/adicionar`} />
 
 			<main>
@@ -137,7 +163,7 @@ const Products: React.FC = () => {
 					</thead>
 
 					<tbody>
-						{products.map((product, index) => {
+						{searchedProducts.map((product, index) => {
 							if (product._id === 'loading')
 								return (
 									<tr key={index}>
