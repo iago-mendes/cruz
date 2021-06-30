@@ -3,7 +3,8 @@ import getConfig from 'next/config'
 const {publicRuntimeConfig: env} = getConfig()
 
 export default function formatImage(filename: string | undefined) {
-	if (!filename) return `${env.apiUrl}/public/images/no-image.png`
+	if (!filename || filename === `${env.apiUrl}/assets/no-image.svg`)
+		return `${env.apiUrl}/public/images/no-image.png`
 	else if (filename.includes('http')) return filename
 	else return `${env.apiUrl}/uploads/${filename}`
 }
