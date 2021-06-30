@@ -25,7 +25,7 @@ const Container = styled.header`
 		}
 	}
 
-	.inputField {
+	form.search {
 		height: 60%;
 		width: 25rem;
 
@@ -47,6 +47,14 @@ const Container = styled.header`
 			svg {
 				color: ${p => p.theme.colors.primary};
 			}
+		}
+
+		button {
+			background: none;
+			border: none;
+			font-size: 2.5rem;
+
+			display: flex;
 		}
 
 		svg {

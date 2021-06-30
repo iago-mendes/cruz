@@ -6,9 +6,9 @@ import {
 	BiSpreadsheet,
 	BiDotsVerticalRounded
 } from 'react-icons/bi'
-import {FiUsers} from 'react-icons/fi'
+import {FiUsers, FiX} from 'react-icons/fi'
 import {FaStore} from 'react-icons/fa'
-import {useEffect, useState} from 'react'
+import {FormEvent, useEffect, useState} from 'react'
 
 import Container, {Options} from '../styles/components/Header'
 import useClickOutside from '../hooks/useClickOutside'
@@ -36,6 +36,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
 	const Router = useRouter()
 	const [page, setPage] = useState('')
+	const [tmpSearch, setTmpSearch] = useState(search)
 
 	const [isOptionsExpanded, setIsOptionsExpanded] = useState(false)
 	const optionsRef = useClickOutside(() => setIsOptionsExpanded(false))
@@ -53,6 +54,21 @@ const Header: React.FC<HeaderProps> = ({
 		if (page === 'indicadores') return <BiLineChart size={30} />
 	}
 
+	useEffect(() => {
+		if (tmpSearch !== search) setTmpSearch(search)
+	}, [search])
+
+	function handleSearch(e: FormEvent) {
+		e.preventDefault()
+
+		setSearch(tmpSearch)
+	}
+
+	function handleClearSearch() {
+		setTmpSearch('')
+		setSearch('')
+	}
+
 	return (
 		<Container>
 			<div className="display">
@@ -61,15 +77,20 @@ const Header: React.FC<HeaderProps> = ({
 			</div>
 
 			{showSearch && (
-				<div className="inputField">
-					<BiSearch size={25} />
+				<form className="search" onSubmit={handleSearch}>
+					<button type="submit" title="Pesquisar">
+						<BiSearch />
+					</button>
 					<input
 						type="text"
 						name="search"
-						value={search}
-						onChange={e => setSearch(e.target.value)}
+						value={tmpSearch}
+						onChange={e => setTmpSearch(e.target.value)}
 					/>
-				</div>
+					<button type="button" onClick={handleClearSearch} title="Limpar">
+						<FiX />
+					</button>
+				</form>
 			)}
 
 			{options.length > 0 && (
