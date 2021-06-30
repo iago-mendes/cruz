@@ -74,12 +74,15 @@ const Container = styled.header`
 	}
 
 	@media (max-width: 1000px) {
-		padding: 0 1rem;
+		padding: 0.5rem 1rem;
+		height: fit-content;
+
+		flex-direction: column;
+		align-items: flex-end;
 		gap: 1rem;
 
-		.inputField {
-			width: 100%;
-			max-width: 25rem;
+		.display {
+			margin-right: auto;
 		}
 	}
 `
