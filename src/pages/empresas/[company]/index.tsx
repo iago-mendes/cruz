@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {FiEdit3, FiTrash} from 'react-icons/fi'
+import {FiEdit3, FiTrash, FiEye, FiEyeOff} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {MdUpdate} from 'react-icons/md'
@@ -21,6 +21,7 @@ import {productController} from '../../../services/offline/controllers/product'
 import {SkeletonLoading} from '../../../utils/skeletonLoading'
 import {Image} from '../../../components/Image'
 import {useMemo} from 'react'
+import {catchError} from '../../../utils/catchError'
 
 const Products: React.FC = () => {
 	const {user} = useAuth()
@@ -97,6 +98,22 @@ const Products: React.FC = () => {
 						errorAlert(err.response.message.data)
 					})
 		)
+	}
+
+	async function toggleProductBlockStatus(
+		productId: string,
+		currentStatus: boolean | undefined,
+		index: number
+	) {
+		const isBlocked = currentStatus == undefined ? true : !currentStatus
+
+		const tmpProducts = [...products]
+		tmpProducts[index].isBlocked = isBlocked
+		setProducts(tmpProducts)
+
+		await api
+			.put(`companies/${companyId}/products/${productId}`, {isBlocked})
+			.catch(catchError)
 	}
 
 	return (
@@ -202,10 +219,33 @@ const Products: React.FC = () => {
 								)
 							else
 								return (
-									<tr key={index}>
+									<tr
+										key={index}
+										className={product.isBlocked === true ? 'blocked' : ''}
+									>
 										{user.role === 'admin' && (
 											<td>
 												<div className="actions">
+													<button
+														title={
+															product.isBlocked === true
+																? 'Desbloquear'
+																: 'Bloquear'
+														}
+														onClick={() =>
+															toggleProductBlockStatus(
+																product._id,
+																product.isBlocked,
+																index
+															)
+														}
+													>
+														{product.isBlocked === true ? (
+															<FiEyeOff />
+														) : (
+															<FiEye />
+														)}
+													</button>
 													<button
 														title="Editar"
 														onClick={() =>
@@ -219,6 +259,7 @@ const Products: React.FC = () => {
 													<button
 														title="Deletar"
 														onClick={() => handleDeleteProduct(product)}
+														className="delete"
 													>
 														<FiTrash />
 													</button>

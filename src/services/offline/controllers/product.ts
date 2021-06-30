@@ -42,8 +42,18 @@ export const productController = {
 	},
 
 	update: async (body: any, companyId?: string, productId?: string) => {
-		const {nome, unidade, ipi, st, tabelas, codigo, comissao, peso, volume} =
-			body
+		const {
+			nome,
+			unidade,
+			ipi,
+			st,
+			tabelas,
+			codigo,
+			comissao,
+			peso,
+			volume,
+			isBlocked
+		} = body
 
 		if (!companyId || !productId) return undefined
 
@@ -67,7 +77,8 @@ export const productController = {
 			volume: volume ? volume : previous.volume,
 			unidade: unidade ? unidade : previous.unidade,
 			comissao: comissao ? comissao : previous.comissao,
-			tabelas: tabelas ? JSON.parse(tabelas) : previous.tabelas
+			tabelas: tabelas ? JSON.parse(tabelas) : previous.tabelas,
+			isBlocked: isBlocked != undefined ? isBlocked : previous.isBlocked
 		}
 
 		await db.table('companies').put(company, companyId)
@@ -102,17 +113,19 @@ export const productController = {
 		)?.tabela
 		if (!tableId) return undefined
 
-		const products = rawCompany.produtos.map(product => ({
-			id: product._id,
-			imagem: formatImage(product.imagem),
-			nome: product.nome,
-			unidade: product.unidade,
-			st: product.st,
-			ipi: product.ipi,
-			preco: product.tabelas.find(
-				tabela => String(tabela.id) == String(tableId)
-			)?.preco
-		}))
+		const products = rawCompany.produtos
+			.filter(product => product.isBlocked !== true)
+			.map(product => ({
+				id: product._id,
+				imagem: formatImage(product.imagem),
+				nome: product.nome,
+				unidade: product.unidade,
+				st: product.st,
+				ipi: product.ipi,
+				preco: product.tabelas.find(
+					tabela => String(tabela.id) == String(tableId)
+				)?.preco
+			}))
 		products.sort((a, b) => (a.nome < b.nome ? -1 : 1))
 
 		return products
@@ -124,15 +137,17 @@ export const productController = {
 		const rawCompany: CompanyRaw = await db.table('companies').get(companyId)
 		if (!rawCompany) return undefined
 
-		const products = rawCompany.produtos.map(product => ({
-			id: product._id,
-			imagem: formatImage(product.imagem),
-			nome: product.nome,
-			unidade: product.unidade,
-			st: product.st,
-			ipi: product.ipi,
-			preco: product.tabelas[0].preco
-		}))
+		const products = rawCompany.produtos
+			.filter(product => product.isBlocked !== true)
+			.map(product => ({
+				id: product._id,
+				imagem: formatImage(product.imagem),
+				nome: product.nome,
+				unidade: product.unidade,
+				st: product.st,
+				ipi: product.ipi,
+				preco: product.tabelas[0].preco
+			}))
 		products.sort((a, b) => (a.nome < b.nome ? -1 : 1))
 
 		return products

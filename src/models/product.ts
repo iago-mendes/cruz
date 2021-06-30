@@ -12,6 +12,7 @@ interface Product {
 	st: number
 	comissao: number
 	tabelas: ProductTable[]
+	isBlocked?: boolean
 }
 
 export const defaultProduct: Product = {

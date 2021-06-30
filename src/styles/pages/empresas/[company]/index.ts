@@ -73,12 +73,12 @@ const Container = styled.div`
 								transition: 0.25s;
 
 								:hover {
-									background-color: rgb(201, 64, 64);
-								}
-
-								:first-of-type:hover {
 									background-color: ${p => p.theme.colors.secondary};
 								}
+							}
+
+							button.delete:hover {
+								background-color: rgb(201, 64, 64);
 							}
 						}
 					}
@@ -97,6 +97,10 @@ const Container = styled.div`
 							max-height: 100%;
 						}
 					}
+				}
+
+				.blocked {
+					opacity: 0.5;
 				}
 			}
 		}
