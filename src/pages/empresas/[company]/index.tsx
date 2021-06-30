@@ -126,6 +126,7 @@ const Products: React.FC = () => {
 				showSearch
 				search={search}
 				setSearch={search => push(`/empresas/${companyId}?search=${search}`)}
+				searchPlaceholder="Código ou nome"
 			/>
 			<Add route={`/empresas/${companyId}/adicionar`} />
 

@@ -19,6 +19,7 @@ interface HeaderProps {
 	showSearch?: boolean
 	search?: string
 	setSearch?: (search: string) => void
+	searchPlaceholder?: string
 
 	options?: Array<{
 		display: string
@@ -32,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({
 	showSearch = false,
 	search = '',
 	setSearch,
+	searchPlaceholder,
 	options = []
 }) => {
 	const Router = useRouter()
@@ -86,6 +88,7 @@ const Header: React.FC<HeaderProps> = ({
 						name="search"
 						value={tmpSearch}
 						onChange={e => setTmpSearch(e.target.value)}
+						placeholder={searchPlaceholder}
 					/>
 					<button type="button" onClick={handleClearSearch} title="Limpar">
 						<FiX />
