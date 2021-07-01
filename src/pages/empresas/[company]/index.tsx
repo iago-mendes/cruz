@@ -121,11 +121,11 @@ const Products: React.FC = () => {
 
 	async function toggleProductBlockStatus(
 		productId: string,
-		currentStatus: boolean | undefined,
-		index: number
+		currentStatus: boolean | undefined
 	) {
 		const isBlocked = currentStatus == undefined ? true : !currentStatus
 
+		const index = products.findIndex(({_id}) => _id === productId)
 		const tmpProducts = [...products]
 		tmpProducts[index].isBlocked = isBlocked
 		setProducts(tmpProducts)
@@ -178,6 +178,7 @@ const Products: React.FC = () => {
 							options={filterOptions}
 							styles={selectStyles}
 							className="select"
+							isSearchable={false}
 						/>
 					</div>
 					{user.role === 'admin' && (
@@ -206,7 +207,7 @@ const Products: React.FC = () => {
 											<SkeletonLoading height="1.5rem" width="10rem" />
 										</th>
 									)
-								else return <th key={index}>Tabela {nome}</th>
+								else return <th key={_id}>Tabela {nome}</th>
 							})}
 						</tr>
 					</thead>
@@ -251,7 +252,7 @@ const Products: React.FC = () => {
 							else
 								return (
 									<tr
-										key={index}
+										key={product._id}
 										className={product.isBlocked === true ? 'blocked' : ''}
 									>
 										{user.role === 'admin' && (
@@ -266,8 +267,7 @@ const Products: React.FC = () => {
 														onClick={() =>
 															toggleProductBlockStatus(
 																product._id,
-																product.isBlocked,
-																index
+																product.isBlocked
 															)
 														}
 													>
