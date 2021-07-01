@@ -37,7 +37,7 @@ const Products: React.FC = () => {
 	const {query, push} = useRouter()
 	const {company: companyId, search: querySearch} = query
 
-	const defaultProducts: Product[] = Array(20).fill(loadingProduct)
+	const defaultProducts: Product[] = Array(300).fill(loadingProduct)
 	const [products, setProducts] = useState<Product[]>(defaultProducts)
 	const [companyName, setCompanyName] = useState('')
 	const [tables, setTables] = useState<CompanyTable[]>([

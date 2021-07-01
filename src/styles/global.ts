@@ -49,9 +49,8 @@ export default createGlobalStyle`
 
 	.container
 	{
-		height: 100vh;
-		width: calc(100% - 20rem);
-		overflow-y: auto;
+		width: 100%;
+		margin-left: 20rem;
 	}
 
 	.main
@@ -92,9 +91,9 @@ export default createGlobalStyle`
 
 		.container
 		{
-			height: fit-content;
 			width: 100%;
 			
+			margin-left: 0;
 			margin-bottom: 15rem;
 		}
 

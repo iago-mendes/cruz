@@ -5,6 +5,10 @@ export const Sidebar = styled.nav`
 	height: 100vh;
 	width: 20rem;
 
+	position: fixed;
+	left: 0;
+	top: 0;
+	bottom: 0;
 	overflow-y: auto;
 
 	box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.25);
