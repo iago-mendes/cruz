@@ -18,6 +18,7 @@ import formatPrice from '../utils/formatPrice'
 import getDate from '../utils/getDate'
 import useDimensions from '../hooks/useDimensions'
 import {SkeletonLoading} from '../utils/skeletonLoading'
+import {formatMonth} from '../utils/formatMonth'
 
 type GoalChartProps = {
 	month: string
@@ -43,29 +44,6 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 	const needToSell = goal.goal - goal.sold
 	const needToSellPerBusinessDay = needToSell / goal.remainingBusinessDays
 
-	function getFormatedMonth() {
-		const [year, monthNumber] = month.split('-').map(part => Number(part))
-
-		const monthNames = [
-			'Janeiro',
-			'Fevereiro',
-			'Março',
-			'Abril',
-			'Maio',
-			'Junho',
-			'Julho',
-			'Agosto',
-			'Setembro',
-			'Outubro',
-			'Novembro',
-			'Dezembro'
-		]
-		const monthName = monthNames[monthNumber - 1]
-
-		const formatedMonth = monthName + ' ' + year
-		return formatedMonth
-	}
-
 	function changeMonth(change: number) {
 		const [year, oldMonthNumber] = month.split('-').map(part => Number(part))
 		const newmonthNumber = String(oldMonthNumber + change).padStart(2, '0')
@@ -83,7 +61,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 						<BsChevronLeft />
 					</button>
 
-					<span>{getFormatedMonth()}</span>
+					<span>{formatMonth(month)}</span>
 
 					<button onClick={() => changeMonth(+1)}>
 						<BsChevronRight />
