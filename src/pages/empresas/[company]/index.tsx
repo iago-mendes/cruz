@@ -3,6 +3,7 @@ import {FiEdit3, FiTrash, FiEye, FiEyeOff} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {MdUpdate} from 'react-icons/md'
+import Select from 'react-select'
 
 import api from '../../../services/api'
 import Header from '../../../components/Header'
@@ -22,6 +23,14 @@ import {SkeletonLoading} from '../../../utils/skeletonLoading'
 import {Image} from '../../../components/Image'
 import {useMemo} from 'react'
 import {catchError} from '../../../utils/catchError'
+import {selectStyles} from '../../../styles/global'
+import {SelectOption} from '../../../models'
+
+const filterOptions: SelectOption[] = [
+	{label: 'Todos produtos', value: 'all'},
+	{label: 'Produtos ativos', value: 'not blocked'},
+	{label: 'Produtos inativos', value: 'blocked'}
+]
 
 const Products: React.FC = () => {
 	const {user} = useAuth()
@@ -38,19 +47,29 @@ const Products: React.FC = () => {
 	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
 
 	const [search, setSearch] = useState('')
+	const [selectedFilter, setSelectedFilter] = useState(filterOptions[1].value)
 	const searchedProducts = useMemo(
 		() =>
-			products.filter(product => {
-				const codeResult = product.codigo
-					.toLowerCase()
-					.includes(search.toLowerCase())
-				const nameResult = product.nome
-					.toLowerCase()
-					.includes(search.toLowerCase())
+			products
+				.filter(product => {
+					if (selectedFilter === 'all') return true
+					else if (selectedFilter === 'not blocked')
+						return product.isBlocked != true
+					else if (selectedFilter === 'blocked')
+						return product.isBlocked === true
+					else return false
+				})
+				.filter(product => {
+					const codeResult = product.codigo
+						.toLowerCase()
+						.includes(search.toLowerCase())
+					const nameResult = product.nome
+						.toLowerCase()
+						.includes(search.toLowerCase())
 
-				return codeResult || nameResult
-			}),
-		[products, search]
+					return codeResult || nameResult
+				}),
+		[products, search, selectedFilter]
 	)
 
 	useEffect(() => {
@@ -149,6 +168,18 @@ const Products: React.FC = () => {
 
 			<main>
 				<div className="productsActions">
+					<div className="filter">
+						<span>Exibir</span>
+						<Select
+							value={filterOptions.find(
+								option => option.value === selectedFilter
+							)}
+							onChange={option => setSelectedFilter(option.value)}
+							options={filterOptions}
+							styles={selectStyles}
+							className="select"
+						/>
+					</div>
 					{user.role === 'admin' && (
 						<button onClick={() => setIsTableUpdatesModalOpen(true)}>
 							<MdUpdate />

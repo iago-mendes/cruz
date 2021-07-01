@@ -139,6 +139,27 @@ const Container = styled.div`
 					filter: brightness(0.9);
 				}
 			}
+
+			.filter {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				span {
+					font-size: 1.5rem;
+				}
+
+				.select {
+					width: 18rem;
+				}
+			}
+		}
+	}
+
+	@media (max-width: 1000px) {
+		main .productsActions {
+			flex-direction: column;
+			align-items: flex-end;
 		}
 	}
 `
