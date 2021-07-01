@@ -77,7 +77,6 @@ const Products: React.FC = () => {
 			setCompanyName(data.nome_fantasia)
 			setTables(data.tabelas)
 		})
-
 		updateProducts()
 	}, [])
 
@@ -189,131 +188,143 @@ const Products: React.FC = () => {
 					)}
 				</div>
 
-				<table>
-					<thead>
-						<tr>
-							{user.role === 'admin' && <th>Ações</th>}
-							<th>Imagem</th>
-							<th>Código</th>
-							<th>Nome</th>
-							<th>Unidade</th>
-							<th>Ipi</th>
-							<th>St</th>
-							<th>Comissão</th>
-							{tables.map(({_id, nome}, index) => {
-								if (_id === 'loading')
-									return (
-										<th key={index}>
-											<SkeletonLoading height="1.5rem" width="10rem" />
-										</th>
-									)
-								else return <th key={_id}>Tabela {nome}</th>
-							})}
-						</tr>
-					</thead>
+				<div className="tableContainer">
+					<table>
+						<thead>
+							<tr>
+								{user.role === 'admin' && <th>Ações</th>}
+								<th>Imagem</th>
+								<th>Código</th>
+								<th className="name">Nome</th>
+								<th>Unidade</th>
+								<th>Ipi</th>
+								<th>St</th>
+								<th>Comissão</th>
+								{tables.map(({_id, nome}, index) => {
+									if (_id === 'loading')
+										return (
+											<th key={index}>
+												<SkeletonLoading height="1.5rem" width="10rem" />
+											</th>
+										)
+									else
+										return (
+											<th key={_id} className="table">
+												Tabela {nome}
+											</th>
+										)
+								})}
+							</tr>
+						</thead>
 
-					<tbody>
-						{searchedProducts.map((product, index) => {
-							if (product._id === 'loading')
-								return (
-									<tr key={index}>
-										<td className="img">
-											<SkeletonLoading height="3rem" width="3rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="40rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="5rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="5rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="5rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="5rem" />
-										</td>
-										<td>
-											<SkeletonLoading height="1.5rem" width="5rem" />
-										</td>
-										{product.tabelas.map(({id, preco}, index) => {
-											if (id === 'loading')
-												return (
-													<td key={index}>
-														<SkeletonLoading height="1.5rem" width="5rem" />
-													</td>
-												)
-											else return <td key={index}>R$ {formatNumber(preco)}</td>
-										})}
-									</tr>
-								)
-							else
-								return (
-									<tr
-										key={product._id}
-										className={product.isBlocked === true ? 'blocked' : ''}
-									>
-										{user.role === 'admin' && (
-											<td>
-												<div className="actions">
-													<button
-														title={
-															product.isBlocked === true
-																? 'Desbloquear'
-																: 'Bloquear'
-														}
-														onClick={() =>
-															toggleProductBlockStatus(
-																product._id,
-																product.isBlocked
-															)
-														}
-													>
-														{product.isBlocked === true ? (
-															<FiEyeOff />
-														) : (
-															<FiEye />
-														)}
-													</button>
-													<button
-														title="Editar"
-														onClick={() =>
-															push(
-																`/empresas/${companyId}/${product._id}/editar`
-															)
-														}
-													>
-														<FiEdit3 />
-													</button>
-													<button
-														title="Deletar"
-														onClick={() => handleDeleteProduct(product)}
-														className="delete"
-													>
-														<FiTrash />
-													</button>
-												</div>
+						<tbody>
+							{searchedProducts.map((product, index) => {
+								if (product._id === 'loading')
+									return (
+										<tr key={index}>
+											{user.role === 'admin' && (
+												<td>
+													<SkeletonLoading height="1.5rem" width="5rem" />
+												</td>
+											)}
+											<td className="img">
+												<SkeletonLoading height="3rem" width="3rem" />
 											</td>
-										)}
-										<td className="img">
-											<Image src={product.imagem} alt={product.nome} />
-										</td>
-										<td>{product.codigo}</td>
-										<td>{product.nome}</td>
-										<td>{product.unidade}</td>
-										<td>{formatNumber(product.ipi)} %</td>
-										<td>{formatNumber(product.st)} %</td>
-										<td>{formatNumber(product.comissao)} %</td>
-										{product.tabelas.map(({id, preco}) => (
-											<td key={id}>R$ {formatNumber(preco)}</td>
-										))}
-									</tr>
-								)
-						})}
-					</tbody>
-				</table>
+											<td>
+												<SkeletonLoading height="1.5rem" width="5rem" />
+											</td>
+											<td>
+												<SkeletonLoading height="1.5rem" width="40rem" />
+											</td>
+											<td>
+												<SkeletonLoading height="1.5rem" width="5rem" />
+											</td>
+											<td>
+												<SkeletonLoading height="1.5rem" width="5rem" />
+											</td>
+											<td>
+												<SkeletonLoading height="1.5rem" width="5rem" />
+											</td>
+											<td>
+												<SkeletonLoading height="1.5rem" width="5rem" />
+											</td>
+											{product.tabelas.map(({id, preco}, index) => {
+												if (id === 'loading')
+													return (
+														<td key={index}>
+															<SkeletonLoading height="1.5rem" width="5rem" />
+														</td>
+													)
+												else return <td key={id}>R$ {formatNumber(preco)}</td>
+											})}
+										</tr>
+									)
+								else
+									return (
+										<tr
+											key={product._id}
+											className={product.isBlocked === true ? 'blocked' : ''}
+										>
+											{user.role === 'admin' && (
+												<td>
+													<div className="actions">
+														<button
+															title={
+																product.isBlocked === true
+																	? 'Desbloquear'
+																	: 'Bloquear'
+															}
+															onClick={() =>
+																toggleProductBlockStatus(
+																	product._id,
+																	product.isBlocked
+																)
+															}
+														>
+															{product.isBlocked === true ? (
+																<FiEyeOff />
+															) : (
+																<FiEye />
+															)}
+														</button>
+														<button
+															title="Editar"
+															onClick={() =>
+																push(
+																	`/empresas/${companyId}/${product._id}/editar`
+																)
+															}
+														>
+															<FiEdit3 />
+														</button>
+														<button
+															title="Deletar"
+															onClick={() => handleDeleteProduct(product)}
+															className="delete"
+														>
+															<FiTrash />
+														</button>
+													</div>
+												</td>
+											)}
+											<td className="img">
+												<Image src={product.imagem} alt={product.nome} />
+											</td>
+											<td>{product.codigo}</td>
+											<td className="name">{product.nome}</td>
+											<td>{product.unidade}</td>
+											<td>{formatNumber(product.ipi)} %</td>
+											<td>{formatNumber(product.st)} %</td>
+											<td>{formatNumber(product.comissao)} %</td>
+											{product.tabelas.map(({id, preco}) => (
+												<td key={id}>R$ {formatNumber(preco)}</td>
+											))}
+										</tr>
+									)
+							})}
+						</tbody>
+					</table>
+				</div>
 			</main>
 		</Container>
 	)

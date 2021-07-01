@@ -4,110 +4,126 @@ const Container = styled.div`
 	main {
 		width: 100%;
 
-		overflow: auto;
+		.tableContainer {
+			min-height: 50vh;
+			width: 100%;
+			overflow-x: auto;
 
-		table {
-			width: fit-content;
-			height: fit-content;
-			margin: 2rem;
+			padding: 2rem;
 
-			border-collapse: collapse;
+			table {
+				width: fit-content;
+				height: fit-content;
 
-			thead {
-				background-color: ${p => p.theme.colors.primary};
-				color: ${p => p.theme.colors.secondary};
+				border-collapse: collapse;
 
-				tr {
-					height: 5rem;
+				thead {
+					background-color: ${p => p.theme.colors.primary};
+					color: ${p => p.theme.colors.secondary};
 
-					th {
-						font-family: Ubuntu;
-						font-size: 1.25rem;
+					tr {
+						height: 5rem;
 
-						padding: 0.5rem;
-						text-overflow: ellipsis;
+						th {
+							font-family: Ubuntu;
+							font-size: 1.25rem;
+
+							padding: 0.5rem;
+							text-overflow: ellipsis;
+							min-width: 7rem;
+						}
+
+						th.name {
+							min-width: 20rem;
+						}
+
+						th.table {
+							white-space: nowrap;
+						}
 					}
 				}
-			}
 
-			tbody {
-				tr {
-					height: 5rem;
+				tbody {
+					tr {
+						height: 5rem;
 
-					:nth-child(odd) {
-						background-color: #ccc;
-					}
+						:nth-child(odd) {
+							background-color: #ccc;
+						}
 
-					:nth-child(even) {
-						background-color: #fff;
-					}
+						:nth-child(even) {
+							background-color: #fff;
+						}
 
-					td {
-						font-family: Roboto;
-						padding-left: 0.5rem;
-						padding-right: 0.5rem;
+						td {
+							font-family: Roboto;
+							padding-left: 0.5rem;
+							padding-right: 0.5rem;
 
-						min-width: 7rem;
+							min-width: 7rem;
 
-						.actions {
-							display: flex;
-							align-items: center;
-							justify-content: space-around;
-
-							height: 100%;
-							gap: 1rem;
-
-							button {
-								padding: 0.5rem;
-								border-radius: 100rem;
-								font-size: 1.5rem;
-
+							.actions {
 								display: flex;
 								align-items: center;
-								justify-content: center;
+								justify-content: space-around;
 
-								border: none;
-								background: none;
+								height: 100%;
+								gap: 1rem;
 
-								cursor: pointer;
-								transition: 0.25s;
+								button {
+									padding: 0.5rem;
+									border-radius: 100rem;
+									font-size: 1.5rem;
 
-								:hover {
-									background-color: ${p => p.theme.colors.secondary};
+									display: flex;
+									align-items: center;
+									justify-content: center;
+
+									border: none;
+									background: none;
+
+									cursor: pointer;
+									transition: 0.25s;
+
+									:hover {
+										background-color: ${p => p.theme.colors.secondary};
+									}
+								}
+
+								button.delete:hover {
+									background-color: rgb(201, 64, 64);
 								}
 							}
+						}
 
-							button.delete:hover {
-								background-color: rgb(201, 64, 64);
+						td.img {
+							height: 5rem;
+
+							display: flex;
+							align-items: center;
+							justify-content: center;
+
+							img {
+								max-width: 4.5rem;
+								max-height: 4.5rem;
 							}
 						}
-					}
 
-					.img {
-						width: 5rem;
-						height: 5rem;
-						padding: 0.25rem;
-
-						display: flex;
-						align-items: center;
-						justify-content: center;
-
-						img {
-							max-width: 100%;
-							max-height: 100%;
+						td.name {
+							min-width: 20rem;
 						}
 					}
-				}
 
-				.blocked {
-					opacity: 0.5;
+					.blocked {
+						opacity: 0.5;
+					}
 				}
 			}
-		}
 
-		th,
-		td {
-			border: 1px solid rgba(0, 0, 0, 0.25);
+			th,
+			td {
+				border: 1px solid rgba(0, 0, 0, 0.25);
+			}
 		}
 
 		.productsActions {
