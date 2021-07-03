@@ -144,8 +144,11 @@ export const clientController = {
 						const searchResult1 = isSubstring(client.nome_fantasia, search)
 						const searchResult2 = isSubstring(client.razao_social, search)
 						const searchResult3 = isSubstring(client.endereco.cidade, search)
+						const searchResult4 = client.email === search
 
-						return searchResult1 || searchResult2 || searchResult3
+						return (
+							searchResult1 || searchResult2 || searchResult3 || searchResult4
+						)
 				  })
 
 		const clientsPerPage = 15

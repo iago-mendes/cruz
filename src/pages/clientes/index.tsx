@@ -98,7 +98,7 @@ const Clients: React.FC = () => {
 				showSearch
 				search={search}
 				setSearch={search => push(`/clientes?search=${search}&page=${page}`)}
-				searchPlaceholder="Nome ou cidade"
+				searchPlaceholder="Nome, cidade ou e-mail"
 			/>
 
 			<SheetModal
