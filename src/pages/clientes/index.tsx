@@ -48,11 +48,11 @@ const Clients: React.FC = () => {
 	async function updateClients() {
 		await clientController
 			.list(search, page)
-			.then(({clients, page, totalPages}) => {
+			.then(({clients, page: newPage, totalPages}) => {
 				setClients(clients)
 
-				if (Number.isNaN(page)) setPage(1)
-				else setPage(page)
+				if (Number.isNaN(newPage)) setPage(1)
+				else if (newPage !== page) setPage(newPage)
 
 				if (Number.isNaN(totalPages)) setTotalPages(1)
 				else setTotalPages(totalPages)
