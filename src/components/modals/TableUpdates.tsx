@@ -4,6 +4,7 @@ import Select from 'react-select'
 
 import {SelectOption} from '../../models'
 import api from '../../services/api'
+import {companyController} from '../../services/offline/controllers/company'
 import Container from '../../styles/components/modals/TableUpdates'
 import {selectStyles} from '../../styles/global'
 import errorAlert from '../../utils/alerts/error'
@@ -12,12 +13,12 @@ import FormButtons from '../FormButtons'
 import NumberInput from '../NumberInput'
 import ModalContainer from './Container'
 
-interface CompanyTable {
+type CompanyTable = {
 	id: string
 	nome: string
 }
 
-interface TableUpdatesModalProps {
+type Props = {
 	isOpen: boolean
 	setIsOpen: (p: boolean) => void
 
@@ -26,7 +27,7 @@ interface TableUpdatesModalProps {
 	callback?: () => void
 }
 
-const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({
+const TableUpdatesModal: React.FC<Props> = ({
 	isOpen,
 	setIsOpen,
 	companyId,
@@ -60,15 +61,31 @@ const TableUpdatesModal: React.FC<TableUpdatesModalProps> = ({
 	]
 
 	useEffect(() => {
-		api
-			.get(`companies/${companyId}/tables`)
-			.then(({data}: {data: CompanyTable[]}) => {
-				setCompanyTables(data)
+		companyController.rawOne(companyId).then(company => {
+			const tmpCompanyTables = company.tabelas.map(table => ({
+				id: String(table._id),
+				nome: table.nome
+			}))
+			setCompanyTables(tmpCompanyTables)
 
-				const tmpTargetTable = {id: data[0].id, change: 1}
-				setTargetTable(tmpTargetTable)
+			const tmpTargetTable = {id: tmpCompanyTables[0].id, change: 1}
+			setTargetTable(tmpTargetTable)
+
+			const tmpRelatedTables = !company.relatedTables
+				? []
+				: company.relatedTables.map(table => ({
+						id: table.id,
+						relation: table.relation
+				  }))
+			setRelatedTables(tmpRelatedTables)
+
+			const tmpRelatedTablesRelationOption = tmpRelatedTables.map(table => {
+				if (table.relation < 1) return 'decrease'
+				else return 'increase'
 			})
-	}, [])
+			setRelatedTablesRelationOption(tmpRelatedTablesRelationOption)
+		})
+	}, [companyId])
 
 	function getPercentChange(change: number) {
 		const percentChange = (change - 1) * 100

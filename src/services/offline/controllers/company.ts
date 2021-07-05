@@ -162,6 +162,12 @@ export const companyController = {
 			return tmpProduct
 		})
 
+		company.relatedTables = relatedTables.map(table => ({
+			id: table.id,
+			target: targetTable.id,
+			relation: table.relation
+		}))
+
 		await db.table('companies').put(company, id)
 	}
 }

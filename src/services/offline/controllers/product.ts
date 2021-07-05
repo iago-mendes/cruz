@@ -59,12 +59,47 @@ export const productController = {
 
 		const company: CompanyRaw = await db.table('companies').get(companyId)
 		if (!company) return undefined
+		const {relatedTables} = company
 
 		const existingIndex = company.produtos.findIndex(
 			product => String(product._id) == String(productId)
 		)
 		if (existingIndex < 0) return undefined
 		const previous = company.produtos[existingIndex]
+
+		let tables: Array<{
+			id: string
+			preco: number
+		}> = !tabelas ? previous.tabelas : JSON.parse(tabelas)
+		const relatedTablesIds = !relatedTables
+			? []
+			: relatedTables.map(table => table.id)
+
+		if (tabelas) {
+			tables.sort((a, b) => {
+				const isARelated = relatedTablesIds.includes(a.id)
+				const isBRelated = relatedTablesIds.includes(b.id)
+
+				if (isARelated && !isBRelated) return 1
+				else if (!isARelated && isBRelated) return -1
+				else return 0
+			})
+
+			tables = tables.map(table => {
+				if (!relatedTables) return table
+
+				const relatedTable = relatedTables.find(({id}) => id === table.id)
+				if (!relatedTable) return table
+
+				const targetTable = tables.find(({id}) => id === relatedTable.target)
+				if (!targetTable) return table
+
+				return {
+					id: table.id,
+					preco: targetTable.preco * relatedTable.relation
+				}
+			})
+		}
 
 		company.produtos[existingIndex] = {
 			_id: previous._id,
@@ -77,7 +112,7 @@ export const productController = {
 			volume: volume ? volume : previous.volume,
 			unidade: unidade ? unidade : previous.unidade,
 			comissao: comissao ? comissao : previous.comissao,
-			tabelas: tabelas ? JSON.parse(tabelas) : previous.tabelas,
+			tabelas: tables,
 			isBlocked: isBlocked != undefined ? isBlocked : previous.isBlocked
 		}
 
