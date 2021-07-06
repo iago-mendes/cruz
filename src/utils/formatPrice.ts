@@ -1,9 +1,14 @@
 function priceToString(p: number) {
-	return p.toFixed(2).replace('.', ',')
+	const {format} = new Intl.NumberFormat('pt-BR', {
+		style: 'decimal',
+		maximumFractionDigits: 2,
+		minimumFractionDigits: 2
+	})
+
+	return format(p)
 }
 
 function priceToNumber(p: string) {
-	// eslint-disable-next-line no-useless-escape
 	const [integers, decimals] = p
 		.split(',')
 		.map(str => Number(str.replace('/D/g', '')))
