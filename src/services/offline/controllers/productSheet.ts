@@ -1,7 +1,7 @@
+import productHeader from '../../../assets/db/sheets/productHeader.json'
+
 import db from '../db'
 import CompanyRaw from '../../../models/company'
-
-import productHeader from '../../../../db/sheets/productHeader.json'
 
 export const productSheetController = {
 	setProducts: async (body: any, companyId?: string) => {

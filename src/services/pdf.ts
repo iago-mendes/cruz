@@ -14,7 +14,7 @@ export function createPdf(content: any, title: string, options = {}) {
 			fontSize: 10
 		},
 		images: {
-			logo: 'https://api.cruzrepresentacoes.com.br/assets/logo.png'
+			logo: 'https://api.cruzrepresentacoes.com.br/public/images/logo.png'
 		}
 	}
 

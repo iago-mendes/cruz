@@ -11,7 +11,7 @@ import {FaStore, FaSync} from 'react-icons/fa'
 import {RiWifiOffLine} from 'react-icons/ri'
 import {useEffect, useState} from 'react'
 
-import Logo from '../assets/logo.svg'
+import Logo from '../assets/images/logo.svg'
 import {
 	Sidebar,
 	MobileMenu,

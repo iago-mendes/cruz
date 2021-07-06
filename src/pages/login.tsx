@@ -2,7 +2,7 @@ import Head from 'next/head'
 import {ChangeEvent, FormEvent, useEffect, useState} from 'react'
 import {useRouter} from 'next/router'
 
-import logo from '../assets/logo.svg'
+import logo from '../assets/images/logo.svg'
 import Container from '../styles/pages/login'
 import LoadingModal from '../components/modals/Loading'
 import errorAlert from '../utils/alerts/error'

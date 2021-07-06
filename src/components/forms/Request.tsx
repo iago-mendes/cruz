@@ -4,8 +4,8 @@ import {useEffect, useState} from 'react'
 import Switch from 'react-switch'
 import {FiPlus, FiX} from 'react-icons/fi'
 
-import freteOptions from '../../../db/options/frete.json'
-import typeOptions from '../../../db/options/type.json'
+import freteOptions from '../../assets/db/options/frete.json'
+import typeOptions from '../../assets/db/options/type.json'
 
 import Container from '../../styles/components/forms/global'
 import {selectStyles} from '../../styles/global'

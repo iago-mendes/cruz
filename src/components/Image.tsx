@@ -1,4 +1,4 @@
-import offline from '../assets/offline.svg'
+import offline from '../assets/images/offline.svg'
 import formatImage from '../utils/formatImage'
 
 type ImageProps = {
