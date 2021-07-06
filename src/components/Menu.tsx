@@ -17,7 +17,8 @@ import {
 	MobileMenu,
 	BurgerMenu,
 	OptionsList,
-	OfflineIndicatorContainer
+	OfflineIndicatorContainer,
+	Option
 } from '../styles/components/Menu'
 import useDimensions from '../hooks/useDimensions'
 import useClickOutside from '../hooks/useClickOutside'
@@ -86,8 +87,8 @@ function checkRoute(routes: string[]) {
 	const {pathname} = useRouter()
 
 	const current = pathname.split('/')
-	if (routes.includes(`/${current[1]}`)) return '#CC9749'
-	else return '#E2DADB'
+	if (routes.includes(`/${current[1]}`)) return true
+	else return false
 }
 
 const MainOptions: React.FC = () => {
@@ -97,36 +98,36 @@ const MainOptions: React.FC = () => {
 		<main>
 			<OptionsList>
 				<Link href="/">
-					<a>
-						<BiSpreadsheet size={25} color={checkRoute(['/', '/pedidos'])} />
+					<Option active={checkRoute(['/', '/pedidos'])}>
+						<BiSpreadsheet />
 						<span>Pedidos</span>
-					</a>
+					</Option>
 				</Link>
 				<Link href="/clientes">
-					<a>
-						<FaStore size={25} color={checkRoute(['/clientes'])} />
+					<Option active={checkRoute(['/clientes'])}>
+						<FaStore />
 						<span>Clientes</span>
-					</a>
+					</Option>
 				</Link>
 				<Link href="/empresas">
-					<a>
-						<BiBuildings size={25} color={checkRoute(['/empresas'])} />
+					<Option active={checkRoute(['/empresas'])}>
+						<BiBuildings />
 						<span>Empresas</span>
-					</a>
+					</Option>
 				</Link>
 				{user && user.role === 'admin' && (
 					<>
 						<Link href="/vendedores">
-							<a>
-								<FiUsers size={25} color={checkRoute(['/vendedores'])} />
+							<Option active={checkRoute(['/vendedores'])}>
+								<FiUsers />
 								<span>Vendedores</span>
-							</a>
+							</Option>
 						</Link>
 						<Link href="/indicadores">
-							<a>
-								<BiLineChart size={25} color={checkRoute(['/indicadores'])} />
+							<Option active={checkRoute(['/indicadores'])}>
+								<BiLineChart />
 								<span>Indicadores</span>
-							</a>
+							</Option>
 						</Link>
 					</>
 				)}
@@ -142,15 +143,15 @@ const FooterOptions: React.FC = () => {
 		<footer>
 			<OptionsList>
 				<Link href="/usuario">
-					<a>
-						<BiUserCircle size={25} color={checkRoute(['/usuario'])} />
+					<Option active={checkRoute(['/usuario'])}>
+						<BiUserCircle />
 						<span>Usuário</span>
-					</a>
+					</Option>
 				</Link>
-				<a onClick={logOut}>
+				<Option active={false} onClick={logOut}>
 					<FiLogOut size={25} color="#E2DADB" />
 					<span>Sair</span>
-				</a>
+				</Option>
 				<button className="sync" onClick={() => sync()}>
 					<FaSync />
 					<span>Sincronizar</span>

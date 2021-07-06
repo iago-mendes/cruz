@@ -115,31 +115,6 @@ export const OptionsList = styled.ul`
 
 	padding: 2.5rem 0;
 
-	a {
-		color: ${p => p.theme.colors.background};
-		text-decoration: none;
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		width: 80%;
-		padding: 0.5rem;
-		border-radius: 5rem;
-		cursor: pointer;
-
-		transition: background-color 0.25s;
-
-		:hover {
-			background-color: ${p => p.theme.colors.primaryDark}80;
-		}
-
-		span {
-			font-size: 1.5rem;
-			margin-left: 1rem;
-			transition: 0.25s;
-			font-family: Ubuntu;
-		}
-	}
-
 	button.sync {
 		background: none;
 		padding: 0.5rem 1rem;
@@ -184,5 +159,34 @@ export const OfflineIndicatorContainer = styled.div`
 		svg {
 			font-size: 2.5rem;
 		}
+	}
+`
+
+export const Option = styled.a<{active: boolean}>`
+	color: ${p =>
+		p.active ? p.theme.colors.secondary : p.theme.colors.background};
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 80%;
+	padding: 0.5rem;
+	border-radius: 5rem;
+	cursor: pointer;
+
+	transition: background-color 0.2s, color 0.2s;
+
+	:hover {
+		background-color: ${p => p.theme.colors.primaryDark}80;
+	}
+
+	svg {
+		font-size: 2.5rem;
+	}
+
+	span {
+		font-size: 1.5rem;
+		margin-left: 1rem;
+		font-family: Ubuntu;
 	}
 `
