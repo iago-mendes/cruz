@@ -42,3 +42,10 @@ export const loadingSeller: SellerRaw = {
 	admin: false,
 	representadas: []
 }
+
+export type SellerListed = {
+	id: string
+	imagem: string
+	nome: string
+	funcao: string
+}

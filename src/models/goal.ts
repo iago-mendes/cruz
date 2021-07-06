@@ -1,13 +1,15 @@
+export type GoalCompanyRaw = {
+	id: string
+	sellers: Array<{
+		id: string
+		goal: number
+	}>
+	eCommerceGoal: number
+}
+
 export type GoalRaw = {
 	month: string // unique
-	companies: Array<{
-		id: string
-		sellers: Array<{
-			id: string
-			goal: number
-		}>
-		eCommerceGoal: number
-	}>
+	companies: GoalCompanyRaw[]
 	modifiedAt?: string
 }
 

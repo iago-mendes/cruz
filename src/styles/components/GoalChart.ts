@@ -90,6 +90,8 @@ const Container = styled.div`
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-direction: column;
+		gap: 1rem;
 
 		p {
 			font-size: 2rem;
@@ -113,6 +115,28 @@ const Container = styled.div`
 
 		.day {
 			color: ${p => p.theme.colors.secondary};
+		}
+	}
+
+	button.define {
+		background: none;
+		border: ${p => p.theme.colors.primaryDark} 2px solid;
+		border-radius: 0.5rem;
+		padding: 0.25rem 1rem;
+
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: ${p => p.theme.colors.primaryDark};
+
+		display: flex;
+		align-items: center;
+		width: fit-content;
+
+		transition: color 0.2s, background-color 0.2s;
+
+		:hover {
+			background-color: ${p => p.theme.colors.primaryDark};
+			color: #fff;
 		}
 	}
 

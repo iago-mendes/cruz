@@ -10,6 +10,7 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts'
+import {useRouter} from 'next/router'
 
 import {GoalShowed} from '../models/goal'
 import Container from '../styles/components/GoalChart'
@@ -18,6 +19,7 @@ import formatPrice from '../utils/formatPrice'
 import getDate from '../utils/getDate'
 import useDimensions from '../hooks/useDimensions'
 import {SkeletonLoading} from '../utils/skeletonLoading'
+import {formatMonth} from '../utils/formatMonth'
 
 type GoalChartProps = {
 	month: string
@@ -27,6 +29,7 @@ type GoalChartProps = {
 
 const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 	const {inMobile} = useDimensions()
+	const {push} = useRouter()
 
 	let monthSold = 0
 	const dataPoints = goal.days.map(({day, sold}) => {
@@ -43,29 +46,6 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 	const needToSell = goal.goal - goal.sold
 	const needToSellPerBusinessDay = needToSell / goal.remainingBusinessDays
 
-	function getFormatedMonth() {
-		const [year, monthNumber] = month.split('-').map(part => Number(part))
-
-		const monthNames = [
-			'Janeiro',
-			'Fevereiro',
-			'Março',
-			'Abril',
-			'Maio',
-			'Junho',
-			'Julho',
-			'Agosto',
-			'Setembro',
-			'Outubro',
-			'Novembro',
-			'Dezembro'
-		]
-		const monthName = monthNames[monthNumber - 1]
-
-		const formatedMonth = monthName + ' ' + year
-		return formatedMonth
-	}
-
 	function changeMonth(change: number) {
 		const [year, oldMonthNumber] = month.split('-').map(part => Number(part))
 		const newmonthNumber = String(oldMonthNumber + change).padStart(2, '0')
@@ -78,12 +58,13 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 		<Container>
 			<header>
 				<h2>Evolução de venda</h2>
+
 				<div className="controller">
 					<button onClick={() => changeMonth(-1)}>
 						<BsChevronLeft />
 					</button>
 
-					<span>{getFormatedMonth()}</span>
+					<span>{formatMonth(month)}</span>
 
 					<button onClick={() => changeMonth(+1)}>
 						<BsChevronRight />
@@ -94,6 +75,12 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 			{goal.month === 'not found' ? (
 				<div className="notFound">
 					<p>Meta não encontrada!</p>
+					<button
+						className="define"
+						onClick={() => push(`metas/${month}/definir`)}
+					>
+						Definir meta
+					</button>
 				</div>
 			) : (
 				<div className="content">
@@ -208,13 +195,19 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 								</div>
 
 								<div className="info">
-									<span className="name">Necessário vender</span>
-									<span className="value">
-										{formatPrice(needToSellPerBusinessDay)} por dia útil
-									</span>
-									<span className="obs">
-										Equivalente a {formatPrice(needToSell)}
-									</span>
+									{needToSellPerBusinessDay < 0 ? (
+										<span className="value">Meta não atingida!</span>
+									) : (
+										<>
+											<span className="name">Necessário vender</span>
+											<span className="value">
+												{formatPrice(needToSellPerBusinessDay)} por dia útil
+											</span>
+											<span className="obs">
+												Equivalente a {formatPrice(needToSell)}
+											</span>
+										</>
+									)}
 								</div>
 							</>
 						) : (
@@ -226,6 +219,13 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 								</div>
 							</>
 						)}
+
+						<button
+							className="define"
+							onClick={() => push(`metas/${month}/definir`)}
+						>
+							Definir meta
+						</button>
 					</div>
 				</div>
 			)}
