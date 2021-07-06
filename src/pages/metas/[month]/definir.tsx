@@ -19,6 +19,9 @@ import {formatMonth} from '../../../utils/formatMonth'
 import formatPrice from '../../../utils/formatPrice'
 import NumberInput from '../../../components/NumberInput'
 import FormButtons from '../../../components/FormButtons'
+import api from '../../../services/api'
+import successAlert from '../../../utils/alerts/success'
+import {catchError} from '../../../utils/catchError'
 
 const Goal: React.FC = () => {
 	const {query, back} = useRouter()
@@ -28,6 +31,7 @@ const Goal: React.FC = () => {
 	const [companies, setCompanies] = useState<CompanyListed[]>([])
 	const [sellers, setSellers] = useState<SellerListed[]>([])
 	const [expandedCompanies, setExpandedCompanies] = useState<string[]>([])
+	const [goalExists, setGoalExists] = useState(false)
 
 	useEffect(() => {
 		companyController.list().then(companies => {
@@ -42,6 +46,7 @@ const Goal: React.FC = () => {
 	useEffect(() => {
 		goalController.rawOne(month).then(goal => {
 			if (goal) setGoalCompanies(goal.companies)
+			setGoalExists(goal != undefined)
 		})
 	}, [month])
 
@@ -64,7 +69,7 @@ const Goal: React.FC = () => {
 
 		options.push({action: handleSubmit, display: 'Confirmar'})
 		options.push({action: back, display: 'Cancelar', color: '#f00'})
-		if (goalCompanies.length > 0)
+		if (goalExists)
 			options.push({
 				action: handleDeleteGoal,
 				display: 'Deletar',
@@ -74,9 +79,96 @@ const Goal: React.FC = () => {
 		return options
 	}
 
-	async function handleDeleteGoal() {}
+	function handleECommerceGoalChange(value: number, companyId: string) {
+		const tmpGoalCompanies = [...goalCompanies]
+		const existingIndex = tmpGoalCompanies.findIndex(({id}) => id === companyId)
 
-	async function handleSubmit() {}
+		if (existingIndex < 0)
+			tmpGoalCompanies.push({
+				id: companyId,
+				eCommerceGoal: value,
+				sellers: []
+			})
+		else tmpGoalCompanies[existingIndex].eCommerceGoal = value
+
+		setGoalCompanies(tmpGoalCompanies)
+	}
+
+	function handleSellerGoalChange(
+		value: number,
+		companyId: string,
+		sellerId: string
+	) {
+		const tmpGoalCompanies = [...goalCompanies]
+		const existingCompanyIndex = tmpGoalCompanies.findIndex(
+			({id}) => id === companyId
+		)
+
+		if (existingCompanyIndex < 0)
+			tmpGoalCompanies.push({
+				id: companyId,
+				eCommerceGoal: 0,
+				sellers: [
+					{
+						id: sellerId,
+						goal: value
+					}
+				]
+			})
+		else {
+			const existingSellerIndex = tmpGoalCompanies[
+				existingCompanyIndex
+			].sellers.findIndex(({id}) => id === sellerId)
+
+			if (existingSellerIndex < 0)
+				tmpGoalCompanies[existingCompanyIndex].sellers.push({
+					id: sellerId,
+					goal: value
+				})
+			else
+				tmpGoalCompanies[existingCompanyIndex].sellers[
+					existingSellerIndex
+				].goal = value
+		}
+
+		setGoalCompanies(tmpGoalCompanies)
+	}
+
+	async function handleDeleteGoal() {
+		if (!goalExists) return
+
+		await api
+			.delete(`goals/${month}`)
+			.then(() => {
+				successAlert('Meta deletada com sucesso!')
+				back()
+			})
+			.catch(catchError)
+	}
+
+	async function handleSubmit() {
+		const data = {
+			month,
+			companies: goalCompanies
+		}
+
+		if (!goalExists)
+			await api
+				.post('goals', data)
+				.then(() => {
+					successAlert('Meta criada com sucesso!')
+					back()
+				})
+				.catch(catchError)
+		else
+			await api
+				.put(`goals/${month}`)
+				.then(() => {
+					successAlert('Meta atualizada com sucesso!')
+					back()
+				})
+				.catch(catchError)
+	}
 
 	return (
 		<Container className="container">
@@ -102,7 +194,7 @@ const Goal: React.FC = () => {
 
 						const isExpanded = expandedCompanies.includes(company.id)
 
-						let companyGoal = 0
+						let companyGoal = goalCompany.eCommerceGoal
 						goalCompany.sellers.forEach(({goal}) => (companyGoal += goal))
 
 						return (
@@ -135,7 +227,9 @@ const Goal: React.FC = () => {
 										<label htmlFor="e-commerce">E-Commerce</label>
 										<NumberInput
 											value={goalCompany.eCommerceGoal}
-											setValue={() => {}}
+											setValue={value =>
+												handleECommerceGoalChange(value, company.id)
+											}
 											name="e-commerce"
 										/>
 									</li>
@@ -152,7 +246,9 @@ const Goal: React.FC = () => {
 												<label htmlFor={seller.id}>{seller.nome}</label>
 												<NumberInput
 													value={goalSeller.goal}
-													setValue={() => {}}
+													setValue={value =>
+														handleSellerGoalChange(value, company.id, seller.id)
+													}
 													name={seller.id}
 												/>
 											</li>
