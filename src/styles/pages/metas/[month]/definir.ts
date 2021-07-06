@@ -1,14 +1,26 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-	main {
-		padding: 2rem 1rem;
+	form {
+		margin: 2rem 1rem;
+
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+
+		main {
+			width: 100%;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+			border-radius: 0.5rem;
+			overflow: hidden;
+		}
 	}
 
 	@media (min-width: 1001px) {
-		main {
+		form {
 			width: 80rem;
-			margin: 0 auto;
+			margin: 2rem auto;
 		}
 	}
 `

@@ -18,10 +18,12 @@ import Header from '../../../components/Header'
 import {formatMonth} from '../../../utils/formatMonth'
 import formatPrice from '../../../utils/formatPrice'
 import NumberInput from '../../../components/NumberInput'
+import FormButtons from '../../../components/FormButtons'
 
 const Goal: React.FC = () => {
-	const {query} = useRouter()
+	const {query, back} = useRouter()
 	const month = String(query.month)
+
 	const [goalCompanies, setGoalCompanies] = useState<GoalCompanyRaw[]>([])
 	const [companies, setCompanies] = useState<CompanyListed[]>([])
 	const [sellers, setSellers] = useState<SellerListed[]>([])
@@ -53,87 +55,116 @@ const Goal: React.FC = () => {
 		setExpandedCompanies(tmpExpandedCompanies)
 	}
 
+	function getOptions() {
+		const options: Array<{
+			display: string
+			action: () => void
+			color?: string
+		}> = []
+
+		options.push({action: handleSubmit, display: 'Confirmar'})
+		options.push({action: back, display: 'Cancelar', color: '#f00'})
+		if (goalCompanies.length > 0)
+			options.push({
+				action: handleDeleteGoal,
+				display: 'Deletar',
+				color: '#f00'
+			})
+
+		return options
+	}
+
+	async function handleDeleteGoal() {}
+
+	async function handleSubmit() {}
+
 	return (
 		<Container className="container">
 			<Head>
 				<title>Meta | Cruz Representações</title>
 			</Head>
 
-			<Header display={`Definir metas > ${formatMonth(month)}`} />
+			<Header
+				display={`Definir metas > ${formatMonth(month)}`}
+				options={getOptions()}
+			/>
 
-			<main>
-				{companies.map((company, index) => {
-					const goalCompany = goalCompanies.find(
-						({id}) => company.id === id
-					) ?? {
-						id: `not found - ${index}`,
-						sellers: [],
-						eCommerceGoal: 0
-					}
+			<form onSubmit={e => e.preventDefault()}>
+				<main>
+					{companies.map((company, index) => {
+						const goalCompany = goalCompanies.find(
+							({id}) => company.id === id
+						) ?? {
+							id: `not found - ${index}`,
+							sellers: [],
+							eCommerceGoal: 0
+						}
 
-					const isExpanded = expandedCompanies.includes(company.id)
+						const isExpanded = expandedCompanies.includes(company.id)
 
-					let companyGoal = 0
-					goalCompany.sellers.forEach(({goal}) => (companyGoal += goal))
+						let companyGoal = 0
+						goalCompany.sellers.forEach(({goal}) => (companyGoal += goal))
 
-					return (
-						<GoalCompany isExpanded={isExpanded} key={company.id}>
-							<header onClick={() => toggleExpandStatus(company.id)}>
-								<div className="indicator">
-									<BsFillTriangleFill />
-								</div>
+						return (
+							<GoalCompany isExpanded={isExpanded} key={company.id}>
+								<header onClick={() => toggleExpandStatus(company.id)}>
+									<div className="indicator">
+										<BsFillTriangleFill />
+									</div>
 
-								<h2>{company.nome_fantasia}</h2>
+									<h2>{company.nome_fantasia}</h2>
 
-								<span>{formatPrice(companyGoal)}</span>
-							</header>
-							<motion.ul
-								initial={false}
-								transition={{duration: 0.2}}
-								animate={isExpanded ? 'open' : 'closed'}
-								variants={{
-									open: {
-										height: 'fit-content',
-										opacity: 1
-									},
-									closed: {
-										height: 0,
-										opacity: 0
-									}
-								}}
-							>
-								<li>
-									<label htmlFor="e-commerce">E-Commerce</label>
-									<NumberInput
-										value={goalCompany.eCommerceGoal}
-										setValue={() => {}}
-										name="e-commerce"
-									/>
-								</li>
-								{sellers.map((seller, index) => {
-									const goalSeller = goalCompany.sellers.find(
-										({id}) => seller.id === id
-									) ?? {
-										id: `not found - ${index}`,
-										goal: 0
-									}
+									<span>{formatPrice(companyGoal)}</span>
+								</header>
+								<motion.ul
+									initial={false}
+									transition={{duration: 0.2}}
+									animate={isExpanded ? 'open' : 'closed'}
+									variants={{
+										open: {
+											height: 'fit-content',
+											opacity: 1
+										},
+										closed: {
+											height: 0,
+											opacity: 0
+										}
+									}}
+								>
+									<li>
+										<label htmlFor="e-commerce">E-Commerce</label>
+										<NumberInput
+											value={goalCompany.eCommerceGoal}
+											setValue={() => {}}
+											name="e-commerce"
+										/>
+									</li>
+									{sellers.map((seller, index) => {
+										const goalSeller = goalCompany.sellers.find(
+											({id}) => seller.id === id
+										) ?? {
+											id: `not found - ${index}`,
+											goal: 0
+										}
 
-									return (
-										<li key={seller.id}>
-											<label htmlFor={seller.id}>{seller.nome}</label>
-											<NumberInput
-												value={goalSeller.goal}
-												setValue={() => {}}
-												name={seller.id}
-											/>
-										</li>
-									)
-								})}
-							</motion.ul>
-						</GoalCompany>
-					)
-				})}
-			</main>
+										return (
+											<li key={seller.id}>
+												<label htmlFor={seller.id}>{seller.nome}</label>
+												<NumberInput
+													value={goalSeller.goal}
+													setValue={() => {}}
+													name={seller.id}
+												/>
+											</li>
+										)
+									})}
+								</motion.ul>
+							</GoalCompany>
+						)
+					})}
+				</main>
+				<FormButtons handleCancel={back} handleSubmit={handleSubmit} />
+			</form>
 		</Container>
 	)
 }

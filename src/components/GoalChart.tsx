@@ -10,6 +10,7 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts'
+import {useRouter} from 'next/router'
 
 import {GoalShowed} from '../models/goal'
 import Container from '../styles/components/GoalChart'
@@ -28,6 +29,7 @@ type GoalChartProps = {
 
 const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 	const {inMobile} = useDimensions()
+	const {push} = useRouter()
 
 	let monthSold = 0
 	const dataPoints = goal.days.map(({day, sold}) => {
@@ -56,6 +58,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 		<Container>
 			<header>
 				<h2>Evolução de venda</h2>
+
 				<div className="controller">
 					<button onClick={() => changeMonth(-1)}>
 						<BsChevronLeft />
@@ -72,6 +75,12 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 			{goal.month === 'not found' ? (
 				<div className="notFound">
 					<p>Meta não encontrada!</p>
+					<button
+						className="define"
+						onClick={() => push(`metas/${month}/definir`)}
+					>
+						Definir meta
+					</button>
 				</div>
 			) : (
 				<div className="content">
@@ -186,13 +195,19 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 								</div>
 
 								<div className="info">
-									<span className="name">Necessário vender</span>
-									<span className="value">
-										{formatPrice(needToSellPerBusinessDay)} por dia útil
-									</span>
-									<span className="obs">
-										Equivalente a {formatPrice(needToSell)}
-									</span>
+									{needToSellPerBusinessDay < 0 ? (
+										<span className="value">Meta não atingida!</span>
+									) : (
+										<>
+											<span className="name">Necessário vender</span>
+											<span className="value">
+												{formatPrice(needToSellPerBusinessDay)} por dia útil
+											</span>
+											<span className="obs">
+												Equivalente a {formatPrice(needToSell)}
+											</span>
+										</>
+									)}
 								</div>
 							</>
 						) : (
@@ -204,6 +219,13 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 								</div>
 							</>
 						)}
+
+						<button
+							className="define"
+							onClick={() => push(`metas/${month}/definir`)}
+						>
+							Definir meta
+						</button>
 					</div>
 				</div>
 			)}
