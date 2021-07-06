@@ -47,10 +47,19 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 	const needToSellPerBusinessDay = needToSell / goal.remainingBusinessDays
 
 	function changeMonth(change: number) {
-		const [year, oldMonthNumber] = month.split('-').map(part => Number(part))
-		const newmonthNumber = String(oldMonthNumber + change).padStart(2, '0')
+		let [yearNumber, monthNumber] = month.split('-').map(part => Number(part))
+		monthNumber += change
 
-		const newMonth = year + '-' + newmonthNumber
+		if (monthNumber <= 0) {
+			monthNumber = 12
+			yearNumber--
+		}
+		if (monthNumber > 12) {
+			monthNumber = 1
+			yearNumber++
+		}
+
+		const newMonth = yearNumber + '-' + String(monthNumber).padStart(2, '0')
 		setMonth(newMonth)
 	}
 
