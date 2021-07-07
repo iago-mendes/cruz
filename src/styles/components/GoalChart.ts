@@ -146,7 +146,8 @@ const Container = styled.div`
 		width: 100%;
 
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
+		gap: 1rem;
 	}
 
 	@media (min-width: 1001px) {

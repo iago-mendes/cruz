@@ -23,11 +23,18 @@ import {formatMonth} from '../utils/formatMonth'
 
 type GoalChartProps = {
 	month: string
-	setMonth: (month: string) => void
+	setMonth?: (month: string) => void
 	goal: GoalShowed
+
+	showDetailsButton?: boolean
 }
 
-const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
+const GoalChart: React.FC<GoalChartProps> = ({
+	month,
+	setMonth,
+	goal,
+	showDetailsButton = false
+}) => {
 	const {inMobile} = useDimensions()
 	const {push} = useRouter()
 
@@ -69,15 +76,19 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 				<h2>Evolução de venda</h2>
 
 				<div className="controller">
-					<button onClick={() => changeMonth(-1)}>
-						<BsChevronLeft />
-					</button>
+					{setMonth && (
+						<button onClick={() => changeMonth(-1)}>
+							<BsChevronLeft />
+						</button>
+					)}
 
 					<span>{formatMonth(month)}</span>
 
-					<button onClick={() => changeMonth(+1)}>
-						<BsChevronRight />
-					</button>
+					{setMonth && (
+						<button onClick={() => changeMonth(+1)}>
+							<BsChevronRight />
+						</button>
+					)}
 				</div>
 			</header>
 
@@ -144,12 +155,17 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 					</div>
 					<div className="summary">
 						<div className="actions">
-							<button className="action" onClick={() => push(`metas/${month}`)}>
-								Ver detalhes
-							</button>
+							{showDetailsButton && (
+								<button
+									className="action"
+									onClick={() => push(`/metas/${month}`)}
+								>
+									Ver detalhes
+								</button>
+							)}
 							<button
 								className="action"
-								onClick={() => push(`metas/${month}/definir`)}
+								onClick={() => push(`/metas/${month}/definir`)}
 							>
 								Definir meta
 							</button>
