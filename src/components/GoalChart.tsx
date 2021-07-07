@@ -85,7 +85,7 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 				<div className="notFound">
 					<p>Meta não encontrada!</p>
 					<button
-						className="define"
+						className="action"
 						onClick={() => push(`metas/${month}/definir`)}
 					>
 						Definir meta
@@ -143,6 +143,18 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 						)}
 					</div>
 					<div className="summary">
+						<div className="actions">
+							<button className="action" onClick={() => push(`metas/${month}`)}>
+								Ver detalhes
+							</button>
+							<button
+								className="action"
+								onClick={() => push(`metas/${month}/definir`)}
+							>
+								Definir meta
+							</button>
+						</div>
+
 						<div className="info">
 							<span className="name">Vendido no mês</span>
 							<span className="value">
@@ -228,13 +240,6 @@ const GoalChart: React.FC<GoalChartProps> = ({month, setMonth, goal}) => {
 								</div>
 							</>
 						)}
-
-						<button
-							className="define"
-							onClick={() => push(`metas/${month}/definir`)}
-						>
-							Definir meta
-						</button>
 					</div>
 				</div>
 			)}

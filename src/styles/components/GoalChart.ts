@@ -60,6 +60,8 @@ const Container = styled.div`
 			flex-direction: column;
 			gap: 1rem;
 
+			width: 100%;
+
 			.info {
 				display: flex;
 				flex-direction: column;
@@ -118,7 +120,7 @@ const Container = styled.div`
 		}
 	}
 
-	button.define {
+	button.action {
 		background: none;
 		border: ${p => p.theme.colors.primaryDark} 2px solid;
 		border-radius: 0.5rem;
@@ -138,6 +140,13 @@ const Container = styled.div`
 			background-color: ${p => p.theme.colors.primaryDark};
 			color: #fff;
 		}
+	}
+
+	.actions {
+		width: 100%;
+
+		display: flex;
+		justify-content: space-between;
 	}
 
 	@media (min-width: 1001px) {
