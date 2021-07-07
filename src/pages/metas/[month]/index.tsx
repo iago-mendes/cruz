@@ -4,7 +4,11 @@ import {useRouter} from 'next/router'
 import {BsFillTriangleFill} from 'react-icons/bs'
 import {motion} from 'framer-motion'
 
-import {Container} from '../../../styles/pages/metas/[month]/index'
+import {
+	Container,
+	DropdownGroup,
+	GoalCompany
+} from '../../../styles/pages/metas/[month]/index'
 import Header from '../../../components/Header'
 import {formatMonth} from '../../../utils/formatMonth'
 import {GoalShowed, loadingGoal, notFoundGoal} from '../../../models/goal'
@@ -51,7 +55,7 @@ const Goal: React.FC = () => {
 			<main className="main">
 				<GoalChart month={month} goal={goal} />
 
-				<div className="first-level dropdown">
+				<DropdownGroup isExpanded={isCompaniesExpanded}>
 					<header onClick={() => setIsCompaniesExpanded(!isCompaniesExpanded)}>
 						<div className="indicator">
 							<BsFillTriangleFill />
@@ -75,7 +79,10 @@ const Goal: React.FC = () => {
 						}}
 					>
 						{goal.companies.map(company => (
-							<li className="second-level dropdown" key={company.id}>
+							<GoalCompany
+								key={company.id}
+								isExpanded={expandedCompanies.includes(company.id)}
+							>
 								<header onClick={() => toggleExpandStatus(company.id)}>
 									<div className="indicator">
 										<BsFillTriangleFill />
@@ -121,12 +128,12 @@ const Goal: React.FC = () => {
 										</li>
 									))}
 								</motion.ul>
-							</li>
+							</GoalCompany>
 						))}
 					</motion.ul>
-				</div>
+				</DropdownGroup>
 
-				<div className="first-level dropdown">
+				<DropdownGroup isExpanded={isClientsExpanded}>
 					<header onClick={() => setIsClientsExpanded(!isClientsExpanded)}>
 						<div className="indicator">
 							<BsFillTriangleFill />
@@ -150,22 +157,16 @@ const Goal: React.FC = () => {
 						}}
 					>
 						{goal.sellers.map(seller => (
-							<li className="first-level item" key={seller.id}>
-								<header>
-									<div className="indicator">
-										<BsFillTriangleFill />
-									</div>
+							<li key={seller.id} className="seller">
+								<h2>{seller.name}</h2>
 
-									<h2>{seller.name}</h2>
-
-									<span>
-										{formatPrice(seller.sold)} / {formatPrice(seller.goal)}
-									</span>
-								</header>
+								<span>
+									{formatPrice(seller.sold)} / {formatPrice(seller.goal)}
+								</span>
 							</li>
 						))}
 					</motion.ul>
-				</div>
+				</DropdownGroup>
 			</main>
 		</Container>
 	)
