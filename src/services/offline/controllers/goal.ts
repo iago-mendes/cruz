@@ -60,7 +60,9 @@ export const goalController = {
 		let totalSold = 0
 
 		const companies: GoalCompany[] = []
-		const sellers: GoalSeller[] = []
+		const sellers: GoalSeller[] = [
+			{id: 'ecommerce', name: 'E-Commerce', sold: 0, goal: 0}
+		]
 		const days: Array<{
 			day: string
 			sold: number
@@ -168,6 +170,9 @@ export const goalController = {
 						})
 					else days[existingDayIndex].sold += totalValue
 				})
+
+				sellers[0].goal += company.eCommerceGoal
+				sellers[0].sold += eCommerceSold
 
 				companyGoal += company.eCommerceGoal
 				companySold += eCommerceSold
