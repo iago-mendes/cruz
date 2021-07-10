@@ -1,17 +1,21 @@
-import {signIn, signOut, useSession} from 'next-auth/client'
 import {createContext, useEffect, useState} from 'react'
+import jwt from 'jsonwebtoken'
 
+import api from '../services/api'
 import {sellerController} from '../services/offline/controllers/seller'
+import errorAlert from '../utils/alerts/error'
+
+type UserData = {
+	name: string
+	image: string
+	email: string
+}
 
 export type User = {
 	id: string
 	role: string
 
-	data?: {
-		name: string
-		image: string
-		email: string
-	}
+	data?: UserData
 
 	errorMessage?: string
 }
@@ -33,9 +37,8 @@ type AuthContextData = {
 export const AuthContext = createContext({} as AuthContextData)
 
 const AuthContextProvider: React.FC = ({children}) => {
-	const [session, loading] = useSession()
-
 	const [user, setUser] = useState<User>(defaultUser)
+	const [loading, setLoading] = useState(true)
 
 	const isLogged = user.id !== 'not-logged'
 
@@ -43,79 +46,64 @@ const AuthContextProvider: React.FC = ({children}) => {
 		updateSession()
 	}, [loading])
 
-	useEffect(() => {
-		if (user.id && isLogged)
-			sellerController
-				.rawOne(user.id)
-				.then(data => {
-					const tmpUser = {...user}
-
-					tmpUser.data = {
-						name: data.nome,
-						image: data.imagem,
-						email: data.email
-					}
-
-					setUser(tmpUser)
-				})
-				.catch(error => {
-					console.log('<< error >>', error)
-				})
-	}, [user.id])
-
-	function getSavedUser() {
-		const savedUser = localStorage.getItem('auth-user')
-		if (!savedUser) return defaultUser
-
-		const parsedUser: User = JSON.parse(savedUser)
-		return parsedUser
-	}
-
-	function saveUser(user: User) {
-		localStorage.setItem('auth-user', JSON.stringify(user))
-	}
-
-	function removeSavedUser() {
-		localStorage.removeItem('auth-user')
-	}
-
 	function updateSession() {
-		const isOffline = !navigator.onLine
+		const token = localStorage.getItem('token')
+		updateUser(token)
+		setLoading(false)
+	}
 
-		if (isOffline) {
-			const savedUser = getSavedUser()
-			setUser(savedUser)
-			return
+	function updateUser(token: any) {
+		if (!token) return setUser(defaultUser)
+
+		const payload = jwt.decode(token)
+		const {id, role} =
+			typeof payload === 'string' ? JSON.parse(payload) : payload
+
+		if (id && role) {
+			const tmpUser = {id, role}
+			setUser(tmpUser)
+			fetchUserData(tmpUser)
 		}
+	}
 
-		if (!loading && session) {
-			const {user: sessionUser} = session
-			const tmpUser = sessionUser as User
+	async function fetchUserData(user: User) {
+		sellerController.rawOne(user.id).then(seller => {
+			if (!seller) return
 
-			if (tmpUser && user.id !== tmpUser.id) {
-				setUser(tmpUser)
-				saveUser(tmpUser)
-			} else if (tmpUser.errorMessage) {
-				const tmp = {...user}
-				tmp.errorMessage = tmpUser.errorMessage
-				setUser(tmp)
-				saveUser(defaultUser)
+			const data: UserData = {
+				email: seller.email,
+				image: seller.imagem,
+				name: seller.nome
 			}
-		} else if (!session) {
-			setUser(defaultUser)
-			saveUser(defaultUser)
-		}
+
+			setUser({...user, data})
+		})
 	}
 
 	async function logIn(email: string, password: string) {
-		await signIn('credentials', {email, password, callbackUrl: '/'})
+		setLoading(true)
+		const data = {email, password}
+
+		await api
+			.post('login/seller', data)
+			.then(({data}) => {
+				const {token} = data
+				if (!token) return
+
+				localStorage.setItem('token', token)
+				updateUser(token)
+			})
+			.catch(error => {
+				const errorMessage = String(error.response.data.message || '')
+				errorAlert(errorMessage)
+			})
+
+		setLoading(false)
 	}
 
 	async function logOut() {
-		removeSavedUser()
-		setUser(defaultUser)
-
-		await signOut({callbackUrl: '/login'})
+		localStorage.removeItem('token')
+		updateUser(undefined)
 	}
 
 	return (

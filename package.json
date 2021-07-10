@@ -14,8 +14,8 @@
 		"date-fns": "^2.22.1",
 		"dexie": "^3.0.3",
 		"framer-motion": "^4.1.17",
+		"jsonwebtoken": "^8.5.1",
 		"next": "^11.0.1",
-		"next-auth": "^3.1.0",
 		"next-images": "^1.6.2",
 		"next-pwa": "^5.2.21",
 		"p-limit": "^3.1.0",
@@ -35,7 +35,7 @@
 	},
 	"devDependencies": {
 		"@types/js-cookie": "^2.2.6",
-		"@types/next-auth": "^3.1.15",
+		"@types/jsonwebtoken": "^8.5.4",
 		"@types/node": "^14.14.6",
 		"@types/pdfmake": "^0.1.17",
 		"@types/react": "^16.9.56",

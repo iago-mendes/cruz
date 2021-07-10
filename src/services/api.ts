@@ -6,10 +6,19 @@ const {publicRuntimeConfig: env} = getConfig()
 
 export const apiUrl = String(env.apiUrl)
 
+let token: string | undefined
+
+try {
+	token = localStorage.getItem('token')
+} catch (error) {
+	token = undefined
+}
+
 const api = axios.create({
 	baseURL: apiUrl,
 	headers: {
-		key: env.apiKey
+		key: env.apiKey,
+		authorization: `Bearer ${token}`
 	}
 })
 
