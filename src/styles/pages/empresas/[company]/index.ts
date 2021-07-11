@@ -7,7 +7,7 @@ const Container = styled.div`
 		.tableContainer {
 			min-height: 50vh;
 			width: 100%;
-			overflow-x: auto;
+			overflow: hidden;
 
 			padding: 2rem;
 
@@ -34,11 +34,7 @@ const Container = styled.div`
 						}
 
 						th.name {
-							min-width: 20rem;
-						}
-
-						th.table {
-							white-space: nowrap;
+							width: 15rem;
 						}
 					}
 				}
@@ -110,7 +106,7 @@ const Container = styled.div`
 						}
 
 						td.name {
-							min-width: 20rem;
+							/* min-width: 20rem; */
 						}
 					}
 

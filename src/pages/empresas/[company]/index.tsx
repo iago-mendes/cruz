@@ -210,7 +210,7 @@ const Products: React.FC = () => {
 									else
 										return (
 											<th key={_id} className="table">
-												Tabela {nome}
+												Tab. {nome}
 											</th>
 										)
 								})}
