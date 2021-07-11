@@ -1,12 +1,10 @@
-import getConfig from 'next/config'
-
-const {publicRuntimeConfig: env} = getConfig()
+import {apiUrl} from '../services/api'
 
 export default function formatImage(filename: string | undefined) {
-	if (!filename || filename === `${env.apiUrl}/assets/no-image.svg`)
-		return `${env.apiUrl}/public/images/no-image.png`
+	if (!filename || filename === `${apiUrl}/assets/no-image.svg`)
+		return `${apiUrl}/public/images/no-image.png`
 	else if (filename.includes('http')) return filename
-	else return `${env.apiUrl}/uploads/${filename}`
+	else return `${apiUrl}/uploads/${filename}`
 }
 
 export async function formatImageToDataUrl(url: string) {
