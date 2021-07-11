@@ -26,6 +26,8 @@ const User: React.FC = () => {
 
 	useEffect(() => {
 		sellerController.rawOne(user.id).then(seller => {
+			if (!seller) return
+
 			setImageUrl(seller.imagem)
 			setName(seller.nome)
 			setTitle(seller.funcao)
