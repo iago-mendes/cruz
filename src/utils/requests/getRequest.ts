@@ -71,7 +71,9 @@ export async function getRequest(id: string) {
 	const client: ClientRaw = await db.table('clients').get(rawRequest.cliente)
 	if (!client) return undefined
 
-	const seller: SellerRaw = await db.table('sellers').get(rawRequest.vendedor)
+	const seller: SellerRaw = rawRequest.vendedor
+		? await db.table('sellers').get(rawRequest.vendedor)
+		: undefined
 
 	const company: CompanyRaw = await db
 		.table('companies')

@@ -17,6 +17,7 @@ import Paginate from '../components/Paginate'
 import LoadingModal from '../components/modals/Loading'
 import {handleDeleteRequest} from '../utils/requests/handleDeleteRequest'
 import {handleSeeRequestPDF} from '../utils/requests/handleSeeRequestPDF'
+import {apiUrl} from '../services/api'
 
 const Requests: React.FC = () => {
 	const Router = useRouter()
@@ -58,6 +59,12 @@ const Requests: React.FC = () => {
 			})
 
 		setLoading(false)
+	}
+
+	async function handleSeeRequest(id: string) {
+		if (navigator.onLine)
+			window.open(`${apiUrl}/pdf/requests/${id}`, '_blank').focus()
+		else handleSeeRequestPDF(id, setIsLoadingModalOpen)
 	}
 
 	return (
@@ -166,9 +173,7 @@ const Requests: React.FC = () => {
 									<div className="buttons">
 										<button
 											title="Ver pedido"
-											onClick={() =>
-												handleSeeRequestPDF(request.id, setIsLoadingModalOpen)
-											}
+											onClick={() => handleSeeRequest(request.id)}
 										>
 											<FaRegEye />
 										</button>
