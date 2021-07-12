@@ -10,6 +10,7 @@ interface NumberInputProps {
 	name?: string
 	label?: string
 	placeholder?: string
+	unit?: string
 }
 
 const NumberInput: React.FC<NumberInputProps> = ({
@@ -17,7 +18,8 @@ const NumberInput: React.FC<NumberInputProps> = ({
 	setValue,
 	name,
 	label,
-	placeholder
+	placeholder,
+	unit
 }) => {
 	const [isEditing, setIsEditing] = useState(false)
 
@@ -50,7 +52,9 @@ const NumberInput: React.FC<NumberInputProps> = ({
 		})
 
 		if (value === 0) return ''
-		return formatter.format(value)
+
+		const formatedValue = formatter.format(value) + (unit ? ' ' + unit : '')
+		return formatedValue
 	}
 
 	return (

@@ -128,17 +128,8 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> = ({
 		setProductTable({id, price})
 	}
 
-	function handleIncrementQuantity() {
-		const newQuantity = selected.product.quantidade + 1
-
-		const tmpSelected = {...selected}
-		tmpSelected.product.quantidade = newQuantity
-		setSelected(tmpSelected)
-	}
-
-	function handleDecrementQuantity() {
-		const oldQuantity = selected.product.quantidade
-		const newQuantity = oldQuantity > 0 ? selected.product.quantidade - 1 : 0
+	function handleQuantityChange(value: number) {
+		const newQuantity = Math.round(value)
 
 		const tmpSelected = {...selected}
 		tmpSelected.product.quantidade = newQuantity
@@ -182,18 +173,12 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> = ({
 				</div>
 
 				<div className="panel">
-					<div className="quantity">
-						<h3>{selected.product.quantidade}</h3>
-						<span>{rawProduct.unidade}</span>
-					</div>
-					<div className="controller">
-						<button className="less" onClick={handleDecrementQuantity}>
-							<FiMinus />
-						</button>
-						<button className="more" onClick={handleIncrementQuantity}>
-							<FiPlus />
-						</button>
-					</div>
+					<NumberInput
+						value={selected.product.quantidade}
+						setValue={handleQuantityChange}
+						placeholder={`0 ${rawProduct.unidade}`}
+						unit={rawProduct.unidade}
+					/>
 				</div>
 
 				{/* table */}

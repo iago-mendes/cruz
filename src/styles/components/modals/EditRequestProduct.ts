@@ -44,50 +44,7 @@ const Container = styled.main`
 		margin: 1rem;
 
 		display: flex;
-		justify-content: space-between;
-		gap: 1rem;
-
-		.quantity {
-			display: flex;
-			align-items: flex-end;
-			gap: 1rem;
-
-			margin-left: 1rem;
-
-			h3 {
-				font-size: 2rem;
-			}
-		}
-
-		.controller {
-			width: 50%;
-
-			display: flex;
-			gap: 0.25rem;
-
-			button {
-				width: 100%;
-				height: 3rem;
-
-				border: none;
-				border-radius: 0;
-
-				font-size: 2rem;
-				color: #fff;
-
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-
-			.more {
-				background-color: ${p => p.theme.colors.primaryDark};
-			}
-
-			.less {
-				background-color: ${p => p.theme.colors.primary};
-			}
-		}
+		justify-content: flex-end;
 	}
 
 	.field {
