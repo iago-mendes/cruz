@@ -653,7 +653,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
 			</div>
 			{/* obs */}
 			<div className="field textareaField">
-				<label htmlFor="obs">Observação</label>
+				<label htmlFor="obs">Observações financeiras</label>
 				<textarea
 					name="obs"
 					id="obs"

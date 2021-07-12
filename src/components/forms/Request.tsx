@@ -532,7 +532,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 						>
 							{method === 'post' && 'SELECIONAR CLIENTE'}
 
-							{method === 'put' && 'MUDAR CLIENTE'}
+							{method === 'put' && 'ALTERAR CLIENTE'}
 						</button>
 					</div>
 					{/* vendedor */}
