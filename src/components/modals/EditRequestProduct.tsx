@@ -164,12 +164,12 @@ const EditRequestProductModal: React.FC<EditRequestProductModalProps> = ({
 
 	return (
 		<ModalContainer isOpen={isOpen} setIsOpen={setIsOpen}>
-			<Container>
-				<div className="header">
-					<h1>Editar item</h1>
-					<button onClick={() => setIsOpen(false)}>Salvar</button>
-				</div>
+			<div className="fixed-header">
+				<h1>Editar item</h1>
+				<button onClick={() => setIsOpen(false)}>Salvar</button>
+			</div>
 
+			<Container className="with-fixed-header">
 				<div className="info">
 					<div className="img">
 						<img src={formatImage(rawProduct.imagem)} alt={rawProduct.nome} />

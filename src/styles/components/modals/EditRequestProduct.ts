@@ -1,47 +1,8 @@
 import styled from 'styled-components'
 
 const Container = styled.main`
-	padding: 0 !important;
-
 	> div {
 		margin-bottom: 2rem;
-	}
-
-	.header {
-		background-color: #fff;
-		box-shadow: 0px 2.5px 10px rgba(0, 0, 0, 0.25);
-		padding: 1rem;
-
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 1rem;
-
-		width: 100%;
-		color: ${p => p.theme.colors.primaryDark};
-
-		button {
-			width: fit-content;
-			padding: 0.25rem 0.75rem;
-
-			background: none;
-			border: ${p => p.theme.colors.primaryDark} 2px solid;
-			border-radius: 0.5rem;
-
-			color: ${p => p.theme.colors.primaryDark};
-			font-size: 1.5rem;
-			font-family: Ubuntu;
-			font-weight: 700;
-
-			transition: 0.25s;
-
-			:hover {
-				background-color: ${p => p.theme.colors.primaryDark};
-				color: #fff;
-
-				border-radius: 0;
-			}
-		}
 	}
 
 	.info {
