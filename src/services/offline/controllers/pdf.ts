@@ -10,9 +10,9 @@ export async function createRequestPdf(request: RequestFormated) {
 			table: {
 				widths: ['*'],
 				body: [
+					// header
 					[
 						{
-							// header
 							columns: [
 								{
 									width: 100,
@@ -37,9 +37,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							columnGap: 10
 						}
 					],
+					// company
 					[
 						{
-							// company
 							text: [
 								{text: 'Representada: ', bold: true},
 								request.representada.nome_fantasia,
@@ -48,9 +48,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							]
 						}
 					],
+					// info
 					[
 						{
-							// info
 							columns: [
 								{
 									width: '*',
@@ -90,9 +90,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							columnGap: 25
 						}
 					],
+					// products
 					[
 						{
-							// products
 							alignment: 'center',
 							table: {
 								widths: ['*', 40, 75, 75, 40, 40, 75],
@@ -141,9 +141,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							}
 						}
 					],
+					// details
 					[
 						{
-							// details
 							layout: {
 								hLineWidth: function () {
 									return 1
@@ -207,9 +207,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							}
 						}
 					],
+					// condition & date
 					[
 						{
-							// condition & date
 							columns: [
 								{
 									width: '*',
@@ -228,9 +228,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							]
 						}
 					],
+					// seller & type
 					[
 						{
-							// seller & type
 							columns: [
 								{
 									width: '*',
@@ -250,9 +250,9 @@ export async function createRequestPdf(request: RequestFormated) {
 							]
 						}
 					],
+					// contact & shipping
 					[
 						{
-							// contact & shipping
 							columns: [
 								{
 									width: '*',
@@ -268,9 +268,15 @@ export async function createRequestPdf(request: RequestFormated) {
 							]
 						}
 					],
+					// obs
 					[
 						{
-							// slogan
+							text: [{text: 'Observação: ', bold: true}, request.obs || '']
+						}
+					],
+					// slogan
+					[
+						{
 							text: 'Excelência em Representação Comercial!',
 							alignment: 'center'
 						}

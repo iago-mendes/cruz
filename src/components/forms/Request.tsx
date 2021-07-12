@@ -73,6 +73,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 		enviado: false,
 		faturado: false
 	})
+	const [obs, setObs] = useState('')
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
@@ -183,6 +184,7 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 			setDigitadoPor(request.digitado_por)
 			setTipo(request.tipo)
 			setStatus(request.status)
+			setObs(request.obs || '')
 
 			if (request.cliente !== '')
 				clientController.rawOne(request.cliente).then(client => {
@@ -434,7 +436,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 			contato: contact,
 			digitado_por,
 			tipo,
-			status: statusAlt ? statusAlt : status
+			status: statusAlt ? statusAlt : status,
+			obs
 		}
 
 		if (method === 'post') {
@@ -697,6 +700,18 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 							onChange={handleTypeChange}
 							styles={selectStyles}
 							isSearchable={false}
+						/>
+					</div>
+					{/* obs */}
+					<div className="field textareaField">
+						<label htmlFor="obs">Observação</label>
+						<textarea
+							name="obs"
+							id="obs"
+							cols={30}
+							rows={5}
+							value={obs}
+							onChange={e => setObs(e.target.value)}
 						/>
 					</div>
 					{/* status */}

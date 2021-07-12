@@ -1,4 +1,4 @@
-type Request = {
+export type RequestRaw = {
 	_id: string
 	cliente: string
 	vendedor?: string
@@ -16,10 +16,11 @@ type Request = {
 	digitado_por?: string
 	tipo: {venda: boolean; troca: boolean}
 	status: {concluido: boolean; enviado: boolean; faturado: boolean}
+	obs?: string
 }
-export default Request
+export default RequestRaw
 
-export const defaultRequest: Request = {
+export const defaultRequest: RequestRaw = {
 	_id: '',
 	cliente: '',
 	vendedor: '',

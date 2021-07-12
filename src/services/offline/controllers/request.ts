@@ -21,7 +21,8 @@ export const requestController = {
 			frete,
 			tipo,
 			status,
-			produtos
+			produtos,
+			obs
 		} = body
 
 		const id = handleObjectId(_id)
@@ -37,7 +38,8 @@ export const requestController = {
 			frete,
 			tipo,
 			status,
-			produtos
+			produtos,
+			obs
 		}
 
 		await db.table('requests').add(addedRequest, id)
@@ -60,7 +62,8 @@ export const requestController = {
 			frete,
 			tipo,
 			status,
-			produtos
+			produtos,
+			obs
 		} = body
 
 		const updatedRequest = {
@@ -75,7 +78,8 @@ export const requestController = {
 			frete: frete ? frete : previousRequest.frete,
 			tipo: tipo ? tipo : previousRequest.tipo,
 			status: status ? status : previousRequest.status,
-			produtos: produtos ? produtos : previousRequest.produtos
+			produtos: produtos ? produtos : previousRequest.produtos,
+			obs: obs ? obs : previousRequest.obs
 		}
 
 		await db.table('requests').put(updatedRequest, id)

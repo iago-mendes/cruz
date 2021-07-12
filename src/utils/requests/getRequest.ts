@@ -62,6 +62,7 @@ export interface RequestFormated {
 	valorTotalProdutos: number
 	valorTotal: number
 	quantidadeTotal: number
+	obs?: string
 }
 
 export async function getRequest(id: string) {
@@ -129,7 +130,8 @@ export async function getRequest(id: string) {
 		descontoTotal: totalDiscount,
 		valorTotalProdutos: totalProductsValue,
 		valorTotal: totalValue,
-		quantidadeTotal: totalQuantity
+		quantidadeTotal: totalQuantity,
+		obs: rawRequest.obs
 	}
 	return request
 }
