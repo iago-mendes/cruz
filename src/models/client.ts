@@ -1,4 +1,4 @@
-interface Client {
+interface ClientRaw {
 	_id: string
 	razao_social: string
 	nome_fantasia: string
@@ -15,10 +15,11 @@ interface Client {
 	telefone?: string
 	modificadoEm?: string
 	contatos: ClientContact[]
+	obs?: string
 }
-export default Client
+export default ClientRaw
 
-export const defaultClient: Client = {
+export const defaultClient: ClientRaw = {
 	_id: '',
 	razao_social: '',
 	nome_fantasia: '',

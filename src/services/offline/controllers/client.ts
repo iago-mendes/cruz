@@ -18,7 +18,8 @@ export const clientController = {
 			status,
 			condicoes,
 			contatos,
-			representadas
+			representadas,
+			obs
 		} = body
 
 		const id = handleObjectId(_id)
@@ -35,7 +36,8 @@ export const clientController = {
 			status,
 			condicoes,
 			contatos,
-			representadas
+			representadas,
+			obs
 		}
 
 		await db.table('clients').add(addedClient, id)
@@ -59,7 +61,8 @@ export const clientController = {
 			status,
 			condicoes,
 			contatos,
-			representadas
+			representadas,
+			obs
 		} = body
 
 		const updatedClient = {
@@ -84,7 +87,8 @@ export const clientController = {
 			contatos: contatos ? JSON.parse(contatos) : previousClient.contatos,
 			representadas: representadas
 				? JSON.parse(representadas)
-				: previousClient.representadas
+				: previousClient.representadas,
+			obs: obs ? obs : previousClient.obs
 		}
 		console.log('<< updatedClient >>', updatedClient)
 

@@ -65,6 +65,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
 		vista: true,
 		cheque: true
 	})
+	const [obs, setObs] = useState('')
 
 	const [sellerOptions, setSellerOptions] = useState<SelectOption[]>([])
 	const [companyOptions, setCompanyOptions] = useState<SelectOption[]>([])
@@ -118,6 +119,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
 			if (client.endereco) setEndereco(client.endereco)
 			if (client.status) setStatus(client.status)
 			if (client.condicoes) setCondicoes(client.condicoes)
+			if (client.obs) setObs(client.obs)
 		}
 	}, [client])
 
@@ -648,6 +650,18 @@ const ClientForm: React.FC<ClientFormProps> = ({
 						/>
 					</div>
 				</div>
+			</div>
+			{/* obs */}
+			<div className="field textareaField">
+				<label htmlFor="obs">Observação</label>
+				<textarea
+					name="obs"
+					id="obs"
+					cols={30}
+					rows={5}
+					value={obs}
+					onChange={e => setObs(e.target.value)}
+				/>
 			</div>
 			{/* condicoes */}
 			{/* <div className='field'>
