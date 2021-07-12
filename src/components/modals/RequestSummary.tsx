@@ -7,7 +7,6 @@ import RawProduct, {
 } from '../../models/product'
 import {RequestProduct} from '../../models/request'
 import formatPrice from '../../utils/formatPrice'
-import useClickOutside from '../../hooks/useClickOutside'
 
 type RequestSummaryModalProps = {
 	isExpanded: boolean
@@ -31,8 +30,6 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> = ({
 	rawProductsList,
 	editProduct
 }) => {
-	const ref = useClickOutside(() => setIsExpanded(false))
-
 	function calcSubtotal(
 		quantity: number,
 		price: number,
@@ -104,7 +101,7 @@ const RequestSummaryModal: React.FC<RequestSummaryModalProps> = ({
 	}
 
 	return (
-		<Container isExpanded={isExpanded} ref={ref}>
+		<Container isExpanded={isExpanded}>
 			<div className="controller">
 				<button onClick={() => setIsExpanded(!isExpanded)}>
 					<IoIosArrowUp />
