@@ -20,11 +20,11 @@ import TableUpdatesModal from '../../../components/modals/TableUpdates'
 import {companyController} from '../../../services/offline/controllers/company'
 import {productController} from '../../../services/offline/controllers/product'
 import {SkeletonLoading} from '../../../utils/skeletonLoading'
-import {Image} from '../../../components/Image'
 import {useMemo} from 'react'
 import {catchError} from '../../../utils/catchError'
 import {selectStyles} from '../../../styles/global'
 import {SelectOption} from '../../../models'
+import {TableDropzone} from '../../../components/TableDropzone'
 
 const filterOptions: SelectOption[] = [
 	{label: 'Todos produtos', value: 'all'},
@@ -308,7 +308,11 @@ const Products: React.FC = () => {
 												</td>
 											)}
 											<td className="img">
-												<Image src={product.imagem} alt={product.nome} />
+												<TableDropzone
+													shownFileUrl={product.imagem}
+													onFileUploaded={() => {}}
+												/>
+												{/* <Image src={product.imagem} alt={product.nome} /> */}
 											</td>
 											<td>{product.codigo}</td>
 											<td className="name">{product.nome}</td>
