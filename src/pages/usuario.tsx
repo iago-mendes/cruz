@@ -7,11 +7,11 @@ import Dropzone from '../components/Dropzone'
 import useAuth from '../hooks/useAuth'
 import {SkeletonLoading} from '../utils/skeletonLoading'
 import {sellerController} from '../services/offline/controllers/seller'
-import PasswordModal from '../components/modals/Password'
+import PasswordModal from '../components/_modals/Password'
 import api from '../services/api'
 import successAlert from '../utils/alerts/success'
 import {catchError} from '../utils/catchError'
-import LoadingModal from '../components/modals/Loading'
+import LoadingModal from '../components/_modals/Loading'
 
 const User: React.FC = () => {
 	const {user} = useAuth()

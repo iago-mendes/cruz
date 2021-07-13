@@ -3,7 +3,7 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 
 import Header from '../../components/Header'
-import ProductForm, {Seller} from '../../components/forms/Seller'
+import ProductForm, {Seller} from '../../components/_forms/Seller'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import useAuth from '../../hooks/useAuth'

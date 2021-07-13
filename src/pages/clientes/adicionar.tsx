@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import Head from 'next/head'
 
-import Client from '../../components/forms/Client'
+import Client from '../../components/_forms/Client'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import Header from '../../components/Header'

@@ -2,7 +2,7 @@ import {useState} from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 
-import ProductForm from '../../../components/forms/Product'
+import ProductForm from '../../../components/_forms/Product'
 
 const AddCompany: React.FC = () => {
 	const {query} = useRouter()

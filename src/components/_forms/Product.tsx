@@ -12,7 +12,7 @@ import FormButtons from '../FormButtons'
 import {catchError} from '../../utils/catchError'
 import {handleObjectId} from '../../utils/handleObjectId'
 import warningAlert from '../../utils/alerts/warning'
-import Header from '../../components/Header'
+import Header from '../Header'
 import confirmAlert from '../../utils/alerts/confirm'
 
 interface ProductFormProps {

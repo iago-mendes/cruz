@@ -3,7 +3,7 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 
 import Header from '../../components/Header'
-import ClientForm from '../../components/forms/Client'
+import ClientForm from '../../components/_forms/Client'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import api from '../../services/api'

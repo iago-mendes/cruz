@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-import RequestForm from '../../components/forms/Request'
+import RequestForm from '../../components/_forms/Request'
 
 const AddRequest: React.FC = () => {
 	return (

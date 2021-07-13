@@ -4,7 +4,7 @@ import Head from 'next/head'
 
 import api from '../../../services/api'
 import Header from '../../../components/Header'
-import CompanyForm from '../../../components/forms/Company'
+import CompanyForm from '../../../components/_forms/Company'
 import Company, {defaultCompany} from '../../../models/company'
 
 const EditCompany: React.FC = () => {

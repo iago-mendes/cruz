@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 
-import ProductForm from '../../../../components/forms/Product'
+import ProductForm from '../../../../components/_forms/Product'
 import Product, {defaultProduct} from '../../../../models/product'
 import {productController} from '../../../../services/offline/controllers/product'
 

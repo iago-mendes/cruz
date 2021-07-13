@@ -2,7 +2,7 @@ import {useState} from 'react'
 import Head from 'next/head'
 
 import Header from '../../components/Header'
-import CompanyForm from '../../components/forms/Company'
+import CompanyForm from '../../components/_forms/Company'
 import Loading from '../../components/Loading'
 import NotAllowed from '../../components/NotAllowed'
 import useAuth from '../../hooks/useAuth'

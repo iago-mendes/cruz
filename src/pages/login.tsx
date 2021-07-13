@@ -4,7 +4,7 @@ import {useRouter} from 'next/router'
 
 import logo from '../assets/images/logo.svg'
 import Container from '../styles/pages/login'
-import LoadingModal from '../components/modals/Loading'
+import LoadingModal from '../components/_modals/Loading'
 import errorAlert from '../utils/alerts/error'
 import useAuth from '../hooks/useAuth'
 import warningAlert from '../utils/alerts/warning'

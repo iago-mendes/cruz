@@ -2,7 +2,7 @@ import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 
-import RequestForm from '../../components/forms/Request'
+import RequestForm from '../../components/_forms/Request'
 import api from '../../services/api'
 import Request, {defaultRequest} from '../../models/request'
 import {requestController} from '../../services/offline/controllers/request'

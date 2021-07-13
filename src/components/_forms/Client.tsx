@@ -16,7 +16,7 @@ import Client, {
 } from '../../models/client'
 import {SelectOption, SelectOptionsList} from '../../models'
 import successAlert from '../../utils/alerts/success'
-import PasswordModal from '../modals/Password'
+import PasswordModal from '../_modals/Password'
 import FormButtons from '../FormButtons'
 import {FiMinus, FiPlus} from 'react-icons/fi'
 import {companyController} from '../../services/offline/controllers/company'
