@@ -12,6 +12,7 @@ import FormButtons from '../FormButtons'
 import {catchError} from '../../utils/catchError'
 import {handleObjectId} from '../../utils/handleObjectId'
 import warningAlert from '../../utils/alerts/warning'
+import Header from '../../components/Header'
 
 interface ProductFormProps {
 	method: string
@@ -158,106 +159,121 @@ const ProductForm: React.FC<ProductFormProps> = ({
 	}
 
 	return (
-		<Container onSubmit={e => e.preventDefault()}>
-			{/* imagem */}
-			<div className="field">
-				<label htmlFor="imageFile">Imagem</label>
-				<Dropzone
-					name="imageFile"
-					id="imageFile"
-					onFileUploaded={setImagem}
-					shownFileUrl={product && product.imagem}
-				/>
-			</div>
-			{/* nome */}
-			<div className="required field">
-				<label htmlFor="nome">Nome</label>
-				<input
-					type="text"
-					name="nome"
-					id="nome"
-					value={nome}
-					onChange={e => setNome(e.target.value)}
-				/>
-			</div>
-			{/* codigo */}
-			<div className="required field">
-				<label htmlFor="codigo">Código</label>
-				<input
-					type="number"
-					name="codigo"
-					id="codigo"
-					value={codigo}
-					onChange={e => setCodigo(e.target.value)}
-				/>
-			</div>
-			{/* unidade */}
-			<div className="required field">
-				<label htmlFor="unidade">Unidade</label>
-				<input
-					type="text"
-					name="unidade"
-					id="unidade"
-					value={unidade}
-					onChange={e => setUnidade(e.target.value)}
-				/>
-			</div>
-			{/* peso */}
-			<div className="field">
-				<label htmlFor="peso">Peso (kg)</label>
-				<NumberInput value={peso} setValue={setPeso} name="peso" />
-			</div>
-			{/* volume */}
-			<div className="field">
-				<label htmlFor="volume">Volume (m³)</label>
-				<NumberInput value={volume} setValue={setVolume} name="volume" />
-			</div>
-			{/* ipi */}
-			<div className="required field">
-				<label htmlFor="ipi">Ipi (%)</label>
-				<NumberInput
-					name="ipi"
-					value={ipi}
-					setValue={setIpi}
-					placeholder="0.00"
-				/>
-			</div>
-			{/* st */}
-			<div className="required field">
-				<label htmlFor="st">St (%)</label>
-				<NumberInput value={st} setValue={setSt} name="st" placeholder="0.00" />
-			</div>
-			{/* comissao */}
-			<div className="field">
-				<label htmlFor="comissao">Comissão (%)</label>
-				<NumberInput name="comissao" value={comissao} setValue={setComissao} />
-			</div>
-			{/* tabelas */}
-			<div className="required field">
-				<label htmlFor="tabela">Tabelas</label>
-				<ul>
-					{tabelas.map(({id, preco}, index) => {
-						const table = companyTables.find(
-							({_id}) => String(_id) == String(id)
-						)
-						const name = table ? table.nome : 'Sem Nome'
+		<>
+			<Header display={nome} />
 
-						return (
-							<li key={index}>
-								<span className="label">Tabela {name}: R$</span>
-								<NumberInput
-									value={preco}
-									setValue={n => handleTablePriceChange(n, index)}
-									name="tabela"
-								/>
-							</li>
-						)
-					})}
-				</ul>
-			</div>
+			<main className="main">
+				<Container onSubmit={e => e.preventDefault()}>
+					{/* imagem */}
+					<div className="field">
+						<label htmlFor="imageFile">Imagem</label>
+						<Dropzone
+							name="imageFile"
+							id="imageFile"
+							onFileUploaded={setImagem}
+							shownFileUrl={product && product.imagem}
+						/>
+					</div>
+					{/* nome */}
+					<div className="required field">
+						<label htmlFor="nome">Nome</label>
+						<input
+							type="text"
+							name="nome"
+							id="nome"
+							value={nome}
+							onChange={e => setNome(e.target.value)}
+						/>
+					</div>
+					{/* codigo */}
+					<div className="required field">
+						<label htmlFor="codigo">Código</label>
+						<input
+							type="number"
+							name="codigo"
+							id="codigo"
+							value={codigo}
+							onChange={e => setCodigo(e.target.value)}
+						/>
+					</div>
+					{/* unidade */}
+					<div className="required field">
+						<label htmlFor="unidade">Unidade</label>
+						<input
+							type="text"
+							name="unidade"
+							id="unidade"
+							value={unidade}
+							onChange={e => setUnidade(e.target.value)}
+						/>
+					</div>
+					{/* peso */}
+					<div className="field">
+						<label htmlFor="peso">Peso (kg)</label>
+						<NumberInput value={peso} setValue={setPeso} name="peso" />
+					</div>
+					{/* volume */}
+					<div className="field">
+						<label htmlFor="volume">Volume (m³)</label>
+						<NumberInput value={volume} setValue={setVolume} name="volume" />
+					</div>
+					{/* ipi */}
+					<div className="required field">
+						<label htmlFor="ipi">Ipi (%)</label>
+						<NumberInput
+							name="ipi"
+							value={ipi}
+							setValue={setIpi}
+							placeholder="0.00"
+						/>
+					</div>
+					{/* st */}
+					<div className="required field">
+						<label htmlFor="st">St (%)</label>
+						<NumberInput
+							value={st}
+							setValue={setSt}
+							name="st"
+							placeholder="0.00"
+						/>
+					</div>
+					{/* comissao */}
+					<div className="field">
+						<label htmlFor="comissao">Comissão (%)</label>
+						<NumberInput
+							name="comissao"
+							value={comissao}
+							setValue={setComissao}
+						/>
+					</div>
+					{/* tabelas */}
+					<div className="required field">
+						<label htmlFor="tabela">Tabelas</label>
+						<ul>
+							{tabelas.map(({id, preco}, index) => {
+								const table = companyTables.find(
+									({_id}) => String(_id) == String(id)
+								)
+								const name = table ? table.nome : 'Sem Nome'
 
-			<FormButtons handleCancel={back} handleSubmit={handleSubmit} />
-		</Container>
+								return (
+									<li key={index}>
+										<span className="label">Tabela {name}: R$</span>
+										<NumberInput
+											value={preco}
+											setValue={n => handleTablePriceChange(n, index)}
+											name="tabela"
+										/>
+									</li>
+								)
+							})}
+						</ul>
+					</div>
+
+					<FormButtons handleCancel={back} handleSubmit={handleSubmit} />
+				</Container>
+			</main>
+		</>
 	)
 }
 
