@@ -104,10 +104,6 @@ const Container = styled.div`
 								max-height: 4.5rem;
 							}
 						}
-
-						td.name {
-							/* min-width: 20rem; */
-						}
 					}
 
 					.blocked {

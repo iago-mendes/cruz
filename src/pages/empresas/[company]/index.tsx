@@ -225,7 +225,7 @@ const Products: React.FC = () => {
 												<SkeletonLoading height="1.5rem" width="5rem" />
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="40rem" />
+												<SkeletonLoading height="1.5rem" width="13rem" />
 											</td>
 											<td>
 												<SkeletonLoading height="1.5rem" width="5rem" />
