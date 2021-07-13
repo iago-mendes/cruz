@@ -20,7 +20,7 @@ import {productController} from '../../../services/offline/controllers/product'
 import {SkeletonLoading} from '../../../utils/skeletonLoading'
 import {useMemo} from 'react'
 import {catchError} from '../../../utils/catchError'
-import {selectStyles} from '../../../styles/global'
+import {selectStyles} from '../../../styles/select'
 import {SelectOption} from '../../../models'
 import {TableDropzone} from '../../../components/TableDropzone'
 

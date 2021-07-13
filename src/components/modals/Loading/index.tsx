@@ -1,6 +1,6 @@
 import Modal from 'react-modal'
 
-import {modalStyle} from '../../../styles/global'
+import {modalStyle} from '../../../styles/modal'
 import Loading from '../../Loading'
 
 Modal.setAppElement('#__next')

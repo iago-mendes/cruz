@@ -3,7 +3,7 @@ import Modal from 'react-modal'
 import {BiArrowBack} from 'react-icons/bi'
 
 import Container from './styles'
-import {modalStyle} from '../../../styles/global'
+import {modalStyle} from '../../../styles/modal'
 import useDimensions from '../../../hooks/useDimensions'
 
 Modal.setAppElement('#__next')

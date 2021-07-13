@@ -5,7 +5,7 @@ import Switch from 'react-switch'
 
 import api from '../../services/api'
 import Container from './styles'
-import {selectStyles} from '../../styles/global'
+import {selectStyles} from '../../styles/select'
 import Dropzone from '../Dropzone'
 import Client, {
 	ClientCompany,

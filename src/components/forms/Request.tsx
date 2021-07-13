@@ -8,7 +8,7 @@ import freteOptions from '../../assets/db/options/frete.json'
 import typeOptions from '../../assets/db/options/type.json'
 
 import Container from './styles'
-import {selectStyles} from '../../styles/global'
+import {selectStyles} from '../../styles/select'
 import useAuth from '../../hooks/useAuth'
 import RawProduct from '../../models/product'
 import SelectProductsModal from '../modals/SelectProducts'

@@ -7,7 +7,7 @@ import {FiPlus, FiMinus} from 'react-icons/fi'
 
 import Container from './styles'
 import api from '../../services/api'
-import {selectStyles} from '../../styles/global'
+import {selectStyles} from '../../styles/select'
 import Dropzone from '../Dropzone'
 import FormButtons from '../FormButtons'
 import successAlert from '../../utils/alerts/success'

@@ -12,7 +12,7 @@ import NumberInput from '../../NumberInput'
 import formatImage from '../../../utils/formatImage'
 import {SelectOption} from '../../../models'
 import {CompanyTable} from '../../../models/company'
-import {selectStyles} from '../../../styles/global'
+import {selectStyles} from '../../../styles/select'
 
 type EditRequestProductModalProps = {
 	isOpen: boolean
