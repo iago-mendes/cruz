@@ -134,6 +134,16 @@ const Products: React.FC = () => {
 			.catch(catchError)
 	}
 
+	async function handleUploadImage(file: File, id: string) {
+		const data = new FormData()
+		data.append('imagem', file)
+
+		await api
+			.put(`companies/${companyId}/products/${id}`, data)
+			.then(() => successAlert('Imagem do produto atualizada com sucesso!'))
+			.catch(catchError)
+	}
+
 	return (
 		<Container className="container">
 			<Head>
@@ -310,9 +320,10 @@ const Products: React.FC = () => {
 											<td className="img">
 												<TableDropzone
 													shownFileUrl={product.imagem}
-													onFileUploaded={() => {}}
+													onFileUploaded={file =>
+														handleUploadImage(file, product._id)
+													}
 												/>
-												{/* <Image src={product.imagem} alt={product.nome} /> */}
 											</td>
 											<td>{product.codigo}</td>
 											<td className="name">{product.nome}</td>
