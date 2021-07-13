@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {FiEdit3, FiTrash, FiEye, FiEyeOff} from 'react-icons/fi'
+import {FiEdit3, FiEye, FiEyeOff} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {MdUpdate} from 'react-icons/md'
@@ -13,8 +13,6 @@ import useAuth from '../../../hooks/useAuth'
 import {CompanyTable} from '../../../models/company'
 import Product, {loadingProduct} from '../../../models/product'
 import SheetModal from '../../../components/modals/Sheet'
-import confirmAlert from '../../../utils/alerts/confirm'
-import errorAlert from '../../../utils/alerts/error'
 import successAlert from '../../../utils/alerts/success'
 import TableUpdatesModal from '../../../components/modals/TableUpdates'
 import {companyController} from '../../../services/offline/controllers/company'
@@ -99,23 +97,6 @@ const Products: React.FC = () => {
 		if (Number.isNaN(parseFloat)) return '0,00'
 
 		return parsedNumber.toFixed(2).replace('.', ',')
-	}
-
-	async function handleDeleteProduct(product: Product) {
-		confirmAlert(
-			'Você tem certeza?',
-			`Se você continuar, o produto ${product.nome} será deletado!`,
-			() =>
-				api
-					.delete(`companies/${companyId}/products/${product._id}`)
-					.then(() => {
-						updateProducts()
-						successAlert(`Produto ${product.nome} deletado com sucesso!`)
-					})
-					.catch(err => {
-						errorAlert(err.response.message.data)
-					})
-		)
 	}
 
 	async function toggleProductBlockStatus(
@@ -306,13 +287,6 @@ const Products: React.FC = () => {
 															}
 														>
 															<FiEdit3 />
-														</button>
-														<button
-															title="Deletar"
-															onClick={() => handleDeleteProduct(product)}
-															className="delete"
-														>
-															<FiTrash />
 														</button>
 													</div>
 												</td>

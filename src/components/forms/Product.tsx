@@ -13,6 +13,7 @@ import {catchError} from '../../utils/catchError'
 import {handleObjectId} from '../../utils/handleObjectId'
 import warningAlert from '../../utils/alerts/warning'
 import Header from '../../components/Header'
+import confirmAlert from '../../utils/alerts/confirm'
 
 interface ProductFormProps {
 	method: string
@@ -121,6 +122,40 @@ const ProductForm: React.FC<ProductFormProps> = ({
 		return {areFieldsValid: true, warning: ''}
 	}
 
+	async function handleDeleteProduct() {
+		confirmAlert(
+			'Você tem certeza?',
+			`Se você continuar, o produto ${product.nome} será deletado!`,
+			() =>
+				api
+					.delete(`companies/${companyId}/products/${product._id}`)
+					.then(() => {
+						successAlert(`Produto ${product.nome} deletado com sucesso!`)
+						back()
+					})
+					.catch(catchError)
+		)
+	}
+
+	function getOptions() {
+		const options: Array<{
+			display: string
+			action: () => void
+			color?: string
+		}> = []
+
+		options.push({display: 'Salvar', action: () => handleSubmit()})
+
+		if (method === 'put')
+			options.push({
+				display: 'Deletar produto',
+				action: handleDeleteProduct,
+				color: '#f00'
+			})
+
+		return options
+	}
+
 	function handleSubmit() {
 		const {areFieldsValid, warning} = validateFields()
 		if (!areFieldsValid) return warningAlert('Dados inválidos!', warning)
@@ -160,7 +195,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
 	return (
 		<>
-			<Header display={nome} />
+			<Header display={nome} options={getOptions()} />
 
 			<main className="main">
 				<Container onSubmit={e => e.preventDefault()}>
