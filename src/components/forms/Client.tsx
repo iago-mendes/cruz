@@ -4,7 +4,7 @@ import Select, {OptionsType} from 'react-select'
 import Switch from 'react-switch'
 
 import api from '../../services/api'
-import Container from '../../styles/components/forms/global'
+import Container from './styles'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'
 import Client, {

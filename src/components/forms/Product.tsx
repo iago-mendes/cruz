@@ -1,7 +1,7 @@
 import {useRouter} from 'next/router'
 import React, {useEffect, useState} from 'react'
 
-import Container from '../../styles/components/forms/global'
+import Container from './styles'
 import api from '../../services/api'
 import {CompanyTable as Table} from '../../models/company'
 import Product, {ProductTable} from '../../models/product'

@@ -5,7 +5,7 @@ import Select from 'react-select'
 import Switch from 'react-switch'
 import {FiPlus, FiMinus} from 'react-icons/fi'
 
-import Container from '../../styles/components/forms/global'
+import Container from './styles'
 import api from '../../services/api'
 import {selectStyles} from '../../styles/global'
 import Dropzone from '../Dropzone'

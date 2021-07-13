@@ -2,7 +2,7 @@ import {useRouter} from 'next/router'
 import {ChangeEvent, useEffect, useState} from 'react'
 import {FiMinus, FiPlus} from 'react-icons/fi'
 
-import Container from '../../styles/components/forms/global'
+import Container from './styles'
 import api from '../../services/api'
 import Company, {CompanyCondition, CompanyTable} from '../../models/company'
 import Dropzone from '../Dropzone'

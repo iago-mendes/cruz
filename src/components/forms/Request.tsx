@@ -7,7 +7,7 @@ import {FiPlus, FiX} from 'react-icons/fi'
 import freteOptions from '../../assets/db/options/frete.json'
 import typeOptions from '../../assets/db/options/type.json'
 
-import Container from '../../styles/components/forms/global'
+import Container from './styles'
 import {selectStyles} from '../../styles/global'
 import useAuth from '../../hooks/useAuth'
 import RawProduct from '../../models/product'
