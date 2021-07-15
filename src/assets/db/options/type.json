@@ -6,5 +6,9 @@
 	{
 		"label": "Troca",
 		"value": "troca"
+	},
+	{
+		"label": "Bonificação",
+		"value": "bonus"
 	}
 ]

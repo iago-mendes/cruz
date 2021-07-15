@@ -67,7 +67,11 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 		telefone: ''
 	})
 	const [digitado_por, setDigitadoPor] = useState('')
-	const [tipo, setTipo] = useState<Type>({venda: true, troca: false})
+	const [tipo, setTipo] = useState<Type>({
+		venda: true,
+		troca: false,
+		bonus: false
+	})
 	const [status, setStatus] = useState<Status>({
 		concluido: false,
 		enviado: false,
@@ -260,7 +264,8 @@ const RequestForm: React.FC<RequestFormProps> = ({method, id, request}) => {
 	function handleTypeChange(e: SelectOption) {
 		const tmpType = {
 			venda: e.value === 'venda',
-			troca: e.value === 'troca'
+			troca: e.value === 'troca',
+			bonus: e.value === 'bonus'
 		}
 
 		setTipo(tmpType)

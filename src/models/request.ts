@@ -14,7 +14,7 @@ export type RequestRaw = {
 	frete: string
 	contato: {nome: string; telefone: string}
 	digitado_por?: string
-	tipo: {venda: boolean; troca: boolean}
+	tipo: Type
 	status: {concluido: boolean; enviado: boolean; faturado: boolean}
 	obs?: string
 }
@@ -31,7 +31,7 @@ export const defaultRequest: RequestRaw = {
 	frete: '',
 	contato: {nome: '', telefone: ''},
 	digitado_por: '',
-	tipo: {venda: true, troca: false},
+	tipo: {venda: true, troca: false, bonus: false},
 	status: {concluido: false, enviado: false, faturado: false}
 }
 
@@ -51,6 +51,7 @@ export const defaultRequestProduct: RequestProduct = {
 export type Type = {
 	venda: boolean
 	troca: boolean
+	bonus?: boolean
 }
 
 export type Status = {
@@ -116,7 +117,7 @@ export const loadingRequest: RequestListed = {
 		nome_fantasia: '',
 		razao_social: ''
 	},
-	tipo: {venda: true, troca: false},
+	tipo: {venda: true, troca: false, bonus: false},
 	status: {concluido: false, enviado: false, faturado: false},
 	valorTotal: 0
 }
