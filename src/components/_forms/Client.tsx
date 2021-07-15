@@ -294,7 +294,6 @@ const ClientForm: React.FC<ClientFormProps> = ({
 	function handleSubmit() {
 		const {areFieldsValid, warning} = validateFields()
 		if (!areFieldsValid) return warningAlert('Dados inválidos!', warning)
-		console.log('<< status >>', status)
 
 		const data = new FormData()
 
@@ -313,6 +312,7 @@ const ClientForm: React.FC<ClientFormProps> = ({
 		data.append('endereco', JSON.stringify(endereco))
 		data.append('status', JSON.stringify(status))
 		data.append('condicoes', JSON.stringify(condicoes))
+		data.append('obs', obs)
 
 		if (method === 'post') {
 			api

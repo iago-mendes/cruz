@@ -90,7 +90,6 @@ export const clientController = {
 				: previousClient.representadas,
 			obs: obs ? obs : previousClient.obs
 		}
-		console.log('<< updatedClient >>', updatedClient)
 
 		await db.table('clients').put(updatedClient, id)
 	},
