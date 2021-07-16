@@ -26,7 +26,7 @@ export const goalController = {
 
 		const updatedRequest = {
 			month,
-			companies: companies ? companies : previousGoal.companies
+			companies: companies
 		}
 
 		await db.table('goals').put(updatedRequest, month)

@@ -162,7 +162,7 @@ const Goal: React.FC = () => {
 				.catch(catchError)
 		else
 			await api
-				.put(`goals/${month}`)
+				.put(`goals/${month}`, data)
 				.then(() => {
 					successAlert('Meta atualizada com sucesso!')
 					back()
