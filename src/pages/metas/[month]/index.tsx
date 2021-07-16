@@ -121,7 +121,7 @@ const Goal: React.FC = () => {
 									</li>
 									{company.sellers.map(seller => (
 										<li key={seller.id}>
-											<label>E-Commerce</label>
+											<label>{seller.name}</label>
 											<span>
 												{formatPrice(seller.sold)} / {formatPrice(seller.goal)}
 											</span>
