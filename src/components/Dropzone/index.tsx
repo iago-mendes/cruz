@@ -1,9 +1,12 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {useDropzone} from 'react-dropzone'
 import {FiUpload} from 'react-icons/fi'
+import Compressor from 'compressorjs'
 
 import Container from './styles'
 import {Image} from '../Image'
+import {catchError} from '../../utils/catchError'
+import Loading from '../Loading'
 
 interface Props {
 	shownFileUrl?: string
@@ -20,17 +23,16 @@ const Dropzone: React.FC<Props> = ({
 	id
 }) => {
 	const [selectedFileUrl, setSelectedFileUrl] = useState('')
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		if (shownFileUrl) setSelectedFileUrl(shownFileUrl)
 	}, [shownFileUrl])
 
 	const onDrop = useCallback(
-		acceptedFiles => {
+		(acceptedFiles: File[]) => {
 			const file = acceptedFiles[0]
-			const fileUrl = URL.createObjectURL(file)
-			setSelectedFileUrl(fileUrl)
-			onFileUploaded(file)
+			handleUploadImage(file)
 		},
 		[onFileUploaded]
 	)
@@ -40,16 +42,51 @@ const Dropzone: React.FC<Props> = ({
 		accept: 'image/*'
 	})
 
+	async function handleUploadImage(file: File) {
+		setLoading(true)
+
+		await new Promise((resolve, reject) => {
+			new Compressor(file, {
+				quality: 0.6,
+				convertSize: 2000000, // 2mb
+				success: blobResult => {
+					const fileResult = new File([blobResult], file.name, {
+						type: 'image/png'
+					})
+					resolve(fileResult)
+				},
+				error: error => reject(error)
+			})
+		})
+			.then((fileResult: File) => {
+				const fileUrl = URL.createObjectURL(fileResult)
+				setSelectedFileUrl(fileUrl)
+
+				onFileUploaded(fileResult)
+			})
+			.catch(() => {
+				catchError('Erro ao comprimir imagens.')
+			})
+
+		setLoading(false)
+	}
+
 	return (
 		<Container {...getRootProps()}>
-			<input {...getInputProps()} accept="image/*" name={name} id={id} />
-			{selectedFileUrl !== '' ? (
-				<Image src={selectedFileUrl} alt="Image thumbnail" />
+			{loading ? (
+				<Loading />
 			) : (
-				<p>
-					<FiUpload />
-					Selecione uma imagem
-				</p>
+				<>
+					<input {...getInputProps()} accept="image/*" name={name} id={id} />
+					{selectedFileUrl !== '' ? (
+						<Image src={selectedFileUrl} alt="Image thumbnail" />
+					) : (
+						<p>
+							<FiUpload />
+							Selecione uma imagem
+						</p>
+					)}
+				</>
 			)}
 		</Container>
 	)
