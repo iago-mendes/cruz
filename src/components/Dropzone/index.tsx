@@ -5,8 +5,8 @@ import Compressor from 'compressorjs'
 
 import Container from './styles'
 import {Image} from '../Image'
-import {catchError} from '../../utils/catchError'
 import Loading from '../Loading'
+import errorAlert from '../../utils/alerts/error'
 
 interface Props {
 	shownFileUrl?: string
@@ -48,7 +48,7 @@ const Dropzone: React.FC<Props> = ({
 		await new Promise((resolve, reject) => {
 			new Compressor(file, {
 				quality: 0.6,
-				convertSize: 2000000, // 2mb
+				convertSize: 2 * 1024 * 1024, // 2mb
 				success: blobResult => {
 					const fileResult = new File([blobResult], file.name, {
 						type: 'image/png'
@@ -59,13 +59,19 @@ const Dropzone: React.FC<Props> = ({
 			})
 		})
 			.then((fileResult: File) => {
+				if (fileResult.size > 2 * 1024 * 1024)
+					return errorAlert(
+						'O limite de upload é 2mb por arquivo.',
+						'Imagem muito grande!'
+					)
+
 				const fileUrl = URL.createObjectURL(fileResult)
 				setSelectedFileUrl(fileUrl)
 
 				onFileUploaded(fileResult)
 			})
 			.catch(() => {
-				catchError('Erro ao comprimir imagens.')
+				errorAlert('Erro ao comprimir imagens.')
 			})
 
 		setLoading(false)
