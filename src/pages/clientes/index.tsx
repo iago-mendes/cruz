@@ -16,7 +16,7 @@ import successAlert from '../../utils/alerts/success'
 import errorAlert from '../../utils/alerts/error'
 import {Image} from '../../components/Image'
 import {clientController} from '../../services/offline/controllers/client'
-import {SkeletonLoading} from '../../utils/skeletonLoading'
+import {SkeletonLoading} from '../../components/SkeletonLoading'
 
 const Clients: React.FC = () => {
 	const {push, query} = useRouter()

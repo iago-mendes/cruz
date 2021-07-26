@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 
-type SkeletonLoadingProps = {
+type Props = {
 	height?: number | string
 	width?: number | string
+
+	showAnimation?: boolean
 }
 
-export const SkeletonLoading = styled.div<SkeletonLoadingProps>`
+export const Container = styled.div<Props>`
 	display: inline-block;
 	position: relative;
 	overflow: hidden;
@@ -29,7 +31,10 @@ export const SkeletonLoading = styled.div<SkeletonLoadingProps>`
 			#e8e8e8 50%,
 			transparent 100%
 		);
-		animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+		${p =>
+			p.showAnimation
+				? 'animation: load 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;'
+				: ''}
 	}
 
 	@keyframes load {

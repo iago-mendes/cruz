@@ -15,7 +15,7 @@ import successAlert from '../../utils/alerts/success'
 import {Image} from '../../components/Image'
 import {loadingSeller, SellerRaw} from '../../models/seller'
 import {sellerController} from '../../services/offline/controllers/seller'
-import {SkeletonLoading} from '../../utils/skeletonLoading'
+import {SkeletonLoading} from '../../components/SkeletonLoading'
 
 interface SellersProps {
 	sellers: SellerRaw[]

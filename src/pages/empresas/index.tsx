@@ -13,7 +13,7 @@ import Link from 'next/link'
 import confirmAlert from '../../utils/alerts/confirm'
 import {Image} from '../../components/Image'
 import {companyController} from '../../services/offline/controllers/company'
-import {SkeletonLoading} from '../../utils/skeletonLoading'
+import {SkeletonLoading} from '../../components/SkeletonLoading'
 import successAlert from '../../utils/alerts/success'
 import {catchError} from '../../utils/catchError'
 

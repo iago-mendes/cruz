@@ -18,7 +18,7 @@ import {formatNumber} from '../../utils/formatNumber'
 import formatPrice from '../../utils/formatPrice'
 import getDate from '../../utils/getDate'
 import useDimensions from '../../hooks/useDimensions'
-import {SkeletonLoading} from '../../utils/skeletonLoading'
+import {SkeletonLoading} from '../SkeletonLoading'
 import {formatMonth} from '../../utils/formatMonth'
 
 type GoalChartProps = {
