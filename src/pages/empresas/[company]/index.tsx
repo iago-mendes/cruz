@@ -215,35 +215,71 @@ const Products: React.FC = () => {
 										<tr key={index}>
 											{user.role === 'admin' && (
 												<td>
-													<SkeletonLoading height="1.5rem" width="5rem" />
+													<SkeletonLoading
+														height="1.5rem"
+														width="5rem"
+														showAnimation={false}
+													/>
 												</td>
 											)}
 											<td className="img">
-												<SkeletonLoading height="3rem" width="3rem" />
+												<SkeletonLoading
+													height="3rem"
+													width="3rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="5rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="5rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="13rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="13rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="5rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="5rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="5rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="5rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="5rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="5rem"
+													showAnimation={false}
+												/>
 											</td>
 											<td>
-												<SkeletonLoading height="1.5rem" width="5rem" />
+												<SkeletonLoading
+													height="1.5rem"
+													width="5rem"
+													showAnimation={false}
+												/>
 											</td>
 											{product.tabelas.map(({id, preco}, index) => {
 												if (id === 'loading')
 													return (
 														<td key={index}>
-															<SkeletonLoading height="1.5rem" width="5rem" />
+															<SkeletonLoading
+																height="1.5rem"
+																width="5rem"
+																showAnimation={false}
+															/>
 														</td>
 													)
 												else return <td key={id}>R$ {formatNumber(preco)}</td>
