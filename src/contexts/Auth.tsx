@@ -94,7 +94,7 @@ const AuthContextProvider: React.FC = ({children}) => {
 				updateUser(token)
 			})
 			.catch(error => {
-				const errorMessage = String(error.response.data.message || '')
+				const errorMessage = String(error.response?.data?.message ?? '')
 				errorAlert(errorMessage)
 			})
 
