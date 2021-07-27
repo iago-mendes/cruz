@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import {FiEdit3, FiEye, FiEyeOff} from 'react-icons/fi'
+import {FiEdit3, FiEye, FiEyeOff, FiImage} from 'react-icons/fi'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
 import {MdUpdate} from 'react-icons/md'
@@ -23,6 +23,7 @@ import {catchError} from '../../../utils/catchError'
 import {selectStyles} from '../../../styles/select'
 import {SelectOption} from '../../../models'
 import {TableDropzone} from '../../../components/TableDropzone'
+import UpdateProductsImageModal from '../../../components/_modals/UpdateProductsImage'
 
 const filterOptions: SelectOption[] = [
 	{label: 'Todos produtos', value: 'all'},
@@ -43,6 +44,8 @@ const Products: React.FC = () => {
 	])
 
 	const [isTableUpdatesModalOpen, setIsTableUpdatesModalOpen] = useState(false)
+	const [isUpdateProductsImageModalOpen, setIsUpdateProductsImageModalOpen] =
+		useState(false)
 
 	const [search, setSearch] = useState('')
 	const [selectedFilter, setSelectedFilter] = useState(filterOptions[1].value)
@@ -147,6 +150,12 @@ const Products: React.FC = () => {
 				callback={updateProducts}
 			/>
 
+			<UpdateProductsImageModal
+				isOpen={isUpdateProductsImageModalOpen}
+				setIsOpen={setIsUpdateProductsImageModalOpen}
+				companyId={String(companyId)}
+			/>
+
 			<Header
 				display={`${companyName} > Produtos`}
 				showSearch
@@ -172,10 +181,17 @@ const Products: React.FC = () => {
 						/>
 					</div>
 					{user.role === 'admin' && (
-						<button onClick={() => setIsTableUpdatesModalOpen(true)}>
-							<MdUpdate />
-							<span>Atualizar tabelas</span>
-						</button>
+						<>
+							<button onClick={() => setIsTableUpdatesModalOpen(true)}>
+								<MdUpdate />
+								<span>Atualizar tabelas</span>
+							</button>
+
+							<button onClick={() => setIsUpdateProductsImageModalOpen(true)}>
+								<FiImage />
+								<span>Atualizar imagens</span>
+							</button>
+						</>
 					)}
 				</div>
 
