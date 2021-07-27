@@ -13,6 +13,10 @@ import {Image} from '../../Image'
 import {SelectOption} from '../../../models'
 import {selectStyles} from '../../../styles/select'
 import {productController} from '../../../services/offline/controllers/product'
+import warningAlert from '../../../utils/alerts/warning'
+import api from '../../../services/api'
+import {catchError} from '../../../utils/catchError'
+import successAlert from '../../../utils/alerts/success'
 
 type Relation = {
 	imageFilename: string
@@ -121,8 +125,31 @@ const UpdateProductsImageModal: React.FC<Props> = ({
 		setIsOpen(false)
 	}
 
-	function handleSubmit() {
-		console.log('<< relations >>', relations)
+	function validateFields() {
+		if (imageFiles.length !== relations.length)
+			return {
+				areFieldsValid: false,
+				warning: 'Há imagens sem produtos selecionados.'
+			}
+
+		return {areFieldsValid: true, warning: ''}
+	}
+
+	async function handleSubmit() {
+		const {areFieldsValid, warning} = validateFields()
+		if (!areFieldsValid) return warningAlert('Dados inválidos!', warning)
+
+		const data = new FormData()
+		data.append('relations', JSON.stringify(relations))
+		imageFiles.forEach(file => data.append('imagens', file))
+
+		await api
+			.put(`/companies/${companyId}/images`, data)
+			.then(() => {
+				successAlert('Imagens atualizadas com sucesso!')
+				setIsOpen(false)
+			})
+			.catch(catchError)
 	}
 
 	return (

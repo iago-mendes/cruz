@@ -5,7 +5,7 @@ export function catchError(error: any) {
 
 	console.log('<< error >>', error)
 
-	if (error && error.response && error.response.message)
-		errorAlert(error.response.message.data)
+	if (error && error.response && error.response.data)
+		errorAlert(error.response.data.message)
 	else errorAlert()
 }
