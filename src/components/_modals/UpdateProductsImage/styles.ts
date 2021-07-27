@@ -74,7 +74,7 @@ export const Container = styled.main`
 				list-style: none;
 
 				display: flex;
-				align-items: center;
+				flex-direction: column;
 				gap: 1rem;
 
 				padding: 0.5rem;
@@ -85,42 +85,60 @@ export const Container = styled.main`
 					background-color: rgba(0, 0, 0, 0.1);
 				}
 
-				button {
-					background: none;
-					border: none;
-
-					width: 3rem;
-					height: 3rem;
-					font-size: 2rem;
-					border-radius: 50%;
-
+				.imageContainer {
 					display: flex;
 					align-items: center;
-					justify-content: center;
+					gap: 1rem;
 
-					transition: background-color 0.2s;
+					button {
+						background: none;
+						border: none;
 
-					:hover {
-						background-color: ${p => p.theme.colors.buttonRed};
+						width: 3rem;
+						height: 3rem;
+						font-size: 2rem;
+						border-radius: 50%;
+
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						transition: background-color 0.2s;
+
+						:hover {
+							background-color: ${p => p.theme.colors.buttonRed};
+						}
+					}
+
+					figure {
+						width: 10rem;
+						height: 10rem;
+
+						display: flex;
+						align-items: center;
+						justify-content: center;
+
+						img {
+							max-width: 100%;
+							max-height: 100%;
+
+							border-radius: 0.5rem;
+						}
 					}
 				}
 
-				figure {
-					width: 10rem;
-					height: 10rem;
-
-					display: flex;
-					align-items: center;
-					justify-content: center;
-
-					img {
-						max-width: 100%;
-						max-height: 100%;
-
-						border-radius: 0.5rem;
-					}
+				.select {
+					width: 25rem;
+					margin-left: auto;
 				}
 			}
+		}
+	}
+
+	@media (min-width: 700px) {
+		.content ul.images li {
+			flex-direction: row;
+			align-items: center;
 		}
 	}
 `
