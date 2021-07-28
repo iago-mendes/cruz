@@ -7,7 +7,7 @@ const Container = styled.div`
 		.tableContainer {
 			min-height: 50vh;
 			width: 100%;
-			overflow: hidden;
+			overflow-x: auto;
 
 			padding: 2rem;
 
