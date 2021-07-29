@@ -10,6 +10,7 @@ export const Container = styled.main`
 
 	.content {
 		margin: 2rem auto;
+		margin-bottom: 20rem;
 		padding: 0 2rem;
 		max-width: 75rem;
 
