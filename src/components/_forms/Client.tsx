@@ -24,6 +24,8 @@ import {sellerController} from '../../services/offline/controllers/seller'
 import {catchError} from '../../utils/catchError'
 import {handleObjectId} from '../../utils/handleObjectId'
 import warningAlert from '../../utils/alerts/warning'
+import Header from '../Header'
+import confirmAlert from '../../utils/alerts/confirm'
 
 interface ClientFormProps {
 	method: string
@@ -177,20 +179,6 @@ const ClientForm: React.FC<ClientFormProps> = ({
 		setStatus(tmp)
 	}
 
-	// function handleConditionsChange(e: boolean, field: string)
-	// {
-	// 	let tmpConditions = {...condicoes}
-
-	// 	if (field === 'prazo')
-	// 		tmpConditions.prazo = e
-	// 	if (field === 'vista')
-	// 		tmpConditions.vista = e
-	// 	if (field === 'cheque')
-	// 		tmpConditions.cheque = e
-
-	// 	setCondicoes(tmpConditions)
-	// }
-
 	function handleAddContact() {
 		const tmpContacts = [...contatos, {nome: '', telefone: ''}]
 		setContatos(tmpContacts)
@@ -255,6 +243,37 @@ const ClientForm: React.FC<ClientFormProps> = ({
 			'Excelência em Representação Comercial!'
 
 		return whatsappText
+	}
+
+	async function handleDeleteClient() {
+		confirmAlert(
+			'Você tem certeza?',
+			'Se você continuar, o cliente será deletado!',
+			() =>
+				api
+					.delete(`clients/${id}`)
+					.then(() => successAlert('Cliente deletado com sucesso!'))
+					.catch(catchError)
+		)
+	}
+
+	function getOptions() {
+		const options: Array<{
+			display: string
+			action: () => void
+			color?: string
+		}> = []
+
+		options.push({display: 'Salvar', action: () => handleSubmit()})
+
+		if (method === 'put')
+			options.push({
+				display: 'Deletar cliente',
+				action: handleDeleteClient,
+				color: '#f00'
+			})
+
+		return options
 	}
 
 	function validateFields() {
@@ -337,368 +356,349 @@ const ClientForm: React.FC<ClientFormProps> = ({
 	}
 
 	return (
-		<Container onSubmit={e => e.preventDefault()}>
-			<PasswordModal
-				isOpen={isPasswordModalOpen}
-				setIsOpen={setIsPasswordModalOpen}
-				role="client"
-				id={id}
-				setPwd={method === 'post' ? setSenha : undefined}
-				sendCredentialsViaMail={sendCredentialsViaMail}
-				setSendCredentialsViaMail={setSendCredentialsViaMail}
-				handleSendCredentialsViaMail={handleSendCredentialsViaMail}
-				getWhatsappText={getWhatsappText}
-			/>
+		<>
+			<Header display={nome_fantasia} options={getOptions()} />
 
-			{/* imagem */}
-			<div className="field">
-				<label htmlFor="imagem">Imagem</label>
-				<Dropzone
-					name="imageFile"
-					id="imageFile"
-					onFileUploaded={setImagem}
-					shownFileUrl={client && client.imagem}
-				/>
-			</div>
-			{/* razao_social */}
-			<div className="required field">
-				<label htmlFor="razao_social">Razão social</label>
-				<input
-					type="text"
-					name="razao_social"
-					id="razao_social"
-					value={razao_social}
-					onChange={e => setRazaoSocial(e.target.value)}
-				/>
-			</div>
-			{/* nome_fantasia */}
-			<div className="required field">
-				<label htmlFor="nome_fantasia">Nome fantasia</label>
-				<input
-					type="text"
-					name="nome_fantasia"
-					id="nome_fantasia"
-					value={nome_fantasia}
-					onChange={e => setNomeFantasia(e.target.value)}
-				/>
-			</div>
-			{/* cnpj */}
-			<div className="required field">
-				<label htmlFor="cnpj">CNPJ</label>
-				<input
-					type="text"
-					name="cnpj"
-					id="cnpj"
-					value={cnpj}
-					onChange={e => setCnpj(e.target.value)}
-				/>
-			</div>
-			{/* insc_estadual */}
-			<div className="required field">
-				<label htmlFor="insc_estadual">Inscrição estadual</label>
-				<input
-					type="text"
-					name="insc_estadual"
-					id="insc_estadual"
-					value={insc_estadual}
-					onChange={e => setInscEstadual(e.target.value)}
-				/>
-			</div>
-			{/* email */}
-			<div className="required field">
-				<label htmlFor="email">E-mail</label>
-				<input
-					type="text"
-					name="email"
-					id="email"
-					value={email}
-					onChange={e => setEmail(e.target.value)}
-				/>
-			</div>
-			{/* senha */}
-			<div className="required field">
-				<label htmlFor="senha">Senha</label>
-				<button
-					type="button"
-					className="action"
-					onClick={() => setIsPasswordModalOpen(true)}
-				>
-					{method === 'post' && 'Criar senha'}
-					{method === 'put' && 'Mudar senha'}
-				</button>
-			</div>
-			{/* vendedores */}
-			<div className="field">
-				<label htmlFor="vendedores">Vendedores</label>
-				<Select
-					name="vendedores"
-					id="vendedores"
-					value={sellerOptions.filter(option =>
-						vendedores.includes(option.value)
-					)}
-					onChange={handleSellersChange}
-					options={sellerOptions}
-					hideSelectedOptions
-					isMulti
-					styles={selectStyles}
-					placeholder="Selecione os vendedores"
-				/>
-			</div>
-			{/* representadas */}
-			<div className="field">
-				<label htmlFor="representada">Representadas</label>
-				<ul>
-					{representadas.map((representada, index) => (
-						<li key={index}>
-							<div className="select">
-								<Select
-									name="representada"
-									value={companyOptions.find(
-										option => option.value === representada.id
-									)}
-									onChange={e => handleCompanyChange(e, index, 'id')}
-									options={companyOptions}
-									styles={selectStyles}
-									placeholder="Selecione a representada"
-								/>
-							</div>
-							<div className="select">
-								<Select
-									name="tabela"
-									value={
-										representada.id !== '' &&
-										tableOptions[representada.id] &&
-										tableOptions[representada.id].find(
-											option => option.value === representada.tabela
-										)
-									}
-									onChange={e => handleCompanyChange(e, index, 'tabela')}
-									options={
-										representada.id !== '' ? tableOptions[representada.id] : []
-									}
-									isDisabled={representada.id === ''}
-									styles={selectStyles}
-									placeholder={
-										representada.id !== ''
-											? 'Selecione a tabela'
-											: 'Selecione a representada'
-									}
-								/>
-							</div>
-							<button type="button" onClick={() => handleRemoveCompany(index)}>
-								<FiMinus />
-								<span>Remover representada</span>
+			<main className="main">
+				<Container onSubmit={e => e.preventDefault()}>
+					<PasswordModal
+						isOpen={isPasswordModalOpen}
+						setIsOpen={setIsPasswordModalOpen}
+						role="client"
+						id={id}
+						setPwd={method === 'post' ? setSenha : undefined}
+						sendCredentialsViaMail={sendCredentialsViaMail}
+						setSendCredentialsViaMail={setSendCredentialsViaMail}
+						handleSendCredentialsViaMail={handleSendCredentialsViaMail}
+						getWhatsappText={getWhatsappText}
+					/>
+
+					{/* imagem */}
+					<div className="field">
+						<label htmlFor="imagem">Imagem</label>
+						<Dropzone
+							name="imageFile"
+							id="imageFile"
+							onFileUploaded={setImagem}
+							shownFileUrl={client && client.imagem}
+						/>
+					</div>
+					{/* razao_social */}
+					<div className="required field">
+						<label htmlFor="razao_social">Razão social</label>
+						<input
+							type="text"
+							name="razao_social"
+							id="razao_social"
+							value={razao_social}
+							onChange={e => setRazaoSocial(e.target.value)}
+						/>
+					</div>
+					{/* nome_fantasia */}
+					<div className="required field">
+						<label htmlFor="nome_fantasia">Nome fantasia</label>
+						<input
+							type="text"
+							name="nome_fantasia"
+							id="nome_fantasia"
+							value={nome_fantasia}
+							onChange={e => setNomeFantasia(e.target.value)}
+						/>
+					</div>
+					{/* cnpj */}
+					<div className="required field">
+						<label htmlFor="cnpj">CNPJ</label>
+						<input
+							type="text"
+							name="cnpj"
+							id="cnpj"
+							value={cnpj}
+							onChange={e => setCnpj(e.target.value)}
+						/>
+					</div>
+					{/* insc_estadual */}
+					<div className="required field">
+						<label htmlFor="insc_estadual">Inscrição estadual</label>
+						<input
+							type="text"
+							name="insc_estadual"
+							id="insc_estadual"
+							value={insc_estadual}
+							onChange={e => setInscEstadual(e.target.value)}
+						/>
+					</div>
+					{/* email */}
+					<div className="required field">
+						<label htmlFor="email">E-mail</label>
+						<input
+							type="text"
+							name="email"
+							id="email"
+							value={email}
+							onChange={e => setEmail(e.target.value)}
+						/>
+					</div>
+					{/* senha */}
+					<div className="required field">
+						<label htmlFor="senha">Senha</label>
+						<button
+							type="button"
+							className="action"
+							onClick={() => setIsPasswordModalOpen(true)}
+						>
+							{method === 'post' && 'Criar senha'}
+							{method === 'put' && 'Mudar senha'}
+						</button>
+					</div>
+					{/* vendedores */}
+					<div className="field">
+						<label htmlFor="vendedores">Vendedores</label>
+						<Select
+							name="vendedores"
+							id="vendedores"
+							value={sellerOptions.filter(option =>
+								vendedores.includes(option.value)
+							)}
+							onChange={handleSellersChange}
+							options={sellerOptions}
+							hideSelectedOptions
+							isMulti
+							styles={selectStyles}
+							placeholder="Selecione os vendedores"
+						/>
+					</div>
+					{/* representadas */}
+					<div className="field">
+						<label htmlFor="representada">Representadas</label>
+						<ul>
+							{representadas.map((representada, index) => (
+								<li key={index}>
+									<div className="select">
+										<Select
+											name="representada"
+											value={companyOptions.find(
+												option => option.value === representada.id
+											)}
+											onChange={e => handleCompanyChange(e, index, 'id')}
+											options={companyOptions}
+											styles={selectStyles}
+											placeholder="Selecione a representada"
+										/>
+									</div>
+									<div className="select">
+										<Select
+											name="tabela"
+											value={
+												representada.id !== '' &&
+												tableOptions[representada.id] &&
+												tableOptions[representada.id].find(
+													option => option.value === representada.tabela
+												)
+											}
+											onChange={e => handleCompanyChange(e, index, 'tabela')}
+											options={
+												representada.id !== ''
+													? tableOptions[representada.id]
+													: []
+											}
+											isDisabled={representada.id === ''}
+											styles={selectStyles}
+											placeholder={
+												representada.id !== ''
+													? 'Selecione a tabela'
+													: 'Selecione a representada'
+											}
+										/>
+									</div>
+									<button
+										type="button"
+										onClick={() => handleRemoveCompany(index)}
+									>
+										<FiMinus />
+										<span>Remover representada</span>
+									</button>
+								</li>
+							))}
+							<button type="button" onClick={handleAddCompany}>
+								<FiPlus />
+								<span>Adicionar representada</span>
 							</button>
-						</li>
-					))}
-					<button type="button" onClick={handleAddCompany}>
-						<FiPlus />
-						<span>Adicionar representada</span>
-					</button>
-				</ul>
-			</div>
-			{/* telefone */}
-			<div className="field">
-				<label htmlFor="telefone">Telefone</label>
-				<input
-					type="text"
-					name="telefone"
-					id="telefone"
-					value={telefone}
-					onChange={e => setTelefone(e.target.value)}
-				/>
-			</div>
-			{/* contatos */}
-			<div className="field">
-				<label>Contatos</label>
-				<ul>
-					{contatos.map((contato, index) => (
-						<li key={index}>
+						</ul>
+					</div>
+					{/* telefone */}
+					<div className="field">
+						<label htmlFor="telefone">Telefone</label>
+						<input
+							type="text"
+							name="telefone"
+							id="telefone"
+							value={telefone}
+							onChange={e => setTelefone(e.target.value)}
+						/>
+					</div>
+					{/* contatos */}
+					<div className="field">
+						<label>Contatos</label>
+						<ul>
+							{contatos.map((contato, index) => (
+								<li key={index}>
+									<input
+										type="text"
+										name="contato - nome"
+										value={contato.nome}
+										onChange={e =>
+											handleContactChange(e.target.value, index, 'nome')
+										}
+										placeholder="Nome"
+									/>
+									<input
+										type="text"
+										name="contato - telefone"
+										value={contato.telefone}
+										onChange={e =>
+											handleContactChange(e.target.value, index, 'telefone')
+										}
+										placeholder="Telefone"
+									/>
+									<button
+										type="button"
+										onClick={() => handleRemoveContact(index)}
+									>
+										<FiMinus />
+										<span>Remover contato</span>
+									</button>
+								</li>
+							))}
+							<button type="button" onClick={handleAddContact}>
+								<FiPlus />
+								<span>Adicionar contato</span>
+							</button>
+						</ul>
+					</div>
+					{/* endereco */}
+					<div className="field">
+						<label>Endereço</label>
+						<div className="addressField">
+							<label htmlFor="rua">Rua</label>
 							<input
 								type="text"
-								name="contato - nome"
-								value={contato.nome}
-								onChange={e =>
-									handleContactChange(e.target.value, index, 'nome')
-								}
-								placeholder="Nome"
+								name="rua"
+								id="rua"
+								value={endereco.rua}
+								onChange={e => handleAddressChange(e, 'rua')}
 							/>
+						</div>
+						<div className="addressField">
+							<label htmlFor="numero">Número</label>
 							<input
 								type="text"
-								name="contato - telefone"
-								value={contato.telefone}
-								onChange={e =>
-									handleContactChange(e.target.value, index, 'telefone')
-								}
-								placeholder="Telefone"
+								name="numero"
+								id="numero"
+								value={endereco.numero}
+								onChange={e => handleAddressChange(e, 'numero')}
 							/>
-							<button type="button" onClick={() => handleRemoveContact(index)}>
-								<FiMinus />
-								<span>Remover contato</span>
-							</button>
-						</li>
-					))}
-					<button type="button" onClick={handleAddContact}>
-						<FiPlus />
-						<span>Adicionar contato</span>
-					</button>
-				</ul>
-			</div>
-			{/* endereco */}
-			<div className="field">
-				<label>Endereço</label>
-				<div className="addressField">
-					<label htmlFor="rua">Rua</label>
-					<input
-						type="text"
-						name="rua"
-						id="rua"
-						value={endereco.rua}
-						onChange={e => handleAddressChange(e, 'rua')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="numero">Número</label>
-					<input
-						type="text"
-						name="numero"
-						id="numero"
-						value={endereco.numero}
-						onChange={e => handleAddressChange(e, 'numero')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="complemento">Complemento</label>
-					<input
-						type="text"
-						name="complemento"
-						id="complemento"
-						value={endereco.complemento}
-						onChange={e => handleAddressChange(e, 'complemento')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="bairro">Bairro</label>
-					<input
-						type="text"
-						name="bairro"
-						id="bairro"
-						value={endereco.bairro}
-						onChange={e => handleAddressChange(e, 'bairro')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="cep">CEP</label>
-					<input
-						type="string"
-						name="cep"
-						id="cep"
-						value={endereco.cep}
-						onChange={e => handleAddressChange(e, 'cep')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="cidade">Cidade</label>
-					<input
-						type="text"
-						name="cidade"
-						id="cidade"
-						value={endereco.cidade}
-						onChange={e => handleAddressChange(e, 'cidade')}
-					/>
-				</div>
-				<div className="addressField">
-					<label htmlFor="uf">UF</label>
-					<input
-						type="text"
-						name="uf"
-						id="uf"
-						value={endereco.uf}
-						onChange={e => handleAddressChange(e, 'uf')}
-					/>
-				</div>
-			</div>
-			{/* status */}
-			<div className="field">
-				<label htmlFor="status">Situação</label>
-				<div className="switchFields">
-					<div className="switchField">
-						<span>ativo</span>
-						<Switch
-							name="ativo"
-							id="ativo"
-							checked={status.ativo}
-							onChange={e => handleStatusChange(e, 'ativo')}
+						</div>
+						<div className="addressField">
+							<label htmlFor="complemento">Complemento</label>
+							<input
+								type="text"
+								name="complemento"
+								id="complemento"
+								value={endereco.complemento}
+								onChange={e => handleAddressChange(e, 'complemento')}
+							/>
+						</div>
+						<div className="addressField">
+							<label htmlFor="bairro">Bairro</label>
+							<input
+								type="text"
+								name="bairro"
+								id="bairro"
+								value={endereco.bairro}
+								onChange={e => handleAddressChange(e, 'bairro')}
+							/>
+						</div>
+						<div className="addressField">
+							<label htmlFor="cep">CEP</label>
+							<input
+								type="string"
+								name="cep"
+								id="cep"
+								value={endereco.cep}
+								onChange={e => handleAddressChange(e, 'cep')}
+							/>
+						</div>
+						<div className="addressField">
+							<label htmlFor="cidade">Cidade</label>
+							<input
+								type="text"
+								name="cidade"
+								id="cidade"
+								value={endereco.cidade}
+								onChange={e => handleAddressChange(e, 'cidade')}
+							/>
+						</div>
+						<div className="addressField">
+							<label htmlFor="uf">UF</label>
+							<input
+								type="text"
+								name="uf"
+								id="uf"
+								value={endereco.uf}
+								onChange={e => handleAddressChange(e, 'uf')}
+							/>
+						</div>
+					</div>
+					{/* status */}
+					<div className="field">
+						<label htmlFor="status">Situação</label>
+						<div className="switchFields">
+							<div className="switchField">
+								<span>ativo</span>
+								<Switch
+									name="ativo"
+									id="ativo"
+									checked={status.ativo}
+									onChange={e => handleStatusChange(e, 'ativo')}
+								/>
+							</div>
+							<div className="switchField">
+								<span>aberto</span>
+								<Switch
+									name="aberto"
+									id="aberto"
+									checked={status.aberto}
+									onChange={e => handleStatusChange(e, 'aberto')}
+								/>
+							</div>
+							<div className="switchField">
+								<span>nome sujo</span>
+								<Switch
+									name="nome_sujo"
+									id="nome_sujo"
+									checked={status.nome_sujo}
+									onChange={e => handleStatusChange(e, 'nome_sujo')}
+								/>
+							</div>
+						</div>
+					</div>
+					{/* obs */}
+					<div className="field textareaField">
+						<label htmlFor="obs">Observações financeiras</label>
+						<textarea
+							name="obs"
+							id="obs"
+							cols={30}
+							rows={5}
+							value={obs}
+							onChange={e => setObs(e.target.value)}
 						/>
 					</div>
-					<div className="switchField">
-						<span>aberto</span>
-						<Switch
-							name="aberto"
-							id="aberto"
-							checked={status.aberto}
-							onChange={e => handleStatusChange(e, 'aberto')}
-						/>
-					</div>
-					<div className="switchField">
-						<span>nome sujo</span>
-						<Switch
-							name="nome_sujo"
-							id="nome_sujo"
-							checked={status.nome_sujo}
-							onChange={e => handleStatusChange(e, 'nome_sujo')}
-						/>
-					</div>
-				</div>
-			</div>
-			{/* obs */}
-			<div className="field textareaField">
-				<label htmlFor="obs">Observações financeiras</label>
-				<textarea
-					name="obs"
-					id="obs"
-					cols={30}
-					rows={5}
-					value={obs}
-					onChange={e => setObs(e.target.value)}
-				/>
-			</div>
-			{/* condicoes */}
-			{/* <div className='field'>
-				<label htmlFor='condicoes'>Condições de compra</label>
-				<div className='switchFields'>
-					<div className='switchField'>
-						<span>prazo</span>
-						<Switch
-							name='prazo'
-							id='prazo'
-							checked={condicoes.prazo}
-							onChange={e => handleConditionsChange(e, 'prazo')}
-						/>
-					</div>
-					<div className='switchField'>
-						<span>à vista</span>
-						<Switch
-							name='vista'
-							id='vista'
-							checked={condicoes.vista}
-							onChange={e => handleConditionsChange(e, 'vista')}
-						/>
-					</div>
-					<div className='switchField'>
-						<span>cheque</span>
-						<Switch
-							name='cheque'
-							id='cheque'
-							checked={condicoes.cheque}
-							onChange={e => handleConditionsChange(e, 'cheque')}
-						/>
-					</div>
-				</div>
-			</div> */}
 
-			<FormButtons handleCancel={back} handleSubmit={handleSubmit} />
-		</Container>
+					<FormButtons handleCancel={back} handleSubmit={handleSubmit} />
+				</Container>
+			</main>
+		</>
 	)
 }
 

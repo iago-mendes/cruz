@@ -1,19 +1,15 @@
 import Head from 'next/head'
 import {useRouter} from 'next/router'
 import {useEffect, useState} from 'react'
-import {FiEdit3, FiTrash} from 'react-icons/fi'
+import {FiEdit3} from 'react-icons/fi'
 
 import {ClientListed, loadingClient} from '../../models/client'
 import Header from '../../components/Header'
-import api from '../../services/api'
 import Add from '../../components/Add'
 import Container from '../../styles/pages/clientes/index'
 import useAuth from '../../hooks/useAuth'
 import SheetModal from '../../components/_modals/Sheet'
 import Paginate from '../../components/Paginate'
-import confirmAlert from '../../utils/alerts/confirm'
-import successAlert from '../../utils/alerts/success'
-import errorAlert from '../../utils/alerts/error'
 import {Image} from '../../components/Image'
 import {clientController} from '../../services/offline/controllers/client'
 import {SkeletonLoading} from '../../components/SkeletonLoading'
@@ -66,23 +62,6 @@ const Clients: React.FC = () => {
 			})
 
 		setLoading(false)
-	}
-
-	async function handleDeleteClient(client: ClientListed) {
-		confirmAlert(
-			'Você tem certeza?',
-			`Se você continuar, o cliente ${client.nome_fantasia} será deletado!`,
-			() =>
-				api
-					.delete(`clients/${client.id}`)
-					.then(() => {
-						updateClients()
-						successAlert('Cliente deletado com sucesso!')
-					})
-					.catch(error => {
-						errorAlert(error.response.message.data)
-					})
-		)
 	}
 
 	return (
@@ -180,12 +159,6 @@ const Clients: React.FC = () => {
 													onClick={() => push(`/clientes/${client.id}`)}
 												>
 													<FiEdit3 />
-												</button>
-												<button
-													title="Deletar"
-													onClick={() => handleDeleteClient(client)}
-												>
-													<FiTrash />
 												</button>
 											</>
 										)}
