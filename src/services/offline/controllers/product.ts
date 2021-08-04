@@ -23,6 +23,41 @@ export const productController = {
 
 		const company: CompanyRaw = await db.table('companies').get(companyId)
 		if (!company) return undefined
+		const {relatedTables} = company
+
+		let tables: Array<{
+			id: string
+			preco: number
+		}> = !tabelas ? [] : JSON.parse(tabelas)
+		const relatedTablesIds = !relatedTables
+			? []
+			: relatedTables.map(table => table.id)
+
+		if (tabelas) {
+			tables.sort((a, b) => {
+				const isARelated = relatedTablesIds.includes(a.id)
+				const isBRelated = relatedTablesIds.includes(b.id)
+
+				if (isARelated && !isBRelated) return 1
+				else if (!isARelated && isBRelated) return -1
+				else return 0
+			})
+
+			tables = tables.map(table => {
+				if (!relatedTables) return table
+
+				const relatedTable = relatedTables.find(({id}) => id === table.id)
+				if (!relatedTable) return table
+
+				const targetTable = tables.find(({id}) => id === relatedTable.target)
+				if (!targetTable) return table
+
+				return {
+					id: table.id,
+					preco: targetTable.preco * relatedTable.relation
+				}
+			})
+		}
 
 		company.produtos.push({
 			_id: handleObjectId(_id),
@@ -31,7 +66,7 @@ export const productController = {
 			unidade,
 			ipi,
 			st,
-			tabelas: JSON.parse(tabelas),
+			tabelas: tables,
 			codigo,
 			comissao,
 			peso,
