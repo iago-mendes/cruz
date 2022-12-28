@@ -32,7 +32,7 @@ const SendRequestEmailModal: React.FC<SendRequestEmailModalProps> = ({
 }) => {
 	const [emailList, setEmailList] = useState<string[]>(defaultEmailList)
 	const [to, setTo] = useState<string[]>([])
-	const [text, setText] = useState('')
+	const [text, setText] = useState('Pedido concluído com sucesso!')
 	const [otherEmail, setOtherEmail] = useState('')
 	const [sendToOtherEmail, setSendToOtherEmail] = useState(false)
 
